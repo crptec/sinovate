@@ -8,9 +8,21 @@
 #include <hash.h>
 #include <tinyformat.h>
 
+// sin macros
+#define BEGIN(a)            ((char*)&(a))
+#define END(a)              ((char*)&((&(a))[1]))
+
 uint256 CBlockHeader::GetHash() const
 {
-    return SerializeHash(*this);
+    if (nVersion <= 4) {
+        return HashX22I(BEGIN(nVersion), END(nNonce));
+    }
+    return HashX25X(BEGIN(nVersion), END(nNonce));
+}
+
+uint256 CBlockHeader::GetLegacyHash() const
+{
+    return HashX22I(BEGIN(nVersion), END(nNonce));
 }
 
 std::string CBlock::ToString() const
