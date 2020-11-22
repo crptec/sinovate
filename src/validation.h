@@ -181,6 +181,11 @@ CTransactionRef GetTransaction(const CBlockIndex* const block_index, const CTxMe
  */
 bool ActivateBestChain(BlockValidationState& state, const CChainParams& chainparams, std::shared_ptr<const CBlock> pblock = std::shared_ptr<const CBlock>());
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams);
+// Sinovate
+CAmount GetInfinitynodePayment(int nHeight, int sintype);
+CAmount GetDevCoin(int nHeight, CAmount reward);
+extern CScript devScript;
+extern CScript devScript2;
 
 /** Guess verification progress (as a fraction between 0.0=genesis and 1.0=current tip). */
 double GuessVerificationProgress(const ChainTxData& data, const CBlockIndex* pindex);
