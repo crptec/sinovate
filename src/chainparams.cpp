@@ -79,6 +79,7 @@ public:
                 {uint256S("0x00000000007433063f06a3327ea65fdab34bc35e8ae989a3baf4283436367b1a")},
                 {uint256S("0x00000000001fdc58e6c7999b8ee252b1e9e3526a20d17739bb3b89ed6d9cc890")},
                 {uint256S("0x00000000008aba7b527e3f63dfe87462c7abc2c015cdd72356aaba12071e576b")},
+                {uint256S("0x000000000011e2cf042564e8393baad56a4b60dacb59f0d1b8776f6a8336b15d")},
             }
         };
 
