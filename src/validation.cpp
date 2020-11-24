@@ -2289,16 +2289,16 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     // verify devfund addr and amount are correct
     if (pindex->nHeight <= chainparams.GetConsensus().nDINActivationHeight) {
         if (block.vtx[0]->vout[1].scriptPubKey != devScript) {
-            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-old-dev-fee");
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-old-dev-fee-oldaddr");
         }
     } else {
         if (block.vtx[0]->vout[1].scriptPubKey != devScript2) {
-            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-dev-fee");
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-dev-fee-newaddr");
         }
     }
 
     if (block.vtx[0]->vout[1].nValue < GetDevCoin(pindex->nHeight, blockReward)) {
-        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-dev-fee");
+        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-dev-fee-missing");
     }
 
     // Sinovate TODO: add IN consensus

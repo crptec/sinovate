@@ -128,7 +128,7 @@ public:
         // addresses
         consensus.devAddressPubKey = "841e6bf56b99a59545da932de2efb23ab93b4f44";
         consensus.devAddress = "SZLafuDjnjqh2tAfTrG9ZAGzbP8HkzNXvB";
-        consensus.devAddress2PubKey = "413395a3a8fedfc2a06f645ad40151412d414544";
+        consensus.devAddress2PubKey = "c07290a27153f8adaf01e6f5817405a32f569f61";
         consensus.devAddress2 = "STEkkU29v5rjb6CMUdGciF1e4STZ6jx7aq";
         consensus.cBurnAddressPubKey = "ebaf5ec74cb2e2342dfda0229111738ff4dc742d";
         consensus.cBurnAddress = "SinBurnAddress123456789SuqaXbx3AMC";
@@ -182,8 +182,8 @@ public:
         pchMessageStart[3] = 0xb8;
         nDefaultPort = 20970;
         nPruneAfterHeight = 100000;
-        m_assumed_blockchain_size = 4;
-        m_assumed_chain_state_size = 1;
+        m_assumed_blockchain_size = 2;
+        m_assumed_chain_state_size = 0.2;
 
         genesis = CreateGenesisBlock(1533029778, 1990615403, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -270,8 +270,8 @@ public:
         pchMessageStart[3] = 0x07;
         nDefaultPort = 18333;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 40;
-        m_assumed_chain_state_size = 2;
+        m_assumed_blockchain_size = 0;
+        m_assumed_chain_state_size = 0;
 
         genesis = CreateGenesisBlock(1457163389, 2962201989, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
