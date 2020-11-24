@@ -235,6 +235,11 @@ public:
         return *phashBlock;
     }
 
+    uint256 GetValidationBlockHash() const
+    {
+        return GetBlockHeader().GetValidationHash();
+    }
+
     /**
      * Check whether this block's and all previous blocks' transactions have been
      * downloaded (and stored to disk) at some point.
@@ -361,6 +366,18 @@ public:
         block.nBits           = nBits;
         block.nNonce          = nNonce;
         return block.GetHash();
+    }
+
+    uint256 GetValidationBlockHash() const
+    {
+        CBlockHeader block;
+        block.nVersion        = nVersion;
+        block.hashPrevBlock   = hashPrev;
+        block.hashMerkleRoot  = hashMerkleRoot;
+        block.nTime           = nTime;
+        block.nBits           = nBits;
+        block.nNonce          = nNonce;
+        return block.GetValidationHash();
     }
 
 
