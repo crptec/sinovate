@@ -201,6 +201,10 @@ BITCOIN_CORE_H = \
   script/standard.h \
   shutdown.h \
   signet.h \
+  sinovate/infinitynode.h \
+  sinovate/infinitynodelockinfo.h \
+  sinovate/infinitynodeman.h.h \
+  sinovate/infinitynodetip.h \
   streams.h \
   support/allocators/secure.h \
   support/allocators/zeroafterfree.h \
@@ -324,6 +328,7 @@ libbitcoin_server_a_SOURCES = \
   script/sigcache.cpp \
   shutdown.cpp \
   signet.cpp \
+  sinovate/infinitynodetip.cpp \
   timedata.cpp \
   torcontrol.cpp \
   txdb.cpp \
