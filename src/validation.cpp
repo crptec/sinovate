@@ -56,6 +56,45 @@
 #define MICRO 0.000001
 #define MILLI 0.001
 
+static std::set<std::string> setbrokenblocks;
+
+//Sinovate dev-fee consensus
+CScript devScript;
+CScript devScript2;
+
+CAmount GetDevCoin(int nHeight, CAmount reward) {
+    if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight < 100) {
+        return 0.1 * reward;
+    }
+    if (Params().NetworkIDString() == CBaseChainParams::TESTNET && 100 <= nHeight && nHeight < 150) {
+        return 0.01 * reward;
+    }
+    if (Params().NetworkIDString() == CBaseChainParams::TESTNET && 150 <= nHeight && nHeight < 200) {
+        return 0.1 * reward;
+    }
+    if (nHeight < 170050) {
+        return 0.1 * reward;
+    }
+    if (170050 <= nHeight && nHeight < 262000) {
+        return 0.01 * reward;
+    }
+    if (262000 <= nHeight && nHeight < 1500000) {
+        return 0.1 * reward;
+    }
+    return 0.1 * reward;
+}
+
+// sinovate: make sure we properly validate these broken blocks
+bool IsBlockBroken(const uint256 blockHash, const CBrokenFeeBlocksData& data) {
+    const SetBrokenFeeBlocks& BrokenBlocks = data.mapBrokenBlocks;
+
+    if (BrokenBlocks.find(blockHash) != BrokenBlocks.end()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /**
  * An extra transaction can be added to a package, as long as it only has one
  * ancestor and is no larger than this. Not really any reason to make this
@@ -1160,7 +1199,7 @@ bool ReadBlockFromDisk(CBlock& block, const FlatFilePos& pos, const Consensus::P
     }
 
     // Check the header
-    if (!CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
+    if (!CheckProofOfWork(block.GetValidationHash(), block.nBits, consensusParams))
         return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
 
     // Signet only: check block solution
@@ -1235,15 +1274,93 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
-    int halvings = nHeight / consensusParams.nSubsidyHalvingInterval;
-    // Force block reward to zero when right shift is undefined.
-    if (halvings >= 64)
-        return 0;
+    CAmount reward = 0;
 
-    CAmount nSubsidy = 50 * COIN;
-    // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
-    nSubsidy >>= halvings;
-    return nSubsidy;
+    if (nHeight  <   22000) reward = 10000 * COIN;
+    if (22000   <= nHeight && nHeight < 50000)   reward = 5000 * COIN;
+    if (50000   <= nHeight && nHeight < 100000)  reward = 2500 * COIN;
+    if (100000  <= nHeight && nHeight < 170000)  reward = 1250 * COIN; //hard fork
+    if (170000  <= nHeight && nHeight < 245000)  reward = 500 * COIN;
+    if (245000  <= nHeight && nHeight < 262000)  reward = 250 * COIN;
+    if (262000  <= nHeight && nHeight < 500000)  reward = 25 * COIN;
+    if (500000  <= nHeight && nHeight < 1000000)  reward = 12.5 * COIN;
+    if (1000000  <= nHeight && nHeight < 1500000)  reward = 6.25 * COIN;
+    if (1500000 <= nHeight && nHeight < 5000000) reward = 3 * COIN;
+
+    reward += GetInfinitynodePayment(nHeight, 1) + GetInfinitynodePayment(nHeight, 5) + GetInfinitynodePayment(nHeight, 10);
+
+  return reward;
+}
+
+CAmount GetInfinitynodePayment(int nHeight, int sintype)
+{
+    CAmount ret = 0.00;
+
+    if (sintype == 0) {
+          return 0;
+    }
+
+    if (sintype == 1) {
+        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight >=105 && nHeight <  150000) {
+            return 8 * COIN;
+        }
+        if (Params().NetworkIDString() == CBaseChainParams::REGTEST && nHeight >=105 && nHeight <  150000) {
+            return 8 * COIN;
+        }
+
+            if (nHeight <  150000) {
+            return  0 * COIN;  //testnet
+        }
+            if (nHeight <  170100) {
+            return  0 * COIN;  //hard fork
+        }
+            if (nHeight < 550000) { //hf block
+            return  160 * COIN;
+        }
+        if (nHeight < 5000000) {
+            return  560 * COIN;
+        }
+    }
+
+    if (sintype == 5) {
+        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight >=105 && nHeight <  150000) {
+            return 41 * COIN;
+        }
+        if (Params().NetworkIDString() == CBaseChainParams::REGTEST && nHeight >=105 && nHeight <  150000) {
+            return 41 * COIN;
+        }
+
+        if (nHeight <  150000) {
+            return  0 * COIN;  //testnet
+        }
+        if (nHeight <  170100) {
+            return  0 * COIN;  //hard fork
+        }
+        if (nHeight < 5000000) {
+            return  838 * COIN;
+        }
+    }
+
+    if (sintype == 10) {
+        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight >=105 && nHeight <  150000) {
+            return 85 * COIN;
+        }
+        if (Params().NetworkIDString() == CBaseChainParams::REGTEST && nHeight >=105 && nHeight <  150000) {
+            return 85 * COIN;
+        }
+
+            if (nHeight <  150000) {
+            return  0 * COIN;  //testnet
+        }
+            if (nHeight <  170100) {
+            return  0 * COIN;  //hard fork
+        }
+            if (nHeight < 5000000) {
+            return  1752 * COIN;
+        }
+    }
+
+    return ret;
 }
 
 CoinsViews::CoinsViews(
@@ -1963,6 +2080,8 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     int64_t nTime1 = GetTimeMicros(); nTimeCheck += nTime1 - nTimeStart;
     LogPrint(BCLog::BENCH, "    - Sanity checks: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime1 - nTimeStart), nTimeCheck * MICRO, nTimeCheck * MILLI / nBlocksTotal);
 
+    bool IsBrokenBlock = IsBlockBroken(pindex->GetBlockHash(), chainparams.BrokenBlocks());
+
     // Do not allow blocks that contain transactions which 'overwrite' older transactions,
     // unless those are already completely spent.
     // If such overwrites are allowed, coinbases and transactions depending upon those
@@ -2090,16 +2209,23 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         {
             CAmount txfee = 0;
             TxValidationState tx_state;
-            if (!Consensus::CheckTxInputs(tx, tx_state, view, pindex->nHeight, txfee)) {
+            if (!Consensus::CheckTxInputs(tx, tx_state, view, pindex->nHeight, txfee) && !IsBrokenBlock) {
+                /*
                 // Any transaction validation failure in ConnectBlock is a block consensus failure
                 state.Invalid(BlockValidationResult::BLOCK_CONSENSUS,
                             tx_state.GetRejectReason(), tx_state.GetDebugMessage());
-                return error("%s: Consensus::CheckTxInputs: %s, %s", __func__, tx.GetHash().ToString(), state.ToString());
+                return error("%s: Consensus::CheckTxInputs: %s, %s", __func__, tx.GetHash().ToString(), state.ToString());*/
             }
             nFees += txfee;
-            if (!MoneyRange(nFees)) {
+            if (!MoneyRange(nFees) && !IsBrokenBlock) {
+                setbrokenblocks.insert(pindex->GetBlockHash().ToString());
+                for(auto it = setbrokenblocks.begin();it != setbrokenblocks.end(); it++)
+                {
+                    std::cout << *it << std::endl;
+                }
+                /*
                 LogPrintf("ERROR: %s: accumulated fee in the block out of range.\n", __func__);
-                return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-txns-accumulated-fee-outofrange");
+                return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-txns-accumulated-fee-outofrange");*/
             }
 
             // Check that transaction is BIP68 final
@@ -2151,10 +2277,30 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
 
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
-    if (block.vtx[0]->GetValueOut() > blockReward) {
+    if (block.vtx[0]->GetValueOut() > blockReward + GetDevCoin(pindex->nHeight, blockReward) && !IsBrokenBlock) {
+        /*
         LogPrintf("ERROR: ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)\n", block.vtx[0]->GetValueOut(), blockReward);
-        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-amount");
+        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-amount");*/
     }
+
+    //Sinovate specific consensus (devfee)
+
+    // verify devfund addr and amount are correct
+    if (pindex->nHeight <= chainparams.GetConsensus().nDINActivationHeight) {
+        if (block.vtx[0]->vout[1].scriptPubKey != devScript) {
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-old-dev-fee-oldaddr");
+        }
+    } else {
+        if (block.vtx[0]->vout[1].scriptPubKey != devScript2) {
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-dev-fee-newaddr");
+        }
+    }
+
+    if (block.vtx[0]->vout[1].nValue < GetDevCoin(pindex->nHeight, blockReward)) {
+        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-dev-fee-missing");
+    }
+
+    // Sinovate TODO: add IN consensus
 
     if (!control.Wait()) {
         LogPrintf("ERROR: %s: CheckQueue failed\n", __func__);
@@ -3264,7 +3410,7 @@ static bool FindUndoPos(BlockValidationState &state, int nFile, FlatFilePos &pos
 static bool CheckBlockHeader(const CBlockHeader& block, BlockValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true)
 {
     // Check proof of work matches claimed amount
-    if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
+    if (fCheckPOW && !CheckProofOfWork(block.GetValidationHash(), block.nBits, consensusParams))
         return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "high-hash", "proof of work failed");
 
     return true;
@@ -4541,6 +4687,10 @@ void UnloadBlockIndex(CTxMemPool* mempool, ChainstateManager& chainman)
 
 bool ChainstateManager::LoadBlockIndex(const CChainParams& chainparams)
 {
+    // Sinovate, load dev-fee related scripts on startup
+    devScript << OP_DUP << OP_HASH160 << ParseHex(chainparams.GetConsensus().devAddressPubKey) << OP_EQUALVERIFY << OP_CHECKSIG;
+    devScript2 << OP_DUP << OP_HASH160 << ParseHex(chainparams.GetConsensus().devAddress2PubKey) << OP_EQUALVERIFY << OP_CHECKSIG;
+
     AssertLockHeld(cs_main);
     // Load block index from databases
     bool needs_init = fReindex;

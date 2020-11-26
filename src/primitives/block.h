@@ -52,6 +52,8 @@ public:
 
     uint256 GetHash() const;
 
+    uint256 GetValidationHash() const;
+
     int64_t GetBlockTime() const
     {
         return (int64_t)nTime;
