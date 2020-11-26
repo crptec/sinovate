@@ -95,10 +95,12 @@ public:
 };
 
 /**
- * Default setting for nMaxDatacarrierBytes. 80 bytes of data, +1 for OP_RETURN,
+ * Default setting for nMaxDatacarrierBytes. 120 bytes of data, +1 for OP_RETURN,
  * +2 for the pushdata opcodes.
  */
-static const unsigned int MAX_OP_RETURN_RELAY = 83;
+//>SIN
+static const unsigned int MAX_OP_RETURN_RELAY = 123;
+//<SIN
 
 /**
  * A data carrying output is an unspendable output containing data. The script
@@ -131,6 +133,10 @@ enum class TxoutType {
     WITNESS_V0_KEYHASH,
     WITNESS_V1_TAPROOT,
     WITNESS_UNKNOWN, //!< Only for Witness versions not already defined above
+    //>SIN
+    TX_CHECKLOCKTIMEVERIFY,
+    TX_BURN_DATA,
+    //<SIN
 };
 
 class CNoDestination {
@@ -230,7 +236,9 @@ std::string GetTxnOutputType(TxoutType t);
  * @return                     The script type. TxoutType::NONSTANDARD represents a failed solve.
  */
 TxoutType Solver(const CScript& scriptPubKey, std::vector<std::vector<unsigned char>>& vSolutionsRet);
-
+//SIN
+TxoutType Solver(const CScript& scriptPubKey, std::vector<std::vector<unsigned char>>& vSolutionsRet, int& CLTVreleaseBlock);
+//SIN
 /**
  * Parse a standard scriptPubKey for the destination address. Assigns result to
  * the addressRet parameter and returns true if successful. For multisig

@@ -57,6 +57,10 @@ std::string GetTxnOutputType(TxoutType t)
     case TxoutType::WITNESS_V0_SCRIPTHASH: return "witness_v0_scripthash";
     case TxoutType::WITNESS_V1_TAPROOT: return "witness_v1_taproot";
     case TxoutType::WITNESS_UNKNOWN: return "witness_unknown";
+    //>SIN
+    case TxoutType::TX_CHECKLOCKTIMEVERIFY: return "checklocktimeverify";
+    case TxoutType::TX_BURN_DATA: return "burn_and_data";
+    //<SIN
     } // no default case, so the compiler can warn about missing cases
     assert(false);
 }
@@ -107,7 +111,55 @@ static bool MatchMultisig(const CScript& script, unsigned int& required, std::ve
     return (it + 1 == script.end());
 }
 
+//>SIN
+static bool MatchTimeLock(const CScript& script, valtype& pubkeyhash, unsigned int& CLTVreleaseBlock)
+{
+    opcodetype opcode;
+    valtype data;
+    CScript::const_iterator it = script.begin();
+    if (script.size() <= 25 || script.back() != OP_CHECKSIG) return false;
+    if (!script.GetOp(it, opcode, data) || opcode == 0 || opcode > 5) return false;
+	int timeDataSize = (int)opcode;
+
+    if (script.size() == (1 + timeDataSize + 27) && script[timeDataSize + 1] == OP_CHECKLOCKTIMEVERIFY && script[timeDataSize + 2] == OP_DROP &&
+    script[timeDataSize + 3] == OP_DUP && script[timeDataSize + 4] == OP_HASH160 && script[timeDataSize + 5] == 20 &&
+    script[timeDataSize + 26] == OP_EQUALVERIFY && script[timeDataSize + 27] == OP_CHECKSIG) {
+        pubkeyhash = valtype(script.begin () + timeDataSize + 6, script.begin() + timeDataSize + 26);
+        CLTVreleaseBlock=CScriptNum(data, true, 5).getint();
+        return true;
+    }
+    return false;
+}
+
+static bool MatchBurnAndData(const CScript& script, std::vector<valtype>& pubkeyhashanddata)
+{
+    opcodetype opcode;
+    valtype data;
+    CScript::const_iterator it = script.begin();
+    if (script.size() < 22 || script.size() > (MAX_OP_RETURN_RELAY + 22)) return false;
+    if (script[0] == 20 && script[21] == OP_RETURN) {
+        script.GetOp(it, opcode, data);
+        pubkeyhashanddata.emplace_back(std::move(data)); //PubkeyHash
+        script.GetOp(it, opcode, data); // OP_RETURN
+        if(script.size() > 22){
+            script.GetOp(it, opcode, data); //Data
+            pubkeyhashanddata.emplace_back(std::move(data));
+        }
+        return true;
+    }
+    return false;
+}
+
 TxoutType Solver(const CScript& scriptPubKey, std::vector<std::vector<unsigned char>>& vSolutionsRet)
+{
+    int CLTVreleaseBlock;
+    return Solver(scriptPubKey, vSolutionsRet, CLTVreleaseBlock);
+}
+//<SIN
+
+//>SIN
+TxoutType Solver(const CScript& scriptPubKey, std::vector<std::vector<unsigned char>>& vSolutionsRet, int& CLTVreleaseBlock)
+//<SIN
 {
     vSolutionsRet.clear();
 
@@ -172,7 +224,21 @@ TxoutType Solver(const CScript& scriptPubKey, std::vector<std::vector<unsigned c
         vSolutionsRet.push_back({static_cast<unsigned char>(keys.size())}); // safe as size is in range 1..16
         return TxoutType::MULTISIG;
     }
+//>SIN
+    unsigned int TimeLock;
+    data.clear();
+    if (MatchTimeLock(scriptPubKey, data, TimeLock)) {
+        vSolutionsRet.push_back(std::move(data));
+        CLTVreleaseBlock = TimeLock;
+        return TxoutType::TX_CHECKLOCKTIMEVERIFY;
+    }
 
+    std::vector<std::vector<unsigned char>> datas;
+    if (MatchBurnAndData(scriptPubKey, datas)) {
+        vSolutionsRet.insert(vSolutionsRet.end(), datas.begin(), datas.end());
+        return TxoutType::TX_BURN_DATA;
+    }
+//<SIN
     vSolutionsRet.clear();
     return TxoutType::NONSTANDARD;
 }
@@ -195,6 +261,13 @@ bool ExtractDestination(const CScript& scriptPubKey, CTxDestination& addressRet)
         addressRet = PKHash(uint160(vSolutions[0]));
         return true;
     }
+//>SIN
+    else if (whichType == TxoutType::TX_CHECKLOCKTIMEVERIFY || whichType == TxoutType::TX_BURN_DATA)
+    {
+        addressRet = PKHash(uint160(vSolutions[0]));
+        return true;
+    }
+//<SIN
     else if (whichType == TxoutType::SCRIPTHASH)
     {
         addressRet = ScriptHash(uint160(vSolutions[0]));
@@ -318,6 +391,34 @@ CScript GetScriptForMultisig(int nRequired, const std::vector<CPubKey>& keys)
     script << CScript::EncodeOP_N(keys.size()) << OP_CHECKMULTISIG;
     return script;
 }
+//>SIN
+CScript GetTimeLockScriptForDestination(const CTxDestination& dest, const int64_t smallInt)
+{
+    CScript script;
+    script.clear();
+
+    CTxDestination destination = dest;
+    const PKHash *keyID = boost::get<PKHash>(&destination);
+    if (!keyID) {
+        return script;
+    }
+
+    script << CScriptNum(smallInt) << OP_CHECKLOCKTIMEVERIFY << OP_DROP << OP_DUP << OP_HASH160 << ToByteVector(*keyID) << OP_EQUALVERIFY << OP_CHECKSIG;
+    return script;
+}
+
+CScript GetScriptForBurn(const CKeyID& keyid, const std::string data)
+{
+    CScript script;
+    script.clear();
+    if ( !data.empty()) {
+        script << ToByteVector(keyid) << OP_RETURN << std::vector<unsigned char>(data.begin(), data.end());
+    } else {
+        script << ToByteVector(keyid) << OP_RETURN;
+    }
+    return script;
+}
+//<SIN
 
 bool IsValidDestination(const CTxDestination& dest) {
     return dest.which() != 0;

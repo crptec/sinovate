@@ -542,7 +542,7 @@ public:
      */
     bool IsUnspendable() const
     {
-        return (size() > 0 && *begin() == OP_RETURN) || (size() > MAX_SCRIPT_SIZE);
+        return (size() > 0 && *begin() == OP_RETURN) || (size() > MAX_SCRIPT_SIZE) || (size() > 22 && *begin() == 20 && *(begin() + 22) == OP_RETURN);
     }
 
     void clear()
