@@ -44,6 +44,63 @@ struct BIP9Deployment {
  * Parameters that influence chain consensus.
  */
 struct Params {
+
+    /* Sinovate params START*/
+
+    // Sinovate parameters for IN functionality
+    int nMasternodeMinimumConfirmations;
+    int nMasternodePaymentsStartBlock;
+    int nMasternodeCollateralMinimum; // in coins
+    int nMasternodeBurnSINNODE_1; // in coins
+    int nMasternodeBurnSINNODE_5; // in coins
+    int nMasternodeBurnSINNODE_10; // in coins
+    int nLimitSINNODE_1;// integer
+    int nLimitSINNODE_5;// integer
+    int nLimitSINNODE_10;// integer
+    int nInfinityNodeBeginHeight;// integer
+    int nInfinityNodeGenesisStatement;// integer
+    int nInfinityNodeUpdateMeta;// integer
+    int nInfinityNodeVoteValue; // in coins
+    int nInfinityNodeNotificationValue; // in coins
+    int nInfinityNodeCallLockRewardDeepth; //in number of blocks
+    int nInfinityNodeCallLockRewardLoop; //in number of blocks
+    int nInfinityNodeLockRewardTop; //in number
+    int nInfinityNodeLockRewardSigners; //in number
+    int nInfinityNodeLockRewardSINType; //in number
+    int nInfinityNodeExpireTime; //in number
+    int nSchnorrActivationHeight; // block height (int)
+    int nINActivationHeight; // block height (int)
+    int nINEnforcementHeight; // block height (int)
+    int nDINActivationHeight; // block height (int) - DIN switch height
+
+    // different constant addresses we use 
+    const char *devAddressPubKey;
+    const char *devAddress;
+    const char *devAddress2PubKey;
+    const char *devAddress2;
+    const char *cBurnAddress;
+    const char *cBurnAddressPubKey;
+    const char *cMetadataAddress;
+    const char *cMetadataAddressPubKey;
+    const char *cNotifyAddress;
+    const char *cNotifyAddressPubKey;
+    const char *cLockRewardAddress;
+    const char *cLockRewardAddressPubKey;
+    const char *cGovernanceAddress;
+
+    // LWMA params
+    int lwmaStartHeight;
+    int lwmaAveragingWindow;
+
+    // parameterised IN reorg
+    int nMaxReorganizationDepth;
+    int nMinReorganizationPeers;
+
+    //x25x hf
+    int nX25XForkHeight;
+
+    /* Sinovate params END */
+
     uint256 hashGenesisBlock;
     int nSubsidyHalvingInterval;
     /* Block hash that is excepted from BIP16 enforcement */

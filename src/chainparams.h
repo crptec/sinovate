@@ -30,6 +30,12 @@ struct CCheckpointData {
     }
 };
 
+typedef std::set<uint256> SetBrokenFeeBlocks;
+
+struct CBrokenFeeBlocksData {
+    SetBrokenFeeBlocks mapBrokenBlocks;
+};
+
 /**
  * Holds various statistics on transactions within a chain. Used to estimate
  * verification progress during chain sync.
@@ -91,6 +97,8 @@ public:
     const std::vector<SeedSpec6>& FixedSeeds() const { return vFixedSeeds; }
     const CCheckpointData& Checkpoints() const { return checkpointData; }
     const ChainTxData& TxData() const { return chainTxData; }
+    // sinovate: returns list of broken blocks, same as CCheckpointData
+    const CBrokenFeeBlocksData& BrokenBlocks() const { return brokenfeeblocksData; }
 protected:
     CChainParams() {}
 
@@ -111,6 +119,7 @@ protected:
     bool m_is_test_chain;
     bool m_is_mockable_chain;
     CCheckpointData checkpointData;
+    CBrokenFeeBlocksData brokenfeeblocksData;
     ChainTxData chainTxData;
 };
 

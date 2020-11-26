@@ -8,9 +8,27 @@
 #include <hash.h>
 #include <tinyformat.h>
 
+// sin macros
+#define BEGIN(a)            ((char*)&(a))
+#define END(a)              ((char*)&((&(a))[1]))
+
 uint256 CBlockHeader::GetHash() const
 {
-    return SerializeHash(*this);
+    /* TODO @giaki3003 we currently use x22i hashes for everything except work,
+     * a future version/versionbits fork should be needed to complete the fork
+     * and avoid x22i usage. Current workaround is to abstract validation with
+     * ::GetValidationHash() which uses historical timestamps for hash switching 
+     */
+    return HashX22I(BEGIN(nVersion), END(nNonce));
+}
+
+uint256 CBlockHeader::GetValidationHash() const
+{
+    if (nTime < 1559373346) {
+        return HashX22I(BEGIN(nVersion), END(nNonce));
+    } else {
+        return HashX25X(BEGIN(nVersion), END(nNonce));
+    }
 }
 
 std::string CBlock::ToString() const
