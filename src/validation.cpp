@@ -2080,8 +2080,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     int64_t nTime1 = GetTimeMicros(); nTimeCheck += nTime1 - nTimeStart;
     LogPrint(BCLog::BENCH, "    - Sanity checks: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime1 - nTimeStart), nTimeCheck * MICRO, nTimeCheck * MILLI / nBlocksTotal);
 
-    //bool IsBrokenBlock = IsBlockBroken(pindex->GetBlockHash(), chainparams.BrokenBlocks());
-    bool IsBrokenBlock = true;
+    bool IsBrokenBlock = IsBlockBroken(pindex->GetBlockHash(), chainparams.BrokenBlocks());
 
     // Do not allow blocks that contain transactions which 'overwrite' older transactions,
     // unless those are already completely spent.

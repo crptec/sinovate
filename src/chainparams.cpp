@@ -13,6 +13,9 @@
 #include <util/strencodings.h>
 #include <versionbitsinfo.h>
 
+/** SIN specific */
+#include <chainparamsbrokenblocks.h>
+
 #include <assert.h>
 
 #include <boost/algorithm/string/classification.hpp>
@@ -69,18 +72,7 @@ public:
         /* Sinovate params START */
 
         // broken negative fee blocks
-        brokenfeeblocksData = {
-            {
-                {uint256S("0x0000000000c563c77458612547840954d6ec06f3df4df38b9f9d9435c0d8865d")},
-                {uint256S("0x000000000042c964511cc7b628751d264042bb75ef2c8825639adbb54ae15e97")},
-                {uint256S("0x00000000003b2a5fd3a42e685d8199f5817370c494aadede097a5dfe5d0ef9e5")},
-                {uint256S("0x00000000002739f4a5bc4f86543f6b97f4ea124cbb27ce302a3b71e776319189")},
-                {uint256S("0x00000000002b33e82d926682a14eb1ee623d8e17cfecd0d3e31597b67a008c7c")},
-                {uint256S("0x00000000007433063f06a3327ea65fdab34bc35e8ae989a3baf4283436367b1a")},
-                {uint256S("0x00000000001fdc58e6c7999b8ee252b1e9e3526a20d17739bb3b89ed6d9cc890")},
-                {uint256S("0x00000000008aba7b527e3f63dfe87462c7abc2c015cdd72356aaba12071e576b")},
-            }
-        };
+        brokenfeeblocksData = brokenfeeblocksDataMain;
 
 
         // legacy Dash, needs refac

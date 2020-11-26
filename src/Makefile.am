@@ -116,6 +116,7 @@ BITCOIN_CORE_H = \
   chain.h \
   chainparams.h \
   chainparamsbase.h \
+  chainparamsbrokenblocks.h \
   chainparamsseeds.h \
   checkqueue.h \
   clientversion.h \
