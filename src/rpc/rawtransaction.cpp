@@ -1854,6 +1854,136 @@ static RPCHelpMan analyzepsbt()
 },
     };
 }
+//>SIN
+typedef std::vector<unsigned char> valtype;
+
+static RPCHelpMan decodetimelockscript()
+{
+    return RPCHelpMan{"decodetimelockscript",
+                "\nDecode a hex-encoded script.\n",
+                {
+                    {"hexstring", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "the hex-encoded script"},
+                },
+                RPCResult{
+                    RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::BOOL, "sizeCheck", "true/false"},
+                        {RPCResult::Type::BOOL, "firstOPCheck", "true/false"},
+                        {RPCResult::Type::NUM, "timelockSize", /* optional */ true, "OP_CODE hex"},
+                        {RPCResult::Type::NUM, "timelockValue", /* optional */ true, "OP_CODE value"},
+                        {RPCResult::Type::STR_HEX, "pubkeyhash", /* optional */ true, "pubkeyhash"},
+                        {RPCResult::Type::STR, "address", /* optional */ true, "address"},
+                    }
+                },
+                RPCExamples{
+                    HelpExampleCli("decodetimelockscript", "\"hexstring\"")
+            + HelpExampleRpc("decodetimelockscript", "\"hexstring\"")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    RPCTypeCheck(request.params, {UniValue::VSTR});
+
+    UniValue r(UniValue::VOBJ);
+    CScript script;
+    if (request.params[0].get_str().size() > 0){
+        std::vector<unsigned char> scriptData(ParseHexV(request.params[0], "argument"));
+        script = CScript(scriptData.begin(), scriptData.end());
+    } else {
+        // Empty scripts are valid
+    }
+
+    opcodetype opcode;
+    valtype data;
+    CTxDestination address;
+    CScript::const_iterator it = script.begin();
+    if (script.size() <= 25 || script.back() != OP_CHECKSIG) {r.pushKV("sizeCheck", false);}
+    else {r.pushKV("sizeCheck", true);}
+
+    int value = 0;
+    valtype pubkeyhash;
+    if (!script.GetOp(it, opcode, data) || opcode == 0 || opcode > 5) {r.pushKV("firstOPCheck", false); return r;}
+    else {
+        int timeDataSize = (int)opcode;
+        r.pushKV("firstOPCheck", true);
+        value=CScriptNum(data, true, 5).getint();
+        pubkeyhash = valtype(script.begin () + timeDataSize + 6, script.begin() + timeDataSize + 26);
+		address = PKHash(uint160(pubkeyhash));
+        r.pushKV("timelockSize", opcode);
+        r.pushKV("firstOPValue", value);
+	    std::string pubkey(pubkeyhash.begin(), pubkeyhash.end());
+        r.pushKV("pubkeyhash", HexStr(pubkeyhash));
+        r.pushKV("address", EncodeDestination(address));
+    }
+
+    return r;
+},
+    };
+}
+
+static RPCHelpMan decodeburnanddatascript()
+{
+    return RPCHelpMan{"decodeburnanddatascript",
+                "\nDecode a hex-encoded script.\n",
+                {
+                    {"hexstring", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "the hex-encoded script"},
+                },
+                RPCResult{
+                    RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::BOOL, "sizeCheck", "true/false"},
+                        {RPCResult::Type::BOOL, "positionOPCheck", "true/false"},
+                        {RPCResult::Type::STR_HEX, "pubkeyhash", /* optional */ true, "pubkeyhash"},
+                        {RPCResult::Type::STR, "address", /* optional */ true, "address"},
+                        {RPCResult::Type::STR, "info", /* optional */ true, "data in tx"},
+                    }
+                },
+                RPCExamples{
+                    HelpExampleCli("decodeburnanddatascript", "\"hexstring\"")
+            + HelpExampleRpc("decodeburnanddatascript", "\"hexstring\"")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    RPCTypeCheck(request.params, {UniValue::VSTR});
+
+    UniValue r(UniValue::VOBJ);
+    CScript script;
+    if (request.params[0].get_str().size() > 0){
+        std::vector<unsigned char> scriptData(ParseHexV(request.params[0], "argument"));
+        script = CScript(scriptData.begin(), scriptData.end());
+    } else {
+        // Empty scripts are valid
+    }
+
+    opcodetype opcode;
+    valtype data;
+    CTxDestination address;
+    CScript::const_iterator it = script.begin();
+    if (script.size() < 22 || script.size() > (MAX_OP_RETURN_RELAY + 22)) {r.pushKV("sizeCheck", false);}
+    else {r.pushKV("sizeCheck", true);}
+
+    int value = 0;
+    valtype pubkeyhash;
+    if (script[0] != 20 || script[21] != OP_RETURN) {r.pushKV("positionOPCheck", false);}
+    else {
+        r.pushKV("positionOPCheck", true);
+
+        script.GetOp(it, opcode, data); //PubkeyHash
+        r.pushKV("pubkeyhash", HexStr(data));
+		address = PKHash(uint160(data));
+        r.pushKV("address", EncodeDestination(address));
+        script.GetOp(it, opcode, data); // OP_RETURN
+        if(script.size() > 22){
+            script.GetOp(it, opcode, data); //Data
+            std::string metadata(data.begin(), data.end());
+            r.pushKV("info", metadata);
+        }
+    }
+
+    return r;
+},
+    };
+}
+//<SIN
 
 void RegisterRawTransactionRPCCommands(CRPCTable &t)
 {
@@ -1877,7 +2007,10 @@ static const CRPCCommand commands[] =
     { "rawtransactions",    "utxoupdatepsbt",               &utxoupdatepsbt,            {"psbt", "descriptors"} },
     { "rawtransactions",    "joinpsbts",                    &joinpsbts,                 {"txs"} },
     { "rawtransactions",    "analyzepsbt",                  &analyzepsbt,               {"psbt"} },
-
+//>SIN
+    { "rawtransactions",    "decodetimelockscript",         &decodetimelockscript,      {"hexstring"} },
+    { "rawtransactions",    "decodeburnanddatascript",      &decodeburnanddatascript,   {"hexstring"} },
+//<SIN
     { "blockchain",         "gettxoutproof",                &gettxoutproof,             {"txids", "blockhash"} },
     { "blockchain",         "verifytxoutproof",             &verifytxoutproof,          {"proof"} },
 };
