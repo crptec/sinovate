@@ -57,6 +57,14 @@ namespace BCLog {
         LEVELDB     = (1 << 20),
         VALIDATION  = (1 << 21),
         ALL         = ~(uint32_t)0,
+//>SIN
+        INFINITYNODE    = (1 << 22),
+        INFINITYMAN     = (1 << 23),
+        INFINITYLOCK    = (1 << 24),
+        INFINITYPEER    = (1 << 25),
+        INFINITYMETA    = (1 << 26),
+        INFINITYRSV     = (1 << 27),
+//<SIN
     };
 
     class Logger
