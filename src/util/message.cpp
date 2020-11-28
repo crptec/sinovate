@@ -19,8 +19,9 @@
  * Text used to signify that a signed message follows and to prevent
  * inadvertently signing a transaction.
  */
-const std::string MESSAGE_MAGIC = "Bitcoin Signed Message:\n";
-
+//>SIN
+const std::string MESSAGE_MAGIC = "SIN Signed Message:\n";
+//<SIN
 MessageVerificationResult MessageVerify(
     const std::string& address,
     const std::string& signature,
