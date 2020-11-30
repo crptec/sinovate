@@ -1969,7 +1969,7 @@ static RPCHelpMan decodeburnanddatascript()
 
         script.GetOp(it, opcode, data); //PubkeyHash
         r.pushKV("pubkeyhash", HexStr(data));
-		address = PKHash(uint160(data));
+        address = PKHash(uint160(data));
         r.pushKV("address", EncodeDestination(address));
         script.GetOp(it, opcode, data); // OP_RETURN
         if(script.size() > 22){
