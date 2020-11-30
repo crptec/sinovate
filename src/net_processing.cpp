@@ -1066,6 +1066,10 @@ bool PeerManager::MaybePunishNodeForBlock(NodeId nodeid, const BlockValidationSt
                                           bool via_compact_block, const std::string& message)
 {
     switch (state.GetResult()) {
+    case BlockValidationResult::BLOCK_MAXREORGDEPTH:
+    // TODO: Perhaps ban more? Perhaps ban less?
+        Misbehaving(nodeid, 10, message);
+        return true;
     case BlockValidationResult::BLOCK_RESULT_UNSET:
         break;
     // The node is providing invalid data:
