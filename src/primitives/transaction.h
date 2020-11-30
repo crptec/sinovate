@@ -56,6 +56,9 @@ public:
     }
 
     std::string ToString() const;
+    //>SIN
+    std::string ToStringFull() const;
+    //<SIN
 };
 
 /** An input of a transaction.  It contains the location of the previous
