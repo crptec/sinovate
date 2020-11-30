@@ -92,7 +92,9 @@ static const bool DEFAULT_DISABLE_WALLET = false;
 //! -maxtxfee default
 constexpr CAmount DEFAULT_TRANSACTION_MAXFEE{COIN / 10};
 //! Discourage users to set fees higher than this amount (in satoshis) per kB
-constexpr CAmount HIGH_TX_FEE_PER_KB{COIN / 100};
+//>SIN
+constexpr CAmount HIGH_TX_FEE_PER_KB{COIN / 2};
+//SIN
 //! -maxtxfee will warn if called with a higher fee than this amount (in satoshis)
 constexpr CAmount HIGH_MAX_TX_FEE{100 * HIGH_TX_FEE_PER_KB};
 
