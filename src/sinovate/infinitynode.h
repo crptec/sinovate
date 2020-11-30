@@ -81,7 +81,7 @@ public:
     void setHeight(int nInHeight){nHeight = nInHeight; nExpireHeight=nInHeight + Params().GetConsensus().nInfinityNodeExpireTime;}
     void setCollateralAddress(std::string address) {
         collateralAddress = address;
-        std::string burnfundTxId = vinBurnFund.prevout.ToStringShort().substr(0, 16);
+        std::string burnfundTxId = vinBurnFund.prevout.ToStringFull().substr(0, 16);
         std::ostringstream streamInfo;
         streamInfo << collateralAddress << "-" << burnfundTxId;
         metadataID = streamInfo.str();

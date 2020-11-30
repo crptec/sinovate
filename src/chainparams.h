@@ -97,8 +97,12 @@ public:
     const std::vector<SeedSpec6>& FixedSeeds() const { return vFixedSeeds; }
     const CCheckpointData& Checkpoints() const { return checkpointData; }
     const ChainTxData& TxData() const { return chainTxData; }
+//>SIN
     // sinovate: returns list of broken blocks, same as CCheckpointData
     const CBrokenFeeBlocksData& BrokenBlocks() const { return brokenfeeblocksData; }
+    int MaxReorganizationDepth() const { return nMaxReorganizationDepth; }
+    int MinReorganizationPeers() const { return nMinReorganizationPeers; }
+//SIN
 protected:
     CChainParams() {}
 
@@ -121,6 +125,10 @@ protected:
     CCheckpointData checkpointData;
     CBrokenFeeBlocksData brokenfeeblocksData;
     ChainTxData chainTxData;
+//>SIN
+    int nMaxReorganizationDepth;
+    int nMinReorganizationPeers;
+//<SIN
 };
 
 /**

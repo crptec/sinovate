@@ -31,15 +31,13 @@ public:
     sLRInfo(sInfo)
     {}
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(nBlockHeight);
-        READWRITE(nSINtype);
-        READWRITE(nRewardHeight);
-        READWRITE(scriptPubKey);
-        READWRITE(sLRInfo);
+    SERIALIZE_METHODS(CLockRewardExtractInfo, obj)
+    {
+        READWRITE(obj.nBlockHeight);
+        READWRITE(obj.nSINtype);
+        READWRITE(obj.nRewardHeight);
+        READWRITE(obj.scriptPubKey);
+        READWRITE(obj.sLRInfo);
     }
 };
 
@@ -48,7 +46,7 @@ class CInfinitynodeLockInfo
 private:
     static const std::string SERIALIZATION_VERSION_STRING;
     // critical section to protect the inner data structures
-    mutable CCriticalSection cs;
+    mutable RecursiveMutex cs;
     // Keep track of current block height
     int nCachedBlockHeight;
 public:
@@ -59,11 +57,8 @@ public:
     vecLRInfo()
     {}
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        LOCK(cs);
+    SERIALIZE_METHODS(CInfinitynodeLockInfo, obj)
+    {
         std::string strVersion;
         if(ser_action.ForRead()) {
             READWRITE(strVersion);
@@ -72,7 +67,7 @@ public:
             strVersion = SERIALIZATION_VERSION_STRING;
             READWRITE(strVersion);
         }
-        READWRITE(vecLRInfo);
+        READWRITE(obj.vecLRInfo);
     }
 
     void Clear();

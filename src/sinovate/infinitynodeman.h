@@ -8,6 +8,7 @@
 #include <sinovate/infinitynode.h>
 #include <sinovate/infinitynodelockinfo.h>
 
+#include <logging.h>
 
 using namespace std;
 
@@ -15,6 +16,9 @@ class CInfinitynodeMan;
 class CConnman;
 
 extern CInfinitynodeMan infnodeman;
+
+/** Retrieve a transaction (from disk, if possible) */
+bool GetTransaction(const uint256& hash, CTransactionRef& tx, uint256& hashBlock);
 
 class CInfinitynodeMan
 {
@@ -26,22 +30,15 @@ public:
 
     // critical section to protect the inner data structures
     mutable RecursiveMutex cs;
-private:
-    static const std::string SERIALIZATION_VERSION_STRING;
-
-    // Keep track of current block height and first download block
-    int nCachedBlockHeight;
-    //
-    bool fReachedLastBlock = false;
-
     // map to hold all INFs
     std::map<COutPoint, CInfinitynode> mapInfinitynodes;
     std::map<COutPoint, CInfinitynode> mapInfinitynodesNonMatured;
-
     // map to hold all reward statement
     std::map<int, int> mapStatementBIG;
     std::map<int, int> mapStatementMID;
     std::map<int, int> mapStatementLIL;
+    // map to hold payee and lastPaid Height
+    std::map<CScript, int> mapLastPaid;
     int nBIGLastStmHeight;
     int nMIDLastStmHeight;
     int nLILLastStmHeight;
@@ -49,22 +46,21 @@ private:
     int nMIDLastStmSize;
     int nLILLastStmSize;
 
-    // map to hold payee and lastPaid Height
-    std::map<CScript, int> mapLastPaid;
+private:
+    static const std::string SERIALIZATION_VERSION_STRING;
+    // Keep track of current block height and first download block
+    int nCachedBlockHeight;
+    //
+    bool fReachedLastBlock = false;
     mutable RecursiveMutex cs_LastPaid;
-
-
 public:
 
     CInfinitynodeMan();
 
     int64_t nLastScanHeight;//last verification from blockchain
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        LOCK(cs);
+    SERIALIZE_METHODS(CInfinitynodeMan, obj)
+    {
         std::string strVersion;
         if(ser_action.ForRead()) {
             READWRITE(strVersion);
@@ -74,23 +70,19 @@ public:
             READWRITE(strVersion);
         }
 
-        READWRITE(mapInfinitynodes);
-        READWRITE(mapInfinitynodesNonMatured);
-        READWRITE(mapLastPaid);
-        READWRITE(nLastScanHeight);
-        READWRITE(mapStatementBIG);
-        READWRITE(mapStatementMID);
-        READWRITE(mapStatementLIL);
-        READWRITE(nBIGLastStmHeight);
-        READWRITE(nMIDLastStmHeight);
-        READWRITE(nLILLastStmHeight);
-        READWRITE(nBIGLastStmSize);
-        READWRITE(nMIDLastStmSize);
-        READWRITE(nLILLastStmSize);
-
-        if(ser_action.ForRead() && (strVersion != SERIALIZATION_VERSION_STRING)) {
-            Clear();
-        }
+        READWRITE(obj.mapInfinitynodes);
+        READWRITE(obj.mapInfinitynodesNonMatured);
+        READWRITE(obj.mapLastPaid);
+        READWRITE(obj.nLastScanHeight);
+        READWRITE(obj.mapStatementBIG);
+        READWRITE(obj.mapStatementMID);
+        READWRITE(obj.mapStatementLIL);
+        READWRITE(obj.nBIGLastStmHeight);
+        READWRITE(obj.nMIDLastStmHeight);
+        READWRITE(obj.nLILLastStmHeight);
+        READWRITE(obj.nBIGLastStmSize);
+        READWRITE(obj.nMIDLastStmSize);
+        READWRITE(obj.nLILLastStmSize);
     }
 
     std::string ToString() const;
