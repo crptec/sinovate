@@ -100,9 +100,9 @@ public:
 //>SIN
     // sinovate: returns list of broken blocks, same as CCheckpointData
     const CBrokenFeeBlocksData& BrokenBlocks() const { return brokenfeeblocksData; }
+    // sinovate: reorg helper funcs
     int MaxReorganizationDepth() const { return nMaxReorganizationDepth; }
-    int MinReorganizationPeers() const { return nMinReorganizationPeers; }
-//SIN
+//<SIN
 protected:
     CChainParams() {}
 
@@ -126,8 +126,7 @@ protected:
     CBrokenFeeBlocksData brokenfeeblocksData;
     ChainTxData chainTxData;
 //>SIN
-    int nMaxReorganizationDepth;
-    int nMinReorganizationPeers;
+    int nMaxReorganizationDepth; //sin
 //<SIN
 };
 
