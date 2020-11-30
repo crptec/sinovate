@@ -3568,6 +3568,14 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     const int nHeight = pindexPrev->nHeight + 1;
     const Consensus::Params& consensusParams = params.GetConsensus();
 
+    // Check reorg bounds
+    int nMaxReorgDepth = gArgs.GetArg("-maxreorg", Params().MaxReorganizationDepth());
+    bool fGreaterThanMaxReorg = ::ChainActive().Height() - (nHeight - 1) >= nMaxReorgDepth;
+    if (fGreaterThanMaxReorg && !::ChainstateActive().IsInitialBlockDownload()) {
+        LogPrintf("ERROR: %s: forked chain older than max reorganization depth (height %d)\n", __func__, nHeight);
+        return state.Invalid(BlockValidationResult::BLOCK_MAXREORGDEPTH, "bad-fork-prior-to-maxreorgdepth");
+    }
+
     // Check proof of work
     if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
         return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "bad-diffbits", "incorrect proof of work");

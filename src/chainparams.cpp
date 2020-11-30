@@ -116,7 +116,6 @@ public:
 
         // IN reorg bounds have been parameterised
         consensus.nMaxReorganizationDepth = 55; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
-        consensus.nMinReorganizationPeers = 3;
         
         // addresses
         consensus.devAddressPubKey = "841e6bf56b99a59545da932de2efb23ab93b4f44";
