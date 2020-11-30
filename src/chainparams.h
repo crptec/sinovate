@@ -99,6 +99,8 @@ public:
     const ChainTxData& TxData() const { return chainTxData; }
     // sinovate: returns list of broken blocks, same as CCheckpointData
     const CBrokenFeeBlocksData& BrokenBlocks() const { return brokenfeeblocksData; }
+    // sinovate: reorg helper funcs
+    int MaxReorganizationDepth() const { return nMaxReorganizationDepth; }
 protected:
     CChainParams() {}
 
@@ -121,6 +123,7 @@ protected:
     CCheckpointData checkpointData;
     CBrokenFeeBlocksData brokenfeeblocksData;
     ChainTxData chainTxData;
+    int nMaxReorganizationDepth; //sin
 };
 
 /**

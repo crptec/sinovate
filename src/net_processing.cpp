@@ -1066,6 +1066,10 @@ bool PeerManager::MaybePunishNodeForBlock(NodeId nodeid, const BlockValidationSt
                                           bool via_compact_block, const std::string& message)
 {
     switch (state.GetResult()) {
+    case BlockValidationResult::BLOCK_MAXREORGDEPTH:
+    // TODO: Perhaps ban more? Perhaps ban less?
+        Misbehaving(nodeid, 10, message);
+        return true;
     case BlockValidationResult::BLOCK_RESULT_UNSET:
         break;
     // The node is providing invalid data:
@@ -1522,7 +1526,7 @@ void static ProcessGetBlockData(CNode& pfrom, const CChainParams& chainparams, c
     LOCK(cs_main);
     const CBlockIndex* pindex = LookupBlockIndex(inv.hash);
     if (pindex) {
-        send = BlockRequestAllowed(pindex, consensusParams);
+        send = BlockRequestAllowed(pindex, consensusParams) && (::ChainActive().Height() - (pindex->nHeight - 1) < Params().MaxReorganizationDepth());
         if (!send) {
             LogPrint(BCLog::NET, "%s: ignoring request from peer=%i for old block that isn't in the main chain\n", __func__, pfrom.GetId());
         }

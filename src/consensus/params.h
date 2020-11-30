@@ -94,7 +94,6 @@ struct Params {
 
     // parameterised IN reorg
     int nMaxReorganizationDepth;
-    int nMinReorganizationPeers;
 
     //x25x hf
     int nX25XForkHeight;
