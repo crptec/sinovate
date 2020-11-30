@@ -1526,7 +1526,7 @@ void static ProcessGetBlockData(CNode& pfrom, const CChainParams& chainparams, c
     LOCK(cs_main);
     const CBlockIndex* pindex = LookupBlockIndex(inv.hash);
     if (pindex) {
-        send = BlockRequestAllowed(pindex, consensusParams) && (::ChainActive().Height() - (pindex->nHeight - 1) < Params().MaxReorganizationDepth());
+        send = BlockRequestAllowed(pindex, consensusParams);
         if (!send) {
             LogPrint(BCLog::NET, "%s: ignoring request from peer=%i for old block that isn't in the main chain\n", __func__, pfrom.GetId());
         }
