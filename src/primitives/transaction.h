@@ -122,6 +122,13 @@ public:
         return !(a == b);
     }
 
+//>SIN
+    friend bool operator<(const CTxIn& a, const CTxIn& b)
+    {
+        return a.prevout<b.prevout;
+    }
+//<SIN
+
     std::string ToString() const;
 };
 
