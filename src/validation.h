@@ -175,6 +175,10 @@ void ThreadScriptCheck(int worker_num);
  * @returns                    The tx if found, otherwise nullptr
  */
 CTransactionRef GetTransaction(const CBlockIndex* const block_index, const CTxMemPool* const mempool, const uint256& hash, const Consensus::Params& consensusParams, uint256& hashBlock);
+//>SIN
+/** Retrieve a transaction (from disk, if possible) */
+bool GetTransaction(const uint256& hash, CTransactionRef& tx, uint256& hashBlock);
+//<SIN
 /**
  * Find the best known block, and make it the tip of the block chain
  *

@@ -1154,6 +1154,21 @@ CTransactionRef GetTransaction(const CBlockIndex* const block_index, const CTxMe
     }
     return nullptr;
 }
+//>SIN
+/**
+ * Return transaction in txOut, and if it was found inside a block, its hash is placed in hashBlock.
+ */
+bool GetTransaction(const uint256& hash, CTransactionRef& txOut, uint256& hashBlock)
+{
+    LOCK(cs_main);
+
+    if (g_txindex) {
+        return g_txindex->FindTx(hash, hashBlock, txOut);
+    }
+
+    return false;
+}
+//<SIN
 
 //////////////////////////////////////////////////////////////////////////////
 //
