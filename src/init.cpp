@@ -46,6 +46,9 @@
 #include <script/sigcache.h>
 #include <script/standard.h>
 #include <shutdown.h>
+//>SIN
+#include <sinovate/infinitynodetip.h> //for fInfinityNode flag
+//<SIN
 #include <sync.h>
 #include <timedata.h>
 #include <torcontrol.h>
@@ -1840,6 +1843,9 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
         nLocalServices = ServiceFlags(nLocalServices | NODE_WITNESS);
     }
 
+//>SIN
+    fInfinityNode = gArgs.GetBoolArg("-infinitynode", false);
+//<SIN
     // ********************************************************* Step 11: import blocks
 
     if (!CheckDiskSpace(GetDataDir())) {
