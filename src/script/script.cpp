@@ -4,11 +4,20 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <script/script.h>
-
 #include <util/strencodings.h>
-
 #include <string>
-
+#include <tinyformat.h>
+//>SIN
+namespace {
+inline std::string ValueString(const std::vector<unsigned char>& vch)
+{
+    if (vch.size() <= 4)
+        return strprintf("%d", CScriptNum(vch, false).getint());
+    else
+        return HexStr(vch);
+}
+} // anon namespace
+//<SIN
 std::string GetOpName(opcodetype opcode)
 {
     switch (opcode)
@@ -249,6 +258,31 @@ bool CScript::IsPushOnly(const_iterator pc) const
     }
     return true;
 }
+
+//>SIN
+std::string CScript::ToString() const
+{
+    std::string str;
+    opcodetype opcode;
+    std::vector<unsigned char> vch;
+    const_iterator pc = begin();
+    while (pc < end())
+    {
+        if (!str.empty())
+            str += " ";
+        if (!GetOp(pc, opcode, vch))
+        {
+            str += "[error]";
+            return str;
+        }
+        if (0 <= opcode && opcode <= OP_PUSHDATA4)
+            str += ValueString(vch);
+        else
+            str += GetOpName(opcode);
+    }
+    return str;
+}
+//<SIN
 
 bool CScript::IsPushOnly() const
 {
