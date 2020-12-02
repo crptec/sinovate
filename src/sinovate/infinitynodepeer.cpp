@@ -3,12 +3,13 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <sinovate/infinitynode.h>
+#include <sinovate/infinitynodetip.h>
 #include <sinovate/infinitynodepeer.h>
 #include <sinovate/infinitynodeman.h>
 #include <sinovate/infinitynodemeta.h>
-#include <util.h>
+
 #include <logging.h>
-#include <utilstrencodings.h>
+#include <util/strencodings.h> // For EncodeBase64
 
 // Declaration of global variable infinitynodePeer with initial value
 CInfinitynodePeer infinitynodePeer;
@@ -84,7 +85,8 @@ std::string CInfinitynodePeer::GetMyPeerInfo() const
 
     LOCK(cs);
     //check if publicKey exist in metadata and in Deterministic Infinitynode list
-    if(infnodeman.GetInfinitynodeInfo(EncodeBase64(pubKeyInfinitynode.begin(), pubKeyInfinitynode.size()), infoInf)
+    std::string sPubKey(pubKeyInfinitynode.begin(), pubKeyInfinitynode.end());
+    if(infnodeman.GetInfinitynodeInfo(EncodeBase64(sPubKey), infoInf)
       && eType == INFINITYNODE_REMOTE && nState == INFINITYNODE_PEER_STARTED) {
         myPeerInfo = strprintf("My Peer is running with metadata ID: %s", infoInf.metadataID);
         if(nCachedBlockHeight >= infoInf.nExpireHeight) {
@@ -106,7 +108,8 @@ bool CInfinitynodePeer::AutoCheck(CConnman& connman)
     }
 
     infinitynode_info_t infoInf;
-    if(!infnodeman.GetInfinitynodeInfo(EncodeBase64(pubKeyInfinitynode.begin(), pubKeyInfinitynode.size()), infoInf))
+    std::string sPubKey(pubKeyInfinitynode.begin(), pubKeyInfinitynode.end());
+    if(!infnodeman.GetInfinitynodeInfo(EncodeBase64(sPubKey), infoInf))
     {
         strNotCapableReason = "Cannot find the Peer's Key in Deterministic node list";
         nState = INFINITYNODE_PEER_NOT_CAPABLE;
@@ -141,7 +144,7 @@ void CInfinitynodePeer::ManageStateInitial(CConnman& connman)
     if(!fFoundLocal) {
         bool empty = true;
         // If we have some peers, let's try to find our local address from one of them
-        connman.ForEachNodeContinueIf(CConnman::AllNodes, [&fFoundLocal, &empty, this](CNode* pnode) {
+        connman.ForEachNode([&fFoundLocal, &empty, this](CNode* pnode) {
             empty = false;
             if (pnode->addr.IsIPv4())
                 fFoundLocal = GetLocal(service, &pnode->addr) && CInfinitynode::IsValidNetAddr(service);
@@ -163,8 +166,7 @@ void CInfinitynodePeer::ManageStateInitial(CConnman& connman)
         return;
     }
 
-    const auto defaultChainParams = CreateChainParams(CBaseChainParams::MAIN);
-    int mainnetDefaultPort = defaultChainParams->GetDefaultPort();
+    int mainnetDefaultPort=20970;
     if(Params().NetworkIDString() == CBaseChainParams::MAIN) {
         if(service.GetPort() != mainnetDefaultPort) {
             nState = INFINITYNODE_PEER_NOT_CAPABLE;
@@ -212,7 +214,8 @@ void CInfinitynodePeer::ManageStateRemote()
              GetTypeString(), fPingerEnabled, pubKeyInfinitynode.GetID().ToString());
 
     infinitynode_info_t infoInf;
-    if(infnodeman.GetInfinitynodeInfo(EncodeBase64(pubKeyInfinitynode.begin(), pubKeyInfinitynode.size()), infoInf)) {
+    std::string sPubKey(pubKeyInfinitynode.begin(), pubKeyInfinitynode.end());
+    if(infnodeman.GetInfinitynodeInfo(EncodeBase64(sPubKey), infoInf)) {
         if(infoInf.nProtocolVersion != PROTOCOL_VERSION) {
             nState = INFINITYNODE_PEER_NOT_CAPABLE;
             strNotCapableReason = "Invalid protocol version";

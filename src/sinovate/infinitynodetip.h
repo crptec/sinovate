@@ -10,8 +10,9 @@
 
 #include <univalue.h>
 
-class CInfinitynodeTip;
+extern bool fInfinityNode;
 
+class CInfinitynodeTip;
 extern CInfinitynodeTip infTip;
 
 /*action at when download block from network*/

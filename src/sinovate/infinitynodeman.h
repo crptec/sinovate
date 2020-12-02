@@ -17,9 +17,6 @@ class CConnman;
 
 extern CInfinitynodeMan infnodeman;
 
-/** Retrieve a transaction (from disk, if possible) */
-bool GetTransaction(const uint256& hash, CTransactionRef& tx, uint256& hashBlock);
-
 class CInfinitynodeMan
 {
 public:

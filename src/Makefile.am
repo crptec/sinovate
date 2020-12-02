@@ -205,8 +205,11 @@ BITCOIN_CORE_H = \
   sinovate/flat-database.h \
   sinovate/infinitynode.h \
   sinovate/infinitynodelockinfo.h \
+  sinovate/infinitynodelockreward.h \
   sinovate/infinitynodeman.h.h \
   sinovate/infinitynodemeta.h \
+  sinovate/infinitynodepeer.h \
+  sinovate/infinitynodersv.h \
   sinovate/infinitynodetip.h \
   sinovate/messagesigner.h \
   streams.h \
@@ -333,7 +336,12 @@ libbitcoin_server_a_SOURCES = \
   shutdown.cpp \
   signet.cpp \
   sinovate/infinitynode.cpp \
+  sinovate/infinitynodelockinfo.cpp \
+  sinovate/infinitynodelockreward.cpp \
   sinovate/infinitynodemeta.cpp \
+  sinovate/infinitynodeman.cpp \
+  sinovate/infinitynodepeer.cpp \
+  sinovate/infinitynodersv.cpp \
   sinovate/infinitynodetip.cpp \
   sinovate/messagesigner.cpp \
   timedata.cpp \
