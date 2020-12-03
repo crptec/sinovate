@@ -6,6 +6,9 @@
 #define SIN_INFINITYNODELOCKREWARD_H
 
 #include <sinovate/infinitynodeman.h>
+#include <string>
+
+struct bilingual_str;
 
 class CInfinityNodeLockReward;
 class CLockRewardRequest;
@@ -30,16 +33,14 @@ public:
     CLockRewardRequest();
     CLockRewardRequest(int Height, COutPoint burnTxIn, int nSINtype, int loop = 0);
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(nRewardHeight);
-        READWRITE(burnTxIn);
-        READWRITE(nSINtype);
-        READWRITE(nLoop);
-        READWRITE(vchSig);
-        READWRITE(fFinal);
+    SERIALIZE_METHODS(CLockRewardRequest, obj)
+    {
+        READWRITE(obj.nRewardHeight);
+        READWRITE(obj.burnTxIn);
+        READWRITE(obj.nSINtype);
+        READWRITE(obj.nLoop);
+        READWRITE(obj.vchSig);
+        READWRITE(obj.fFinal);
     }
 
     uint256 GetHash() const
@@ -53,8 +54,8 @@ public:
     }
 
     bool Sign(const CKey& keyInfinitynode, const CPubKey& pubKeyInfinitynode);
-    bool CheckSignature(CPubKey& pubKeyInfinitynode, int &nDos) const;
-    bool IsValid(CNode* pnode, int nValidationHeight, std::string& strError, CConnman& connman) const;
+    bool CheckSignature(CPubKey& pubKeyInfinitynode, int& nDos) const;
+    bool IsValid(CNode* pnode, int nValidationHeight, std::string& strError, CConnman& connman, int& nDos) const;
     void Relay(CConnman& connman);
 };
 
@@ -79,17 +80,15 @@ public:
         nHashRequest(nRequest)
     {}
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(vin1);
-        READWRITE(vin2);
-        READWRITE(addr);
-        READWRITE(nBlockHeight);
-        READWRITE(nHashRequest);
-        READWRITE(vchSig1);
-        READWRITE(vchSig2);
+    SERIALIZE_METHODS(CVerifyRequest, obj)
+    {
+        READWRITE(obj.vin1);
+        READWRITE(obj.vin2);
+        READWRITE(obj.addr);
+        READWRITE(obj.nBlockHeight);
+        READWRITE(obj.nHashRequest);
+        READWRITE(obj.vchSig1);
+        READWRITE(obj.vchSig2);
     }
 
     uint256 GetHash() const
@@ -103,10 +102,10 @@ public:
         return ss.GetHash();
     }
 
-    void Relay() const
+    void Relay(CConnman& connman) const
     {
         CInv inv(MSG_INFVERIFY, GetHash());
-        g_connman->RelayInv(inv);
+        connman.RelayInv(inv);
     }
 };
 
@@ -123,15 +122,13 @@ public:
     CLockRewardCommitment();
     CLockRewardCommitment(uint256 nRequest, int nRewardHeight, COutPoint myPeerBurnTxIn, CKey key);
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(vin);
-        READWRITE(nHashRequest);
-        READWRITE(pubkeyR);
-        READWRITE(nRewardHeight);
-        READWRITE(vchSig);
+    SERIALIZE_METHODS(CLockRewardCommitment, obj)
+    {
+        READWRITE(obj.vin);
+        READWRITE(obj.nHashRequest);
+        READWRITE(obj.pubkeyR);
+        READWRITE(obj.nRewardHeight);
+        READWRITE(obj.vchSig);
     }
 
     uint256 GetHash() const
@@ -161,16 +158,14 @@ public:
     CGroupSigners();
     CGroupSigners(COutPoint myPeerBurnTxIn, uint256 nRequest, int nGroup, int nRewardHeight, std::string signersId);
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(vin);
-        READWRITE(nHashRequest);
-        READWRITE(nGroup);
-        READWRITE(nRewardHeight);
-        READWRITE(signersId);
-        READWRITE(vchSig);
+    SERIALIZE_METHODS(CGroupSigners, obj)
+    {
+        READWRITE(obj.vin);
+        READWRITE(obj.nHashRequest);
+        READWRITE(obj.nGroup);
+        READWRITE(obj.nRewardHeight);
+        READWRITE(obj.signersId);
+        READWRITE(obj.vchSig);
     }
 
     uint256 GetHash() const
@@ -200,15 +195,13 @@ public:
     CMusigPartialSignLR();
     CMusigPartialSignLR(COutPoint myPeerBurnTxIn, uint256 nGroupSigners, int inHeight, unsigned char *cMusigPartialSign);
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(vin);
-        READWRITE(nHashGroupSigners);
-        READWRITE(nRewardHeight);
-        READWRITE(vchMusigPartialSign);
-        READWRITE(vchSig);
+    SERIALIZE_METHODS(CMusigPartialSignLR, obj)
+    {
+        READWRITE(obj.vin);
+        READWRITE(obj.nHashGroupSigners);
+        READWRITE(obj.nRewardHeight);
+        READWRITE(obj.vchMusigPartialSign);
+        READWRITE(obj.vchSig);
     }
 
     uint256 GetHash() const
@@ -229,7 +222,7 @@ class CInfinityNodeLockReward
 {
 private:
 
-    mutable CCriticalSection cs;
+    mutable RecursiveMutex cs;
     std::map<uint256, CLockRewardRequest> mapLockRewardRequest;
     std::map<uint256, CLockRewardCommitment> mapLockRewardCommitment;
     std::map<uint256, CGroupSigners> mapLockRewardGroupSigners;
@@ -250,12 +243,10 @@ public:
 
     CInfinityNodeLockReward() : nCachedBlockHeight(0) {}
 
-    ADD_SERIALIZE_METHODS;
-
-    template <typename Stream, typename Operation>
-    inline void SerializationOp(Stream& s, Operation ser_action) {
-        READWRITE(mapLockRewardRequest);
-        READWRITE(mapLockRewardCommitment);
+    SERIALIZE_METHODS(CInfinityNodeLockReward, obj)
+    {
+        READWRITE(obj.mapLockRewardRequest);
+        READWRITE(obj.mapLockRewardCommitment);
     }
 
     void Clear();
@@ -269,17 +260,17 @@ public:
     bool GetLockRewardRequest(const uint256& reqHash, CLockRewardRequest& lockRewardRequestRet);
 
     //process consensus request message
-    bool CheckLockRewardRequest(CNode* pfrom, const CLockRewardRequest& lockRewardRequestRet, CConnman& connman, int nBlockHeight);
-    bool CheckMyPeerAndSendVerifyRequest(CNode* pfrom, const CLockRewardRequest& lockRewardRequestRet, CConnman& connman);
+    bool CheckLockRewardRequest(CNode* pfrom, const CLockRewardRequest& lockRewardRequestRet, CConnman& connman, int nBlockHeight, int& nDos);
+    bool CheckMyPeerAndSendVerifyRequest(CNode* pfrom, const CLockRewardRequest& lockRewardRequestRet, CConnman& connman, int& nDos);
 
     //Verify node at IP
-    bool SendVerifyReply(CNode* pnode, CVerifyRequest& vrequest, CConnman& connman);
-    bool CheckVerifyReply(CNode* pnode, CVerifyRequest& vrequest, CConnman& connman);
+    bool SendVerifyReply(CNode* pnode, CVerifyRequest& vrequest, CConnman& connman, int& nDos);
+    bool CheckVerifyReply(CNode* pnode, CVerifyRequest& vrequest, CConnman& connman, int& nDos);
 
     //commitment
     bool AddCommitment(const CLockRewardCommitment& commitment);
     bool SendCommitment(const uint256& reqHash, int nRewardHeight, CConnman& connman);
-    bool CheckCommitment(CNode* pnode, const CLockRewardCommitment& commitment);
+    bool CheckCommitment(CNode* pnode, const CLockRewardCommitment& commitment, int& nDos);
     bool GetLockRewardCommitment(const uint256& reqHash, CLockRewardCommitment& commitment);
 
     //group signer
@@ -287,13 +278,13 @@ public:
     bool AddGroupSigners(const CGroupSigners& gs);
     bool GetGroupSigners(const uint256& reqHash, CGroupSigners& gsigners);
     bool FindAndSendSignersGroup(CConnman& connman);
-    bool CheckGroupSigner(CNode* pnode, const CGroupSigners& gsigners);
+    bool CheckGroupSigner(CNode* pnode, const CGroupSigners& gsigners, int& nDos);
 
     //Schnorr Musig
     bool MusigPartialSign(CNode* pnode, const CGroupSigners& gsigners, CConnman& connman);
     bool AddMusigPartialSignLR(const CMusigPartialSignLR& ps);
     bool GetMusigPartialSignLR(const uint256& psHash, CMusigPartialSignLR& ps);
-    bool CheckMusigPartialSignLR(CNode* pnode, const CMusigPartialSignLR& ps);
+    bool CheckMusigPartialSignLR(CNode* pnode, const CMusigPartialSignLR& ps, int& nDos);
     void AddMyPartialSignsMap(const CMusigPartialSignLR& ps);
     bool FindAndBuildMusigLockReward();
 
