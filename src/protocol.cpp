@@ -45,6 +45,13 @@ const char *CFHEADERS="cfheaders";
 const char *GETCFCHECKPT="getcfcheckpt";
 const char *CFCHECKPT="cfcheckpt";
 const char *WTXIDRELAY="wtxidrelay";
+//>SIN
+const char *INFLOCKREWARDINIT="inflrwd";
+const char *INFVERIFY="infverify";
+const char *INFCOMMITMENT="infcommit";
+const char *INFLRMUSIG="inflrmusig";
+const char *INFLRGROUP="inflrgroup";
+//<SIN
 } // namespace NetMsgType
 
 /** All known message types. Keep this in the same order as the list of
@@ -85,6 +92,13 @@ const static std::string allNetMessageTypes[] = {
     NetMsgType::GETCFCHECKPT,
     NetMsgType::CFCHECKPT,
     NetMsgType::WTXIDRELAY,
+//>SIN
+    NetMsgType::INFLOCKREWARDINIT,
+    NetMsgType::INFVERIFY,
+    NetMsgType::INFCOMMITMENT,
+    NetMsgType::INFLRMUSIG,
+    NetMsgType::INFLRGROUP,
+//<SIN
 };
 const static std::vector<std::string> allNetMessageTypesVec(allNetMessageTypes, allNetMessageTypes+ARRAYLEN(allNetMessageTypes));
 
@@ -173,6 +187,13 @@ std::string CInv::GetCommand() const
     case MSG_BLOCK:          return cmd.append(NetMsgType::BLOCK);
     case MSG_FILTERED_BLOCK: return cmd.append(NetMsgType::MERKLEBLOCK);
     case MSG_CMPCT_BLOCK:    return cmd.append(NetMsgType::CMPCTBLOCK);
+//>SIN
+    case MSG_LOCKREWARD_INIT:return cmd.append(NetMsgType::INFLOCKREWARDINIT);
+    case MSG_INFCOMMITMENT:  return cmd.append(NetMsgType::INFCOMMITMENT);
+    case MSG_INFVERIFY:      return cmd.append(NetMsgType::INFVERIFY);
+    case MSG_INFLRMUSIG:     return cmd.append(NetMsgType::INFLRMUSIG);
+    case MSG_INFLRGROUP:     return cmd.append(NetMsgType::INFLRGROUP);
+//<SIN
     default:
         throw std::out_of_range(strprintf("CInv::GetCommand(): type=%d unknown type", type));
     }

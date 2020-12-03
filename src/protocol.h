@@ -260,6 +260,13 @@ extern const char* CFCHECKPT;
  * @since protocol version 70016 as described by BIP 339.
  */
 extern const char* WTXIDRELAY;
+//>SIN
+extern const char *INFLOCKREWARDINIT;
+extern const char *INFVERIFY;
+extern const char *INFCOMMITMENT;
+extern const char *INFLRMUSIG;
+extern const char *INFLRGROUP;
+//<SIN
 }; // namespace NetMsgType
 
 /* Get a vector of all valid message types (see above) */
@@ -421,6 +428,14 @@ enum GetDataMsg : uint32_t {
     // MSG_FILTERED_WITNESS_BLOCK is defined in BIP144 as reserved for future
     // use and remains unused.
     // MSG_FILTERED_WITNESS_BLOCK = MSG_FILTERED_BLOCK | MSG_WITNESS_FLAG,
+//>SIN
+    MSG_LOCKREWARD_INIT = 14,
+    MSG_INFVERIFY = 15,
+    MSG_MASTERNODE_VERIFY = 16,
+    MSG_INFLRMUSIG = 17,
+    MSG_INFLRGROUP = 18,
+    MSG_INFCOMMITMENT = 19,
+//<SIN
 };
 
 /** inv message data */
