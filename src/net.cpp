@@ -2154,8 +2154,9 @@ void CConnman::ThreadOpenAddedConnections()
     }
 }
 
+//>SIN
 // if successful, this moves the passed grant to the constructed node
-void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant *grantOutbound, const char *pszDest, ConnectionType conn_type)
+CNode* CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant *grantOutbound, const char *pszDest, ConnectionType conn_type)
 {
     assert(conn_type != ConnectionType::INBOUND);
 
@@ -2163,23 +2164,23 @@ void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
     // Initiate outbound network connection
     //
     if (interruptNet) {
-        return;
+        return nullptr;
     }
     if (!fNetworkActive) {
-        return;
+        return nullptr;
     }
     if (!pszDest) {
         bool banned_or_discouraged = m_banman && (m_banman->IsDiscouraged(addrConnect) || m_banman->IsBanned(addrConnect));
         if (IsLocal(addrConnect) || banned_or_discouraged || AlreadyConnectedToAddress(addrConnect)) {
-            return;
+            return nullptr;
         }
     } else if (FindNode(std::string(pszDest)))
-        return;
+        return nullptr;
 
     CNode* pnode = ConnectNode(addrConnect, pszDest, fCountFailure, conn_type);
 
     if (!pnode)
-        return;
+        return nullptr;
     if (grantOutbound)
         grantOutbound->MoveTo(pnode->grantOutbound);
 
@@ -2188,8 +2189,9 @@ void CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountFai
         LOCK(cs_vNodes);
         vNodes.push_back(pnode);
     }
+    return pnode;
 }
-
+//<SIN
 void CConnman::ThreadMessageHandler()
 {
     while (!flagInterruptMsgProc)
@@ -2635,6 +2637,35 @@ CConnman::~CConnman()
     Interrupt();
     Stop();
 }
+
+//>SIN
+void CConnman::RelayInv(CInv &inv) {
+    LOCK(cs_vNodes);
+    for (auto& pnode : vNodes)
+        pnode->PushSinInventory(inv);
+}
+
+std::vector<CNode*> CConnman::CopyNodeVector()
+{
+    std::vector<CNode*> vecNodesCopy;
+    LOCK(cs_vNodes);
+    for(size_t i = 0; i < vNodes.size(); ++i) {
+        CNode* pnode = vNodes[i];
+        pnode->AddRef();
+        vecNodesCopy.push_back(pnode);
+    }
+    return vecNodesCopy;
+}
+
+void CConnman::ReleaseNodeVector(const std::vector<CNode*>& vecNodes)
+{
+    LOCK(cs_vNodes);
+    for(size_t i = 0; i < vecNodes.size(); ++i) {
+        CNode* pnode = vecNodes[i];
+        pnode->Release();
+    }
+}
+//<SIN
 
 void CConnman::SetServices(const CService &addr, ServiceFlags nServices)
 {

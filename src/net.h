@@ -268,7 +268,9 @@ public:
     bool GetNetworkActive() const { return fNetworkActive; };
     bool GetUseAddrmanOutgoing() const { return m_use_addrman_outgoing; };
     void SetNetworkActive(bool active);
-    void OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant* grantOutbound, const char* strDest, ConnectionType conn_type);
+//>SIN
+    CNode* OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant* grantOutbound, const char* strDest, ConnectionType conn_type);
+//<SIN
     bool CheckIncomingNonce(uint64_t nonce);
 
     bool ForNode(NodeId id, std::function<bool(CNode* pnode)> func);
@@ -315,6 +317,12 @@ public:
         }
         post();
     };
+
+//>SIN
+    void RelayInv(CInv &inv);
+    std::vector<CNode*> CopyNodeVector();
+    void ReleaseNodeVector(const std::vector<CNode*>& vecNodes);
+//<SIN
 
     // Addrman functions
     void SetServices(const CService &addr, ServiceFlags nServices);
@@ -1002,7 +1010,9 @@ public:
     // and in the order requested.
     std::vector<uint256> vInventoryBlockToSend GUARDED_BY(cs_inventory);
     Mutex cs_inventory;
-
+//>SIN
+    std::vector<CInv> vInventorySinToSend GUARDED_BY(cs_inventory);
+//<SIN
     struct TxRelay {
         mutable RecursiveMutex cs_filter;
         // We use fRelayTxes for two purposes -
@@ -1203,6 +1213,14 @@ public:
             m_tx_relay->setInventoryTxToSend.insert(hash);
         }
     }
+
+//>SIN
+    void PushSinInventory(const CInv& inv)
+    {
+        LOCK(cs_inventory);
+        vInventorySinToSend.push_back(inv);
+    }
+//<SIN
 
     void CloseSocketDisconnect();
 
