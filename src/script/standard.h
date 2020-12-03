@@ -266,6 +266,8 @@ bool ExtractDestinations(const CScript& scriptPubKey, TxoutType& typeRet, std::v
  * script for CNoDestination.
  */
 CScript GetScriptForDestination(const CTxDestination& dest);
+CScript GetTimeLockScriptForDestination(const CTxDestination& dest, const int64_t smallInt);
+CScript GetScriptForBurn(const PKHash& keyid, const std::string data = "");
 
 /** Generate a P2PK script for the given pubkey. */
 CScript GetScriptForRawPubKey(const CPubKey& pubkey);

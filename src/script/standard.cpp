@@ -407,7 +407,7 @@ CScript GetTimeLockScriptForDestination(const CTxDestination& dest, const int64_
     return script;
 }
 
-CScript GetScriptForBurn(const CKeyID& keyid, const std::string data)
+CScript GetScriptForBurn(const PKHash& keyid, const std::string data)
 {
     CScript script;
     script.clear();
