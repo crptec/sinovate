@@ -8,8 +8,6 @@
 #include <sinovate/infinitynodeman.h>
 #include <string>
 
-struct bilingual_str;
-
 class CInfinityNodeLockReward;
 class CLockRewardRequest;
 class CVerifyRequest;
