@@ -76,9 +76,6 @@ public:
 
 
         // legacy Dash, needs refac
-        consensus.nMasternodeMinimumConfirmations = 15;
-        consensus.nMasternodePaymentsStartBlock = 50;
-        consensus.nMasternodeCollateralMinimum = 10000;
         consensus.nMasternodeBurnSINNODE_1 = 100000;
         consensus.nMasternodeBurnSINNODE_5 = 500000;
         consensus.nMasternodeBurnSINNODE_10 = 1000000;
@@ -97,7 +94,7 @@ public:
         consensus.nInfinityNodeCallLockRewardDeepth=50;
         consensus.nInfinityNodeCallLockRewardLoop=10; //in number of blocks
         consensus.nInfinityNodeLockRewardTop=16; //in number
-        consensus.nInfinityNodeLockRewardSigners=5; //in number
+        consensus.nInfinityNodeLockRewardSigners=4; //in number
         consensus.nInfinityNodeLockRewardSINType=10; //in number
         consensus.nSchnorrActivationHeight = 1350000; // wait for active
         consensus.nInfinityNodeExpireTime=262800;//720*365 days = 1 year
