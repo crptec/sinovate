@@ -48,9 +48,6 @@ struct Params {
     /* Sinovate params START*/
 
     // Sinovate parameters for IN functionality
-    int nMasternodeMinimumConfirmations;
-    int nMasternodePaymentsStartBlock;
-    int nMasternodeCollateralMinimum; // in coins
     int nMasternodeBurnSINNODE_1; // in coins
     int nMasternodeBurnSINNODE_5; // in coins
     int nMasternodeBurnSINNODE_10; // in coins
