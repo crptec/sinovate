@@ -184,6 +184,7 @@ public:
             if(readResult == IncorrectFormat)
             {
                 LogPrintf("%s: Magic is ok but data has invalid format, will try to recreate\n", __func__);
+                return false;
             }
             else {
                 LogPrintf("%s: File format is unknown or invalid, please fix it manually\n", __func__);

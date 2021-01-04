@@ -48,6 +48,12 @@
 #include <shutdown.h>
 //>SIN
 #include <sinovate/infinitynodetip.h> //for fInfinityNode flag
+#include <sinovate/infinitynodeman.h>
+#include <sinovate/infinitynodersv.h>
+#include <sinovate/infinitynodepeer.h>
+#include <sinovate/infinitynodemeta.h>
+#include <sinovate/infinitynodelockreward.h>
+#include <sinovate/flat-database.h>
 //<SIN
 #include <sync.h>
 #include <timedata.h>
@@ -157,6 +163,9 @@ NODISCARD static bool CreatePidFile(const ArgsManager& args)
 //
 
 static std::unique_ptr<ECCVerifyHandle> globalVerifyHandle;
+//>SIN
+static std::unique_ptr<ECCMusigHandle> globalMusigHandle;
+//<SIN
 
 static std::thread g_load_block;
 
@@ -293,6 +302,17 @@ void Shutdown(NodeContext& node)
         client->stop();
     }
 
+//>SIN
+    CFlatDB<CInfinitynodeMan> flatdb1("infinitynode.dat", "magicInfinityNodeCache");
+    flatdb1.Dump(infnodeman);
+    CFlatDB<CInfinitynodersv> flatdb2("infinitynodersv.dat", "magicInfinityRSV");
+    flatdb2.Dump(infnodersv);
+    CFlatDB<CInfinitynodeMeta> flatdb3("infinitynodemeta.dat", "magicInfinityMeta");
+    flatdb3.Dump(infnodemeta);
+    CFlatDB<CInfinitynodeLockInfo> flatdb4("infinitynodelockinfo.dat", "magicInfinityLockInfo");
+    flatdb4.Dump(infnodelrinfo);
+//<SIN
+
 #if ENABLE_ZMQ
     if (g_zmq_notification_interface) {
         UnregisterValidationInterface(g_zmq_notification_interface);
@@ -306,6 +326,9 @@ void Shutdown(NodeContext& node)
     GetMainSignals().UnregisterBackgroundSignalScheduler();
     globalVerifyHandle.reset();
     ECC_Stop();
+//>SIN
+    globalMusigHandle.reset();
+//<SIN
     node.mempool.reset();
     node.chainman = nullptr;
     node.scheduler.reset();
@@ -1233,6 +1256,9 @@ bool AppInitSanityChecks()
     RandomInit();
     ECC_Start();
     globalVerifyHandle.reset(new ECCVerifyHandle());
+//>SIN
+    globalMusigHandle.reset(new ECCMusigHandle());
+//<SIN
 
     // Sanity check
     if (!InitSanityCheck())
@@ -1540,7 +1566,43 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
     }
 
     // ********************************************************* Step 7: load block chain
+//>SIN: try load SIN cache memory before connectblock, because we need these informations for validation of block
+    uiInterface.InitMessage(_("Loading on-chain Infinitynode data...").translated);
+    boost::filesystem::path pathDB = GetDataDir();
+    std::string strDBName;
 
+    strDBName = "infinitynode.dat";
+    CFlatDB<CInfinitynodeMan> flatdb1(strDBName, "magicInfinityNodeCache");
+    if(!flatdb1.Load(infnodeman)) {
+        LogPrintf("Failed to load Infinitynode list from %s.\n", (pathDB / strDBName).string());
+        InitError(strprintf(_("Failed to load Infinitynode list from %s."), (pathDB / strDBName).string()));
+        return false;
+    }
+
+    strDBName = "infinitynodersv.dat";
+    CFlatDB<CInfinitynodersv> flatdb2(strDBName, "magicInfinityRSV");
+    if(!flatdb2.Load(infnodersv)) {
+        LogPrintf("Failed to load RSV vote cache from %s.\n", (pathDB / strDBName).string());
+        InitError(strprintf(_("Failed to load RSV vote cache from %s."), (pathDB / strDBName).string()));
+        return false; // non mandatory
+    }
+
+    strDBName = "infinitynodemeta.dat";
+    CFlatDB<CInfinitynodeMeta> flatdb3(strDBName, "magicInfinityMeta");
+    if(!flatdb3.Load(infnodemeta)) {
+        LogPrintf("Failed to load Infinitynode Metatdata cache from %s.\n", (pathDB / strDBName).string());
+        InitError(strprintf(_("Failed to load Infinitynode Metatdata cache from %s"), (pathDB / strDBName).string()));
+        return false;
+    }
+
+    strDBName = "infinitynodelockinfo.dat";
+    CFlatDB<CInfinitynodeLockInfo> flatdb4(strDBName, "magicInfinityLockInfo");
+    if(!flatdb4.Load(infnodelrinfo)) {
+        LogPrintf("Failed to load Infinitynode LockReward cache from %s.\n", (pathDB / strDBName).string());
+        InitError(strprintf(_("Failed to load Infinitynode LockReward cache from %s"), (pathDB / strDBName).string()));
+        return false;
+    }
+//<SIN
     fReindex = args.GetBoolArg("-reindex", false);
     bool fReindexChainState = args.GetBoolArg("-reindex-chainstate", false);
 
