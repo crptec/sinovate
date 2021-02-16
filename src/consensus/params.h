@@ -89,9 +89,6 @@ struct Params {
     int lwmaStartHeight;
     int lwmaAveragingWindow;
 
-    // parameterised IN reorg
-    int nMaxReorganizationDepth;
-
     //x25x hf
     int nX25XForkHeight;
 
