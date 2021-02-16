@@ -48,7 +48,11 @@
 #include <util/translation.h>
 #include <validationinterface.h>
 #include <warnings.h>
-
+//>SIN
+#include <sinovate/infinitynodelockreward.h>
+#include <sinovate/infinitynodelockinfo.h>
+#include <sinovate/infinitynodemeta.h>
+//<SIN
 #include <string>
 
 #include <boost/algorithm/string/replace.hpp>
@@ -2293,9 +2297,8 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
 
     CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus());
     if (block.vtx[0]->GetValueOut() > blockReward + GetDevCoin(pindex->nHeight, blockReward) && !IsBrokenBlock) {
-        /*
         LogPrintf("ERROR: ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)\n", block.vtx[0]->GetValueOut(), blockReward);
-        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-amount");*/
+        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-amount");
     }
 
     //Sinovate specific consensus (devfee)
@@ -2315,7 +2318,17 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-dev-fee-missing");
     }
 
-    // Sinovate TODO: add IN consensus
+    // Sinovate: add DIN consensus
+    if (pindex->nHeight <= chainparams.GetConsensus().nDINActivationHeight) {
+        //POW mode: do nothing
+    } else {
+        //DIN mode: validation LR
+        LogPrintf("Validation -- POW + Infinitynode\n");
+        if (!LockRewardValidation(pindex->nHeight, block.vtx[0])) {
+            LogPrintf("LockRewardValidation -- disconnect block!\n");
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-bad-infinity-node-reward");
+        }
+    }
 
     if (!control.Wait()) {
         LogPrintf("ERROR: %s: CheckQueue failed\n", __func__);
@@ -2611,6 +2624,15 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         assert(view.GetBestBlock() == pindexDelete->GetBlockHash());
         if (DisconnectBlock(block, pindexDelete, view) != DISCONNECT_OK)
             return error("DisconnectTip(): DisconnectBlock %s failed", pindexDelete->GetBlockHash().ToString());
+//>SIN
+        std::vector<CLockRewardExtractInfo> vecLockRewardRet;
+        infnodelrinfo.ExtractLRFromBlock(block, pindexDelete, view, chainparams, vecLockRewardRet);
+        for (auto& v : vecLockRewardRet) {
+            infnodelrinfo.Remove(v);
+        }
+        infnodeman.removeNonMaturedList(pindexDelete);
+        infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
+//<SIN
         bool flushed = view.Flush();
         assert(flushed);
     }
@@ -2717,7 +2739,21 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
     LogPrint(BCLog::BENCH, "  - Load block from disk: %.2fms [%.2fs]\n", (nTime2 - nTime1) * MILLI, nTimeReadFromDisk * MICRO);
     {
         CCoinsViewCache view(&CoinsTip());
+//>SIN
+        std::vector<CLockRewardExtractInfo> vecLockRewardRet;
+        infnodelrinfo.ExtractLRFromBlock(blockConnecting, pindexNew, view, chainparams, vecLockRewardRet);
+        infnodeman.buildNonMaturedListFromBlock(blockConnecting, pindexNew, view, chainparams);
+//<SIN
         bool rv = ConnectBlock(blockConnecting, state, pindexNew, view, chainparams);
+//>SIN
+        if (rv) {
+            for (auto& v : vecLockRewardRet) {
+                infnodelrinfo.Add(v);
+            }
+            infnodeman.updateFinalList(pindexNew);
+        } else {
+        }
+//<SIN
         GetMainSignals().BlockChecked(blockConnecting, state);
         if (!rv) {
             if (state.IsInvalid())
