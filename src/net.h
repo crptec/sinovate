@@ -14,6 +14,9 @@
 #include <compat.h>
 #include <crypto/siphash.h>
 #include <hash.h>
+//>SIN
+#include <limitedmap.h>
+//<SIN
 #include <net_permissions.h>
 #include <netaddress.h>
 #include <optional.h>
@@ -74,6 +77,14 @@ static const bool DEFAULT_UPNP = USE_UPNP;
 #else
 static const bool DEFAULT_UPNP = false;
 #endif
+//>SIN
+/** The maximum number of entries in an 'inv' protocol message */
+static const unsigned int MAX_INV_SZ = 50000;
+/** The maximum number of entries in mapAskFor */
+static const size_t MAPASKFOR_MAX_SZ = MAX_INV_SZ;
+/** The maximum number of entries in setAskFor (larger due to getdata latency)*/
+static const size_t SETASKFOR_MAX_SZ = 2 * MAX_INV_SZ;
+//<SIN
 /** The maximum number of peer connections to maintain. */
 static const unsigned int DEFAULT_MAX_PEER_CONNECTIONS = 125;
 /** The default for -maxuploadtarget. 0 = Unlimited */
@@ -679,6 +690,10 @@ extern bool fDiscover;
 extern bool fListen;
 extern bool g_relay_txes;
 
+//>SIN
+extern limitedmap<uint256, int64_t> mapAlreadyAskedFor;
+//<SIN
+
 /** Subversion as sent to the P2P network in `version` messages */
 extern std::string strSubVersion;
 
@@ -1011,7 +1026,11 @@ public:
     std::vector<uint256> vInventoryBlockToSend GUARDED_BY(cs_inventory);
     Mutex cs_inventory;
 //>SIN
-    std::vector<CInv> vInventorySinToSend GUARDED_BY(cs_inventory);
+    Mutex cs_sin_inventory;
+    std::vector<CInv> vInventorySinToSend GUARDED_BY(cs_sin_inventory);
+    std::set<uint256> setAskFor;
+    std::multimap<int64_t, CInv> mapAskFor;
+    int64_t nNextSinInvSend{0};
 //<SIN
     struct TxRelay {
         mutable RecursiveMutex cs_filter;
@@ -1220,6 +1239,8 @@ public:
         LOCK(cs_inventory);
         vInventorySinToSend.push_back(inv);
     }
+
+    void AskFor(const CInv& inv);
 //<SIN
 
     void CloseSocketDisconnect();

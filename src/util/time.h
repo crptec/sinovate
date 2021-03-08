@@ -53,6 +53,9 @@ T GetTime();
  */
 std::string FormatISO8601DateTime(int64_t nTime);
 std::string FormatISO8601Date(int64_t nTime);
+//>SIN
+std::string FormatISO8601Time(int64_t nTime);
+//<SIN
 int64_t ParseISO8601DateTime(const std::string& str);
 
 #endif // BITCOIN_UTIL_TIME_H

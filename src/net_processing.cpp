@@ -34,6 +34,10 @@
 #include <memory>
 #include <typeinfo>
 
+//>SIN
+#include <sinovate/infinitynodelockreward.h>
+//<SIN
+
 /** Expiration time for orphan transactions in seconds */
 static constexpr int64_t ORPHAN_TX_EXPIRE_TIME = 20 * 60;
 /** Minimum time between orphan transactions expire time checks in seconds */
@@ -70,8 +74,6 @@ static constexpr int HISTORICAL_BLOCK_AGE = 7 * 24 * 60 * 60;
 static constexpr std::chrono::minutes PING_INTERVAL{2};
 /** The maximum number of entries in a locator */
 static const unsigned int MAX_LOCATOR_SZ = 101;
-/** The maximum number of entries in an 'inv' protocol message */
-static const unsigned int MAX_INV_SZ = 50000;
 /** Maximum number of in-flight transaction requests from a peer. It is not a hard limit, but the threshold at which
  *  point the OVERLOADED_PEER_TX_DELAY kicks in. */
 static constexpr int32_t MAX_PEER_TX_REQUEST_IN_FLIGHT = 100;
@@ -1432,6 +1434,24 @@ bool static AlreadyHaveBlock(const uint256& block_hash) EXCLUSIVE_LOCKS_REQUIRED
     return LookupBlockIndex(block_hash) != nullptr;
 }
 
+//>SIN
+bool static AlreadyHaveSin(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
+{
+    switch (inv.type)
+    {
+        case MSG_INFCOMMITMENT:
+            return inflockreward.AlreadyHave(inv.hash);
+        case MSG_LOCKREWARD_INIT:
+            return inflockreward.AlreadyHave(inv.hash);
+        case MSG_INFLRGROUP:
+            return inflockreward.AlreadyHave(inv.hash);
+        case MSG_INFLRMUSIG:
+            return inflockreward.AlreadyHave(inv.hash);
+    }
+    // Don't know what it is, just say we already got one, example MSG_INFVERIFY is direct message, we dont askfor this INV
+    return true;
+}
+//<SIN
 void RelayTransaction(const uint256& txid, const uint256& wtxid, const CConnman& connman)
 {
     connman.ForEachNode([&txid, &wtxid](CNode* pnode) EXCLUSIVE_LOCKS_REQUIRED(::cs_main) {
@@ -1726,7 +1746,56 @@ void static ProcessGetData(CNode& pfrom, Peer& peer, const CChainParams& chainpa
                 }
             }
         } else {
-            vNotFound.push_back(inv);
+//>SIN
+            // All node INV
+            {
+                bool pushed = false;
+
+                if (!pushed && inv.type == MSG_LOCKREWARD_INIT) {
+                    CLockRewardRequest lockRewardRequest;
+                    if(inflockreward.GetLockRewardRequest(inv.hash,lockRewardRequest)) {
+                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+                        ss.reserve(1000);
+                        ss << lockRewardRequest;
+                        connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFLOCKREWARDINIT, ss));
+                        pushed = true;
+                    }
+                }
+                if (!pushed && inv.type == MSG_INFCOMMITMENT) {
+                    CLockRewardCommitment commitment;
+                    if(inflockreward.GetLockRewardCommitment(inv.hash,commitment)) {
+                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+                        ss.reserve(1000);
+                        ss << commitment;
+                        connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFCOMMITMENT, ss));
+                        pushed = true;
+                    }
+                }
+                if (!pushed && inv.type == MSG_INFLRGROUP) {
+                    CGroupSigners gSigners;
+                    if(inflockreward.GetGroupSigners(inv.hash,gSigners)) {
+                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+                        ss.reserve(1000);
+                        ss << gSigners;
+                        connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFLRGROUP, ss));
+                        pushed = true;
+                    }
+                }
+                if (!pushed && inv.type == MSG_INFLRMUSIG) {
+                    CMusigPartialSignLR partialSign;
+                    if(inflockreward.GetMusigPartialSignLR(inv.hash, partialSign)) {
+                        CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
+                        ss.reserve(1000);
+                        ss << partialSign;
+                        connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFLRMUSIG, ss));
+                        pushed = true;
+                    }
+                }
+                //not identify
+                if (!pushed)
+                    vNotFound.push_back(inv);
+            }
+//<SIN
         }
     }
 
@@ -2701,6 +2770,15 @@ void PeerManager::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDat
                 } else if (!fAlreadyHave && !m_chainman.ActiveChainstate().IsInitialBlockDownload()) {
                     AddTxAnnouncement(pfrom, gtxid, current_time);
                 }
+//>SIN
+            } else if (inv.IsGenSinMsg()) {
+                const bool fAlreadyHave = AlreadyHaveSin(inv);
+                if (fBlocksOnly) {
+                    LogPrint(BCLog::NET, "transaction (%s) inv sent in violation of protocol peer=%d\n", inv.hash.ToString(), pfrom.GetId());
+                } else if (!fAlreadyHave && !fImporting && !fReindex && !m_chainman.ActiveChainstate().IsInitialBlockDownload()) {
+                    pfrom.AskFor(inv);
+                }
+//<SIN
             } else {
                 LogPrint(BCLog::NET, "Unknown inv type \"%s\" received from peer=%d\n", inv.ToString(), pfrom.GetId());
             }
@@ -3732,6 +3810,13 @@ void PeerManager::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDat
         ProcessGetCFCheckPt(pfrom, vRecv, m_chainparams, m_connman);
         return;
     }
+//>SIN
+    if (msg_type == NetMsgType::INFLOCKREWARDINIT || msg_type == NetMsgType::INFVERIFY || msg_type == NetMsgType::INFCOMMITMENT ||
+        msg_type == NetMsgType::INFLRMUSIG || msg_type == NetMsgType::INFLRGROUP) {
+        inflockreward.ProcessMessage(&pfrom, msg_type, vRecv, m_connman);
+        return;
+    }
+//<SIN
 
     if (msg_type == NetMsgType::NOTFOUND) {
         std::vector<CInv> vInv;
@@ -4447,6 +4532,30 @@ bool PeerManager::SendMessages(CNode* pto)
         if (!vInv.empty())
             m_connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
 
+//>SIN
+        // send sinovate Inv
+        {
+            vInv.clear();
+            LOCK(pto->cs_sin_inventory);
+            vInv.reserve(std::min<size_t>(1000, pto->vInventorySinToSend.size()));
+
+            for (const CInv& inv : pto->vInventorySinToSend)
+            {
+                vInv.push_back(inv);
+                if (vInv.size() >= 1000)
+                {
+                    LogPrint(BCLog::NET, "SendMessages -- pushing vInventorySinToSend inv's: count=%d peer=%d\n", vInv.size(), pto->GetId());
+                    m_connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
+                    vInv.clear();
+                }
+            }
+            pto->vInventorySinToSend.clear();
+        }
+        if (!vInv.empty()) {
+            m_connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
+            LogPrint(BCLog::NET, "SendMessages -- pushing vInventorySinToSend tailing inv's: count=%d peer=%d\n", vInv.size(), pto->GetId());
+        }
+//>SIN
         // Detect whether we're stalling
         current_time = GetTime<std::chrono::microseconds>();
         if (state.nStallingSince && state.nStallingSince < count_microseconds(current_time) - 1000000 * BLOCK_STALLING_TIMEOUT) {

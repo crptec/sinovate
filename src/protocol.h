@@ -469,6 +469,12 @@ public:
     {
         return type == MSG_BLOCK || type == MSG_FILTERED_BLOCK || type == MSG_CMPCT_BLOCK || type == MSG_WITNESS_BLOCK;
     }
+//>SIN
+    bool IsGenSinMsg() const
+    {
+        return type == MSG_LOCKREWARD_INIT || type == MSG_INFVERIFY || type == MSG_INFLRMUSIG || type == MSG_INFLRGROUP || type == MSG_INFCOMMITMENT;
+    }
+//<SIN
 
     uint32_t type;
     uint256 hash;

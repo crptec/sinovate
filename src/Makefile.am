@@ -151,6 +151,7 @@ BITCOIN_CORE_H = \
   interfaces/wallet.h \
   key.h \
   key_io.h \
+  limitedmap.h \
   logging.h \
   logging/timer.h \
   memusage.h \
