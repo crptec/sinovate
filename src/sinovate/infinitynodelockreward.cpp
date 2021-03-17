@@ -11,6 +11,7 @@
 #include <sinovate/messagesigner.h>
 #include <net_processing.h>
 #include <netmessagemaker.h>
+#include <banman.h>
 
 #include <secp256k1.h>
 #include <secp256k1_schnorr.h>
@@ -1197,6 +1198,7 @@ bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners
         free(pubkeys); pubkeys = NULL;
         free(commitmentpk); commitmentpk = NULL;
         free(signer_data); signer_data = NULL;
+        secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
         for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
             free(commitmenthash[c]);
         }
@@ -1220,6 +1222,7 @@ bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners
             free(pubkeys); pubkeys = NULL;
             free(commitmentpk); commitmentpk = NULL;
             free(signer_data); signer_data = NULL;
+            secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
             for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                 free(commitmenthash[c]);
             }
@@ -1232,6 +1235,7 @@ bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners
             free(pubkeys); pubkeys = NULL;
             free(commitmentpk); commitmentpk = NULL;
             free(signer_data); signer_data = NULL;
+            secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
             for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                 free(commitmenthash[c]);
             }
@@ -1246,6 +1250,7 @@ bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners
                 free(pubkeys); pubkeys = NULL;
                 free(commitmentpk); commitmentpk = NULL;
                 free(signer_data); signer_data = NULL;
+                secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                 for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                     free(commitmenthash[c]);
                 }
@@ -1259,6 +1264,7 @@ bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners
             free(pubkeys); pubkeys = NULL;
             free(commitmentpk); commitmentpk = NULL;
             free(signer_data); signer_data = NULL;
+            secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
             for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                 free(commitmenthash[c]);
             }
@@ -1271,6 +1277,7 @@ bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners
             free(pubkeys); pubkeys = NULL;
             free(commitmentpk); commitmentpk = NULL;
             free(signer_data); signer_data = NULL;
+            secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
             for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                 free(commitmenthash[c]);
             }
@@ -1283,6 +1290,7 @@ bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners
             free(pubkeys); pubkeys = NULL;
             free(commitmentpk); commitmentpk = NULL;
             free(signer_data); signer_data = NULL;
+            secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
             for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                 free(commitmenthash[c]);
             }
@@ -1306,6 +1314,7 @@ bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners
                 free(pubkeys); pubkeys = NULL;
                 free(commitmentpk); commitmentpk = NULL;
                 free(signer_data); signer_data = NULL;
+                secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                 for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                     free(commitmenthash[c]);
                 }
@@ -1611,6 +1620,7 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::FindAndBuildMusigLockReward -- Musig Combine PublicKey FAILED\n");
                 free(pubkeys); pubkeys = NULL;
                 free(commitmentpk); commitmentpk = NULL;
+                secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                 for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                     free(commitmenthash[c]);
                 }
@@ -1644,6 +1654,7 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                 free(pubkeys); pubkeys = NULL;
                 free(commitmentpk); commitmentpk = NULL;
                 free(verifier_signer_data); verifier_signer_data = NULL;
+                secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                 for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                     free(commitmenthash[c]);
                 }
@@ -1658,6 +1669,7 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                     free(pubkeys); pubkeys = NULL;
                     free(commitmentpk); commitmentpk = NULL;
                     free(verifier_signer_data); verifier_signer_data = NULL;
+                    secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                     for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                         free(commitmenthash[c]);
                     }
@@ -1671,6 +1683,7 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                 free(pubkeys); pubkeys = NULL;
                 free(commitmentpk); commitmentpk = NULL;
                 free(verifier_signer_data); verifier_signer_data = NULL;
+                secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                 for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                     free(commitmenthash[c]);
                 }
@@ -1704,10 +1717,12 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                     free(pubkeys); pubkeys = NULL;
                     free(commitmentpk); commitmentpk = NULL;
                     free(verifier_signer_data); verifier_signer_data = NULL;
+                    secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                     for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                         free(commitmenthash[c]);
                     }
                     free(commitmenthash); commitmenthash = NULL;
+                    free(partial_sig); partial_sig = NULL;
                     return false;
                 }
             }
@@ -1719,10 +1734,12 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                 free(pubkeys); pubkeys = NULL;
                 free(commitmentpk); commitmentpk = NULL;
                 free(verifier_signer_data); verifier_signer_data = NULL;
+                secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                 for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                     free(commitmenthash[c]);
                 }
                 free(commitmenthash); commitmenthash = NULL;
+                free(partial_sig); partial_sig = NULL;
                 return false;
             }
 
@@ -1746,10 +1763,12 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                 free(pubkeys); pubkeys = NULL;
                 free(commitmentpk); commitmentpk = NULL;
                 free(verifier_signer_data); verifier_signer_data = NULL;
+                secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                 for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                     free(commitmenthash[c]);
                 }
                 free(commitmenthash); commitmenthash = NULL;
+                free(partial_sig); partial_sig = NULL;
                 return false;
             } else {
                 //send register info
@@ -1758,10 +1777,12 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                     free(pubkeys); pubkeys = NULL;
                     free(commitmentpk); commitmentpk = NULL;
                     free(verifier_signer_data); verifier_signer_data = NULL;
+                    secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                     for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                         free(commitmenthash[c]);
                     }
                     free(commitmenthash); commitmenthash = NULL;
+                    free(partial_sig); partial_sig = NULL;
                     return false;
                 } else {
                     //memory the musig in map. No build for this anymore
@@ -1770,13 +1791,14 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                     free(pubkeys); pubkeys = NULL;
                     free(commitmentpk); commitmentpk = NULL;
                     free(verifier_signer_data); verifier_signer_data = NULL;
+                    secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
                     for(int c = 0; c < Params().GetConsensus().nInfinityNodeLockRewardSigners; c++) {
                         free(commitmenthash[c]);
                     }
                     free(commitmenthash); commitmenthash = NULL;
+                    free(partial_sig); partial_sig = NULL;
                 }
             }
-            secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
         }//end number signature check
     }//end loop in mapMyPartialSigns
 
@@ -2062,6 +2084,7 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
     scratch = secp256k1_scratch_space_create(secp256k1_context_musig, 1024 * 1024);
     if (!secp256k1_musig_pubkey_combine(secp256k1_context_musig, scratch, &combined_pk, pk_hash, pubkeys, N_SIGNERS)) {
         LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- Musig Combine PublicKey FAILED\n");
+        secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
         free(signerIndexes);
         free(pubkeys);
         return false;
@@ -2096,6 +2119,7 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
 
     if(!secp256k1_schnorr_verify(secp256k1_context_musig, &final_sig, msg, &combined_pk)){
         LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- Check register info FAILED\n");
+        secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
         free(signerIndexes);
         free(pubkeys);
         return false;
@@ -2497,6 +2521,11 @@ void CInfinityNodeLockReward::TryConnectToMySigners(int rewardHeight, CConnman& 
             CService addr = metaTopNode.getService();
             CAddress add = CAddress(addr, NODE_NETWORK);
             bool fconnected = false;
+            bool fBadSignerConnection = false;
+
+            for (const auto &ipBadSigner : mapBadSignersConnection) {
+                if (ipBadSigner == add.ToStringIP() ) fBadSignerConnection = true;
+            }
 
             if(addr != infinitynodePeer.service){
                 std::vector<CNode*> vNodesCopy = connman.CopyNodeVector();
@@ -2515,21 +2544,29 @@ void CInfinityNodeLockReward::TryConnectToMySigners(int rewardHeight, CConnman& 
                 connectionType = "I am";
             }
 
-            if(!fconnected){
+            if(!fconnected && !fBadSignerConnection){
                 CNode* pnode = connman.OpenNetworkConnection(add, false, nullptr, addr.ToStringIP().c_str(), ConnectionType::MANUAL);
                 if(pnode == NULL) {
+                    fconnected = false;
+                    fBadSignerConnection = true;
                 } else {
                     fconnected = true;
+                    fBadSignerConnection = false;
                     connectionType = strprintf("new connection(%s)", add.ToStringIP());
                 }
             }
 
             if(fconnected){
-                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::TryConnectToMySigners -- %s TopNode score: %d, id: %s\n",
+                LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::TryConnectToMySigners -- %s TopNode score: %d, id: %s\n",
                                  connectionType, score, s.getBurntxOutPoint().ToStringFull());
-            } else {
-                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::TryConnectToMySigners -- Cannot try to connect TopNode score: %d, id: %s.\n",
+                fBadSignerConnection = false;
+            }
+
+            if (fBadSignerConnection){
+                LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::TryConnectToMySigners -- Cannot try to connect TopNode score: %d, id: %s. Add to BadSigner!!!\n",
                                  score, s.getBurntxOutPoint().ToStringFull());
+                //memory bad signers
+                mapBadSignersConnection.push_back(add.ToStringIP());
             }
         }
 
@@ -2586,6 +2623,7 @@ bool CInfinityNodeLockReward::ProcessBlock(int nBlockHeight, CConnman& connman)
             TryConnectToMySigners(nRewardHeight, connman);
             //track my last request
             mapSigners.clear();
+            mapBadSignersConnection.clear();
             currentLockRequestHash = newRequest.GetHash();
             nFutureRewardHeight = newRequest.nRewardHeight;
             nGroupSigners = 0;
@@ -2635,7 +2673,7 @@ void CInfinityNodeLockReward::ProcessDirectMessage(CNode* pfrom, const std::stri
     }
 }
 
-void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman)
+void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos)
 {
     //if we are downloading blocks, do nothing
     if(!infnodeman.isReachedLastBlock()){return;}
@@ -2652,9 +2690,9 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                 LogPrintf("CInfinityNodeLockReward::ProcessMessage -- I had this LockRequest %s. End process\n", nHash.ToString());
                 return;
             }
-            int nDos=0;
             if(!CheckLockRewardRequest(pfrom, lockReq, connman, nCachedBlockHeight, nDos)){
                 //Ban Misbehaving here
+                //Misbehaving(pfrom->GetId(), nDos, strprintf("CheckLockRewardRequest is false."));
                 return;
             }
             LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- receive and add new LockRewardRequest from %d\n",pfrom->GetId());
@@ -2679,7 +2717,6 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- I had this commitment %s. End process\n", nHash.ToString());
                 return;
             }
-            int nDos = 0;
             if(!CheckCommitment(pfrom, commitment, nDos)){
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- Commitment is false from: %d\n",pfrom->GetId());
                 //Ban Misbehaving here
@@ -2707,7 +2744,6 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- I had this group signer: %s. End process\n", nHash.ToString());
                 return;
             }
-            int nDos = 0;
             if(!CheckGroupSigner(pfrom, gSigners, nDos)){
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- CheckGroupSigner is false\n");
                 //Ban Misbehaving here
@@ -2734,7 +2770,6 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- I had this Partial Sign %s. End process\n", nHash.ToString());
                 return;
             }
-            int nDos = 0;
             if(!CheckMusigPartialSignLR(pfrom, partialSign, nDos)){
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- CheckMusigPartialSignLR is false\n");
                 //Ban Misbehaving here

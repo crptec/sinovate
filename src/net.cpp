@@ -3003,11 +3003,15 @@ CNode::~CNode()
 //>SIN
 void CNode::AskFor(const CInv& inv)
 {
-    if (mapAskFor.size() > MAPASKFOR_MAX_SZ || setAskFor.size() > SETASKFOR_MAX_SZ)
+    if (mapAskFor.size() > MAPASKFOR_MAX_SZ || setAskFor.size() > SETASKFOR_MAX_SZ) {
+        LogPrint(BCLog::NET, "mapAskFor(%d) or setAskFor(%d) is too big than parameters MAPASKFOR_MAX_SZ: %d, SETASKFOR_MAX_SZ: %d\n", mapAskFor.size(), setAskFor.size(), MAPASKFOR_MAX_SZ, SETASKFOR_MAX_SZ);
         return;
+    }
     // a peer may not have multiple non-responded queue positions for a single inv item
-    if (!setAskFor.insert(inv.hash).second)
+    if (!setAskFor.insert(inv.hash).second) {
+        LogPrint(BCLog::NET, "can not insert inv hash to setAskFor\n");
         return;
+    }
 
     // We're using mapAskFor as a priority queue,
     // the key is the earliest time the request can be sent

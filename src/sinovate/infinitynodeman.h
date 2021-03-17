@@ -99,6 +99,7 @@ public:
     bool Has(const COutPoint& outpoint);
     bool HasPayee(CScript scriptPubKey);
     int Count();
+    int CountEnabled();
     std::map<COutPoint, CInfinitynode> GetFullInfinitynodeMap() { LOCK(cs); return mapInfinitynodes; }
     std::map<COutPoint, CInfinitynode> GetFullInfinitynodeNonMaturedMap() { LOCK(cs); return mapInfinitynodesNonMatured; }
     std::map<int, int> getStatementMap(int nSinType){
@@ -131,7 +132,7 @@ public:
     int64_t getLastScanWithLimit(){return nLastScanHeight/* + INF_MATURED_LIMIT*/;} // We'll need to move this to functions who actually use it and match it with our max reorg depth
     //build DIN map by scan from nBlockHeight to nLowHeight
     bool updateLastPaidList(int nBlockHeight, int nLowHeight = 0); /* init this to zero for better compat with regtest/testnet/devnets */
-    bool buildInfinitynodeListFromGenesis(int nBlockHeight);
+    bool buildInfinitynodeList(int nBeginHeight, int nEndHeight);
 
     //build DIN map immediate when connect block
     bool buildNonMaturedListFromBlock(const CBlock& block, CBlockIndex* pindex,

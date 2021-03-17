@@ -2773,9 +2773,9 @@ void PeerManager::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDat
 //>SIN
             } else if (inv.IsGenSinMsg()) {
                 const bool fAlreadyHave = AlreadyHaveSin(inv);
-                if (fBlocksOnly) {
-                    LogPrint(BCLog::NET, "transaction (%s) inv sent in violation of protocol peer=%d\n", inv.hash.ToString(), pfrom.GetId());
-                } else if (!fAlreadyHave && !fImporting && !fReindex && !m_chainman.ActiveChainstate().IsInitialBlockDownload()) {
+                LogPrint(BCLog::NET, "got inv: %s  %s peer=%d\n", inv.ToString(), fAlreadyHave ? "have" : "new", pfrom.GetId());
+                if (!fAlreadyHave && !fImporting && !fReindex && !m_chainman.ActiveChainstate().IsInitialBlockDownload()) {
+                    LogPrint(BCLog::NET, "ask peer=%d for inv: %s\n", pfrom.GetId(), inv.ToString());
                     pfrom.AskFor(inv);
                 }
 //<SIN
@@ -3813,7 +3813,9 @@ void PeerManager::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDat
 //>SIN
     if (msg_type == NetMsgType::INFLOCKREWARDINIT || msg_type == NetMsgType::INFVERIFY || msg_type == NetMsgType::INFCOMMITMENT ||
         msg_type == NetMsgType::INFLRMUSIG || msg_type == NetMsgType::INFLRGROUP) {
-        inflockreward.ProcessMessage(&pfrom, msg_type, vRecv, m_connman);
+        int nDos = 0;
+        inflockreward.ProcessMessage(&pfrom, msg_type, vRecv, m_connman, nDos);
+        if (nDos > 0) Misbehaving(pfrom.GetId(), nDos, "bad sinovate message");
         return;
     }
 //<SIN

@@ -7,6 +7,7 @@
 
 #include <sinovate/infinitynodeman.h>
 #include <string>
+#include <banman.h>
 
 class CInfinityNodeLockReward;
 class CLockRewardRequest;
@@ -229,6 +230,7 @@ private:
     std::map<uint256, std::vector<COutPoint>> mapSigners; //list of signers for my request only, uint256 = currentLockRequestHash
     std::map<uint256, std::vector<CMusigPartialSignLR>> mapMyPartialSigns; //list of signers for my request only, uint256 = hashGroupSigners
     std::map<int, uint256> mapSigned; // signed Musig for nRewardHeight and hashGroupSigners
+    std::vector<std::string> mapBadSignersConnection; //
     // Keep track of current block height
     int nCachedBlockHeight;
     // Keep track my current LockRequestHash and all related informations
@@ -301,8 +303,8 @@ public:
     void TryConnectToMySigners(int rewardHeight, CConnman& connman);
     //call in UpdatedBlockTip
     bool ProcessBlock(int nBlockHeight, CConnman& connman);
-    //call in processing.cpp when node receive INV
-    void ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman);
+    //call in net_processing.cpp (PeerManager) when node receive INV
+    void ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos);
     void ProcessDirectMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman);
     //call in dsnotificationinterface.cpp when node connect a new block
     void UpdatedBlockTip(const CBlockIndex *pindex, CConnman& connman);
