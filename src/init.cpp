@@ -274,6 +274,18 @@ void Shutdown(NodeContext& node)
     // CValidationInterface callbacks, flush them...
     GetMainSignals().FlushBackgroundCallbacks();
 
+//>SIN
+    if (node.chainman) {
+        LOCK(cs_main);
+        int nLastBlock = node.chainman->ActiveHeight();
+        int nLowHeight = nLastBlock - Params().MaxReorganizationDepth();
+        LogPrintf("Sinovate: scan blocks before close from: %d, to: %d\n", nLowHeight, nLastBlock);
+        infnodeman.buildInfinitynodeList(nLowHeight, nLastBlock);
+        LogPrintf("SINOVATE INFO:\n");
+        LogPrintf("Statement: %s\n", infnodeman.getLastStatementString());
+    }
+//<SIN
+
     // Stop and delete all indexes only after flushing background callbacks.
     if (g_txindex) {
         g_txindex->Stop();
@@ -1602,6 +1614,9 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
         InitError(strprintf(_("Failed to load Infinitynode LockReward cache from %s"), (pathDB / strDBName).string()));
         return false;
     }
+
+    LogPrintf("SINOVATE INFO:\n");
+    LogPrintf("Statement: %s\n", infnodeman.getLastStatementString());
 //<SIN
     fReindex = args.GetBoolArg("-reindex", false);
     bool fReindexChainState = args.GetBoolArg("-reindex-chainstate", false);
