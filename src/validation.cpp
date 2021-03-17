@@ -2632,6 +2632,7 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         }
         infnodeman.removeNonMaturedList(pindexDelete);
         infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
+        infnodeman.updateFinalList(pindexDelete->pprev);
 //<SIN
         bool flushed = view.Flush();
         assert(flushed);
