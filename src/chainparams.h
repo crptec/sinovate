@@ -102,6 +102,7 @@ public:
     const CBrokenFeeBlocksData& BrokenBlocks() const { return brokenfeeblocksData; }
     // sinovate: reorg helper funcs
     int MaxReorganizationDepth() const { return nMaxReorganizationDepth; }
+    int getNodeDelta(int nHeight) const;
 //<SIN
 protected:
     CChainParams() {}
@@ -127,6 +128,7 @@ protected:
     ChainTxData chainTxData;
 //>SIN
     int nMaxReorganizationDepth; //sin
+    int nDeltaChangeHeight;
 //<SIN
 };
 

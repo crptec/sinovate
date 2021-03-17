@@ -63,6 +63,14 @@ static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
 
+int CChainParams::getNodeDelta(int nHeight) const {
+    if (nHeight > nDeltaChangeHeight) {
+        return 2000;
+    } else {
+        return 1000;
+    }
+}
+
 /**
  * Main network
  */
@@ -113,7 +121,7 @@ public:
 
         // IN reorg bounds have been parameterised
         nMaxReorganizationDepth = 55; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
-        
+        nDeltaChangeHeight = 617000;
         // addresses
         consensus.devAddressPubKey = "841e6bf56b99a59545da932de2efb23ab93b4f44";
         consensus.devAddress = "SZLafuDjnjqh2tAfTrG9ZAGzbP8HkzNXvB";
@@ -293,6 +301,10 @@ public:
         fRequireStandard = false;
         m_is_test_chain = true;
         m_is_mockable_chain = false;
+
+        // IN reorg bounds have been parameterised
+        nMaxReorganizationDepth = 14; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
+        nDeltaChangeHeight = 0;
 
         checkpointData = {
             {
@@ -474,6 +486,10 @@ public:
         fRequireStandard = true;
         m_is_test_chain = true;
         m_is_mockable_chain = true;
+
+        // IN reorg bounds have been parameterised
+        nMaxReorganizationDepth = 14; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
+        nDeltaChangeHeight = 0;
 
         checkpointData = {
             {
