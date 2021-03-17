@@ -60,8 +60,6 @@
 #define MICRO 0.000001
 #define MILLI 0.001
 
-static std::set<std::string> setbrokenblocks;
-
 //Sinovate dev-fee consensus
 CScript devScript;
 CScript devScript2;
@@ -2229,22 +2227,15 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
             CAmount txfee = 0;
             TxValidationState tx_state;
             if (!Consensus::CheckTxInputs(tx, tx_state, view, pindex->nHeight, txfee) && !IsBrokenBlock) {
-                /*
                 // Any transaction validation failure in ConnectBlock is a block consensus failure
                 state.Invalid(BlockValidationResult::BLOCK_CONSENSUS,
                             tx_state.GetRejectReason(), tx_state.GetDebugMessage());
-                return error("%s: Consensus::CheckTxInputs: %s, %s", __func__, tx.GetHash().ToString(), state.ToString());*/
+                return error("%s: Consensus::CheckTxInputs: %s, %s", __func__, tx.GetHash().ToString(), state.ToString());
             }
             nFees += txfee;
             if (!MoneyRange(nFees) && !IsBrokenBlock) {
-                setbrokenblocks.insert(pindex->GetBlockHash().ToString());
-                for(auto it = setbrokenblocks.begin();it != setbrokenblocks.end(); it++)
-                {
-                    std::cout << *it << std::endl;
-                }
-                /*
                 LogPrintf("ERROR: %s: accumulated fee in the block out of range.\n", __func__);
-                return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-txns-accumulated-fee-outofrange");*/
+                return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-txns-accumulated-fee-outofrange");
             }
 
             // Check that transaction is BIP68 final
