@@ -1700,7 +1700,7 @@ void static ProcessGetData(CNode& pfrom, Peer& peer, const CChainParams& chainpa
     // Get last mempool request time
     const std::chrono::seconds mempool_req = pfrom.m_tx_relay != nullptr ? pfrom.m_tx_relay->m_last_mempool_req.load()
                                                                           : std::chrono::seconds::min();
-
+    LogPrint(BCLog::NET, "ProcessGetData from peer=%d, is TxMsg: %d, is SinMsg: %d, is BlkMsg: %d.\n", pfrom.GetId(), it->IsGenTxMsg(), it->IsGenSinMsg(), it->IsGenBlkMsg());
     // Process as many TX items from the front of the getdata queue as
     // possible, since they're common and it's efficient to batch process
     // them.
@@ -1746,7 +1746,31 @@ void static ProcessGetData(CNode& pfrom, Peer& peer, const CChainParams& chainpa
                 }
             }
         } else {
+            vNotFound.push_back(inv);
+        }
+    }
+
+    // Only process one BLOCK item per call, since they're uncommon and can be
+    // expensive to process.
+    if (it != peer.m_getdata_requests.end() && !pfrom.fPauseSend) {
+        const CInv &inv = *it++;
+        if (inv.IsGenBlkMsg()) {
+            ProcessGetBlockData(pfrom, chainparams, inv, connman);
+        }
+        // else: If the first item on the queue is an unknown type, we erase it
+        // and continue processing the queue on the next call.
+    }
+
 //>SIN
+    // Process Sinovate Inv data
+    while (it != peer.m_getdata_requests.end() && it->IsGenSinMsg()) {
+        if (interruptMsgProc) return;
+        // The send buffer provides backpressure. If there's no space in
+        // the buffer, pause processing until the next call.
+        if (pfrom.fPauseSend) break;
+
+        const CInv &inv = *it++;
+        LogPrint(BCLog::NET, "ProcessGetData from peer=%d for inv: %s\n", pfrom.GetId(), inv.ToString());
             // All node INV
             {
                 bool pushed = false;
@@ -1795,20 +1819,8 @@ void static ProcessGetData(CNode& pfrom, Peer& peer, const CChainParams& chainpa
                 if (!pushed)
                     vNotFound.push_back(inv);
             }
+    }
 //<SIN
-        }
-    }
-
-    // Only process one BLOCK item per call, since they're uncommon and can be
-    // expensive to process.
-    if (it != peer.m_getdata_requests.end() && !pfrom.fPauseSend) {
-        const CInv &inv = *it++;
-        if (inv.IsGenBlkMsg()) {
-            ProcessGetBlockData(pfrom, chainparams, inv, connman);
-        }
-        // else: If the first item on the queue is an unknown type, we erase it
-        // and continue processing the queue on the next call.
-    }
 
     peer.m_getdata_requests.erase(peer.m_getdata_requests.begin(), it);
 
@@ -2355,6 +2367,17 @@ void PeerManager::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDat
 
     PeerRef peer = GetPeerRef(pfrom.GetId());
     if (peer == nullptr) return;
+
+//>SIN
+    if (msg_type == NetMsgType::INFLOCKREWARDINIT || msg_type == NetMsgType::INFVERIFY || msg_type == NetMsgType::INFCOMMITMENT ||
+        msg_type == NetMsgType::INFLRMUSIG || msg_type == NetMsgType::INFLRGROUP) {
+        LogPrint(BCLog::NET, "ProcessMessage: sinovate %s message from peer=%d\n", SanitizeString(msg_type), pfrom.GetId());
+        int nDos = 0;
+        inflockreward.ProcessMessage(&pfrom, msg_type, vRecv, m_connman, nDos);
+        if (nDos > 0) Misbehaving(pfrom.GetId(), nDos, "bad sinovate message");
+        return;
+    }
+//<SIN
 
     if (msg_type == NetMsgType::VERSION) {
         // Each connection can only send one version message
@@ -3810,15 +3833,6 @@ void PeerManager::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDat
         ProcessGetCFCheckPt(pfrom, vRecv, m_chainparams, m_connman);
         return;
     }
-//>SIN
-    if (msg_type == NetMsgType::INFLOCKREWARDINIT || msg_type == NetMsgType::INFVERIFY || msg_type == NetMsgType::INFCOMMITMENT ||
-        msg_type == NetMsgType::INFLRMUSIG || msg_type == NetMsgType::INFLRGROUP) {
-        int nDos = 0;
-        inflockreward.ProcessMessage(&pfrom, msg_type, vRecv, m_connman, nDos);
-        if (nDos > 0) Misbehaving(pfrom.GetId(), nDos, "bad sinovate message");
-        return;
-    }
-//<SIN
 
     if (msg_type == NetMsgType::NOTFOUND) {
         std::vector<CInv> vInv;
@@ -4667,11 +4681,38 @@ bool PeerManager::SendMessages(CNode* pto)
                 m_txrequest.ForgetTxHash(gtxid.GetHash());
             }
         }
-
-
         if (!vGetData.empty())
             m_connman.PushMessage(pto, msgMaker.Make(NetMsgType::GETDATA, vGetData));
-
+//>SIN
+        //
+        // Message: getdata (sinovate AskFor)
+        //
+        int64_t nNow = GetTimeMicros();
+        while (!pto->mapAskFor.empty() && (*pto->mapAskFor.begin()).first <= nNow)
+        {
+            const CInv& inv = (*pto->mapAskFor.begin()).second;
+            if (!AlreadyHaveSin(inv))
+            {
+                LogPrint(BCLog::NET, "Requesting Sinovate data %s peer=%d\n", inv.ToString(), pto->GetId());
+                vGetData.push_back(inv);
+                if (vGetData.size() >= 1000)
+                {
+                    m_connman.PushMessage(pto, msgMaker.Make(NetMsgType::GETDATA, vGetData));
+                    LogPrint(BCLog::NET, "Request Sinovate data pushed size = %lu peer=%d\n", vGetData.size(), pto->GetId());
+                    vGetData.clear();
+                }
+            } else {
+                //If we're not going to ask, don't expect a response.
+                LogPrint(BCLog::NET, "Request Sinovate data already have inv = %s peer=%d\n", inv.ToString(), pto->GetId());
+                pto->setAskFor.erase(inv.hash);
+            }
+            pto->mapAskFor.erase(pto->mapAskFor.begin());
+        }
+        if (!vGetData.empty()) {
+            m_connman.PushMessage(pto, msgMaker.Make(NetMsgType::GETDATA, vGetData));
+            LogPrint(BCLog::NET, "Request tail Sinovate data pushed size = %lu peer=%d\n", vGetData.size(), pto->GetId());
+        }
+//<SIN
         //
         // Message: feefilter
         //
