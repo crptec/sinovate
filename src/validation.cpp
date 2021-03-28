@@ -60,9 +60,13 @@
 #define MICRO 0.000001
 #define MILLI 0.001
 
+//>SIN
 //Sinovate dev-fee consensus
 CScript devScript;
 CScript devScript2;
+bool fInfinityNode = false;
+std::atomic<int> nRawBlockCount(0);
+//<SIN
 
 CAmount GetDevCoin(int nHeight, CAmount reward) {
     if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight < 100) {
@@ -1840,6 +1844,10 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
 
     // move best block pointer to prevout block
     view.SetBestBlock(pindex->pprev->GetBlockHash());
+//>SIN
+    // reverse our small raw height index
+    nRawBlockCount--;
+//<SIN
 
     return fClean ? DISCONNECT_OK : DISCONNECT_UNCLEAN;
 }
@@ -2348,6 +2356,10 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
 
     int64_t nTime6 = GetTimeMicros(); nTimeCallbacks += nTime6 - nTime5;
     LogPrint(BCLog::BENCH, "    - Callbacks: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime6 - nTime5), nTimeCallbacks * MICRO, nTimeCallbacks * MILLI / nBlocksTotal);
+
+//>SIN
+    nRawBlockCount++;
+//<SIN
 
     return true;
 }

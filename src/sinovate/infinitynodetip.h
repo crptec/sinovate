@@ -10,8 +10,6 @@
 
 #include <univalue.h>
 
-extern bool fInfinityNode;
-
 class CInfinitynodeTip;
 extern CInfinitynodeTip infTip;
 

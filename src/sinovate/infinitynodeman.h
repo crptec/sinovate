@@ -115,12 +115,14 @@ public:
         if(nSinType == 10) return nBIGLastStmHeight;
         if(nSinType == 5) return nMIDLastStmHeight;
         if(nSinType == 1) return nLILLastStmHeight;
+        return 0;
     }
     int getLastStatementSize(int nSinType){
         LOCK(cs);
         if(nSinType == 10) return nBIGLastStmSize;
         if(nSinType == 5) return nMIDLastStmSize;
         if(nSinType == 1) return nLILLastStmSize;
+        return 0;
     }
     int getCacheHeightInf(){LOCK(cs); return nCachedBlockHeight;};
 

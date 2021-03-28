@@ -54,6 +54,7 @@
 #include <sinovate/infinitynodemeta.h>
 #include <sinovate/infinitynodelockreward.h>
 #include <sinovate/flat-database.h>
+#include <sinovate/messagesigner.h>
 //<SIN
 #include <sync.h>
 #include <timedata.h>
@@ -1305,6 +1306,36 @@ bool AppInitInterfaces(NodeContext& node)
     return true;
 }
 
+//>SIN
+void ThreadCheckInfinityNode(CConnman& connman)
+{
+    unsigned int nTickDIN = 0;
+    if(fInfinityNode) {
+        infinitynodePeer.ManageState(connman);
+    }
+    while (true)
+    {
+        std::this_thread::sleep_for(1000ms);
+        nTickDIN++;
+        if(nTickDIN % 60 == 0) {
+            if(fInfinityNode && infinitynodePeer.nState != INFINITYNODE_PEER_STARTED)
+            {
+                infinitynodePeer.ManageState(connman);
+            }
+        }
+        if(nTickDIN % (60 * 5) == 0) {
+            if(infnodeman.isReachedLastBlock()){
+                ENTER_CRITICAL_SECTION(cs_main);
+                //call buildInfinitynodeList and deterministicRewardStatement(nSINtype)
+                infnodeman.CheckAndRemove(connman);
+                inflockreward.CheckAndRemove(connman);
+                LEAVE_CRITICAL_SECTION(cs_main);
+            }
+        }
+    }
+}
+//<SIN
+
 bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 {
     const ArgsManager& args = *Assert(node.args);
@@ -1927,6 +1958,18 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
     if (args.GetBoolArg("-infinitynode", false)) {
         fInfinityNode = true;
     }
+    if(fInfinityNode) {
+        std::string strInfinityNodePrivKey = gArgs.GetArg("-infinitynodeprivkey", "");
+        if(!strInfinityNodePrivKey.empty()) {
+            if(!CMessageSigner::GetKeysFromSecret(strInfinityNodePrivKey, infinitynodePeer.keyInfinitynode, infinitynodePeer.pubKeyInfinitynode))
+                return InitError(_("Invalid infinitynodeprivkey. Please see documentation."));
+            CTxDestination dest = GetDestinationForKey(infinitynodePeer.pubKeyInfinitynode, OutputType::LEGACY);
+            LogPrintf("PubKeyInfinitynode: %s, address: %s\n", infinitynodePeer.pubKeyInfinitynode.GetID().ToString(), EncodeDestination(dest));
+            infinitynodePeer.ManageState(*node.connman);
+        } else {
+            return InitError(_("You must specify a infinitynodeprivkey in the configuration. Please see documentation for help."));
+        }
+    }
 //<SIN
     // ********************************************************* Step 11: import blocks
 
@@ -1985,7 +2028,12 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
     if (ShutdownRequested()) {
         return false;
     }
-
+//>SIN
+    // ********************************************************* Step 11.1: start sinovate threads
+    //threadGroup.create_thread(boost::bind(&ThreadCheckInfinityNode, boost::ref(node.connman)));
+    std::thread t(ThreadCheckInfinityNode, boost::ref(*node.connman));
+    t.detach();
+//<SIN
     // ********************************************************* Step 12: start node
 
     int chain_active_height;
@@ -2006,6 +2054,10 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
         }
     }
     LogPrintf("nBestHeight = %d\n", chain_active_height);
+//>SIN
+    // simple raw block height index: 
+    nRawBlockCount = chain_active_height;
+//<SIN
 
     Discover();
 

@@ -55,6 +55,9 @@ struct LockPoints;
 /** Default for -minrelaytxfee, minimum relay fee for transactions */
 //>SIN
 static const unsigned int DEFAULT_MIN_RELAY_TX_FEE = 2500000;
+extern bool fInfinityNode;
+extern std::atomic<int> nRawBlockCount;
+
 //<SIN
 /** Default for -limitancestorcount, max number of in-mempool ancestors */
 static const unsigned int DEFAULT_ANCESTOR_LIMIT = 25;

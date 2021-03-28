@@ -7,8 +7,6 @@
 
 #include <validation.h>
 
-bool fInfinityNode = false;
-
 CInfinitynodeTip infTip;
 
 CInfinitynodeTip::CInfinitynodeTip()

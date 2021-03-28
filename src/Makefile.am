@@ -213,6 +213,7 @@ BITCOIN_CORE_H = \
   sinovate/infinitynodersv.h \
   sinovate/infinitynodetip.h \
   sinovate/messagesigner.h \
+  sinovate/rpc/infinitynode.h \
   streams.h \
   support/allocators/secure.h \
   support/allocators/zeroafterfree.h \
@@ -345,6 +346,7 @@ libbitcoin_server_a_SOURCES = \
   sinovate/infinitynodersv.cpp \
   sinovate/infinitynodetip.cpp \
   sinovate/messagesigner.cpp \
+  sinovate/rpc/infinitynode.cpp \
   timedata.cpp \
   torcontrol.cpp \
   txdb.cpp \
