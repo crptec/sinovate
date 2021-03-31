@@ -76,6 +76,7 @@ public:
     bool Has(std::string  lrinfo);
     std::vector<CLockRewardExtractInfo> getFullLRInfo(){LOCK(cs); return vecLRInfo; }
     bool getLRInfo(int nRewardHeight, std::vector<CLockRewardExtractInfo>& vecLRRet);
+    bool getLRInfoFromHeight(int nRewardHeight, std::vector<CLockRewardExtractInfo>& vecLRRet);
     bool ExtractLRFromBlock(const CBlock& block, CBlockIndex* pindex,
                   CCoinsViewCache& view, const CChainParams& chainparams, std::vector<CLockRewardExtractInfo>& vecLRRet);
 

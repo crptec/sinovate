@@ -1960,6 +1960,7 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
     }
     if(fInfinityNode) {
         std::string strInfinityNodePrivKey = gArgs.GetArg("-infinitynodeprivkey", "");
+        LogPrintf("readed privateKey: %s\n", strInfinityNodePrivKey);
         if(!strInfinityNodePrivKey.empty()) {
             if(!CMessageSigner::GetKeysFromSecret(strInfinityNodePrivKey, infinitynodePeer.keyInfinitynode, infinitynodePeer.pubKeyInfinitynode))
                 return InitError(_("Invalid infinitynodeprivkey. Please see documentation."));

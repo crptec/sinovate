@@ -68,6 +68,12 @@ static RPCHelpMan infinitynode()
                     + HelpExampleCli("infinitynode", "show-stm")
                     + "\nShow the candidates for Height\n"
                     + HelpExampleCli("infinitynode", "show-candiate height")
+                    + "\nShow informations about all infinitynodes of network.\n"
+                    + HelpExampleCli("infinitynode", "show-infos")
+                    + "\nShow metadata of all infinitynodes of network.\n"
+                    + HelpExampleCli("infinitynode", "show-metadata")
+                    + "\nShow lockreward of network.\n"
+                    + HelpExampleCli("infinitynode", "show-lockreward")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
@@ -194,6 +200,117 @@ static RPCHelpMan infinitynode()
         obj.pushKV("CandidateMID: ", infMID.getCollateralAddress());
         obj.pushKV("CandidateLIL: ", infLIL.getCollateralAddress());
 
+        return obj;
+    }
+
+    if (strCommand == "show-infos")
+    {
+        std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
+        std::map<std::string, CMetadata> mapInfMetadata = infnodemeta.GetFullNodeMetadata();
+        for (auto& infpair : mapInfinitynodes) {
+            std::string strOutpoint = infpair.first.ToStringFull();
+            CInfinitynode inf = infpair.second;
+            CMetadata meta = mapInfMetadata[inf.getMetaID()];
+            std::string nodeAddress = "NodeAddress";
+
+            if (meta.getMetaPublicKey() != "") nodeAddress = meta.getMetaPublicKey();
+
+                std::ostringstream streamInfo;
+                streamInfo << std::setw(8) <<
+                               inf.getCollateralAddress() << " " <<
+                               inf.getHeight() << " " <<
+                               inf.getExpireHeight() << " " <<
+                               inf.getRoundBurnValue() << " " <<
+                               inf.getSINType() << " " <<
+                               inf.getBackupAddress() << " " <<
+                               inf.getLastRewardHeight() << " " <<
+                               inf.getRank() << " " << 
+                               infnodeman.getLastStatementSize(inf.getSINType()) << " " <<
+                               inf.getMetaID() << " " <<
+                               nodeAddress << " " <<
+                               meta.getService().ToString()
+                               ;
+                std::string strInfo = streamInfo.str();
+                obj.pushKV(strOutpoint, strInfo);
+        }
+        return obj;
+    }
+
+    if (strCommand == "show-metadata")
+    {
+        std::map<std::string, CMetadata>  mapCopy = infnodemeta.GetFullNodeMetadata();
+        obj.pushKV("Metadata", (int)mapCopy.size());
+        for (auto& infpair : mapCopy) {
+            std::ostringstream streamInfo;
+            std::vector<unsigned char> tx_data = DecodeBase64(infpair.second.getMetaPublicKey().c_str());
+
+                CPubKey pubKey(tx_data.begin(), tx_data.end());
+                CTxDestination nodeDest = GetDestinationForKey(pubKey, OutputType::LEGACY);
+
+                streamInfo << std::setw(8) <<
+                               infpair.second.getMetaPublicKey() << " " <<
+                               infpair.second.getService().ToString() << " " <<
+                               infpair.second.getMetadataHeight() << " " <<
+                               EncodeDestination(nodeDest)
+                ;
+                std::string strInfo = streamInfo.str();
+
+            UniValue metaHisto(UniValue::VARR);
+            for(auto& v : infpair.second.getHistory()){
+                 std::ostringstream vHistoMeta;
+                 std::vector<unsigned char> tx_data_h = DecodeBase64(v.pubkeyHisto.c_str());
+
+                 CPubKey pubKey_h(tx_data_h.begin(), tx_data_h.end());
+                 CTxDestination nodeDest_h = GetDestinationForKey(pubKey_h, OutputType::LEGACY);
+
+                 vHistoMeta << std::setw(4) <<
+                     v.nHeightHisto  << " " <<
+                     v.pubkeyHisto << " " <<
+                     v.serviceHisto.ToString() << " " <<
+                     EncodeDestination(nodeDest_h)
+                     ;
+                 std::string strHistoMeta = vHistoMeta.str();
+                 metaHisto.push_back(strHistoMeta);
+            }
+            obj.pushKV(infpair.first, strInfo);
+            std::string metaHistStr = strprintf("History %s", infpair.first);
+            obj.pushKV(metaHistStr, metaHisto);
+        }
+        return obj;
+    }
+
+    if (strCommand == "show-lockreward")
+    {
+        CBlockIndex* pindex = NULL;
+        {
+            LOCK(cs_main);
+            pindex = ::ChainActive().Tip();
+        }
+
+        int nBlockNumber = pindex->nHeight - 55 * 10;
+
+        std::vector<CLockRewardExtractInfo> vecLockRewardRet;
+        infnodelrinfo.getLRInfoFromHeight(nBlockNumber, vecLockRewardRet);
+
+        obj.pushKV("Result", (int)vecLockRewardRet.size());
+        obj.pushKV("Current height", pindex->nHeight);
+        int i=0;
+        for (auto& v : vecLockRewardRet) {
+                std::ostringstream streamInfo;
+                CTxDestination address;
+                bool fValidAddress = ExtractDestination(v.scriptPubKey, address);
+
+                std::string owner = "Unknow";
+                if(fValidAddress) owner = EncodeDestination(address);
+
+                streamInfo << std::setw(1) <<
+                               v.nSINtype << " " <<
+                               owner  << " " <<
+                               v.sLRInfo;
+                std::string strInfo = streamInfo.str();
+                obj.pushKV(strprintf("%d-%d",v.nBlockHeight, i), strInfo);
+            i++;
+        }
         return obj;
     }
 

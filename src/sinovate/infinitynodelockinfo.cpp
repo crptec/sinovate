@@ -59,6 +59,18 @@ bool CInfinitynodeLockInfo::getLRInfo(int nRewardHeight, std::vector<CLockReward
     return true;
 }
 
+bool CInfinitynodeLockInfo::getLRInfoFromHeight(int nRewardHeight, std::vector<CLockRewardExtractInfo>& vecLRRet)
+{
+    vecLRRet.clear();
+    LOCK(cs);
+    for(auto& vinfo : vecLRInfo){
+        if(vinfo.nRewardHeight >= nRewardHeight){
+            vecLRRet.push_back(vinfo);
+        }
+    }
+    return true;
+}
+
 bool CInfinitynodeLockInfo::ExtractLRFromBlock(const CBlock& block, CBlockIndex* pindex,
                   CCoinsViewCache& view, const CChainParams& chainparams, std::vector<CLockRewardExtractInfo>& vecLRRet)
 {
