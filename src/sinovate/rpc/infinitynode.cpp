@@ -18,7 +18,10 @@ static RPCHelpMan infinitynode()
                 },
                 {
                     RPCResult{RPCResult::Type::NONE, "", ""},
-                    RPCResult{"keypair",
+                    RPCResult{RPCResult::Type::NUM, "", ""},
+                    RPCResult{RPCResult::Type::STR, "", ""},
+                    RPCResult{RPCResult::Type::BOOL, "", ""},
+                    RPCResult{"keypair, checkkey command",
                         RPCResult::Type::OBJ, "", "",
                         {
                             {RPCResult::Type::STR_HEX, "PrivateKey", "The PrivateKey"},
@@ -28,23 +31,47 @@ static RPCHelpMan infinitynode()
                             {RPCResult::Type::BOOL, "isCompressed", "isCompressed (true/false)"},
                         },
                     },
+                    RPCResult{"mypeerinfo",
+                        RPCResult::Type::OBJ, "", "",
+                        {
+                            {RPCResult::Type::STR, "MyPeerInfo", "The candidate of reward for BIG node"},
+                        },
+                    },
+                    RPCResult{"build-stm",
+                        RPCResult::Type::OBJ, "", "",
+                        {
+                            {RPCResult::Type::STR, "Height", "The candidate of reward for BIG node"},
+                            {RPCResult::Type::STR, "Result", "The candidate of reward for MID node"},
+                        },
+                    },
+                    RPCResult{"show-candidate command",
+                        RPCResult::Type::OBJ, "", "",
+                        {
+                            {RPCResult::Type::STR, "CandidateBIG", "The candidate of reward for BIG node"},
+                            {RPCResult::Type::STR, "CandidateMID", "The candidate of reward for MID node"},
+                            {RPCResult::Type::STR, "CandidateLIL", "The candidate of reward for LIL node"},
+                        },
+                    },
                 },
                 RPCExamples{
                     "\nCreate a new Private/Public key\n"
                     + HelpExampleCli("infinitynode", "keypair")
+                    + "\nCheck Private key\n"
+                    + HelpExampleCli("infinitynode", "checkkey PRIVATEKEY")
+                    + "\nInfinitynode: Get current block height\n"
+                    + HelpExampleCli("infinitynode", "getrawblockcount")
+                    + "\nInfinitynode: show peer info\n"
+                    + HelpExampleCli("infinitynode", "mypeerinfo")
+                    + "\nBuild statement of Infinitynode from height 1\n"
+                    + HelpExampleCli("infinitynode", "build-stm")
+                    + "\nShow current statement of Infinitynode\n"
+                    + HelpExampleCli("infinitynode", "show-stm")
+                    + "\nShow the candidates for Height\n"
+                    + HelpExampleCli("infinitynode", "show-candiate height")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
     const std::string strCommand = request.params[0].get_str();
-    SecureString strFilter, strOption;
-    strFilter.reserve(50); strOption.reserve(50);
-    if (!request.params[1].isNull()) {
-        strFilter = request.params[1].get_str().c_str();
-    }
-    if (!request.params[2].isNull()) {
-        strOption = request.params[2].get_str().c_str();
-    }
-
     std::string strError;
 
     UniValue obj(UniValue::VOBJ);
@@ -66,6 +93,107 @@ static RPCHelpMan infinitynode()
         obj.pushKV("DecodePublicKey", decodePubKey.GetID().ToString());
         obj.pushKV("Address", EncodeDestination(dest));
         obj.pushKV("isCompressed", pubkey.IsCompressed());
+        return obj;
+    }
+
+    if (strCommand == "checkkey")
+    {
+        const std::string strKey = request.params[1].get_str();
+        CKey secret = DecodeSecret(strKey);
+        if (!secret.IsValid()) throw JSONRPCError(RPC_INTERNAL_ERROR, "Not a valid key");
+
+        CPubKey pubkey = secret.GetPubKey();
+        assert(secret.VerifyPubKey(pubkey));
+
+        std::string sBase64 = EncodeBase64(pubkey);
+        std::vector<unsigned char> tx_data = DecodeBase64(sBase64.c_str());
+        CPubKey decodePubKey(tx_data.begin(), tx_data.end());
+        CTxDestination dest = GetDestinationForKey(decodePubKey, DEFAULT_ADDRESS_TYPE);
+
+        obj.pushKV("PrivateKey", EncodeSecret(secret));
+        obj.pushKV("PublicKey", sBase64);
+        obj.pushKV("DecodePublicKey", decodePubKey.GetID().ToString());
+        obj.pushKV("Address", EncodeDestination(dest));
+        obj.pushKV("isCompressed", pubkey.IsCompressed());
+
+        return obj;
+    }
+
+    if (strCommand == "getblockcount")
+    {
+        if (!fInfinityNode)
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "This is not an InfinityNode");
+
+        return infinitynodePeer.getCacheHeightInf();
+    }
+
+    if (strCommand == "getrawblockcount")
+    {
+        if (!fInfinityNode)
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "This is not an InfinityNode");
+        int ret = nRawBlockCount;
+        return ret;
+    }
+
+    if (strCommand == "mypeerinfo")
+    {
+        if (!fInfinityNode)
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "This is not an InfinityNode");
+
+        NodeContext& node = EnsureNodeContext(request.context);
+        if(!node.connman)
+            throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+
+        UniValue infObj(UniValue::VOBJ);
+        infinitynodePeer.ManageState(*node.connman);
+        infObj.pushKV("MyPeerInfo", infinitynodePeer.GetMyPeerInfo());
+        return infObj;
+    }
+
+    if (strCommand == "build-stm")
+    {
+        CBlockIndex* pindex = NULL;
+        {
+                LOCK(cs_main);
+                pindex = ::ChainActive().Tip();
+        }
+        bool updateStm = false;
+        LOCK(cs_main);
+        updateStm = infnodeman.buildInfinitynodeList(1, pindex->nHeight);
+        obj.pushKV("Height", pindex->nHeight);
+        obj.pushKV("Result", updateStm);
+        return obj;
+    }
+
+    if (strCommand == "show-stm")
+    {
+        return infnodeman.getLastStatementString();
+    }
+
+    if (strCommand == "show-candidate")
+    {
+        if (request.params.size() != 2)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Correct usage is 'infinitynode show-candidate \"nHeight\"'");
+
+        const std::string strFilter = request.params[1].get_str();
+
+        int nextHeight = atoi(strFilter);
+
+        if (nextHeight < Params().GetConsensus().nInfinityNodeGenesisStatement) {
+            strError = strprintf("nHeight must be higher than the Genesis Statement height (%s)", Params().GetConsensus().nInfinityNodeGenesisStatement);
+            throw JSONRPCError(RPC_INVALID_PARAMETER, strError);
+        }
+
+        CInfinitynode infBIG, infMID, infLIL;
+        LOCK(infnodeman.cs);
+        infnodeman.deterministicRewardAtHeight(nextHeight, 10, infBIG);
+        infnodeman.deterministicRewardAtHeight(nextHeight, 5, infMID);
+        infnodeman.deterministicRewardAtHeight(nextHeight, 1, infLIL);
+
+        obj.pushKV("CandidateBIG: ", infBIG.getCollateralAddress());
+        obj.pushKV("CandidateMID: ", infMID.getCollateralAddress());
+        obj.pushKV("CandidateLIL: ", infLIL.getCollateralAddress());
+
         return obj;
     }
 
