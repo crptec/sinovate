@@ -194,8 +194,11 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIn
     result.pushKV("flags", strprintf("%s", blockindex->IsProofOfStake()? "proof-of-stake" : "proof-of-work"));
     if (block.IsProofOfStake()) {
         uint256 hashProofOfStakeRet = uint256();
-        if (blockindex->pprev && !GetStakeKernelHash(hashProofOfStakeRet, block, blockindex->pprev)) {
-            throw JSONRPCError(RPC_INTERNAL_ERROR, "Cannot get proof of stake hash");
+        {
+            LOCK(cs_main);
+            if (blockindex->pprev && !GetStakeKernelHash(hashProofOfStakeRet, block, blockindex->pprev)) {
+                throw JSONRPCError(RPC_INTERNAL_ERROR, "Cannot get proof of stake hash");
+            }
         }
         std::string stakeModifier = (blockindex->GetStakeModifier().GetHex());
         result.pushKV("stakeModifier", stakeModifier);
