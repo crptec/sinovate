@@ -490,7 +490,7 @@ public:
         // proof-of-stake: activation and params
         consensus.nStartPoSHeight = 90;
         consensus.nStakeMinDepth = 10;
-        consensus.posLimit = uint256S("0000000000001fffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.fPoSNoRetargeting = false;
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;

@@ -220,7 +220,6 @@ void StakerCtx::CheckForCoins(CWallet* pwallet, std::vector<CStakeableOutput>* a
 {
 
     if (!pwallet || !pStakerStatus) {
-        std::cout << "No pwallet/pStakerStatus"  << std::endl;
         return;
     }
 

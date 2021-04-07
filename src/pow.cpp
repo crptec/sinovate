@@ -41,14 +41,14 @@ std::map<int, int> GetContextLWMA(const CBlockIndex* pindex, int nContextScope, 
 {
     std::map<int, int> mapRet;
     int nIdx = 0;
-    while (fProofOfStake && pindex && pindex->pprev && nIdx < nContextScope) {
+    while (fProofOfStake && pindex && pindex->pprev && nIdx <= nContextScope) {
         if (pindex->IsProofOfStake()) {
             nIdx++;
             mapRet.insert(std::pair<int, int>(nIdx, pindex->nHeight));
         }
         pindex = pindex->pprev;
     }
-    while (!fProofOfStake && pindex && pindex->pprev && nIdx < nContextScope) {
+    while (!fProofOfStake && pindex && pindex->pprev && nIdx <= nContextScope) {
         if (pindex->IsProofOfWork()) {
             nIdx++;
             mapRet.insert(std::pair<int, int>(nIdx, pindex->nHeight));
@@ -169,17 +169,19 @@ unsigned int Lwma3CalculateNextWorkRequired(const CBlockIndex* pindexLast, const
     // New coins should just give away first N blocks before using this algorithm.
     if (height < N) { return ProofLimit.GetCompact(); }
 
-    // Special rule for PoS activation, make sure we use LWMA only after 300 (lwmaAveragingWindow) PoS blocks have been found
-    if (fProofOfStake && height > (params.nStartPoSHeight + 3 * N)) { // Check for this rule only for 3 * N blocks over PoS activation.
+    // Special rule for PoS activation, make sure we use LWMA only after ~300 (lwmaAveragingWindow) PoS blocks have been found
+    if (fProofOfStake && height > params.nStartPoSHeight && height < params.nStartPoSHeight + 3 * N) { // Check for this rule only for 3 * N blocks over PoS activation.
         nPoSBlocksCounter = CountPoS(pindexLast, params.nStartPoSHeight);
-        // Let the first N PoS blocks use ppcoin EMA
-        if (nPoSBlocksCounter < N) { 
+        // Let the first N + 1 PoS blocks use ppcoin EMA
+        if (nPoSBlocksCounter <= N + 1) { 
             const CBlockIndex* pindexPrev = GetLastBlockIndex(pindexLast, fProofOfStake);
-            if (pindexPrev->pprev == nullptr)
+            if (pindexPrev->pprev == nullptr) {
                 return ProofLimit.GetCompact(); // first block
+            }
             const CBlockIndex* pindexPrevPrev = GetLastBlockIndex(pindexPrev->pprev, fProofOfStake);
-            if (pindexPrevPrev->pprev == nullptr)
+            if (pindexPrevPrev->pprev == nullptr) {
                 return ProofLimit.GetCompact(); // second block
+            }
 
             int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
             if (nActualSpacing < 0)
