@@ -92,6 +92,35 @@ struct Params {
     //x25x hf
     int nX25XForkHeight;
 
+    // proof-of-stake: activation and params
+    int nStartPoSHeight;
+    int nStakeMinAge;
+    int nStakeMinDepth;
+    int64_t nTargetTimespan;
+    int64_t nTargetSpacing;
+    int nTimeSlotLength;
+    uint256 posLimit;
+    bool fPoSNoRetargeting;
+
+    // proof-of-stake: helper funcs
+
+    int FutureBlockTimeDrift() const
+    {
+        // PoS (TimeV2): 14 seconds
+        return nTimeSlotLength - 1;
+    }
+
+    bool IsValidBlockTimeStamp(const int64_t nTime) const
+    {
+        return (nTime % nTimeSlotLength) == 0;
+    }
+
+    bool HasStakeMinDepth(const int contextHeight,
+            const int utxoFromBlockHeight) const
+    {
+        return (contextHeight - utxoFromBlockHeight >= nStakeMinDepth);
+    }
+
     /* Sinovate params END */
 
     uint256 hashGenesisBlock;
@@ -128,6 +157,7 @@ struct Params {
     bool fPowNoRetargeting;
     int64_t nPowTargetSpacing;
     int64_t nPowTargetTimespan;
+    int64_t nPoS_EMATargetTimespan;
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     /** The best chain should have at least this much work */
     uint256 nMinimumChainWork;

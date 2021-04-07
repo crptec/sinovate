@@ -77,7 +77,7 @@ int CChainParams::getNodeDelta(int nHeight) const {
 class CMainParams : public CChainParams {
 public:
     CMainParams() {
-        /* Sinovate params START */
+        /** Sinovate params START */
 
         // broken negative fee blocks
         brokenfeeblocksData = brokenfeeblocksDataMain;
@@ -122,6 +122,14 @@ public:
         // IN reorg bounds have been parameterised
         nMaxReorganizationDepth = 55; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
         nDeltaChangeHeight = 617000;
+
+        // proof-of-stake: activation and params
+        consensus.nStartPoSHeight = 9999999;
+        consensus.nStakeMinDepth = 14400;
+        consensus.posLimit = uint256S("0000000000001fffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.fPoSNoRetargeting = false;
+        consensus.nPoS_EMATargetTimespan = 30 * 60;
+        
         // addresses
         consensus.devAddressPubKey = "841e6bf56b99a59545da932de2efb23ab93b4f44";
         consensus.devAddress = "SZLafuDjnjqh2tAfTrG9ZAGzbP8HkzNXvB";
@@ -134,7 +142,7 @@ public:
         consensus.cLockRewardAddress = "SinBurnAddressForLockRewardXTbeffB";
         consensus.cGovernanceAddress = "SinBurnAddressGovernanceVoteba5vkQ";
 
-        /* Sinovate params END */
+        /** Sinovate params END */
         strNetworkID = CBaseChainParams::MAIN;
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
@@ -434,6 +442,69 @@ public:
 class CRegTestParams : public CChainParams {
 public:
     explicit CRegTestParams(const ArgsManager& args) {
+        /** Sinovate params START */
+
+        // broken negative fee blocks
+        brokenfeeblocksData = brokenfeeblocksDataMain;
+
+        // legacy Dash, needs refac
+        consensus.nMasternodeBurnSINNODE_1 = 100000;
+        consensus.nMasternodeBurnSINNODE_5 = 500000;
+        consensus.nMasternodeBurnSINNODE_10 = 1000000;
+
+        // node number bounds
+        consensus.nLimitSINNODE_1=375;
+        consensus.nLimitSINNODE_5=375;
+        consensus.nLimitSINNODE_10=375;
+
+        // IN params
+        consensus.nInfinityNodeBeginHeight=100;
+        consensus.nInfinityNodeGenesisStatement=110;
+        consensus.nInfinityNodeUpdateMeta=5;
+        consensus.nInfinityNodeNotificationValue=1;
+        consensus.nInfinityNodeCallLockRewardDeepth=5;
+        consensus.nInfinityNodeCallLockRewardLoop=2; //in number of blocks
+        consensus.nInfinityNodeLockRewardTop=5; //in number
+        consensus.nInfinityNodeLockRewardSigners=2; //in number
+        consensus.nInfinityNodeLockRewardSINType=1; //in number
+        consensus.nSchnorrActivationHeight = 1350000; // wait for active
+        consensus.nInfinityNodeExpireTime=262800;//720*365 days = 1 year
+
+        /*Previously used as simple constants in validation */
+        consensus.nINActivationHeight = 5000; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
+        consensus.nINEnforcementHeight = 5500; // Enforcement of IN payments
+        consensus.nDINActivationHeight = 550000; // Activation of DIN 1.0 payments, and new dev fee address.
+
+        // height at which we fork to X25X
+        consensus.nX25XForkHeight = 500;
+
+        //LWMA diff algo params
+        consensus.lwmaStartHeight = 130;
+        consensus.lwmaAveragingWindow = 96;
+
+        // IN reorg bounds have been parameterised
+        nMaxReorganizationDepth = 55; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
+        nDeltaChangeHeight = 617000;
+
+        // proof-of-stake: activation and params
+        consensus.nStartPoSHeight = 90;
+        consensus.nStakeMinDepth = 10;
+        consensus.posLimit = uint256S("0000000000001fffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.fPoSNoRetargeting = false;
+        consensus.nPoS_EMATargetTimespan = 30 * 60;
+
+        consensus.devAddress2PubKey = "d63bf3a5822bb2f7ac9ced84ae2c1f319c4253e2";
+        consensus.devAddress2 = "n13iidFw2jiVVoz86ouMqv31x7oEe5V4Wm";
+        consensus.devAddressPubKey = "d63bf3a5822bb2f7ac9ced84ae2c1f319c4253e2";
+        consensus.devAddress = "n13iidFw2jiVVoz86ouMqv31x7oEe5V4Wm";
+        consensus.cBurnAddressPubKey = "76a9142be2e66836eda517af05e5b628eb9fedefcd669b88ac";
+        consensus.cBurnAddress = "mjX1AbMEHU14PmHjG2wtSvoydnJ6RxYwC2";
+        consensus.cMetadataAddress = "mueP7L3nMXdshqPEMZ3L5wJumKqhq5dFpm";
+        consensus.cNotifyAddress = "mobk9h9A3QLYKsKw9xWSC4bqYSUsqEwnpk";
+        consensus.cLockRewardAddress = "n3NZ5A6WKiKRMZWu4b1WiHxJjgjza1RMRk";
+        consensus.cGovernanceAddress = "mgmp6o3V4z3kU83QFbNrdtRKGFS6T9yQyB";
+
+        /** Sinovate params END */
         strNetworkID =  CBaseChainParams::REGTEST;
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
@@ -447,10 +518,10 @@ public:
         consensus.SegwitHeight = 0; // SEGWIT is always activated on regtest unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
-        consensus.nPowTargetSpacing = 10 * 60;
+        consensus.nPowTargetTimespan = 3600;
+        consensus.nPowTargetSpacing = 120;
         consensus.fPowAllowMinDifficultyBlocks = true;
-        consensus.fPowNoRetargeting = true;
+        consensus.fPowNoRetargeting = false;
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
         consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
@@ -474,10 +545,10 @@ public:
 
         UpdateActivationParametersFromArgs(args);
 
-        genesis = CreateGenesisBlock(1296688602, 2, 0x207fffff, 1, 50 * COIN);
+        genesis = CreateGenesisBlock(1296688602, 3, 0x207fffff, 1, 50 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        //assert(consensus.hashGenesisBlock == uint256S("0x0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206"));
-        //assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
+        assert(consensus.hashGenesisBlock == uint256S("0x1cf45e8c265c41a6c29e40a285cd635924c7658e2334c19829c3722777cd4823"));
+        assert(genesis.hashMerkleRoot == uint256S("0x2fa6ca3a7c3115918d274574d4016a660e9d9dec86ea984d8815b68e956bb24a"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
@@ -487,13 +558,9 @@ public:
         m_is_test_chain = true;
         m_is_mockable_chain = true;
 
-        // IN reorg bounds have been parameterised
-        nMaxReorganizationDepth = 14; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
-        nDeltaChangeHeight = 0;
-
         checkpointData = {
             {
-                {0, uint256S("0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206")},
+                {0, uint256S("1cf45e8c265c41a6c29e40a285cd635924c7658e2334c19829c3722777cd4823")},
             }
         };
 

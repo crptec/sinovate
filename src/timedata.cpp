@@ -1,4 +1,6 @@
 // Copyright (c) 2014-2020 The Bitcoin Core developers
+// Copyright (c) 2019-2020 The PIVX developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -37,6 +39,9 @@ int64_t GetAdjustedTime()
 }
 
 #define BITCOIN_TIMEDATA_MAX_SAMPLES 200
+
+// proof-of-stake: time protocol v2 slot size (in seconds) 
+#define TIME_PROTOCOL_V2 15
 
 void AddTimeData(const CNetAddr& ip, int64_t nOffsetSample)
 {
@@ -105,4 +110,17 @@ void AddTimeData(const CNetAddr& ip, int64_t nOffsetSample)
             LogPrint(BCLog::NET, "nTimeOffset = %+d  (%+d minutes)\n", nTimeOffset, nTimeOffset / 60);
         }
     }
+}
+
+// Time Protocol V2 (from PIVX, kudos)
+// Timestamp for time protocol V2: slot duration 15 seconds
+int64_t GetTimeSlot(const int64_t nTime)
+{
+    const int slotLen = TIME_PROTOCOL_V2;
+    return (nTime / slotLen) * slotLen;
+}
+
+int64_t GetCurrentTimeSlot()
+{
+    return GetTimeSlot(GetAdjustedTime());
 }

@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -129,6 +131,11 @@ enum BlockStatus: uint32_t {
     BLOCK_OPT_WITNESS       =   128, //!< block data in blk*.data was received with a witness-enforcing client
 };
 
+// Used for nFlags
+enum {
+    BLOCK_PROOF_OF_STAKE = (1 << 0), // is proof-of-stake block
+};
+
 /** The block chain is a tree shaped structure starting with the
  * genesis block at the root, with each block potentially having multiple
  * candidates to be the next block. A blockindex may have multiple pprev pointing
@@ -172,6 +179,14 @@ public:
 
     //! Verification status of this block. See enum BlockStatus
     uint32_t nStatus{0};
+
+    // proof-of-stake specific fields
+
+    // char vector holding the stake modifier bytes. It is empty for PoW blocks. 256 bits.
+    std::vector<unsigned char> vStakeModifier{};
+
+    // uint flag used for differentiating between proof types on blocks
+    unsigned int nFlags{0};
 
     //! block header
     int32_t nVersion{0};
@@ -312,6 +327,19 @@ public:
     //! Efficiently find an ancestor of this block.
     CBlockIndex* GetAncestor(int height);
     const CBlockIndex* GetAncestor(int height) const;
+
+    int64_t MaxFutureBlockTime() const;
+    int64_t MinPastBlockTime() const;
+
+    // proof-of-stake: Block related functions 
+    bool IsProofOfStake() const { return (nFlags & BLOCK_PROOF_OF_STAKE); }
+    bool IsProofOfWork() const { return !IsProofOfStake(); }
+    void SetProofOfStake() { nFlags |= BLOCK_PROOF_OF_STAKE; }
+
+    // proof-of-stake; Modifier related functions
+    void SetStakeModifier(const uint256& nStakeModifier);
+    void SetNewStakeModifier(const uint256& prevoutId);     // generates and sets new v2 modifier
+    uint256 GetStakeModifier() const;
 };
 
 arith_uint256 GetBlockProof(const CBlockIndex& block);
@@ -348,6 +376,8 @@ public:
         if (obj.nStatus & BLOCK_HAVE_UNDO) READWRITE(VARINT(obj.nUndoPos));
 
         // block header
+        READWRITE(obj.nFlags);
+        READWRITE(obj.vStakeModifier);
         READWRITE(obj.nVersion);
         READWRITE(obj.hashPrev);
         READWRITE(obj.hashMerkleRoot);

@@ -312,7 +312,7 @@ public:
 // validation
 bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew);
 // miner
-void FillBlock(CMutableTransaction& txNew, int nBlockHeight);
+void FillBlock(CMutableTransaction& txNew, int nBlockHeight, bool IsProofOfStake = false);
 
 class ECCMusigHandle
 {

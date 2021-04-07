@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -32,6 +34,17 @@
 #include <util/translation.h>
 #include <wallet/coincontrol.h>
 #include <wallet/fees.h>
+
+// proof-of-stake: avoid including these when building the wallet tool
+#ifndef BUILD_BITCOIN_WALLET
+//SIN (proof-of-stake, infinitynodes)
+#include <chainparams.h>
+#include <sinovate/infinitynodelockreward.h>
+#include <pos/stakeinput.h>
+#include <pos/pos.h>
+#include <pos/posminer.h>
+#include <shutdown.h>
+#endif
 
 #include <univalue.h>
 
@@ -84,7 +97,7 @@ static void UpdateWalletSetting(interfaces::Chain& chain,
                                 Optional<bool> load_on_startup,
                                 std::vector<bilingual_str>& warnings)
 {
-    if (load_on_startup == nullopt) return;
+    if (load_on_startup == boost::none) return;
     if (load_on_startup.get() && !AddWalletSetting(chain, wallet_name)) {
         warnings.emplace_back(Untranslated("Wallet load on startup setting could not be updated, so wallet may not be loaded next node startup."));
     } else if (!load_on_startup.get() && !RemoveWalletSetting(chain, wallet_name)) {
@@ -344,6 +357,51 @@ const CWalletTx* CWallet::GetWalletTx(const uint256& hash) const
     if (it == mapWallet.end())
         return nullptr;
     return &(it->second);
+}
+
+bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
+{
+
+    if (pCoins) pCoins->clear();
+
+    LOCK2(cs_wallet, cs_main);
+    for (const auto& it : mapWallet) {
+        const uint256& wtxid = it.first;
+        const CWalletTx* pcoin = &(it).second;
+
+        if (pcoin->IsCoinBase()) {
+            continue;
+        }
+
+        // Check if the tx is selectable
+        int nDepth;
+        if (!CheckTXAvailability(pcoin, true, nDepth))
+            continue;
+
+        // Check min depth requirement for stake inputs
+        if (nDepth < Params().GetConsensus().nStakeMinDepth) continue;
+
+
+        const CBlockIndex* pindex = nullptr;
+        for (unsigned int index = 0; index < pcoin->tx->vout.size(); index++) {
+
+            auto res = CheckOutputAvailability(
+                    pcoin->tx->vout[index],
+                    index,
+                    wtxid,
+                    nullptr, // coin control
+                    false,   // fCoinsSelected
+                    false);   // fIncludeLocked
+
+            if (!res.available) continue;
+
+            // found valid coin
+            if (!pCoins) return true;
+            if (!pindex) pindex = LookupBlockIndex(pcoin->m_confirm.hashBlock);
+            pCoins->emplace_back(CStakeableOutput(pcoin, (int) index, nDepth, res.spendable, res.solvable, false, false, pindex));
+        }
+    }
+    return (pCoins && !pCoins->empty());
 }
 
 void CWallet::UpgradeKeyMetadata()
@@ -2168,6 +2226,69 @@ CAmount CWallet::GetAvailableBalance(const CCoinControl* coinControl) const
     return balance;
 }
 
+/**
+ * proof-of-stake: Test if the transaction is spendable.
+ */
+static bool CheckTXAvailabilityInternal(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
+{
+    if (fOnlyConfirmed && !pcoin->IsTrusted()) return false;
+    if (pcoin->GetBlocksToMaturity() > 0) return false;
+
+    nDepth = pcoin->GetDepthInMainChain();
+
+    // We should not consider coins which aren't at least in our mempool
+    // It's possible for these to be conflicted via ancestors which we may never be able to detect
+    if (nDepth == 0 && !pcoin->InMempool()) return false;
+
+    return true;
+}
+
+// cs_main lock required
+bool CWallet::CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
+{
+    AssertLockHeld(cs_main);
+    return CheckTXAvailabilityInternal(pcoin, fOnlyConfirmed, nDepth);
+}
+
+CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
+        const CTxOut& output,
+        const unsigned int outIndex,
+        const uint256& wtxid,
+        const CCoinControl* coinControl,
+        const bool fCoinsSelected,
+        const bool fIncludeLocked) const
+{
+    OutputAvailabilityResult res;
+
+    // Check if the utxo was spent.
+    if (IsSpent(wtxid, outIndex)) return res;
+
+    isminetype mine = IsMine(output);
+
+    // Check If not mine
+    if (mine == ISMINE_NO) return res;
+
+    // Check if watch only utxo are allowed
+    if (mine == ISMINE_WATCH_ONLY && coinControl && !coinControl->fAllowWatchOnly) return res;
+
+    // Skip locked utxo
+    if (!fIncludeLocked && IsLockedCoin(wtxid, outIndex)) return res;
+
+    // Check if we should include zero value utxo
+    if (output.nValue <= 0) return res;
+
+    if (fCoinsSelected && coinControl && !coinControl->fAllowOtherInputs && !coinControl->IsSelected(COutPoint(wtxid, outIndex)))
+        return res;
+
+    std::unique_ptr<SigningProvider> provider = GetSolvingProvider(output.scriptPubKey);
+
+    res.solvable = provider ? IsSolvable(*provider, output.scriptPubKey) : false;
+
+    res.spendable = ((mine & ISMINE_SPENDABLE) != ISMINE_NO) || (((mine & ISMINE_WATCH_ONLY) != ISMINE_NO) && (coinControl && coinControl->fAllowWatchOnly && res.solvable));
+    res.available = true;
+    return res;
+}
+
 void CWallet::AvailableCoins(std::vector<COutput>& vCoins, bool fOnlySafe, const CCoinControl* coinControl, const CAmount& nMinimumAmount, const CAmount& nMaximumAmount, const CAmount& nMinimumSumAmount, const uint64_t nMaximumCount) const
 {
     AssertLockHeld(cs_wallet);
@@ -2511,7 +2632,7 @@ bool CWallet::SignTransaction(CMutableTransaction& tx) const
             return false;
         }
         const CWalletTx& wtx = mi->second;
-        coins[input.prevout] = Coin(wtx.tx->vout[input.prevout.n], wtx.m_confirm.block_height, wtx.IsCoinBase());
+        coins[input.prevout] = Coin(wtx.tx->vout[input.prevout.n], wtx.m_confirm.block_height, wtx.IsCoinBase(), wtx.IsCoinBase());
     }
     std::map<int, std::string> input_errors;
     return SignTransaction(tx, coins, SIGHASH_ALL, input_errors);
@@ -4566,3 +4687,10 @@ ScriptPubKeyMan* CWallet::AddWalletDescriptor(WalletDescriptor& desc, const Flat
 
     return ret;
 }
+
+#ifndef BUILD_BITCOIN_WALLET
+// proof-of-stake: StakeOutput helper from PIVX
+CStakeableOutput::CStakeableOutput(const CWalletTx* txIn, int iIn, int nDepthIn, bool fSpendableIn, bool fSolvableIn, bool fSafeIn, bool use_max_sig_in, 
+                                   const CBlockIndex*& _pindex) : COutput(txIn, iIn, nDepthIn, fSpendableIn, fSolvableIn, fSafeIn, use_max_sig_in),
+                                                                pindex(_pindex) {}
+#endif

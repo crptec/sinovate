@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,8 +10,10 @@
 
 #include <optional.h>
 #include <primitives/block.h>
+#include <pos/posminer.h>
 #include <txmempool.h>
 #include <validation.h>
+#include <wallet/wallet.h>
 
 #include <memory>
 #include <stdint.h>
@@ -157,7 +161,10 @@ public:
     explicit BlockAssembler(const CTxMemPool& mempool, const CChainParams& params);
     explicit BlockAssembler(const CTxMemPool& mempool, const CChainParams& params, const Options& options);
 
-    /** Construct a new block template with coinbase to scriptPubKeyIn */
+    /** Construct a new proof of stake block template with empty coinstake and coinstake reward to scriptPubKeyIn */
+    std::unique_ptr<CBlockTemplate> CreateNewPoSBlock(CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins, CStakerStatus* pStakerStatus);
+
+    /** Construct a new proof of work block template with coinbase to scriptPubKeyIn */
     std::unique_ptr<CBlockTemplate> CreateNewBlock(const CScript& scriptPubKeyIn);
 
     static Optional<int64_t> m_last_block_num_txs;
@@ -199,7 +206,7 @@ private:
 
 /** Modify the extranonce in a block */
 void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned int& nExtraNonce);
-int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev);
+int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev, bool fProofOfStake = false);
 
 /** Update an old GenerateCoinbaseCommitment from CreateNewBlock after the block txs have changed */
 void RegenerateCommitments(CBlock& block);

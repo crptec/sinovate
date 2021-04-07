@@ -91,6 +91,11 @@ bool WalletInit::ParameterInteraction() const
             LogPrintf("%s: parameter interaction: -disablewallet -> ignoring -wallet=%s\n", __func__, wallet);
         }
 
+        // proof-of-stake: disable staking when wallet functionality is disabled
+        if (gArgs.SoftSetBoolArg("-staking", false)) {
+            LogPrintf("%s: parameter interaction: -disablewallet -> setting -staking=0\n", __func__);
+        }
+
         return true;
     }
 

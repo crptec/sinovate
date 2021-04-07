@@ -2133,8 +2133,14 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
     return true;
 }
 
-void FillBlock(CMutableTransaction& txNew, int nBlockHeight)
+void FillBlock(CMutableTransaction& txNew, int nBlockHeight, bool IsProofOfStake)
 {
+    int nIdx = 0;
+
+    if (IsProofOfStake) {
+        nIdx = 1;
+    }
+
     /*pay reward for Node Owner of Infinitynode*/
     {
         std::vector<CLockRewardExtractInfo> vecLockRewardRet;
@@ -2201,7 +2207,7 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight)
 
                 if(fFoundLockReward){
                     LogPrint(BCLog::INFINITYLOCK, "FillBlockPayments -- TESTNET LockReward ADD Payment\n");
-                    txNew.vout[0].nValue -= InfPaymentOwner;
+                    txNew.vout[nIdx].nValue -= InfPaymentOwner;
                     txNew.vout.push_back(CTxOut(InfPaymentOwner, DINPayee));
                 }else{
                     fBurnRewardOwner=true;
@@ -2213,7 +2219,7 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight)
             }
 
             if(fBurnRewardOwner){
-                txNew.vout[0].nValue -= InfPaymentOwner;
+                txNew.vout[nIdx].nValue -= InfPaymentOwner;
                 CTxDestination burnDestination =  DecodeDestination(Params().GetConsensus().cBurnAddress);
                 CScript burnAddressScript = GetScriptForDestination(burnDestination);
                 txNew.vout.push_back(CTxOut(InfPaymentOwner, burnAddressScript));
@@ -2262,7 +2268,7 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight)
                         LogPrint(BCLog::INFINITYLOCK, "FillBlockPayments -- payment for: %s amount %lld\n",address2, InfPayment);
 
                         DINPayeeNode = GetScriptForDestination(dest);
-                        txNew.vout[0].nValue -= InfPayment;
+                        txNew.vout[nIdx].nValue -= InfPayment;
                         txNew.vout.push_back(CTxOut(InfPayment, DINPayeeNode));
                     }else{
                         fBurnRewardNode=true;
@@ -2274,7 +2280,7 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight)
             }
 
             if(fBurnRewardNode){
-                txNew.vout[0].nValue -= InfPayment;
+                txNew.vout[nIdx].nValue -= InfPayment;
                 CTxDestination burnDestination =  DecodeDestination(Params().GetConsensus().cBurnAddress);
                 CScript burnAddressScript = GetScriptForDestination(burnDestination);
                 txNew.vout.push_back(CTxOut(InfPayment, burnAddressScript));

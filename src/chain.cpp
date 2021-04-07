@@ -1,9 +1,14 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <chain.h>
+#include <chainparams.h>
+#include <timedata.h>
+#include <hash.h> // rather move this include away, required for CHashWriter
 
 /**
  * CChain implementation
@@ -168,4 +173,48 @@ const CBlockIndex* LastCommonAncestor(const CBlockIndex* pa, const CBlockIndex* 
     // Eventually all chain branches meet at the genesis block.
     assert(pa == pb);
     return pa;
+}
+
+int64_t CBlockIndex::MaxFutureBlockTime() const
+{
+    return GetAdjustedTime() + Params().GetConsensus().FutureBlockTimeDrift();
+}
+
+int64_t CBlockIndex::MinPastBlockTime() const
+{
+    return GetBlockTime();
+}
+
+// Sets stake modifiers (uint256)
+void CBlockIndex::SetStakeModifier(const uint256& nStakeModifier)
+{
+    vStakeModifier.clear();
+    vStakeModifier.insert(vStakeModifier.begin(), nStakeModifier.begin(), nStakeModifier.end());
+}
+
+// Generates and sets new stake modifier
+void CBlockIndex::SetNewStakeModifier(const uint256& prevoutId)
+{
+    // Shouldn't be called on V1 modifier's blocks (or before setting pprev)
+    //if (!Params().GetConsensus().NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V3_4)) return;
+    if (!pprev) throw std::runtime_error(strprintf("%s : ERROR: null pprev", __func__));
+
+    // Generate Hash(prevoutId | prevModifier) - switch with genesis modifier (0) on upgrade block
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << prevoutId;
+    ss << pprev->GetStakeModifier();
+    SetStakeModifier(ss.GetHash());
+}
+
+// Returns V2 stake modifier (uint256)
+uint256 CBlockIndex::GetStakeModifier() const
+{
+    //if (vStakeModifier.empty() || !Params().GetConsensus().NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V3_4))
+    //    return uint256();
+    if (vStakeModifier.empty()) {
+        return uint256();
+    }
+    uint256 nStakeModifier;
+    std::memcpy(nStakeModifier.begin(), vStakeModifier.data(), vStakeModifier.size());
+    return nStakeModifier;
 }

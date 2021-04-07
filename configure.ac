@@ -569,7 +569,7 @@ AC_ARG_ENABLE([util-wallet],
   [AS_HELP_STRING([--enable-util-wallet],
   [build bitcoin-wallet])],
   [build_bitcoin_wallet=$enableval],
-  [build_bitcoin_wallet=$build_bitcoin_utils])
+  [build_bitcoin_wallet=no])
 
 AC_ARG_WITH([libs],
   [AS_HELP_STRING([--with-libs],

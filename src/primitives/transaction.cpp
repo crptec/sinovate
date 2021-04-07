@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,6 +9,7 @@
 
 #include <hash.h>
 #include <tinyformat.h>
+#include <script/standard.h>
 #include <util/strencodings.h>
 
 #include <assert.h>
@@ -56,6 +59,20 @@ CTxOut::CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn)
 {
     nValue = nValueIn;
     scriptPubKey = scriptPubKeyIn;
+}
+
+bool CTxOut::GetKeyIDFromUTXO(CKeyID& keyIDRet) const
+{
+    std::vector<std::vector<unsigned char>> vSolutions2D;
+    if (scriptPubKey.empty()) {
+        return false;
+    }
+    TxoutType whichType = Solver(scriptPubKey, vSolutions2D);
+    if (whichType == TxoutType::PUBKEYHASH) {
+        keyIDRet = CKeyID(uint160(vSolutions2D[0]));
+        return true;
+    }
+    return false;
 }
 
 std::string CTxOut::ToString() const
@@ -122,4 +139,16 @@ std::string CTransaction::ToString() const
     for (const auto& tx_out : vout)
         str += "    " + tx_out.ToString() + "\n";
     return str;
+}
+
+// proof-of-stake
+bool CTransaction::IsCoinStake() const
+{
+    if (vin.empty())
+        return false;
+    
+    if (vin[0].prevout.IsNull())
+        return false;
+
+    return (vout.size() >= 2 && vout[0].IsEmpty());
 }

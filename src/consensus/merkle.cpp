@@ -1,4 +1,6 @@
 // Copyright (c) 2015-2020 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The QTUM developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -72,12 +74,17 @@ uint256 BlockMerkleRoot(const CBlock& block, bool* mutated)
     return ComputeMerkleRoot(std::move(leaves), mutated);
 }
 
-uint256 BlockWitnessMerkleRoot(const CBlock& block, bool* mutated)
+uint256 BlockWitnessMerkleRoot(const CBlock& block, bool* mutated, bool *pfProofOfStake)
 {
+    bool fProofOfStake = pfProofOfStake ? *pfProofOfStake : block.IsProofOfStake();
     std::vector<uint256> leaves;
     leaves.resize(block.vtx.size());
-    leaves[0].SetNull(); // The witness hash of the coinbase is 0.
-    for (size_t s = 1; s < block.vtx.size(); s++) {
+    leaves[0].SetNull(); // The witness hash of the coinbase (index 0) is 0.
+    if (fProofOfStake)
+    {
+        leaves[1].SetNull(); // The witness hash of the coinbase (index 1) is 0.
+    }
+    for (size_t s = 1 + (fProofOfStake ? 1 : 0); s < block.vtx.size(); s++) { //Make sure we're using the right index.
         leaves[s] = block.vtx[s]->GetWitnessHash();
     }
     return ComputeMerkleRoot(std::move(leaves), mutated);

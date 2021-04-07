@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2018 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The LUXCore developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,6 +11,52 @@
 #include <chain.h>
 #include <primitives/block.h>
 #include <uint256.h>
+
+// Function which returns the last PoS CBlockIndex when fProofOfStake is true, or last PoW CBlockIndex otherwise.
+const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake)
+{
+    while (pindex && pindex->pprev && (pindex->IsProofOfStake() != fProofOfStake))
+        pindex = pindex->pprev;
+    return pindex;
+}
+
+// Function which counts the last PoS CBlockIndex-es we have over nHeightScan.
+int CountPoS(const CBlockIndex* pindex, int nHeightScan)
+{
+    int nFound = 0;
+    while (pindex && pindex->pprev && (pindex->nHeight > nHeightScan)) {
+        if (pindex->IsProofOfStake()) {
+            nFound++;
+        }
+        pindex = pindex->pprev;
+    }
+    return nFound;
+}
+
+// Function which counts the last fProofOfStake blocks 
+// if the index IsProofOfStake == true, or fProofOfWork blocks if
+// the index is IsProofOfStake == false, over a specified  
+// nHeightScan; subsequently, a map is built containing the sorted heights of all PoS or PoW blocks.
+std::map<int, int> GetContextLWMA(const CBlockIndex* pindex, int nContextScope, bool fProofOfStake)
+{
+    std::map<int, int> mapRet;
+    int nIdx = 0;
+    while (fProofOfStake && pindex && pindex->pprev && nIdx < nContextScope) {
+        if (pindex->IsProofOfStake()) {
+            nIdx++;
+            mapRet.insert(std::pair<int, int>(nIdx, pindex->nHeight));
+        }
+        pindex = pindex->pprev;
+    }
+    while (!fProofOfStake && pindex && pindex->pprev && nIdx < nContextScope) {
+        if (pindex->IsProofOfWork()) {
+            nIdx++;
+            mapRet.insert(std::pair<int, int>(nIdx, pindex->nHeight));
+        }
+        pindex = pindex->pprev;
+    }
+    return mapRet;
+}
 
 // Sinovate used DGW before the LWMA-3 fork
 unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consensus::Params& params)
@@ -98,10 +146,14 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consens
 //  so revert rule must be ~ FTL/2 instead of 70 minutes. See:
 // https://github.com/zcash/zcash/issues/4021
 
-unsigned int Lwma3CalculateNextWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params)
+unsigned int Lwma3CalculateNextWorkRequired(const CBlockIndex* pindexLast, const Consensus::Params& params, bool fProofOfStake)
 {
-    if (params.fPowNoRetargeting)
-        return pindexLast->nBits;
+    if (params.fPowNoRetargeting || params.fPoSNoRetargeting) {
+        const CBlockIndex* noRetIdx = GetLastBlockIndex(pindexLast, fProofOfStake);
+        return noRetIdx->nBits;
+    }
+
+    int nPoSBlocksCounter = 0;
     
     const int64_t T = params.nPowTargetSpacing;
 
@@ -112,21 +164,59 @@ unsigned int Lwma3CalculateNextWorkRequired(const CBlockIndex* pindexLast, const
     const int64_t k = N * (N + 1) * T / 2;
 
     const int64_t height = pindexLast->nHeight;
-    const arith_uint256 powLimit = UintToArith256(params.powLimit);
+    const arith_uint256 ProofLimit = UintToArith256(fProofOfStake ? params.posLimit : params.powLimit);
 
-   // New coins should just give away first N blocks before using this algorithm.
-    if (height < N) { return powLimit.GetCompact(); }
+    // New coins should just give away first N blocks before using this algorithm.
+    if (height < N) { return ProofLimit.GetCompact(); }
+
+    // Special rule for PoS activation, make sure we use LWMA only after 300 (lwmaAveragingWindow) PoS blocks have been found
+    if (fProofOfStake && height > (params.nStartPoSHeight + 3 * N)) { // Check for this rule only for 3 * N blocks over PoS activation.
+        nPoSBlocksCounter = CountPoS(pindexLast, params.nStartPoSHeight);
+        // Let the first N PoS blocks use ppcoin EMA
+        if (nPoSBlocksCounter < N) { 
+            const CBlockIndex* pindexPrev = GetLastBlockIndex(pindexLast, fProofOfStake);
+            if (pindexPrev->pprev == nullptr)
+                return ProofLimit.GetCompact(); // first block
+            const CBlockIndex* pindexPrevPrev = GetLastBlockIndex(pindexPrev->pprev, fProofOfStake);
+            if (pindexPrevPrev->pprev == nullptr)
+                return ProofLimit.GetCompact(); // second block
+
+            int64_t nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
+            if (nActualSpacing < 0)
+                nActualSpacing = 1;
+            if (nActualSpacing > T * 10)
+                nActualSpacing = T * 10;
+
+            // ppcoin: target change every block
+            // ppcoin: retarget with exponential moving toward target spacing
+            arith_uint256 bnNew;
+            bnNew.SetCompact(pindexLast->nBits);
+
+            int64_t nInterval = params.nPoS_EMATargetTimespan / T;
+            bnNew *= ((nInterval - 1) * T + nActualSpacing + nActualSpacing);
+            bnNew /= ((nInterval + 1) * T);
+
+            if (bnNew <= 0 || bnNew > ProofLimit)
+                bnNew = ProofLimit;
+
+            return bnNew.GetCompact();
+        }
+    }
+
+    // Since we have hybrid consensus, lookup the last N blocks of the same proof, and index them as a context for diff calculations.
+    std::map<int, int> mapContext = GetContextLWMA(pindexLast, N + 1, fProofOfStake);
 
     arith_uint256 avgTarget, nextTarget;
     int64_t thisTimestamp, previousTimestamp;
     int64_t sumWeightedSolvetimes = 0, j = 0;
 
-    const CBlockIndex* blockPreviousTimestamp = pindexLast->GetAncestor(height - N);
+    const CBlockIndex* blockPreviousTimestamp = pindexLast->GetAncestor(mapContext.at(N + 1));
     previousTimestamp = blockPreviousTimestamp->GetBlockTime();
 
-    // Loop through N most recent blocks.
-    for (int64_t i = height - N + 1; i <= height; i++) {
-        const CBlockIndex* block = pindexLast->GetAncestor(i);
+    // Loop through N most recent blocks of the same proof type.
+    // Thus means we may need more than N blocks, as we index proofs together.
+    for (int64_t i = N; i > 0; i--) {
+        const CBlockIndex* block = pindexLast->GetAncestor(mapContext.at(i));
 
         // Prevent solvetimes from being negative in a safe way. It must be done like this.
         // In particular, do not attempt anything like  if(solvetime < 0) {solvetime=0;}
@@ -153,17 +243,18 @@ unsigned int Lwma3CalculateNextWorkRequired(const CBlockIndex* pindexLast, const
 
     nextTarget = avgTarget * sumWeightedSolvetimes;
 
-    if (nextTarget > powLimit) { nextTarget = powLimit; }
+    if (nextTarget > ProofLimit) { nextTarget = ProofLimit; }
 
     return nextTarget.GetCompact();
 }
 
-unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params, bool fProofOfStake)
 {
+    
     if (pindexLast->nHeight + 1 < params.lwmaStartHeight) {
         return DarkGravityWave(pindexLast, params);
     } else {
-        return Lwma3CalculateNextWorkRequired(pindexLast, params);
+        return Lwma3CalculateNextWorkRequired(pindexLast, params, fProofOfStake);
     }
 }
 

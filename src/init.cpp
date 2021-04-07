@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -95,10 +96,15 @@
 #include <zmq/zmqrpc.h>
 #endif
 
+// proof-of-stake: 
+#include <pos/posminer.h>
+
+
 static bool fFeeEstimatesInitialized = false;
 static const bool DEFAULT_PROXYRANDOMIZE = true;
 static const bool DEFAULT_REST_ENABLE = false;
 static const bool DEFAULT_STOPAFTERBLOCKIMPORT = false;
+static const bool DEFAULT_STAKING = true;
 
 #ifdef WIN32
 // Win32 LevelDB doesn't use filedescriptors, and the ones used for
@@ -168,6 +174,8 @@ static std::unique_ptr<ECCVerifyHandle> globalVerifyHandle;
 static std::unique_ptr<ECCMusigHandle> globalMusigHandle;
 //<SIN
 
+static std::unique_ptr<StakerCtx> stakectx;
+
 static std::thread g_load_block;
 
 static boost::thread_group threadGroup;
@@ -184,6 +192,9 @@ void Interrupt(NodeContext& node)
         node.connman->Interrupt();
     if (g_txindex) {
         g_txindex->Interrupt();
+    }
+    if (stakectx) {
+        stakectx->InterruptStaker();
     }
     ForEachBlockFilterIndex([](BlockFilterIndex& index) { index.Interrupt(); });
 }
@@ -211,6 +222,10 @@ void Shutdown(NodeContext& node)
         client->flush();
     }
     StopMapPort();
+
+    if (stakectx) {
+        stakectx->StopStaker();
+    }
 
     // Because these depend on each-other, we make sure that neither can be
     // using the other before destroying them.
@@ -244,6 +259,8 @@ void Shutdown(NodeContext& node)
     node.peerman.reset();
     node.connman.reset();
     node.banman.reset();
+
+    stakectx.reset();
 
     if (node.mempool && node.mempool->IsLoaded() && node.args->GetArg("-persistmempool", DEFAULT_PERSIST_MEMPOOL)) {
         DumpMempool(*node.mempool);
@@ -623,6 +640,7 @@ void SetupServerArgs(NodeContext& node)
 //>SIN
     argsman.AddArg("-infinitynode", "Start the node as an InfinityNode", ArgsManager::ALLOW_ANY, OptionsCategory::INFINITYNODE);
     argsman.AddArg("-infinitynodeprivkey", "PrivateKey of node", ArgsManager::ALLOW_ANY, OptionsCategory::INFINITYNODE);
+    argsman.AddArg("-staking", "Run in the background as a staker and participate in consensus", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
 //<SIN
 
 #if HAVE_DECL_DAEMON
@@ -2164,6 +2182,14 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
 
 #if HAVE_SYSTEM
     StartupNotify(args);
+#endif
+
+    // Start staking
+#ifdef ENABLE_WALLET
+    if (args.GetBoolArg("-staking", DEFAULT_STAKING)) {
+        stakectx.reset(new StakerCtx(*node.connman, chainman, *node.mempool));
+        stakectx->StartStaker();
+    }
 #endif
 
     return true;

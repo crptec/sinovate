@@ -1,5 +1,7 @@
 // Copyright (c) 2010 Satoshi Nakamoto
 // Copyright (c) 2009-2020 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -15,6 +17,7 @@
 #include <net.h>
 #include <node/context.h>
 #include <policy/fees.h>
+#include <pos/posminer.h>
 #include <pow.h>
 #include <rpc/blockchain.h>
 #include <rpc/mining.h>
@@ -35,6 +38,7 @@
 #include <validationinterface.h>
 #include <versionbitsinfo.h>
 #include <warnings.h>
+#include <wallet/rpcwallet.h>
 
 #include <memory>
 #include <stdint.h>
@@ -168,6 +172,50 @@ static UniValue generateBlocks(ChainstateManager& chainman, const CTxMemPool& me
     return blockHashes;
 }
 
+static UniValue generateBlocksPoS(ChainstateManager& chainman, const CTxMemPool& mempool, int nGenerate, uint64_t nMaxTries, CStakerStatus* pStakerStatus)
+{
+    int nHeightEnd = 0;
+    int nHeight = 0;
+
+    // Available wallet(s), always use no 0.
+    std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
+
+    // Wallet must be unlocked.
+    EnsureWalletIsUnlocked(pwallet);
+
+    {   // Don't keep cs_main locked
+        LOCK(cs_main);
+        nHeight = ::ChainActive().Height();
+        nHeightEnd = nHeight+nGenerate;
+    }
+    UniValue blockHashes(UniValue::VARR);
+    while (nHeight < nHeightEnd && !ShutdownRequested())
+    {
+        // Get available coins
+        std::vector<CStakeableOutput> availableCoins;
+        if (!pwallet->StakeableCoins(&availableCoins)) {
+            throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "No available coins to stake");
+        }
+
+        std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(mempool, Params()).CreateNewPoSBlock(pwallet, &availableCoins, pStakerStatus));
+        if (!pblocktemplate.get())
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "Couldn't create new block");
+        CBlock *pblock = &pblocktemplate->block;
+
+        std::shared_ptr<const CBlock> shared_pblock = std::make_shared<const CBlock>(pblocktemplate->block);
+
+        CChainParams chainparams(Params());
+
+        if (!chainman.ProcessNewBlock(chainparams, shared_pblock, true, nullptr)) {
+            throw JSONRPCError(RPC_INTERNAL_ERROR, "ProcessNewBlock, block not accepted");
+        }
+        ++nHeight;
+        blockHashes.push_back(pblock->GetHash().GetHex());
+    }
+    return blockHashes;
+}
+
 static bool getScriptFromDescriptor(const std::string& descriptor, CScript& script, std::string& error)
 {
     FlatSigningProvider key_provider;
@@ -282,6 +330,51 @@ static RPCHelpMan generatetoaddress()
     CScript coinbase_script = GetScriptForDestination(destination);
 
     return generateBlocks(chainman, mempool, coinbase_script, num_blocks, max_tries);
+},
+    };
+}
+
+// An equivalent to generatetoaddress() but for PoS
+
+static RPCHelpMan generatetoaddresspos()
+{
+    return RPCHelpMan{"generatetoaddresspos",
+                "\nMine PoS blocks immediately to a specified address (before the RPC call returns)\n",
+                {
+                    {"nblocks", RPCArg::Type::NUM, RPCArg::Optional::NO, "How many blocks are generated immediately."},
+                    {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The address to send the newly generated bitcoin to."},
+                    {"maxtries", RPCArg::Type::NUM, /* default */ ToString(DEFAULT_MAX_TRIES), "How many iterations to try."},
+                },
+                RPCResult{
+                    RPCResult::Type::ARR, "", "hashes of blocks generated",
+                    {
+                        {RPCResult::Type::STR_HEX, "", "blockhash"},
+                    }},
+                RPCExamples{
+            "\nGenerate 11 blocks to myaddress\n"
+            + HelpExampleCli("generatetoaddresspos", "11 \"myaddress\"")
+            + "If you are using the " PACKAGE_NAME " wallet, you can get a new address to send the newly generated bitcoin to with:\n"
+            + HelpExampleCli("getnewaddress", "")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    const int num_blocks{request.params[0].get_int()};
+    const uint64_t max_tries{request.params[2].isNull() ? DEFAULT_MAX_TRIES : request.params[2].get_int()};
+
+    CTxDestination destination = DecodeDestination(request.params[1].get_str());
+    if (!IsValidDestination(destination)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error: Invalid address");
+    }
+
+    const CTxMemPool& mempool = EnsureMemPool(request.context);
+    ChainstateManager& chainman = EnsureChainman(request.context);
+    if (!pStakerStatus) {
+        InitStakerStatus();
+    }
+
+    CScript coinbase_script = GetScriptForDestination(destination);
+
+    return generateBlocksPoS(chainman, mempool, num_blocks, max_tries, pStakerStatus.get());
 },
     };
 }
@@ -430,6 +523,84 @@ static RPCHelpMan getmininginfo()
     obj.pushKV("pooledtx",         (uint64_t)mempool.size());
     obj.pushKV("chain",            Params().NetworkIDString());
     obj.pushKV("warnings",         GetWarnings(false).original);
+    return obj;
+},
+    };
+}
+
+static RPCHelpMan getstakinginfo()
+{
+    return RPCHelpMan{"getstakinginfo",
+                "\nReturns a json object containing staking-related information.",
+                {},
+                RPCResult{
+                    RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::NUM, "blocks", "The current block"},
+                        {RPCResult::Type::NUM, "currentblockweight", /* optional */ true, "The block weight of the last assembled block (only present if a block was ever assembled)"},
+                        {RPCResult::Type::NUM, "currentblocktx", /* optional */ true, "The number of block transactions of the last assembled block (only present if a block was ever assembled)"},
+                        {RPCResult::Type::NUM, "difficulty", "The current difficulty"},
+                        {RPCResult::Type::NUM, "pooledtx", "The size of the mempool"},
+                        {RPCResult::Type::STR, "chain", "current network name (main, test, regtest)"},
+                        {RPCResult::Type::STR, "warnings", "any network and blockchain warnings"},
+                        {RPCResult::Type::STR, "staking", "If staking is active or not"},
+                        {RPCResult::Type::NUM, "staking_available", "The amount of SIN which is currently available to stake"},
+                        {RPCResult::Type::STR, "connections", "If there are any connections to the network"},
+                        {RPCResult::Type::STR, "unlockedwallet", "if the wallet used for staking is unlocked"},
+                        {RPCResult::Type::NUM, "blocks_since_last_try", "The number of blocks in the current best chain since we last tried staking"},
+                        {RPCResult::Type::STR, "hash_last_try", "The hash of the block we last tried staking on top of"},
+                        {RPCResult::Type::NUM, "time_since_last_try", "The UNIX timestamp of when we last tried staking"},
+                        {RPCResult::Type::NUM, "available_at_last_try", "The amount of SIN we had available the last time we tried staking"},
+                        {RPCResult::Type::NUM, "number_attempts_last_try", "The number of attempts we did the last time we tried staking"},
+                    }},
+                RPCExamples{
+                    HelpExampleCli("getmininginfo", "")
+            + HelpExampleRpc("getmininginfo", "")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    int nHeight = 0;
+    double dDiff;
+    {   // Don't keep cs_main locked
+        LOCK(cs_main);
+        nHeight = ::ChainActive().Height();
+        dDiff = GetDifficulty(::ChainActive().Tip());
+    }
+    const CTxMemPool& mempool = EnsureMemPool(request.context);
+    NodeContext& node = EnsureNodeContext(request.context);
+    // Available wallet(s), always use no 0.
+    std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
+    // check CStakerStatus ptr
+    if (!pStakerStatus) {
+        InitStakerStatus();
+    }
+    CStakerStatus* ptrStakerStatus = pStakerStatus.get();
+
+    UniValue obj(UniValue::VOBJ);
+    obj.pushKV("blocks",           (int)nHeight);
+    if (BlockAssembler::m_last_block_weight) obj.pushKV("currentblockweight", *BlockAssembler::m_last_block_weight);
+    if (BlockAssembler::m_last_block_num_txs) obj.pushKV("currentblocktx", *BlockAssembler::m_last_block_num_txs);
+    obj.pushKV("difficulty",       (double)dDiff);
+    obj.pushKV("pooledtx",         (uint64_t)mempool.size());
+    obj.pushKV("chain",            Params().NetworkIDString());
+    obj.pushKV("warnings",         GetWarnings(false).original);
+    obj.pushKV("staking",          pStakerStatus.get()->IsActive());
+    std::vector<CStakeableOutput> availableCoins;
+    if (!pwallet->StakeableCoins(&availableCoins)) {
+        obj.pushKV("staking_available", 0);
+    } else {
+        obj.pushKV("staking_available", (int)availableCoins.size());
+    }
+    obj.pushKV("connections", (node.connman->GetNodeCount(CConnman::CONNECTIONS_ALL) > 0));
+    obj.pushKV("unlockedwallet", !pwallet->IsLocked());
+    if (ptrStakerStatus) {
+        obj.pushKV("blocks_since_last_try", (int)(nHeight - ptrStakerStatus->GetLastHeight()));
+        obj.pushKV("hash_last_try", ptrStakerStatus->GetLastHash().GetHex());
+        obj.pushKV("time_last_try", (int)ptrStakerStatus->GetLastTime());
+        obj.pushKV("available_at_last_try", ptrStakerStatus->GetLastCoins());
+        obj.pushKV("number_attempts_last_try", ptrStakerStatus->GetLastTries());
+    }
     return obj;
 },
     };
@@ -1212,6 +1383,7 @@ static const CRPCCommand commands[] =
   //  --------------------- ------------------------  -----------------------  ----------
     { "mining",             "getnetworkhashps",       &getnetworkhashps,       {"nblocks","height"} },
     { "mining",             "getmininginfo",          &getmininginfo,          {} },
+    { "mining",             "getstakinginfo",         &getstakinginfo,         {} },
     { "mining",             "prioritisetransaction",  &prioritisetransaction,  {"txid","dummy","fee_delta"} },
     { "mining",             "getblocktemplate",       &getblocktemplate,       {"template_request"} },
     { "mining",             "submitblock",            &submitblock,            {"hexdata","dummy"} },
@@ -1219,6 +1391,7 @@ static const CRPCCommand commands[] =
 
 
     { "generating",         "generatetoaddress",      &generatetoaddress,      {"nblocks","address","maxtries"} },
+    { "generating",         "generatetoaddresspos",   &generatetoaddresspos,   {"nblocks","address","maxtries"} },
     { "generating",         "generatetodescriptor",   &generatetodescriptor,   {"num_blocks","descriptor","maxtries"} },
     { "generating",         "generateblock",          &generateblock,          {"output","transactions"} },
 

@@ -1,4 +1,6 @@
 // Copyright (c) 2014-2018 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -74,5 +76,9 @@ public:
 int64_t GetTimeOffset();
 int64_t GetAdjustedTime();
 void AddTimeData(const CNetAddr& ip, int64_t nTime);
+
+// Time Protocol V2
+int64_t GetTimeSlot(const int64_t nTime);
+int64_t GetCurrentTimeSlot();
 
 #endif // BITCOIN_TIMEDATA_H

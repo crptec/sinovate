@@ -1,5 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2015-2020 The PIVX developers
+// Copyright (c) 2015-2020 The SINOVATE developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,6 +12,7 @@
 #include <amount.h>
 #include <script/script.h>
 #include <serialize.h>
+#include <pubkey.h>
 #include <uint256.h>
 
 #include <tuple>
@@ -148,6 +151,8 @@ public:
 
     CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn);
 
+    bool GetKeyIDFromUTXO(CKeyID& keyIDRet) const;
+
     SERIALIZE_METHODS(CTxOut, obj) { READWRITE(obj.nValue, obj.scriptPubKey); }
 
     void SetNull()
@@ -159,6 +164,17 @@ public:
     bool IsNull() const
     {
         return (nValue == -1);
+    }
+
+    void SetEmpty()
+    {
+        nValue = 0;
+        scriptPubKey.clear();
+    }
+
+    bool IsEmpty() const
+    {
+        return (nValue == 0 && scriptPubKey.empty());
     }
 
     friend bool operator==(const CTxOut& a, const CTxOut& b)
@@ -357,6 +373,8 @@ public:
         }
         return false;
     }
+    // proof-of-stake
+    bool IsCoinStake() const;
 };
 
 /** A mutable version of CTransaction. */
