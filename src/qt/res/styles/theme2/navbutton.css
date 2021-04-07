@@ -1,0 +1,66 @@
+/*-------------------------------------------- 
+Tool Button Black CSS
+--------------------------------------------*/
+/*QToolButton {
+    color: #6f80ab;
+    background: transparent;
+    border: 0px solid transparent;
+    border-radius: 0px;
+    padding: 10px;
+}
+QToolButton:checked {
+    border-right: 3px solid #4f9fdd;
+}
+QToolButton:pressed, QToolButton:hover:pressed, QToolButton:checked {
+    color: #4f9fdd;
+    background: #1e2b47;
+}
+QToolButton:hover:!checked {
+    color: #7388b7;
+    background: #25314e;
+}
+QToolButton:disabled {
+    color: rgba(111, 128, 171, 20%);
+}
+*/
+/*--------------------------------------------
+ToolBar CSS
+--------------------------------------------*/
+QToolBar {
+    background-color: #051937;
+    border:none;
+    height:100%;
+    padding-top:20px
+    }
+    
+    
+    QToolBar > QToolButton {
+      color: #6f80ab;
+      background: transparent;
+      border-right: 3px solid transparent;
+      border-radius: 0px;
+      padding-left: 20px;
+      padding-right: 0px;
+      padding-top:10px;
+      width:100%;
+      padding-bottom:10px;
+      min-width:170px;
+      font-size:12px;
+      font-weight: normal;
+    }
+    
+    QToolBar > QToolButton:checked {
+      border-right: 3px solid #4f9fdd;
+    }
+    QToolBar > QToolButton:pressed, QToolBar > QToolButton:hover:pressed, QToolBar > QToolButton:checked {
+      color: #4f9fdd;
+      background: #1e2b47;
+      }
+    QToolBar > QToolButton:hover:!checked {
+      color: #7388b7;
+      background: #25314e;
+    }
+    QToolBar > QToolButton:disabled {
+      color: rgba(111, 128, 171, 20%);
+    }
+    
