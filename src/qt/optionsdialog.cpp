@@ -18,6 +18,7 @@
 #include <validation.h> // for DEFAULT_SCRIPTCHECK_THREADS and MAX_SCRIPTCHECK_THREADS
 #include <netbase.h>
 #include <txdb.h> // for -dbcache defaults
+#include <qt/styleSheet.h>
 
 #include <QDataWidgetMapper>
 #include <QDir>
@@ -34,6 +35,11 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     mapper(nullptr)
 {
     ui->setupUi(this);
+
+    SetObjectStyleSheet(ui->resetButton, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->openSINConfButton, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->okButton, StyleSheetNames::ButtonGray);
+    SetObjectStyleSheet(ui->cancelButton, StyleSheetNames::ButtonGray);
 
     /* Main elements init */
     ui->databaseCache->setMinimum(nMinDbCache);
@@ -72,7 +78,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     /* remove Window tab on Mac */
     ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabWindow));
     /* hide launch at startup option on macOS */
-    ui->bitcoinAtStartup->setVisible(false);
+    ui->sinAtStartup->setVisible(false);
     ui->verticalLayout_Main->removeWidget(ui->bitcoinAtStartup);
     ui->verticalLayout_Main->removeItem(ui->horizontalSpacer_0_Main);
 #endif
@@ -87,10 +93,10 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     /* Display elements init */
     QDir translations(":translations");
 
-    ui->bitcoinAtStartup->setToolTip(ui->bitcoinAtStartup->toolTip().arg(PACKAGE_NAME));
-    ui->bitcoinAtStartup->setText(ui->bitcoinAtStartup->text().arg(PACKAGE_NAME));
+    ui->sinAtStartup->setToolTip(ui->sinAtStartup->toolTip().arg(PACKAGE_NAME));
+    ui->sinAtStartup->setText(ui->sinAtStartup->text().arg(PACKAGE_NAME));
 
-    ui->openBitcoinConfButton->setToolTip(ui->openBitcoinConfButton->toolTip().arg(PACKAGE_NAME));
+    ui->openSINConfButton->setToolTip(ui->openSINConfButton->toolTip().arg(PACKAGE_NAME));
 
     ui->lang->setToolTip(ui->lang->toolTip().arg(PACKAGE_NAME));
     ui->lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
@@ -111,6 +117,21 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
         }
     }
     ui->unit->setModel(new BitcoinUnits(this));
+
+    ui->theme->setToolTip(ui->theme->toolTip().arg(tr(PACKAGE_NAME)));
+    ui->theme->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
+    QStringList themes = StyleSheet::getSupportedThemes();
+    QStringList themesNames = StyleSheet::getSupportedThemesNames();
+    for(int i = 0; i < themes.size(); i++)
+    {
+        QString themeStr = themes[i];
+        QString themeName = themeStr;
+        if(themesNames.size() > i)
+        {
+            themeName = themesNames[i];
+        }
+        ui->theme->addItem(tr(themeName.toStdString().c_str()), QVariant(themeStr));
+    }
 
     /* Widget-to-option mapper */
     mapper = new QDataWidgetMapper(this);
@@ -186,6 +207,7 @@ void OptionsDialog::setModel(OptionsModel *_model)
     connect(ui->connectSocksTor, &QCheckBox::clicked, this, &OptionsDialog::showRestartWarning);
     /* Display */
     connect(ui->lang, static_cast<void (QValueComboBox::*)()>(&QValueComboBox::valueChanged), [this]{ showRestartWarning(); });
+    connect(ui->theme, static_cast<void (QValueComboBox::*)()>(&QValueComboBox::valueChanged), [this]{ showRestartWarning(); });
     connect(ui->thirdPartyTxUrls, &QLineEdit::textChanged, [this]{ showRestartWarning(); });
 }
 
@@ -202,7 +224,7 @@ void OptionsDialog::setCurrentTab(OptionsDialog::Tab tab)
 void OptionsDialog::setMapper()
 {
     /* Main */
-    mapper->addMapping(ui->bitcoinAtStartup, OptionsModel::StartAtStartup);
+    mapper->addMapping(ui->sinAtStartup, OptionsModel::StartAtStartup);
     mapper->addMapping(ui->threadsScriptVerif, OptionsModel::ThreadsScriptVerif);
     mapper->addMapping(ui->databaseCache, OptionsModel::DatabaseCache);
     mapper->addMapping(ui->prune, OptionsModel::Prune);
@@ -237,6 +259,7 @@ void OptionsDialog::setMapper()
     mapper->addMapping(ui->lang, OptionsModel::Language);
     mapper->addMapping(ui->unit, OptionsModel::DisplayUnit);
     mapper->addMapping(ui->thirdPartyTxUrls, OptionsModel::ThirdPartyTxUrls);
+    mapper->addMapping(ui->theme, OptionsModel::Theme);
 }
 
 void OptionsDialog::setOkButtonState(bool fState)
@@ -279,6 +302,22 @@ void OptionsDialog::on_okButton_clicked()
     mapper->submit();
     accept();
     updateDefaultProxyNets();
+
+     if (model && model->isRestartRequired()) {
+        QMessageBox::StandardButton retval = QMessageBox::question(this, tr("Confirm wallet restart"),
+                 QString("%1<br><br>%2").arg(tr("Client restart required to activate changes."), tr("Are you sure you wish to restart your wallet?")),
+                 QMessageBox::Yes|QMessageBox::Cancel,
+                 QMessageBox::Cancel);
+        if(retval == QMessageBox::Yes)
+        {
+
+            qApp->processEvents();
+            model->setRestartApp(true);
+            QApplication::quit();
+        }
+    }
+
+    accept();
 }
 
 void OptionsDialog::on_cancelButton_clicked()

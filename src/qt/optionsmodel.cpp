@@ -28,7 +28,8 @@ const char *DEFAULT_GUI_PROXY_HOST = "127.0.0.1";
 static const QString GetDefaultProxyAddress();
 
 OptionsModel::OptionsModel(QObject *parent, bool resetSettings) :
-    QAbstractListModel(parent)
+    QAbstractListModel(parent), restartApp(false)
+
 {
     Init(resetSettings);
 }
@@ -154,6 +155,11 @@ void OptionsModel::Init(bool resetSettings)
         addOverriddenOption("-lang");
 
     language = settings.value("language").toString();
+
+    if (!settings.contains("Theme"))
+        settings.setValue("Theme", "");
+
+    theme = settings.value("Theme").toString();
 }
 
 /** Helper function to copy contents from one QSettings to another.
@@ -323,6 +329,8 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return settings.value("nThreadsScriptVerif");
         case Listen:
             return settings.value("fListen");
+        case Theme:
+            return settings.value("Theme");
         default:
             return QVariant();
         }
@@ -471,6 +479,12 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
                 setRestartRequired(true);
             }
             break;
+        case Theme:
+            if (settings.value("Theme") != value) {
+                settings.setValue("Theme", value);
+                setRestartRequired(true);
+            }
+            break;
         default:
             break;
         }
@@ -534,4 +548,14 @@ void OptionsModel::checkAndMigrate()
     if (settings.contains("addrSeparateProxyTor") && settings.value("addrSeparateProxyTor").toString().endsWith("%2")) {
         settings.setValue("addrSeparateProxyTor", GetDefaultProxyAddress());
     }
+}
+
+bool OptionsModel::getRestartApp() const
+{
+    return restartApp;
+}
+
+void OptionsModel::setRestartApp(bool value)
+{
+    restartApp = value;
 }

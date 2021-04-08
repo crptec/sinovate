@@ -65,6 +65,7 @@ public:
         DatabaseCache,          // int
         SpendZeroConfChange,    // bool
         Listen,                 // bool
+        Theme,                  // QString
         OptionIDRowCount,
     };
 
@@ -97,6 +98,9 @@ public:
     interfaces::Node& node() const { assert(m_node); return *m_node; }
     void setNode(interfaces::Node& node) { assert(!m_node); m_node = &node; }
 
+    bool getRestartApp() const;
+    void setRestartApp(bool value);
+
 private:
     interfaces::Node* m_node = nullptr;
     /* Qt-only settings */
@@ -109,6 +113,9 @@ private:
     bool fCoinControlFeatures;
     /* settings that were overridden by command-line */
     QString strOverriddenByCommandLine;
+
+    QString theme;
+    bool restartApp;
 
     // Add option to list of GUI options overridden through command line/config file
     void addOverriddenOption(const std::string &option);
