@@ -239,13 +239,13 @@
         <file alias="bg">res/styles/theme2/app-icons/bg.png</file>
         <file alias="splash_bg">res/styles/theme2/app-icons/splash_bg.png</file>
         <file alias="nav-logo-sin">res/styles/theme2/app-icons/nav-logo-sin.png</file>
-        <file alias="options">res/styles/theme2/app-icons/options.svg</file>
-        <file alias="debugwindow">res/styles/theme2/app-icons/debugwindow.svg</file>
+        <file alias="options">res/styles/theme2/app-icons/options.png</file>
+        <file alias="debugwindow">res/styles/theme2/app-icons/debugwindow.png</file>
         <file alias="setup_bottom">res/styles/theme2/app-icons/setup_bottom.svg</file>
         <file alias="home">res/styles/theme2/app-icons/home.svg</file>
         <file alias="masternodes">res/styles/theme2/app-icons/masternodes.svg</file>
         <file alias="stats">res/styles/theme2/app-icons/stats.svg</file>
-        <file alias="mywallet">res/styles/theme2/app-icons/mywallet.svg</file>
+        <file alias="mywallet">res/styles/theme2/app-icons/mywallet.png</file>
         <file alias="blog_white">res/styles/theme2/app-icons/blog_white.svg</file>
         <file alias="docs_white">res/styles/theme2/app-icons/docs_white.svg</file>
         <file alias="cmc_white">res/styles/theme2/app-icons/cmc_white.svg</file>

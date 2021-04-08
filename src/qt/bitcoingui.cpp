@@ -153,6 +153,8 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     labelWalletHDStatusIcon = new QLabel();
     labelProxyIcon = new GUIUtil::ClickableLabel();
     connectionsControl = new GUIUtil::ClickableLabel();
+    connectionsCount = new GUIUtil::ClickableLabel();
+    connectionsCount->setStyleSheet("QLabel {color : #008AC8; }");
     labelBlocksIcon = new GUIUtil::ClickableLabel();
     if(enableWallet)
     {
@@ -165,6 +167,8 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     frameBlocksLayout->addWidget(labelProxyIcon);
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(connectionsControl);
+    frameBlocksLayout->addStretch();
+    frameBlocksLayout->addWidget(connectionsCount);
     frameBlocksLayout->addStretch();
     frameBlocksLayout->addWidget(labelBlocksIcon);
     frameBlocksLayout->addStretch();
@@ -243,14 +247,14 @@ void BitcoinGUI::createActions()
     QActionGroup *tabGroup = new QActionGroup(this);
     connect(modalOverlay, &ModalOverlay::triggered, tabGroup, &QActionGroup::setEnabled);
 
-    overviewAction = new QAction(platformStyle->SingleColorIcon(":/icons/overview"), tr("&Overview"), this);
+    overviewAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/mywallet", PlatformStyle::NavBar), tr(" &My Wallet"), this);
     overviewAction->setStatusTip(tr("Show general overview of wallet"));
     overviewAction->setToolTip(overviewAction->statusTip());
     overviewAction->setCheckable(true);
     overviewAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
     tabGroup->addAction(overviewAction);
 
-    sendCoinsAction = new QAction(platformStyle->SingleColorIcon(":/icons/send"), tr("&Send"), this);
+    sendCoinsAction = new QAction(platformStyle->MultiStatesIcon(":/icons/send", PlatformStyle::NavBar), tr(" &Send"), this);
     sendCoinsAction->setStatusTip(tr("Send coins to a Bitcoin address"));
     sendCoinsAction->setToolTip(sendCoinsAction->statusTip());
     sendCoinsAction->setCheckable(true);
@@ -261,7 +265,7 @@ void BitcoinGUI::createActions()
     sendCoinsMenuAction->setStatusTip(sendCoinsAction->statusTip());
     sendCoinsMenuAction->setToolTip(sendCoinsMenuAction->statusTip());
 
-    receiveCoinsAction = new QAction(platformStyle->SingleColorIcon(":/icons/receiving_addresses"), tr("&Receive"), this);
+    receiveCoinsAction = new QAction(platformStyle->MultiStatesIcon(":/icons/receiving_addresses", PlatformStyle::NavBar), tr(" &Receive"), this);
     receiveCoinsAction->setStatusTip(tr("Request payments (generates QR codes and bitcoin: URIs)"));
     receiveCoinsAction->setToolTip(receiveCoinsAction->statusTip());
     receiveCoinsAction->setCheckable(true);
@@ -272,7 +276,7 @@ void BitcoinGUI::createActions()
     receiveCoinsMenuAction->setStatusTip(receiveCoinsAction->statusTip());
     receiveCoinsMenuAction->setToolTip(receiveCoinsMenuAction->statusTip());
 
-    historyAction = new QAction(platformStyle->SingleColorIcon(":/icons/history"), tr("&Transactions"), this);
+    historyAction = new QAction(platformStyle->MultiStatesIcon(":/icons/history", PlatformStyle::NavBar), tr(" &Transactions\n"), this);
     historyAction->setStatusTip(tr("Browse transaction history"));
     historyAction->setToolTip(historyAction->statusTip());
     historyAction->setCheckable(true);
@@ -996,6 +1000,7 @@ void BitcoinGUI::updateNetworkState()
 
     if (m_node.getNetworkActive()) {
         tooltip = tr("%n active connection(s) to Bitcoin network", "", count) + QString(".<br>") + tr("Click to disable network activity.");
+        connectionsCount->setText(tr("%n", "", count));
     } else {
         tooltip = tr("Network activity disabled.") + QString("<br>") + tr("Click to enable network activity again.");
         icon = ":/icons/network_disabled";
@@ -1003,6 +1008,7 @@ void BitcoinGUI::updateNetworkState()
 
     // Don't word-wrap this (fixed-width) tooltip
     tooltip = QString("<nobr>") + tooltip + QString("</nobr>");
+    connectionsCount->setToolTip(tr("Connected Peers : %n", "", count));
     connectionsControl->setToolTip(tooltip);
 
     connectionsControl->setPixmap(platformStyle->SingleColorIcon(icon).pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));

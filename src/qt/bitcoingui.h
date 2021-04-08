@@ -125,6 +125,7 @@ private:
     QLabel* labelWalletHDStatusIcon = nullptr;
     GUIUtil::ClickableLabel* labelProxyIcon = nullptr;
     GUIUtil::ClickableLabel* connectionsControl = nullptr;
+    QLabel* connectionsCount = nullptr;
     GUIUtil::ClickableLabel* labelBlocksIcon = nullptr;
     QLabel* progressBarLabel = nullptr;
     GUIUtil::ClickableProgressBar* progressBar = nullptr;
