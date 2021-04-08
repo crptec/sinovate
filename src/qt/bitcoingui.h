@@ -164,6 +164,9 @@ private:
     QAction* m_wallet_selector_action = nullptr;
     QAction* m_mask_values_action{nullptr};
 
+    QLabel *mainIcon;
+    QLabel *mainBrand;
+
     QLabel *m_wallet_selector_label = nullptr;
     QComboBox* m_wallet_selector = nullptr;
 

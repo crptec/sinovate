@@ -18,6 +18,7 @@
 #include <qt/platformstyle.h>
 #include <qt/rpcconsole.h>
 #include <qt/utilitydialog.h>
+#include <qt/styleSheet.h>
 
 #ifdef ENABLE_WALLET
 #include <qt/walletcontroller.h>
@@ -542,10 +543,33 @@ void BitcoinGUI::createToolBars()
     if(walletFrame)
     {
         QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
+        addToolBar(Qt::LeftToolBarArea, toolbar);
         appToolBar = toolbar;
         toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
         toolbar->setMovable(false);
         toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        
+        toolbar->setIconSize(QSize(28,28));
+        toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
+        toolbar->setMovable(false);
+        toolbar->setOrientation(Qt::Vertical);
+        toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        toolbar->setMinimumWidth(160);
+        mainIcon = new QLabel (this);
+    	mainIcon->setPixmap(QPixmap(":/styles/theme2/app-icons/nav-logo-sin"));
+    	mainIcon->setAlignment(Qt::AlignCenter);
+    	mainIcon->show();
+    	mainIcon->setStyleSheet("QLabel { margin-top: 30px; margin-bottom: 10px; }");
+
+        mainBrand = new QLabel (this);
+    	mainBrand->setText("SINOVATE");
+    	mainBrand->setAlignment(Qt::AlignCenter);
+    	mainBrand->show();
+    	mainBrand->setStyleSheet("QLabel { color:#F2F2F2; font-size:16px; font-weight:normal; margin-bottom: 30px;}");
+    	
+        toolbar->addWidget(mainIcon);  
+        toolbar->addWidget(mainBrand); 
+
         toolbar->addAction(overviewAction);
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
@@ -571,6 +595,7 @@ void BitcoinGUI::createToolBars()
         m_wallet_selector_label_action->setVisible(false);
         m_wallet_selector_action->setVisible(false);
 #endif
+
     }
 }
 
