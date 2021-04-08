@@ -51,6 +51,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QProgressDialog>
+#include <QPushButton>
 #include <QScreen>
 #include <QSettings>
 #include <QShortcut>
@@ -595,6 +596,62 @@ void BitcoinGUI::createToolBars()
         m_wallet_selector_label_action->setVisible(false);
         m_wallet_selector_action->setVisible(false);
 #endif
+
+      QWidget* empty = new QWidget();
+		empty->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+		toolbar->addWidget(empty);
+
+            
+		QLabel* labelVersion = new QLabel();
+        labelVersion->setText(QString(tr("BETELGEUSE\nv%1\n")).arg(QString::fromStdString(FormatVersionFriendly())));
+        QColor version_label_color = GetStringStyleValue("appstyle/version-label-color", "#6f80ab");
+        QVariant variant = version_label_color;
+        QString colcode = variant.toString();
+        labelVersion->setStyleSheet("color:" + colcode + "; margin-bottom: 2px; font-weight : bold;");
+        labelVersion->setAlignment(Qt::AlignCenter);
+        
+         //// Set widget bottomBar on the bottom toolbar ////
+
+        QWidget *bottomBar = new QWidget;
+        
+        //QPushButton *bottomSetupButton = new QPushButton();
+        QPushButton *bottomConsoleButton = new QPushButton();
+        QPushButton *bottomOptionButton = new QPushButton();
+                
+        QHBoxLayout *bottomBarLayout = new QHBoxLayout;
+
+         bottomBarLayout->addWidget(bottomOptionButton);
+        //if (settings.value("fShowMasternodesTab").toBool()) { 
+        //bottomBarLayout->addWidget(bottomSetupButton);
+        //}
+        bottomBarLayout->addWidget(bottomConsoleButton);
+                
+        bottomOptionButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/options",PlatformStyle::NavBar));
+        bottomOptionButton->setIconSize(QSize(16, 16));
+        bottomOptionButton->setToolTip( "Open Options Window"  );
+        bottomOptionButton->setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; } QPushButton {background-color: transparent; border: none; min-width: 16px;} QPushButton:hover {border: 1px solid" + colcode + "; }");
+        
+        //bottomSetupButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/setup_bottom",PlatformStyle::NavBar));
+        //bottomSetupButton->setIconSize(QSize(38, 16));
+        //bottomSetupButton->setToolTip( "Open SetUP Wizard"  );
+        //bottomSetupButton->setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; } QPushButton {background-color: transparent; border: none; min-width: 38px;} QPushButton:hover {border: 1px solid" + colcode + "; }");
+    
+    
+        bottomConsoleButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/debugwindow",PlatformStyle::NavBar));
+        bottomConsoleButton->setIconSize(QSize(16, 16));
+        bottomConsoleButton->setToolTip( "Open Console"  );
+        bottomConsoleButton->setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; } QPushButton {background-color: transparent; border: none; min-width: 16px;} QPushButton:hover {border: 1px solid" + colcode + "; }");
+
+        bottomBar->setLayout(bottomBarLayout);
+        toolbar->addWidget(bottomBar);
+
+        connect(bottomOptionButton, SIGNAL(released()), this, SLOT(optionsClicked()));
+        //connect(bottomSetupButton, SIGNAL(released()), this, SLOT(gotoSetupTab()));
+        connect(bottomConsoleButton, SIGNAL (released()), this, SLOT (showDebugWindowActivateConsole()));
+    
+        //// bottomBar end ////
+      
+        toolbar->addWidget(labelVersion);
 
     }
 }
