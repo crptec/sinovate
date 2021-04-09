@@ -130,6 +130,7 @@ public:
         consensus.fPoSNoRetargeting = false;
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;
+        consensus.nPoSMinStakeValue = 1;
         
         // addresses
         consensus.devAddressPubKey = "841e6bf56b99a59545da932de2efb23ab93b4f44";
@@ -243,6 +244,15 @@ public:
 
         // IN params
         consensus.nInfinityNodeExpireTime=5040;//720*365 days = 1 year
+
+        // proof-of-stake: activation and params
+        consensus.nStartPoSHeight = 1000;
+        consensus.nStakeMinDepth = 10;
+        consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.fPoSNoRetargeting = false;
+        consensus.nPoS_EMATargetTimespan = 30 * 60;
+        consensus.nTimeSlotLength = 15;
+        consensus.nPoSMinStakeValue = 1;
 
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
@@ -494,6 +504,7 @@ public:
         consensus.fPoSNoRetargeting = false;
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;
+        consensus.nPoSMinStakeValue = 1;
 
         consensus.devAddress2PubKey = "d63bf3a5822bb2f7ac9ced84ae2c1f319c4253e2";
         consensus.devAddress2 = "n13iidFw2jiVVoz86ouMqv31x7oEe5V4Wm";

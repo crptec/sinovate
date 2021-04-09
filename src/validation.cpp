@@ -772,8 +772,20 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
         }
     }
 
+// proof-of-stake:
+    // Keep track of transactions that spend a coinstake, which we re-scan
+    // during reorgs to ensure COINSTAKE_MATURITY is still met.
+    bool fSpendsCoinStake = false;
+    for (const CTxIn &txin : tx.vin) {
+        const Coin &coin = m_view.AccessCoin(txin.prevout);
+        if (coin.IsCoinStake()) {
+            fSpendsCoinStake = true;
+            break;
+        }
+    }
+
     entry.reset(new CTxMemPoolEntry(ptx, nFees, nAcceptTime, ::ChainActive().Height(),
-            fSpendsCoinbase, nSigOpsCost, lp));
+            fSpendsCoinbase, fSpendsCoinStake, nSigOpsCost, lp));
     unsigned int nSize = entry->GetTxSize();
 
     if (nSigOpsCost > MAX_STANDARD_TX_SIGOPS_COST)
@@ -1792,6 +1804,7 @@ int ApplyTxInUndo(Coin&& undo, CCoinsViewCache& view, const COutPoint& out)
         if (!alternate.IsSpent()) {
             undo.nHeight = alternate.nHeight;
             undo.fCoinBase = alternate.fCoinBase;
+            undo.fCoinStake = alternate.fCoinStake;
         } else {
             return DISCONNECT_FAILED; // adding output for transaction without known metadata
         }

@@ -76,6 +76,7 @@ public:
     {
         Other,
         Generated,
+        Minted,
         SendToAddress,
         SendToOther,
         RecvWithAddress,

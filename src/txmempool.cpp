@@ -22,9 +22,9 @@
 
 CTxMemPoolEntry::CTxMemPoolEntry(const CTransactionRef& _tx, const CAmount& _nFee,
                                  int64_t _nTime, unsigned int _entryHeight,
-                                 bool _spendsCoinbase, int64_t _sigOpsCost, LockPoints lp)
+                                 bool _spendsCoinbase, bool _spendsCoinstake, int64_t _sigOpsCost, LockPoints lp)
     : tx(_tx), nFee(_nFee), nTxWeight(GetTransactionWeight(*tx)), nUsageSize(RecursiveDynamicUsage(tx)), nTime(_nTime), entryHeight(_entryHeight),
-    spendsCoinbase(_spendsCoinbase), sigOpCost(_sigOpsCost), lockPoints(lp), m_epoch(0)
+    spendsCoinbase(_spendsCoinbase), spendsCoinstake(_spendsCoinstake), sigOpCost(_sigOpsCost), lockPoints(lp), m_epoch(0)
 {
     nCountWithDescendants = 1;
     nSizeWithDescendants = GetTxSize();
@@ -526,6 +526,18 @@ void CTxMemPool::removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMem
                 const Coin &coin = pcoins->AccessCoin(txin.prevout);
                 if (nCheckFrequency != 0) assert(!coin.IsSpent());
                 if (coin.IsSpent() || (coin.IsCoinBase() && ((signed long)nMemPoolHeight) - coin.nHeight < COINBASE_MATURITY)) {
+                    txToRemove.insert(it);
+                    break;
+                }
+            }
+        } else if (it->GetSpendsCoinstake()) {
+            for (const CTxIn& txin : tx.vin) {
+                indexed_transaction_set::const_iterator it2 = mapTx.find(txin.prevout.hash);
+                if (it2 != mapTx.end())
+                    continue;
+                const Coin &coin = pcoins->AccessCoin(txin.prevout);
+                if (nCheckFrequency != 0) assert(!coin.IsSpent());
+                if (coin.IsSpent() || (coin.IsCoinStake() && ((signed long)nMemPoolHeight) - coin.nHeight < COINSTAKE_MATURITY)) {
                     txToRemove.insert(it);
                     break;
                 }
