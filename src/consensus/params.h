@@ -94,13 +94,12 @@ struct Params {
 
     // proof-of-stake: activation and params
     int nStartPoSHeight;
-    int nStakeMinAge;
     int nStakeMinDepth;
-    int64_t nTargetTimespan;
-    int64_t nTargetSpacing;
     int nTimeSlotLength;
     uint256 posLimit;
     bool fPoSNoRetargeting;
+    int64_t nPoS_EMATargetTimespan;
+    int nPoSMinStakeValue;
 
     // proof-of-stake: helper funcs
 
@@ -157,7 +156,6 @@ struct Params {
     bool fPowNoRetargeting;
     int64_t nPowTargetSpacing;
     int64_t nPowTargetTimespan;
-    int64_t nPoS_EMATargetTimespan;
     int64_t DifficultyAdjustmentInterval() const { return nPowTargetTimespan / nPowTargetSpacing; }
     /** The best chain should have at least this much work */
     uint256 nMinimumChainWork;

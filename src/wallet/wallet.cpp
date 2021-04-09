@@ -40,10 +40,10 @@
 //SIN (proof-of-stake, infinitynodes)
 #include <chainparams.h>
 #include <sinovate/infinitynodelockreward.h>
+#include <script/standard.h>
 #include <pos/stakeinput.h>
 #include <pos/pos.h>
 #include <pos/posminer.h>
-#include <shutdown.h>
 #endif
 
 #include <univalue.h>
@@ -62,6 +62,8 @@ const std::map<uint64_t,std::string> WALLET_FLAG_CAVEATS{
         "be considered unused, even if the opposite is the case."
     },
 };
+
+typedef std::vector<unsigned char> valtype;
 
 static const size_t OUTPUT_GROUP_MAX_ENTRIES = 10;
 
@@ -384,6 +386,9 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
 
         const CBlockIndex* pindex = nullptr;
         for (unsigned int index = 0; index < pcoin->tx->vout.size(); index++) {
+
+            // Check min value requirement for stake inputs
+            if (pcoin->tx->vout[index].nValue < Params().GetConsensus().nPoSMinStakeValue) continue;
 
             auto res = CheckOutputAvailability(
                     pcoin->tx->vout[index],
@@ -2259,6 +2264,12 @@ CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
         const bool fIncludeLocked) const
 {
     OutputAvailabilityResult res;
+    std::vector<valtype> vSolutions;
+
+    TxoutType whichType = Solver(output.scriptPubKey, vSolutions);
+    if (whichType != TxoutType::PUBKEYHASH) {
+        return res;
+    }
 
     // Check if the utxo was spent.
     if (IsSpent(wtxid, outIndex)) return res;

@@ -6,6 +6,7 @@
 
 #include <pos/stakeinput.h>
 
+#include <amount.h>
 #include <chain.h>
 #include <txdb.h>
 #include <wallet/wallet.h>
@@ -104,6 +105,19 @@ bool CSinStake::ContextCheck(int nHeight)
     if (!consensusParams.HasStakeMinDepth(nHeight, nHeightBlockFrom))
         return error("%s : min depth violation - height=%d - time=%d, nHeightBlockFrom=%d",
                          __func__, nHeight, nHeightBlockFrom);
+    // All good
+    return true;
+}
+
+// Verify stake value checks
+bool CSinStake::ValueCheck()
+{
+    const Consensus::Params& consensusParams = Params().GetConsensus();
+
+    if (GetValue() < (consensusParams.nPoSMinStakeValue * COIN)) {
+        return error("%s: stake input below min value threshold", __func__);
+    }
+
     // All good
     return true;
 }
