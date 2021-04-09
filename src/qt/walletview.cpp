@@ -18,6 +18,7 @@
 #include <qt/transactiontablemodel.h>
 #include <qt/transactionview.h>
 #include <qt/walletmodel.h>
+#include "statspage.h"
 
 #include <interfaces/node.h>
 #include <node/ui_interface.h>
@@ -68,6 +69,11 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     addWidget(transactionsPage);
     addWidget(receiveCoinsPage);
     addWidget(sendCoinsPage);
+
+     //StatsPage
+    statsWindow = new StatsPage(platformStyle);
+    addWidget(statsWindow);
+    //
 
     connect(overviewPage, &OverviewPage::transactionClicked, this, &WalletView::transactionClicked);
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
@@ -167,6 +173,13 @@ void WalletView::gotoHistoryPage()
 {
     setCurrentWidget(transactionsPage);
 }
+
+// StatsPage
+void WalletView::gotoStatsPage()
+{
+    setCurrentWidget(statsWindow);
+}
+//
 
 void WalletView::gotoReceiveCoinsPage()
 {

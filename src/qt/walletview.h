@@ -18,6 +18,7 @@ class SendCoinsRecipient;
 class TransactionView;
 class WalletModel;
 class AddressBookPage;
+class StatsPage;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -63,6 +64,9 @@ private:
     SendCoinsDialog *sendCoinsPage;
     AddressBookPage *usedSendingAddressesPage;
     AddressBookPage *usedReceivingAddressesPage;
+     // StatsPage
+    StatsPage *statsWindow;
+    //
 
     TransactionView *transactionView;
 
@@ -76,6 +80,8 @@ public Q_SLOTS:
     void gotoHistoryPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
+    /** Switch to stats page */
+    void gotoStatsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
 

@@ -38,6 +38,7 @@ class WalletFrame;
 class WalletModel;
 class HelpMessageDialog;
 class ModalOverlay;
+class StatsPage;
 enum class SynchronizationState;
 
 namespace interfaces {
@@ -134,6 +135,7 @@ private:
     QMenuBar* appMenuBar = nullptr;
     QToolBar* appToolBar = nullptr;
     QAction* overviewAction = nullptr;
+    QAction* statsPageAction = nullptr;
     QAction* historyAction = nullptr;
     QAction* quitAction = nullptr;
     QAction* sendCoinsAction = nullptr;
@@ -175,6 +177,7 @@ private:
     const std::unique_ptr<QMenu> trayIconMenu;
     Notificator* notificator = nullptr;
     RPCConsole* rpcConsole = nullptr;
+    StatsPage  *statsWindow;
     HelpMessageDialog* helpMessageDialog = nullptr;
     ModalOverlay* modalOverlay = nullptr;
 
@@ -275,6 +278,8 @@ public Q_SLOTS:
 #ifdef ENABLE_WALLET
     /** Switch to overview (home) page */
     void gotoOverviewPage();
+    /** Switch to stats page */
+    void gotoStatsPage(); 
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */

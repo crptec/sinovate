@@ -244,7 +244,7 @@
         <file alias="setup_bottom">res/styles/theme2/app-icons/setup_bottom.svg</file>
         <file alias="home">res/styles/theme2/app-icons/home.svg</file>
         <file alias="masternodes">res/styles/theme2/app-icons/masternodes.svg</file>
-        <file alias="stats">res/styles/theme2/app-icons/stats.svg</file>
+        <file alias="stats">res/styles/theme2/app-icons/stats.png</file>
         <file alias="mywallet">res/styles/theme2/app-icons/mywallet.png</file>
         <file alias="blog_white">res/styles/theme2/app-icons/blog_white.svg</file>
         <file alias="docs_white">res/styles/theme2/app-icons/docs_white.svg</file>

@@ -32,6 +32,7 @@ QT_FORMS_UI = \
   qt/forms/sendcoinsdialog.ui \
   qt/forms/sendcoinsentry.ui \
   qt/forms/signverifymessagedialog.ui \
+  qt/forms/statspage.ui \
   qt/forms/transactiondescdialog.ui
 
 QT_MOC_CPP = \
@@ -74,6 +75,7 @@ QT_MOC_CPP = \
   qt/moc_sendcoinsentry.cpp \
   qt/moc_signverifymessagedialog.cpp \
   qt/moc_splashscreen.cpp \
+  qt/moc_statspage.cpp \
   qt/moc_trafficgraphwidget.cpp \
   qt/moc_transactiondesc.cpp \
   qt/moc_transactiondescdialog.cpp \
@@ -148,6 +150,7 @@ BITCOIN_QT_H = \
   qt/signverifymessagedialog.h \
   qt/sinpushbutton.h \
   qt/splashscreen.h \
+  qt/statspage.h \
   qt/styleSheet.h \
   qt/trafficgraphwidget.h \
   qt/transactiondesc.h \
@@ -403,6 +406,7 @@ BITCOIN_QT_WALLET_CPP = \
   qt/sendcoinsentry.cpp \
   qt/signverifymessagedialog.cpp \
   qt/sinpushbutton.cpp \
+  qt/statspage.cpp \
   qt/styleSheet.cpp \
   qt/transactiondesc.cpp \
   qt/transactiondescdialog.cpp \

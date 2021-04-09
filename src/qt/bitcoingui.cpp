@@ -19,6 +19,7 @@
 #include <qt/rpcconsole.h>
 #include <qt/utilitydialog.h>
 #include <qt/styleSheet.h>
+#include <qt/statspage.h>
 
 #ifdef ENABLE_WALLET
 #include <qt/walletcontroller.h>
@@ -275,6 +276,13 @@ void BitcoinGUI::createActions()
     receiveCoinsMenuAction = new QAction(receiveCoinsAction->text(), this);
     receiveCoinsMenuAction->setStatusTip(receiveCoinsAction->statusTip());
     receiveCoinsMenuAction->setToolTip(receiveCoinsMenuAction->statusTip());
+    
+    statsPageAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/stats", PlatformStyle::NavBar), tr(" St&atistics"), this);
+    statsPageAction->setStatusTip(tr("Statistics"));
+    statsPageAction->setToolTip(statsPageAction->statusTip());
+    statsPageAction->setCheckable(true);
+    statsPageAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    tabGroup->addAction(statsPageAction);
 
     historyAction = new QAction(platformStyle->MultiStatesIcon(":/icons/history", PlatformStyle::NavBar), tr(" &Transactions\n"), this);
     historyAction->setStatusTip(tr("Browse transaction history"));
@@ -296,6 +304,8 @@ void BitcoinGUI::createActions()
     connect(receiveCoinsAction, &QAction::triggered, this, &BitcoinGUI::gotoReceiveCoinsPage);
     connect(receiveCoinsMenuAction, &QAction::triggered, [this]{ showNormalIfMinimized(); });
     connect(receiveCoinsMenuAction, &QAction::triggered, this, &BitcoinGUI::gotoReceiveCoinsPage);
+    connect(statsPageAction, &QAction::triggered, [this]{ showNormalIfMinimized(); });
+    connect(statsPageAction, &QAction::triggered, this, &BitcoinGUI::gotoStatsPage);
     connect(historyAction, &QAction::triggered, [this]{ showNormalIfMinimized(); });
     connect(historyAction, &QAction::triggered, this, &BitcoinGUI::gotoHistoryPage);
 #endif // ENABLE_WALLET
@@ -578,6 +588,7 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(overviewAction);
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
+        toolbar->addAction(statsPageAction);
         toolbar->addAction(historyAction);
         overviewAction->setChecked(true);
 
@@ -822,6 +833,7 @@ void BitcoinGUI::setWalletActionsEnabled(bool enabled)
     sendCoinsMenuAction->setEnabled(enabled);
     receiveCoinsAction->setEnabled(enabled);
     receiveCoinsMenuAction->setEnabled(enabled);
+    statsPageAction->setEnabled(enabled);
     historyAction->setEnabled(enabled);
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
@@ -948,6 +960,12 @@ void BitcoinGUI::gotoOverviewPage()
 {
     overviewAction->setChecked(true);
     if (walletFrame) walletFrame->gotoOverviewPage();
+}
+
+void BitcoinGUI::gotoStatsPage()
+{
+         statsPageAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoStatsPage();
 }
 
 void BitcoinGUI::gotoHistoryPage()
