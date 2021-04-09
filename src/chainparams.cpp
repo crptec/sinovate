@@ -245,6 +245,15 @@ public:
         // IN params
         consensus.nInfinityNodeExpireTime=5040;//720*365 days = 1 year
 
+        // proof-of-stake: activation and params
+        consensus.nStartPoSHeight = 1000;
+        consensus.nStakeMinDepth = 10;
+        consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.fPoSNoRetargeting = false;
+        consensus.nPoS_EMATargetTimespan = 30 * 60;
+        consensus.nTimeSlotLength = 15;
+        consensus.nPoSMinStakeValue = 1;
+
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
