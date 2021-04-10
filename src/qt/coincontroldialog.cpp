@@ -21,6 +21,7 @@
 #include <key_io.h>
 #include <policy/policy.h>
 #include <wallet/wallet.h>
+#include <qt/styleSheet.h>
 
 #include <QApplication>
 #include <QCheckBox>
@@ -49,6 +50,10 @@ CoinControlDialog::CoinControlDialog(CCoinControl& coin_control, WalletModel* _m
     platformStyle(_platformStyle)
 {
     ui->setupUi(this);
+
+    // Set stylesheet
+    SetObjectStyleSheet(ui->pushButtonSelectAll, StyleSheetNames::ButtonDark);
+    SetObjectStyleSheet(ui->treeWidget, StyleSheetNames::TreeView);
 
     // context menu actions
     QAction *copyAddressAction = new QAction(tr("Copy address"), this);
