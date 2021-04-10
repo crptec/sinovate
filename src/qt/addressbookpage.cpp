@@ -14,6 +14,7 @@
 #include <qt/editaddressdialog.h>
 #include <qt/guiutil.h>
 #include <qt/platformstyle.h>
+#include <qt/styleSheet.h>
 
 #include <QIcon>
 #include <QMenu>
@@ -64,17 +65,26 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
 {
     ui->setupUi(this);
 
+    SetObjectStyleSheet(ui->tableView, StyleSheetNames::TableViewLight);
+    setStyleSheet("");
+
     if (!platformStyle->getImagesOnButtons()) {
         ui->newAddress->setIcon(QIcon());
         ui->copyAddress->setIcon(QIcon());
         ui->deleteAddress->setIcon(QIcon());
         ui->exportButton->setIcon(QIcon());
     } else {
-        ui->newAddress->setIcon(platformStyle->SingleColorIcon(":/icons/add"));
-        ui->copyAddress->setIcon(platformStyle->SingleColorIcon(":/icons/editcopy"));
-        ui->deleteAddress->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
-        ui->exportButton->setIcon(platformStyle->SingleColorIcon(":/icons/export"));
+        ui->newAddress->setIcon(platformStyle->MultiStatesIcon(":/icons/add", PlatformStyle::PushButtonLight));
+        ui->copyAddress->setIcon(platformStyle->MultiStatesIcon(":/icons/editcopy", PlatformStyle::PushButtonLight));
+        ui->deleteAddress->setIcon(platformStyle->MultiStatesIcon(":/icons/remove", PlatformStyle::PushButtonLight));
+        ui->exportButton->setIcon(platformStyle->MultiStatesIcon(":/icons/export", PlatformStyle::PushButton));
     }
+
+    SetObjectStyleSheet(ui->newAddress, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->copyAddress, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->deleteAddress, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->exportButton, StyleSheetNames::ButtonGray);
+    SetObjectStyleSheet(ui->closeButton, StyleSheetNames::ButtonGray);
 
     switch(mode)
     {
@@ -106,7 +116,7 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
         ui->newAddress->setVisible(true);
         break;
     case ReceivingTab:
-        ui->labelExplanation->setText(tr("These are your Bitcoin addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.\nSigning is only possible with addresses of the type 'legacy'."));
+        ui->labelExplanation->setText(tr("These are your SIN addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.\nSigning is only possible with addresses of the type 'legacy'."));
         ui->deleteAddress->setVisible(false);
         ui->newAddress->setVisible(false);
         break;
