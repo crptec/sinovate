@@ -245,6 +245,46 @@ public:
         // IN params
         consensus.nInfinityNodeExpireTime=5040;//720*365 days = 1 year
 
+        // legacy Dash, needs refac
+        consensus.nMasternodeBurnSINNODE_1 = 100000;
+        consensus.nMasternodeBurnSINNODE_5 = 500000;
+        consensus.nMasternodeBurnSINNODE_10 = 1000000;
+
+        // node number bounds
+        consensus.nLimitSINNODE_1=6;
+        consensus.nLimitSINNODE_5=6;
+        consensus.nLimitSINNODE_10=6;
+
+        // IN params
+        consensus.nInfinityNodeBeginHeight=100;
+        consensus.nInfinityNodeGenesisStatement=110;
+        consensus.nInfinityNodeUpdateMeta=5;
+        consensus.nInfinityNodeVoteValue=100;
+        consensus.nInfinityNodeNotificationValue=1;
+        consensus.nInfinityNodeCallLockRewardDeepth=12;
+        consensus.nInfinityNodeCallLockRewardLoop=5; //in number of blocks
+        consensus.nInfinityNodeLockRewardTop=20; //in number
+        consensus.nInfinityNodeLockRewardSigners=3; //in number
+        consensus.nInfinityNodeLockRewardSINType=10; //in number
+        consensus.nSchnorrActivationHeight = 1350000; // wait for active
+        consensus.nInfinityNodeExpireTime=5040;//720*365 days = 1 year
+
+        /*Previously used as simple constants in validation */
+        consensus.nINActivationHeight = 100; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
+        consensus.nINEnforcementHeight = 120; // Enforcement of IN payments
+        consensus.nDINActivationHeight = 2880; // Activation of DIN 1.0 payments, and new dev fee address.
+
+        // height at which we fork to X25X
+        consensus.nX25XForkHeight = 170000;
+
+        //LWMA diff algo params
+        consensus.lwmaStartHeight = 150;
+        consensus.lwmaAveragingWindow = 96;
+
+        // IN reorg bounds have been parameterised
+        nMaxReorganizationDepth = 14; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
+        nDeltaChangeHeight = 0;
+
         // proof-of-stake: activation and params
         consensus.nStartPoSHeight = 1000;
         consensus.nStakeMinDepth = 10;
@@ -257,15 +297,15 @@ public:
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 210000;
-        consensus.BIP16Exception = uint256S("0x00000000dd30457c001f4095d208cc1296b0eed002427aa599874af7a432b105");
+        consensus.BIP16Exception = uint256S("0000000000000000000000000000000000000000000000000000000000000000");
         consensus.BIP34Height = 21111;
-        consensus.BIP34Hash = uint256S("0x0000000023b3a96d3484e5abb3755c413e7d41500f8e2a5c3f0dd01299cd8ef8");
+        consensus.BIP34Hash = uint256S("0000000000000000000000000000000000000000000000000000000000000000");
         consensus.BIP65Height = 581885; // 00000000007f6655f22f98e72ed80d8b06dc761d5da09df0fa1dc4be4f861eb6
         consensus.BIP66Height = 330776; // 000000002104c8c45e99a8853285a3b592602a3ccde2b832481da85e9e4ba182
         consensus.CSVHeight = 770112; // 00000000025e930139bac5c6c31a403776da130831ab85be56578f3fa75369bb
         consensus.SegwitHeight = 834624; // 00000000002b980fcd729daaa248fd9316a5200e9b367f4ff2c42453e84201ca
         consensus.MinBIP9WarningHeight = 836640; // segwit activation height + miner confirmation window
-        consensus.powLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("0000ffff00000000000000000000000000000000000000000000000000000000");
         consensus.nPowTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         consensus.nPowTargetSpacing = 10 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -281,14 +321,25 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = 1230767999; // December 31, 2008
 
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000001db6ec4ac88cf2272c6");
-        consensus.defaultAssumeValid = uint256S("0x000000000000006433d1efec504c53ca332b64963c425395515b01977bd7b3b0"); // 1864000
+        consensus.nMinimumChainWork = uint256S("0000000000000000000000000000000000000000000000000000000000000000");
+        consensus.defaultAssumeValid = uint256S("0000000000000000000000000000000000000000000000000000000000000000"); // 1864000
 
-        pchMessageStart[0] = 0x0b;
-        pchMessageStart[1] = 0x11;
-        pchMessageStart[2] = 0x09;
-        pchMessageStart[3] = 0x07;
-        nDefaultPort = 18333;
+        consensus.devAddressPubKey = "841e6bf56b99a59545da932de2efb23ab93b4f44";
+        consensus.devAddress = "SZLafuDjnjqh2tAfTrG9ZAGzbP8HkzNXvB";
+        consensus.devAddress2PubKey = "c07290a27153f8adaf01e6f5817405a32f569f61";
+        consensus.devAddress2 = "STEkkU29v5rjb6CMUdGciF1e4STZ6jx7aq";
+        consensus.cBurnAddress = "SinBurnAddress123456789SuqaXbx3AMC";
+        consensus.cBurnAddressPubKey = "ebaf5ec74cb2e2342dfda0229111738ff4dc742d";
+        consensus.cMetadataAddress = "SinBurnAddressForMetadataXXXXEU2mj";
+        consensus.cNotifyAddress = "SinBurnAddressForNotifyXXXXXc42TcT";
+        consensus.cLockRewardAddress = "SinBurnAddressForLockRewardXTbeffB";
+        consensus.cGovernanceAddress = "SinBurnAddressGovernanceVoteba5vkQ";
+
+        pchMessageStart[0] = 0xb8;
+        pchMessageStart[1] = 0xfd;
+        pchMessageStart[2] = 0xf4;
+        pchMessageStart[3] = 0xd8;
+        nDefaultPort = 20980;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
@@ -301,14 +352,11 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testnet-seed.bitcoin.jonasschnelli.ch");
-        vSeeds.emplace_back("seed.tbtc.petertodd.org");
-        vSeeds.emplace_back("seed.testnet.bitcoin.sprovoost.nl");
-        vSeeds.emplace_back("testnet-seed.bluematt.me"); // Just a static list of stable node(s), only supports x9
+        vSeeds.push_back("testnetseeder.suqa.org"); //Testnet SIN dns seeder
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
-        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,63);
+        base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,191);
         base58Prefixes[EXT_PUBLIC_KEY] = {0x04, 0x35, 0x87, 0xCF};
         base58Prefixes[EXT_SECRET_KEY] = {0x04, 0x35, 0x83, 0x94};
 
@@ -326,16 +374,9 @@ public:
         nDeltaChangeHeight = 0;
 
         checkpointData = {
-            {
-                {546, uint256S("000000002a936ca763904c3c35fce2f3556c559c0214345d31b1bcebf76acb70")},
-            }
         };
 
         chainTxData = ChainTxData{
-            // Data from RPC: getchaintxstats 4096 000000000000006433d1efec504c53ca332b64963c425395515b01977bd7b3b0
-            /* nTime    */ 1603359686,
-            /* nTxCount */ 58090238,
-            /* dTxRate  */ 0.1232886622799463,
         };
     }
 };
@@ -501,7 +542,7 @@ public:
         consensus.nStartPoSHeight = 90;
         consensus.nStakeMinDepth = 10;
         consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.fPoSNoRetargeting = false;
+        consensus.fPoSNoRetargeting = true;
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;
         consensus.nPoSMinStakeValue = 1;
@@ -534,7 +575,7 @@ public:
         consensus.nPowTargetTimespan = 3600;
         consensus.nPowTargetSpacing = 120;
         consensus.fPowAllowMinDifficultyBlocks = true;
-        consensus.fPowNoRetargeting = false;
+        consensus.fPowNoRetargeting = true;
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
         consensus.nMinerConfirmationWindow = 144; // Faster than normal for regtest (144 instead of 2016)
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
