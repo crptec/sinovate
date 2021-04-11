@@ -100,7 +100,7 @@
         <item row="7" column="2">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QPushButton" name="receiveButton">
+           <widget class="SinPushButton" name="receiveButton">
             <property name="minimumSize">
              <size>
               <width>150</width>
@@ -123,7 +123,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="clearButton">
+           <widget class="SinPushButton" name="clearButton">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -296,7 +296,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPushButton" name="showRequestButton">
+         <widget class="SinPushButton" name="showRequestButton">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -316,7 +316,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="removeRequestButton">
+         <widget class="SinPushButton" name="removeRequestButton">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -361,6 +361,11 @@
    <extends>QLineEdit</extends>
    <header>qt/bitcoinamountfield.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SinPushButton</class>
+   <extends>QPushButton</extends>
+   <header>qt/sinpushbutton.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

@@ -12,6 +12,7 @@
 #include <qt/platformstyle.h>
 #include <qt/receiverequestdialog.h>
 #include <qt/recentrequeststablemodel.h>
+#include <qt/styleSheet.h>
 #include <qt/walletmodel.h>
 
 #include <QAction>
@@ -29,16 +30,20 @@ ReceiveCoinsDialog::ReceiveCoinsDialog(const PlatformStyle *_platformStyle, QWid
 {
     ui->setupUi(this);
 
+    // Set stylesheet
+    SetObjectStyleSheet(ui->showRequestButton, StyleSheetNames::ButtonTransparentBordered);
+    SetObjectStyleSheet(ui->removeRequestButton, StyleSheetNames::ButtonTransparentBordered);
+
     if (!_platformStyle->getImagesOnButtons()) {
         ui->clearButton->setIcon(QIcon());
         ui->receiveButton->setIcon(QIcon());
         ui->showRequestButton->setIcon(QIcon());
         ui->removeRequestButton->setIcon(QIcon());
     } else {
-        ui->clearButton->setIcon(_platformStyle->SingleColorIcon(":/icons/remove"));
-        ui->receiveButton->setIcon(_platformStyle->SingleColorIcon(":/icons/receiving_addresses"));
-        ui->showRequestButton->setIcon(_platformStyle->SingleColorIcon(":/icons/edit"));
-        ui->removeRequestButton->setIcon(_platformStyle->SingleColorIcon(":/icons/remove"));
+        ui->clearButton->setIcon(platformStyle->MultiStatesIcon(":/icons/remove_entry", PlatformStyle::PushButton));
+        ui->receiveButton->setIcon(platformStyle->MultiStatesIcon(":/icons/receiving_addresses", PlatformStyle::PushButton));
+        ui->showRequestButton->setIcon(platformStyle->MultiStatesIcon(":/icons/eye", PlatformStyle::PushButton));
+        ui->removeRequestButton->setIcon(platformStyle->MultiStatesIcon(":/icons/remove", PlatformStyle::PushButton));
     }
 
     // context menu actions
