@@ -539,7 +539,7 @@ public:
         nDeltaChangeHeight = 617000;
 
         // proof-of-stake: activation and params
-        consensus.nStartPoSHeight = 90;
+        consensus.nStartPoSHeight = 250;
         consensus.nStakeMinDepth = 10;
         consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.fPoSNoRetargeting = true;
