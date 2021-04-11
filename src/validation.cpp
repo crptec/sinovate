@@ -3722,6 +3722,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     const int nHeight = pindexPrev->nHeight + 1;
     const Consensus::Params& consensusParams = params.GetConsensus();
     bool IsPoS = false;
+    bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
 
     // Check reorg bounds
     int nMaxReorgDepth = gArgs.GetArg("-maxreorg", Params().MaxReorganizationDepth());
@@ -3750,15 +3751,15 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     }
 
     // Check PoW timestamp against prev
-    if (!IsPoS && block.GetBlockTime() <= pindexPrev->GetMedianTimePast()) {
+    if (!IsPoS && !fRegTest && block.GetBlockTime() <= pindexPrev->GetMedianTimePast()) {
         return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old", "block's timestamp is too early");
     }
 
     // Check PoW timestamp
-    if (!IsPoS && block.GetBlockTime() > nAdjustedTime + MAX_FUTURE_BLOCK_TIME)
+    if (!IsPoS && !fRegTest && block.GetBlockTime() > nAdjustedTime + MAX_FUTURE_BLOCK_TIME)
         return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new", "block timestamp too far in the future");
 
-    if (IsPoS && !(Params().NetworkIDString() == CBaseChainParams::REGTEST)) {
+    if (IsPoS && !fRegTest) {
         // Check for PoS timestamp against prev
         if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
             return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
