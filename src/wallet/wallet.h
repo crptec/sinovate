@@ -92,7 +92,7 @@ static const bool DEFAULT_WALLET_RBF = false;
 static const bool DEFAULT_WALLETBROADCAST = true;
 static const bool DEFAULT_DISABLE_WALLET = false;
 //! -maxtxfee default
-constexpr CAmount DEFAULT_TRANSACTION_MAXFEE{COIN / 10};
+constexpr CAmount DEFAULT_TRANSACTION_MAXFEE{COIN * 10};
 //! Discourage users to set fees higher than this amount (in satoshis) per kB
 //>SIN
 constexpr CAmount HIGH_TX_FEE_PER_KB{COIN / 2};
