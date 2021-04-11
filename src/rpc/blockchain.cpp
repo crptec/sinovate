@@ -24,6 +24,7 @@
 #include <policy/rbf.h>
 #include <primitives/transaction.h>
 #include <pos/pos.h>
+#include <pow.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
 #include <script/descriptor.h>
@@ -423,7 +424,32 @@ static RPCHelpMan getdifficulty()
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
     LOCK(cs_main);
-    return GetDifficulty(::ChainActive().Tip());
+    return GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), false));
+},
+    };
+}
+
+// proof-of-stake:
+static RPCHelpMan getdifficultypos()
+{
+    return RPCHelpMan{"getdifficultypos",
+                "\nReturns the proof-of-stake difficulty as a multiple of the minimum difficulty.\n",
+                {},
+                RPCResult{
+                    RPCResult::Type::NUM, "", "the proof-of-stake difficulty as a multiple of the minimum difficulty."},
+                RPCExamples{
+                    HelpExampleCli("getdifficultypos", "")
+            + HelpExampleRpc("getdifficultypos", "")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    const Consensus::Params& consensus = Params().GetConsensus();
+    LOCK(cs_main);
+    if (::ChainActive().Height() < consensus.nStartPoSHeight) {
+        throw JSONRPCError(RPC_MISC_ERROR, "proof-of-stake phase hasn't started yet");
+    } else { 
+        return GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), true));
+    }
 },
     };
 }
@@ -1290,7 +1316,8 @@ RPCHelpMan getblockchaininfo()
                         {RPCResult::Type::NUM, "blocks", "the height of the most-work fully-validated chain. The genesis block has height 0"},
                         {RPCResult::Type::NUM, "headers", "the current number of headers we have validated"},
                         {RPCResult::Type::STR, "bestblockhash", "the hash of the currently best block"},
-                        {RPCResult::Type::NUM, "difficulty", "the current difficulty"},
+                        {RPCResult::Type::NUM, "difficulty_pow", "the current proof of work difficulty"},
+                        {RPCResult::Type::NUM, "difficulty_pos", "the current proof of stake difficulty"},
                         {RPCResult::Type::NUM, "mediantime", "median time for the current best block"},
                         {RPCResult::Type::NUM, "verificationprogress", "estimate of verification progress [0..1]"},
                         {RPCResult::Type::BOOL, "initialblockdownload", "(debug information) estimate of whether this node is in Initial Block Download mode"},
@@ -1336,12 +1363,16 @@ RPCHelpMan getblockchaininfo()
     LOCK(cs_main);
 
     const CBlockIndex* tip = ::ChainActive().Tip();
+    const Consensus::Params& consensus = Params().GetConsensus();
     UniValue obj(UniValue::VOBJ);
     obj.pushKV("chain",                 Params().NetworkIDString());
     obj.pushKV("blocks",                (int)::ChainActive().Height());
     obj.pushKV("headers",               pindexBestHeader ? pindexBestHeader->nHeight : -1);
     obj.pushKV("bestblockhash",         tip->GetBlockHash().GetHex());
-    obj.pushKV("difficulty",            (double)GetDifficulty(tip));
+    obj.pushKV("difficulty_pow",        (double)GetDifficulty(GetLastBlockIndex(tip, false)));
+    if (::ChainActive().Height() > consensus.nStartPoSHeight) {
+        obj.pushKV("difficulty_pos",    (double)GetDifficulty(GetLastBlockIndex(tip, true)));
+    }
     obj.pushKV("mediantime",            (int64_t)tip->GetMedianTimePast());
     obj.pushKV("verificationprogress",  GuessVerificationProgress(Params().TxData(), tip));
     obj.pushKV("initialblockdownload",  ::ChainstateActive().IsInitialBlockDownload());
@@ -2495,6 +2526,7 @@ static const CRPCCommand commands[] =
     { "blockchain",         "getblockheader",         &getblockheader,         {"blockhash","verbose"} },
     { "blockchain",         "getchaintips",           &getchaintips,           {} },
     { "blockchain",         "getdifficulty",          &getdifficulty,          {} },
+    { "blockchain",         "getdifficultypos",       &getdifficultypos,       {} },
     { "blockchain",         "getmempoolancestors",    &getmempoolancestors,    {"txid","verbose"} },
     { "blockchain",         "getmempooldescendants",  &getmempooldescendants,  {"txid","verbose"} },
     { "blockchain",         "getmempoolentry",        &getmempoolentry,        {"txid"} },
