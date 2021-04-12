@@ -24,6 +24,7 @@
 #include <policy/rbf.h>
 #include <primitives/transaction.h>
 #include <pos/pos.h>
+#include <pow.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
 #include <script/descriptor.h>
@@ -423,7 +424,32 @@ static RPCHelpMan getdifficulty()
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
     LOCK(cs_main);
-    return GetDifficulty(::ChainActive().Tip());
+    return GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), false));
+},
+    };
+}
+
+// proof-of-stake:
+static RPCHelpMan getdifficultypos()
+{
+    return RPCHelpMan{"getdifficultypos",
+                "\nReturns the proof-of-stake difficulty as a multiple of the minimum difficulty.\n",
+                {},
+                RPCResult{
+                    RPCResult::Type::NUM, "", "the proof-of-stake difficulty as a multiple of the minimum difficulty."},
+                RPCExamples{
+                    HelpExampleCli("getdifficultypos", "")
+            + HelpExampleRpc("getdifficultypos", "")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    const Consensus::Params& consensus = Params().GetConsensus();
+    LOCK(cs_main);
+    if (::ChainActive().Height() < consensus.nStartPoSHeight) {
+        throw JSONRPCError(RPC_MISC_ERROR, "proof-of-stake phase hasn't started yet");
+    } else { 
+        return GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), true));
+    }
 },
     };
 }
@@ -1129,6 +1155,7 @@ static RPCHelpMan gettxout()
                                     {{RPCResult::Type::STR, "address", "bitcoin address"}}},
                             }},
                         {RPCResult::Type::BOOL, "coinbase", "Coinbase or not"},
+                        {RPCResult::Type::BOOL, "coinstake", "Coinstake or not"},
                     }},
                 RPCExamples{
             "\nGet unspent transactions\n"
@@ -1179,6 +1206,7 @@ static RPCHelpMan gettxout()
     ScriptPubKeyToUniv(coin.out.scriptPubKey, o, true);
     ret.pushKV("scriptPubKey", o);
     ret.pushKV("coinbase", (bool)coin.fCoinBase);
+    ret.pushKV("coinbase", (bool)coin.fCoinStake);
 
     return ret;
 },
@@ -1290,7 +1318,8 @@ RPCHelpMan getblockchaininfo()
                         {RPCResult::Type::NUM, "blocks", "the height of the most-work fully-validated chain. The genesis block has height 0"},
                         {RPCResult::Type::NUM, "headers", "the current number of headers we have validated"},
                         {RPCResult::Type::STR, "bestblockhash", "the hash of the currently best block"},
-                        {RPCResult::Type::NUM, "difficulty", "the current difficulty"},
+                        {RPCResult::Type::NUM, "difficulty_pow", "the current proof of work difficulty"},
+                        {RPCResult::Type::NUM, "difficulty_pos", "the current proof of stake difficulty"},
                         {RPCResult::Type::NUM, "mediantime", "median time for the current best block"},
                         {RPCResult::Type::NUM, "verificationprogress", "estimate of verification progress [0..1]"},
                         {RPCResult::Type::BOOL, "initialblockdownload", "(debug information) estimate of whether this node is in Initial Block Download mode"},
@@ -1336,12 +1365,16 @@ RPCHelpMan getblockchaininfo()
     LOCK(cs_main);
 
     const CBlockIndex* tip = ::ChainActive().Tip();
+    const Consensus::Params& consensus = Params().GetConsensus();
     UniValue obj(UniValue::VOBJ);
     obj.pushKV("chain",                 Params().NetworkIDString());
     obj.pushKV("blocks",                (int)::ChainActive().Height());
     obj.pushKV("headers",               pindexBestHeader ? pindexBestHeader->nHeight : -1);
     obj.pushKV("bestblockhash",         tip->GetBlockHash().GetHex());
-    obj.pushKV("difficulty",            (double)GetDifficulty(tip));
+    obj.pushKV("difficulty_pow",        (double)GetDifficulty(GetLastBlockIndex(tip, false)));
+    if (::ChainActive().Height() > consensus.nStartPoSHeight) {
+        obj.pushKV("difficulty_pos",    (double)GetDifficulty(GetLastBlockIndex(tip, true)));
+    }
     obj.pushKV("mediantime",            (int64_t)tip->GetMedianTimePast());
     obj.pushKV("verificationprogress",  GuessVerificationProgress(Params().TxData(), tip));
     obj.pushKV("initialblockdownload",  ::ChainstateActive().IsInitialBlockDownload());
@@ -1822,7 +1855,7 @@ static RPCHelpMan getblockstats()
                     {RPCResult::Type::NUM, "90th_percentile_feerate", "The 90th percentile feerate"},
                 }},
                 {RPCResult::Type::NUM, "height", "The height of the block"},
-                {RPCResult::Type::NUM, "ins", "The number of inputs (excluding coinbase)"},
+                {RPCResult::Type::NUM, "ins", "The number of inputs (excluding coinbase/coinstake)"},
                 {RPCResult::Type::NUM, "maxfee", "Maximum fee in the block"},
                 {RPCResult::Type::NUM, "maxfeerate", "Maximum feerate (in satoshis per virtual byte)"},
                 {RPCResult::Type::NUM, "maxtxsize", "Maximum transaction size"},
@@ -1838,11 +1871,11 @@ static RPCHelpMan getblockstats()
                 {RPCResult::Type::NUM, "swtotal_weight", "Total weight of all segwit transactions"},
                 {RPCResult::Type::NUM, "swtxs", "The number of segwit transactions"},
                 {RPCResult::Type::NUM, "time", "The block time"},
-                {RPCResult::Type::NUM, "total_out", "Total amount in all outputs (excluding coinbase and thus reward [ie subsidy + totalfee])"},
-                {RPCResult::Type::NUM, "total_size", "Total size of all non-coinbase transactions"},
-                {RPCResult::Type::NUM, "total_weight", "Total weight of all non-coinbase transactions"},
+                {RPCResult::Type::NUM, "total_out", "Total amount in all outputs (excluding coinbase/coinstake and thus reward [ie subsidy + totalfee])"},
+                {RPCResult::Type::NUM, "total_size", "Total size of all non-coinbase/coinstake transactions"},
+                {RPCResult::Type::NUM, "total_weight", "Total weight of all non-coinbase/coinstake transactions"},
                 {RPCResult::Type::NUM, "totalfee", "The fee total"},
-                {RPCResult::Type::NUM, "txs", "The number of transactions (including coinbase)"},
+                {RPCResult::Type::NUM, "txs", "The number of transactions (including coinbase or coinstake)"},
                 {RPCResult::Type::NUM, "utxo_increase", "The increase/decrease in the number of unspent outputs"},
                 {RPCResult::Type::NUM, "utxo_size_inc", "The increase/decrease in size for the utxo index (not discounting op_return and similar)"},
             }},
@@ -1937,7 +1970,7 @@ static RPCHelpMan getblockstats()
             }
         }
 
-        if (tx->IsCoinBase()) {
+        if (tx->IsCoinBase() || tx->IsCoinStake()) {
             continue;
         }
 
@@ -2495,6 +2528,7 @@ static const CRPCCommand commands[] =
     { "blockchain",         "getblockheader",         &getblockheader,         {"blockhash","verbose"} },
     { "blockchain",         "getchaintips",           &getchaintips,           {} },
     { "blockchain",         "getdifficulty",          &getdifficulty,          {} },
+    { "blockchain",         "getdifficultypos",       &getdifficultypos,       {} },
     { "blockchain",         "getmempoolancestors",    &getmempoolancestors,    {"txid","verbose"} },
     { "blockchain",         "getmempooldescendants",  &getmempooldescendants,  {"txid","verbose"} },
     { "blockchain",         "getmempoolentry",        &getmempoolentry,        {"txid"} },

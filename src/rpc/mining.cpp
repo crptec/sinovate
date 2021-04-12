@@ -54,6 +54,10 @@ static UniValue GetNetworkHashPS(int lookup, int height) {
     if (height >= 0 && height < ::ChainActive().Height())
         pb = ::ChainActive()[height];
 
+    while (pb && pb->pprev && (!pb->IsProofOfWork())) {
+        pb = pb->pprev;
+    }
+
     if (pb == nullptr || !pb->nHeight)
         return 0;
 
@@ -69,7 +73,12 @@ static UniValue GetNetworkHashPS(int lookup, int height) {
     int64_t minTime = pb0->GetBlockTime();
     int64_t maxTime = minTime;
     for (int i = 0; i < lookup; i++) {
-        pb0 = pb0->pprev;
+        while (pb0 && pb->pprev) {
+            pb0 = pb0->pprev;
+            if (pb0->IsProofOfWork()) {
+                break;
+            }
+        }
         int64_t time = pb0->GetBlockTime();
         minTime = std::min(time, minTime);
         maxTime = std::max(time, maxTime);
@@ -172,7 +181,7 @@ static UniValue generateBlocks(ChainstateManager& chainman, const CTxMemPool& me
     return blockHashes;
 }
 
-static UniValue generateBlocksPoS(ChainstateManager& chainman, const CTxMemPool& mempool, int nGenerate, uint64_t nMaxTries, CStakerStatus* pStakerStatus)
+static UniValue generateBlocksPoS(ChainstateManager& chainman, const CTxMemPool& mempool, int nGenerate, CStakerStatus* pStakerStatus)
 {
     int nHeightEnd = 0;
     int nHeight = 0;
@@ -334,16 +343,14 @@ static RPCHelpMan generatetoaddress()
     };
 }
 
-// An equivalent to generatetoaddress() but for PoS
+// An equivalent to generate() but for PoS
 
-static RPCHelpMan generatetoaddresspos()
+static RPCHelpMan generatepos()
 {
-    return RPCHelpMan{"generatetoaddresspos",
-                "\nMine PoS blocks immediately to a specified address (before the RPC call returns)\n",
+    return RPCHelpMan{"generatepos",
+                "\nMine proof of stake blocks immediately (before the RPC call returns)\n",
                 {
                     {"nblocks", RPCArg::Type::NUM, RPCArg::Optional::NO, "How many blocks are generated immediately."},
-                    {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The address to send the newly generated bitcoin to."},
-                    {"maxtries", RPCArg::Type::NUM, /* default */ ToString(DEFAULT_MAX_TRIES), "How many iterations to try."},
                 },
                 RPCResult{
                     RPCResult::Type::ARR, "", "hashes of blocks generated",
@@ -351,20 +358,12 @@ static RPCHelpMan generatetoaddresspos()
                         {RPCResult::Type::STR_HEX, "", "blockhash"},
                     }},
                 RPCExamples{
-            "\nGenerate 11 blocks to myaddress\n"
-            + HelpExampleCli("generatetoaddresspos", "11 \"myaddress\"")
-            + "If you are using the " PACKAGE_NAME " wallet, you can get a new address to send the newly generated bitcoin to with:\n"
-            + HelpExampleCli("getnewaddress", "")
+            "\nGenerate 11 proof of stake blocks\n"
+            + HelpExampleCli("generatepos", "11")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
     const int num_blocks{request.params[0].get_int()};
-    const uint64_t max_tries{request.params[2].isNull() ? DEFAULT_MAX_TRIES : request.params[2].get_int()};
-
-    CTxDestination destination = DecodeDestination(request.params[1].get_str());
-    if (!IsValidDestination(destination)) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Error: Invalid address");
-    }
 
     const CTxMemPool& mempool = EnsureMemPool(request.context);
     ChainstateManager& chainman = EnsureChainman(request.context);
@@ -372,9 +371,7 @@ static RPCHelpMan generatetoaddresspos()
         InitStakerStatus();
     }
 
-    CScript coinbase_script = GetScriptForDestination(destination);
-
-    return generateBlocksPoS(chainman, mempool, num_blocks, max_tries, pStakerStatus.get());
+    return generateBlocksPoS(chainman, mempool, num_blocks, pStakerStatus.get());
 },
     };
 }
@@ -499,7 +496,7 @@ static RPCHelpMan getmininginfo()
                         {RPCResult::Type::NUM, "blocks", "The current block"},
                         {RPCResult::Type::NUM, "currentblockweight", /* optional */ true, "The block weight of the last assembled block (only present if a block was ever assembled)"},
                         {RPCResult::Type::NUM, "currentblocktx", /* optional */ true, "The number of block transactions of the last assembled block (only present if a block was ever assembled)"},
-                        {RPCResult::Type::NUM, "difficulty", "The current difficulty"},
+                        {RPCResult::Type::NUM, "difficulty", "The current proof of work difficulty"},
                         {RPCResult::Type::NUM, "networkhashps", "The network hashes per second"},
                         {RPCResult::Type::NUM, "pooledtx", "The size of the mempool"},
                         {RPCResult::Type::STR, "chain", "current network name (main, test, regtest)"},
@@ -518,7 +515,7 @@ static RPCHelpMan getmininginfo()
     obj.pushKV("blocks",           (int)::ChainActive().Height());
     if (BlockAssembler::m_last_block_weight) obj.pushKV("currentblockweight", *BlockAssembler::m_last_block_weight);
     if (BlockAssembler::m_last_block_num_txs) obj.pushKV("currentblocktx", *BlockAssembler::m_last_block_num_txs);
-    obj.pushKV("difficulty",       (double)GetDifficulty(::ChainActive().Tip()));
+    obj.pushKV("difficulty",       (double)GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), false)));
     obj.pushKV("networkhashps",    getnetworkhashps().HandleRequest(request));
     obj.pushKV("pooledtx",         (uint64_t)mempool.size());
     obj.pushKV("chain",            Params().NetworkIDString());
@@ -564,7 +561,7 @@ static RPCHelpMan getstakinginfo()
     {   // Don't keep cs_main locked
         LOCK(cs_main);
         nHeight = ::ChainActive().Height();
-        dDiff = GetDifficulty(::ChainActive().Tip());
+        dDiff = GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), true));
     }
     const CTxMemPool& mempool = EnsureMemPool(request.context);
     NodeContext& node = EnsureNodeContext(request.context);
@@ -1391,7 +1388,7 @@ static const CRPCCommand commands[] =
 
 
     { "generating",         "generatetoaddress",      &generatetoaddress,      {"nblocks","address","maxtries"} },
-    { "generating",         "generatetoaddresspos",   &generatetoaddresspos,   {"nblocks","address","maxtries"} },
+    { "generating",         "generatepos",            &generatepos,            {"nblocks"} },
     { "generating",         "generatetodescriptor",   &generatetodescriptor,   {"num_blocks","descriptor","maxtries"} },
     { "generating",         "generateblock",          &generateblock,          {"output","transactions"} },
 
