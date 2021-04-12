@@ -4310,7 +4310,7 @@ int CWalletTx::GetDepthInMainChain() const
 
 int CWalletTx::GetBlocksToMaturity() const
 {
-    if (!IsCoinBase() || !IsCoinStake())
+    if (!IsCoinBase() && !IsCoinStake())
         return 0;
     int chain_depth = GetDepthInMainChain();
     assert(chain_depth >= 0); // coinbase tx should not be conflicted
