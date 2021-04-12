@@ -159,22 +159,51 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     }
 
     //
+    // Sort coinstake amounts here
+    //
+
+    CAmount nCreditStake = 0;
+    CAmount nDebitStake = 0;
+    CAmount nTotalStake = 0;
+    if (wtx.is_coinstake) {
+        for (const CTxOut& txout : wtx.tx->vout)
+            nCreditStake += wallet.getCredit(txout, ISMINE_ALL);
+        for (const CTxIn& txin : wtx.tx->vin)
+            nDebitStake += wallet.getDebit(txin, ISMINE_ALL);
+
+        nTotalStake = nCreditStake - nDebitStake;
+    }
+
+    //
     // Amount
     //
-    if (wtx.is_coinbase && nCredit == 0)
+    if ((wtx.is_coinstake || wtx.is_coinbase) && nCredit == 0)
     {
-        //
-        // Coinbase
-        //
-        CAmount nUnmatured = 0;
-        for (const CTxOut& txout : wtx.tx->vout)
-            nUnmatured += wallet.getCredit(txout, ISMINE_ALL);
-        strHTML += "<b>" + tr("Credit") + ":</b> ";
-        if (status.is_in_main_chain)
-            strHTML += BitcoinUnits::formatHtmlWithUnit(unit, nUnmatured)+ " (" + tr("matures in %n more block(s)", "", status.blocks_to_maturity) + ")";
-        else
-            strHTML += "(" + tr("not accepted") + ")";
-        strHTML += "<br>";
+        if (wtx.is_coinbase) {
+            //
+            // Coinbase
+            //
+            CAmount nUnmatured = 0;
+            for (const CTxOut& txout : wtx.tx->vout)
+                nUnmatured += wallet.getCredit(txout, ISMINE_ALL);
+            strHTML += "<b>" + tr("Credit") + ":</b> ";
+            if (status.is_in_main_chain)
+                strHTML += BitcoinUnits::formatHtmlWithUnit(unit, nUnmatured)+ " (" + tr("matures in %n more block(s)", "", status.blocks_to_maturity) + ")";
+            else
+                strHTML += "(" + tr("not accepted") + ")";
+            strHTML += "<br>";
+        }
+        if (wtx.is_coinstake) {
+            //
+            // Coinstake
+            //
+            strHTML += "<b>" + tr("Credit") + ":</b> ";
+            if (status.is_in_main_chain)
+                strHTML += BitcoinUnits::formatHtmlWithUnit(unit, nTotalStake)+ " (" + tr("matures in %n more block(s)", "", status.blocks_to_maturity) + ")";
+            else
+                strHTML += "(" + tr("not accepted") + ")";
+            strHTML += "<br>";
+        }
     }
     else if (nNet > 0)
     {
@@ -271,7 +300,7 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
         }
     }
 
-    strHTML += "<b>" + tr("Net amount") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, nNet, true) + "<br>";
+    strHTML += "<b>" + tr("Net amount") + ":</b> " + BitcoinUnits::formatHtmlWithUnit(unit, (wtx.is_coinstake ? nTotalStake : nNet), true) + "<br>";
 
     //
     // Message
