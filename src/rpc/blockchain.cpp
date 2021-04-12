@@ -1155,6 +1155,7 @@ static RPCHelpMan gettxout()
                                     {{RPCResult::Type::STR, "address", "bitcoin address"}}},
                             }},
                         {RPCResult::Type::BOOL, "coinbase", "Coinbase or not"},
+                        {RPCResult::Type::BOOL, "coinstake", "Coinstake or not"},
                     }},
                 RPCExamples{
             "\nGet unspent transactions\n"
@@ -1205,6 +1206,7 @@ static RPCHelpMan gettxout()
     ScriptPubKeyToUniv(coin.out.scriptPubKey, o, true);
     ret.pushKV("scriptPubKey", o);
     ret.pushKV("coinbase", (bool)coin.fCoinBase);
+    ret.pushKV("coinbase", (bool)coin.fCoinStake);
 
     return ret;
 },
@@ -1853,7 +1855,7 @@ static RPCHelpMan getblockstats()
                     {RPCResult::Type::NUM, "90th_percentile_feerate", "The 90th percentile feerate"},
                 }},
                 {RPCResult::Type::NUM, "height", "The height of the block"},
-                {RPCResult::Type::NUM, "ins", "The number of inputs (excluding coinbase)"},
+                {RPCResult::Type::NUM, "ins", "The number of inputs (excluding coinbase/coinstake)"},
                 {RPCResult::Type::NUM, "maxfee", "Maximum fee in the block"},
                 {RPCResult::Type::NUM, "maxfeerate", "Maximum feerate (in satoshis per virtual byte)"},
                 {RPCResult::Type::NUM, "maxtxsize", "Maximum transaction size"},
@@ -1869,11 +1871,11 @@ static RPCHelpMan getblockstats()
                 {RPCResult::Type::NUM, "swtotal_weight", "Total weight of all segwit transactions"},
                 {RPCResult::Type::NUM, "swtxs", "The number of segwit transactions"},
                 {RPCResult::Type::NUM, "time", "The block time"},
-                {RPCResult::Type::NUM, "total_out", "Total amount in all outputs (excluding coinbase and thus reward [ie subsidy + totalfee])"},
-                {RPCResult::Type::NUM, "total_size", "Total size of all non-coinbase transactions"},
-                {RPCResult::Type::NUM, "total_weight", "Total weight of all non-coinbase transactions"},
+                {RPCResult::Type::NUM, "total_out", "Total amount in all outputs (excluding coinbase/coinstake and thus reward [ie subsidy + totalfee])"},
+                {RPCResult::Type::NUM, "total_size", "Total size of all non-coinbase/coinstake transactions"},
+                {RPCResult::Type::NUM, "total_weight", "Total weight of all non-coinbase/coinstake transactions"},
                 {RPCResult::Type::NUM, "totalfee", "The fee total"},
-                {RPCResult::Type::NUM, "txs", "The number of transactions (including coinbase)"},
+                {RPCResult::Type::NUM, "txs", "The number of transactions (including coinbase or coinstake)"},
                 {RPCResult::Type::NUM, "utxo_increase", "The increase/decrease in the number of unspent outputs"},
                 {RPCResult::Type::NUM, "utxo_size_inc", "The increase/decrease in size for the utxo index (not discounting op_return and similar)"},
             }},
@@ -1968,7 +1970,7 @@ static RPCHelpMan getblockstats()
             }
         }
 
-        if (tx->IsCoinBase()) {
+        if (tx->IsCoinBase() || tx->IsCoinStake()) {
             continue;
         }
 
