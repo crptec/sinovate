@@ -951,4 +951,17 @@ QImage GetImage(const QLabel* label)
 #endif
 }
 
+void formatToolButtons(QToolButton *btn1, QToolButton *btn2, QToolButton *btn3)
+{
+    QList<QToolButton *> btnList;
+    if(btn1) btnList.append(btn1);
+    if(btn2) btnList.append(btn2);
+    if(btn3) btnList.append(btn3);
+    for(int i = 0; i < btnList.count(); i++)
+    {
+        QToolButton* btn = btnList[i];
+        btn->setIconSize(QSize(16, 16));
+    }
+}
+
 } // namespace GUIUtil
