@@ -169,8 +169,11 @@ unsigned int Lwma3CalculateNextWorkRequired(const CBlockIndex* pindexLast, const
     // New coins should just give away first N blocks before using this algorithm.
     if (height < N) { return ProofLimit.GetCompact(); }
 
+    // Since we have hybrid consensus, lookup the last N blocks of the same proof, and index them as a context for diff calculations.
+    std::map<int, int> mapContext = GetContextLWMA(pindexLast, N + 1, fProofOfStake);
+
     // Special rule for PoS activation, make sure we use LWMA only after ~300 (lwmaAveragingWindow) PoS blocks have been found
-    if (fProofOfStake && height > params.nStartPoSHeight && height < params.nStartPoSHeight + 3 * N) { // Check for this rule only for 3 * N blocks over PoS activation.
+    if (fProofOfStake && mapContext.size() < (N + 1)) { // Check for this rule only if we don't have enough PoS blocks for LWMA.
         nPoSBlocksCounter = CountPoS(pindexLast, params.nStartPoSHeight);
         // Let the first N + 1 PoS blocks use ppcoin EMA
         if (nPoSBlocksCounter <= N + 1) { 
@@ -204,9 +207,6 @@ unsigned int Lwma3CalculateNextWorkRequired(const CBlockIndex* pindexLast, const
             return bnNew.GetCompact();
         }
     }
-
-    // Since we have hybrid consensus, lookup the last N blocks of the same proof, and index them as a context for diff calculations.
-    std::map<int, int> mapContext = GetContextLWMA(pindexLast, N + 1, fProofOfStake);
 
     arith_uint256 avgTarget, nextTarget;
     int64_t thisTimestamp, previousTimestamp;
