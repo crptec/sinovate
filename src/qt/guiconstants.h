@@ -32,6 +32,9 @@ static const bool DEFAULT_SPLASHSCREEN = true;
 /* Transaction list -- TX status decoration - default color */
 #define COLOR_BLACK QColor(0, 0, 0)
 
+// Number of different confirmation icons
+#define CONFIRM_ICONS 5
+
 
 /* Tooltips longer than this (in characters) are converted into rich text,
    so that they can be word-wrapped.
@@ -58,7 +61,7 @@ static constexpr uint64_t GB_BYTES{1000000000};
 static constexpr int DEFAULT_PRUNE_TARGET_GB{2};
 
 /* Mainnet SINOVATE explorer uri */
-#define SINOVATE_EXPLORER_MAINNET "<a style= color:#2d9ad0; href='https://explorer.sinovate.io/tx/"
-#define SINOVATE_EXPLORER_TESTNET "<a style= color:#2d9ad0; href='https://testnet.sinovate.io/tx/"
+#define SINOVATE_EXPLORER_MAINNET "<a href='https://explorer.sinovate.io/%1/%2'>%2</a>"
+#define SINOVATE_EXPLORER_TESTNET "<a href='https://testnet.sinovate.io/%1/%2'>%2</a>"
 
 #endif // BITCOIN_QT_GUICONSTANTS_H
