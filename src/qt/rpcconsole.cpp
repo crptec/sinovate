@@ -43,6 +43,7 @@
 #include <QSettings>
 #include <QString>
 #include <QStringList>
+#include <QStyledItemDelegate>
 #include <QTime>
 #include <QTimer>
 
@@ -696,6 +697,9 @@ void RPCConsole::setClientModel(ClientModel *model, int bestblock_height, int64_
         ui->lineEdit->setEnabled(true);
         ui->lineEdit->setCompleter(autoCompleter);
         autoCompleter->popup()->installEventFilter(this);
+        autoCompleter->popup()->setItemDelegate(new QStyledItemDelegate(this));
+        autoCompleter->popup()->setObjectName("autoCompleterPopup");
+        SetObjectStyleSheet(autoCompleter->popup(), StyleSheetNames::ScrollBarDark);
         // Start thread to execute RPC commands.
         startExecutor();
     }
@@ -795,7 +799,7 @@ void RPCConsole::clear(bool clearHistory)
         ui->messagesWidget->document()->addResource(
                     QTextDocument::ImageResource,
                     QUrl(ICON_MAPPING[i].url),
-                    platformStyle->SingleColorImage(ICON_MAPPING[i].source).scaled(QSize(consoleFontSize*2, consoleFontSize*2), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                    platformStyle->TableColorImage(ICON_MAPPING[i].source, ICON_MAPPING[i].type).scaled(QSize(consoleFontSize*2, consoleFontSize*2), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
     }
 
     // Set default style sheet
