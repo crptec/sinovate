@@ -57,10 +57,11 @@ private:
 
 private Q_SLOTS:
     void updateDisplayUnit();
-    void handleTransactionClicked(const QModelIndex &index);
     void updateAlerts(const QString &warnings);
     void updateWatchOnlyLabels(bool showWatchOnly);
     void handleOutOfSyncWarningClicks();
+
+    void showDetails();
 };
 
 #endif // BITCOIN_QT_OVERVIEWPAGE_H

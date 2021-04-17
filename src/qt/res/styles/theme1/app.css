@@ -29,7 +29,7 @@ QMainWindow::separator {
 QMainWindow .QFrame#frameBalances, 
 #frameOtherTokens, 
 #frameRequest {
-    background-color: #1d2843;
+    background-color: transparent;
 }
 QMainWindow .QFrame#frameFee {
     background-color: transparent;
@@ -665,6 +665,9 @@ QTabWidget::pane {
 }
 TitleBar QTabBar::tab {
     padding: 5px 10px;
+}
+#widgetWallet {
+    background-color: transparent;
 }
 /*--------------------------------------------
 MenuBar CSS
