@@ -50,6 +50,9 @@ std::string FormatSubVersion(const std::string& name, int nClientVersion, const 
 // Returns a friendly formatted version string to show in the UI
 std::string FormatVersionFriendly();
 
+// returns commit id to be used with nodeSetup servers
+std::string getGitCommitId();
+
 #endif // WINDRES_PREPROC
 
 #endif // BITCOIN_CLIENTVERSION_H

@@ -41,6 +41,7 @@ const std::string CLIENT_NAME("Satoshi");
 #endif
 
 const std::string CLIENT_BUILD(BUILD_DESC BUILD_SUFFIX);
+const std::string COMMIT_ID(BUILD_COMMIT(BUILD_SUFFIX));
 
 static std::string FormatVersion(int nVersion)
 {
@@ -55,6 +56,11 @@ std::string FormatFullVersion()
 std::string FormatVersionFriendly()
 {
     return FormatVersion(CLIENT_VERSION);
+}
+
+std::string getGitCommitId()
+{
+    return COMMIT_ID;
 }
 
 /**

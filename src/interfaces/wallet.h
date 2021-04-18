@@ -255,6 +255,9 @@ public:
     // Return whether private keys enabled.
     virtual bool privateKeysDisabled() = 0;
 
+    // * Get onchain data (used by InfinitynodeList).
+    virtual std::map<COutPoint, std::string> GetOnchainDataInfo() = 0;
+
     // Get default address type.
     virtual OutputType getDefaultAddressType() = 0;
 
