@@ -388,7 +388,7 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
         for (unsigned int index = 0; index < pcoin->tx->vout.size(); index++) {
 
             // Check min value requirement for stake inputs
-            if (pcoin->tx->vout[index].nValue < Params().GetConsensus().nPoSMinStakeValue) continue;
+            if (pcoin->tx->vout[index].nValue < Params().GetConsensus().nPoSMinStakeValue * COIN) continue;
 
             auto res = CheckOutputAvailability(
                     pcoin->tx->vout[index],
