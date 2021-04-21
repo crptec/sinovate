@@ -82,7 +82,7 @@ uint256 BlockWitnessMerkleRoot(const CBlock& block, bool* mutated, bool *pfProof
     leaves[0].SetNull(); // The witness hash of the coinbase (index 0) is 0.
     if (fProofOfStake)
     {
-        leaves[1].SetNull(); // The witness hash of the coinbase (index 1) is 0.
+        leaves[1].SetNull(); // The witness hash of the coinstake (index 1) is 0.
     }
     for (size_t s = 1 + (fProofOfStake ? 1 : 0); s < block.vtx.size(); s++) { //Make sure we're using the right index.
         leaves[s] = block.vtx[s]->GetWitnessHash();
