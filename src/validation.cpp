@@ -3569,6 +3569,11 @@ bool CheckBlock(const CBlock& block, BlockValidationState& state, const Consensu
     if (!IsProofOfStake && !CheckBlockHeader(block, state, consensusParams, fCheckPOW))
         return false;
 
+    // Check if mask is met on PoS blocks
+    if (IsProofOfStake && !Params().GetConsensus().IsValidBlockTimeStamp(block.GetBlockTime())) {
+        return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "invalid-mask-pos", "proof-of-stake block's timestamp doesn't meet network mask");
+    }
+
     // Signet only: check block solution
     if (consensusParams.signet_blocks && fCheckPOW && !CheckSignetBlockSolution(block, consensusParams)) {
         return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "bad-signet-blksig", "signet block signature validation failure");
@@ -3767,10 +3772,6 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
         // Check for PoS timestamp
         if (block.GetBlockTime() > pindexPrev->MaxFutureBlockTime()) {
             return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new-pos", "proof-of-stake block timestamp too far in the future");
-        }
-        // Check if mask is met on PoS blocks
-        if (!Params().GetConsensus().IsValidBlockTimeStamp(block.GetBlockTime())) {
-            return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "invalid-mask-pos", "proof-of-stake block's timestamp doesn't meet network mask");
         }
     }
 
