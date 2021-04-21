@@ -1364,6 +1364,8 @@ static void ListTransactions(const CWallet* const pwallet, const CWalletTx& wtx,
             {
                 if (wtx.GetDepthInMainChain() < 1)
                     entry.pushKV("category", "orphan stake");
+                else if (wtx.IsImmatureCoinBase())
+                    entry.pushKV("category", "immature");
                 else
                     entry.pushKV("category", "minted");
             }
