@@ -368,7 +368,16 @@ bool CInfinitynodeMan::updateFinalList(CBlockIndex* pindex)
 
     nCachedBlockHeight = pindex->nHeight;
 
-    bool updateStm = deterministicRewardStatement(10) && deterministicRewardStatement(5) && deterministicRewardStatement(1);
+    //bool updateStm = deterministicRewardStatement(10) && deterministicRewardStatement(5) && deterministicRewardStatement(1);
+    bool updateStm=false;
+    if(nCachedBlockHeight != Params().GetConsensus().nDINActivationHeight){
+        updateStm=calculStatementOnValidation(nCachedBlockHeight);
+    } else {
+        //rebuild Stm at fork Height
+        for(int i = Params().GetConsensus().nInfinityNodeGenesisStatement; i < Params().GetConsensus().nDINActivationHeight; i++){
+            updateStm=calculStatementOnValidation(i);
+        }
+    }
 
     if (updateStm){
                 calculAllInfinityNodesRankAtLastStm();
@@ -899,6 +908,104 @@ void CInfinitynodeMan::updateLastPaid()
         }
     }
 }
+
+bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
+{
+    if (nHeight < Params().GetConsensus().nInfinityNodeGenesisStatement){
+        mapStatementLIL.clear();
+        mapStatementMID.clear();
+        mapStatementBIG.clear();
+        return true;
+    }
+
+    int nBIG = 0, nMID = 0, nLIL = 0;
+
+    if (nHeight == Params().GetConsensus().nInfinityNodeGenesisStatement){
+        mapStatementLIL.clear();
+        mapStatementMID.clear();
+        mapStatementBIG.clear();
+        //calcul number of nodes at nHeight
+        for (auto& infpair : mapInfinitynodes) {
+            if (infpair.second.getHeight() < nHeight && nHeight <= infpair.second.getExpireHeight()){
+                if(infpair.second.getSINType() == 10) nBIG++;
+                if(infpair.second.getSINType() == 5) nMID++;
+                if(infpair.second.getSINType() == 1) nLIL++;
+            }
+        }
+        mapStatementBIG.insert(mapStatementBIG.begin(), make_pair(nHeight, nBIG));
+        mapStatementMID.insert(mapStatementMID.begin(), make_pair(nHeight, nMID));
+        mapStatementLIL.insert(mapStatementLIL.begin(), make_pair(nHeight, nLIL));
+
+        return true;
+    }
+
+    if (nHeight > Params().GetConsensus().nInfinityNodeGenesisStatement){
+        int nextHeight = nHeight + 1;
+
+        std::map<int, int>::iterator itBIG = mapStatementBIG.upper_bound(nextHeight);
+        std::map<int, int>::iterator itMID = mapStatementMID.upper_bound(nextHeight);
+        std::map<int, int>::iterator itLIL = mapStatementLIL.upper_bound(nextHeight);
+
+        std::map<int, int>::iterator itLastBIG = --itBIG;
+        std::map<int, int>::iterator itLastMID = --itMID;
+        std::map<int, int>::iterator itLastLIL = --itLIL;
+
+        int nEndOfStmBIG = itLastBIG->first + itLastBIG->second - nextHeight;
+        int nEndOfStmMID = itLastMID->first + itLastMID->second - nextHeight;
+        int nEndOfStmLIL = itLastLIL->first + itLastLIL->second - nextHeight;
+
+        int nextStmBIG = itLastBIG->first + itLastBIG->second;
+        int nextStmMID = itLastMID->first + itLastMID->second;
+        int nextStmLIL = itLastLIL->first + itLastLIL->second;
+
+        int nBIGNextStm = 0, nMIDNextStm = 0, nLILNextStm = 0;
+
+        //calcul number of nodes at nHeight
+        for (auto& infpair : mapInfinitynodes) {
+            if (infpair.second.getSINType() == 10 && infpair.second.getHeight() < itLastBIG->first && itLastBIG->first <= infpair.second.getExpireHeight()) nBIG++;
+            if (infpair.second.getSINType() == 5 && infpair.second.getHeight() < itLastMID->first && itLastMID->first <= infpair.second.getExpireHeight()) nMID++;
+            if (infpair.second.getSINType() == 1 && infpair.second.getHeight() < itLastLIL->first && itLastLIL->first <= infpair.second.getExpireHeight()) nLIL++;
+
+            if (infpair.second.getHeight() < nextHeight && nextHeight <= infpair.second.getExpireHeight()){
+                if(infpair.second.getSINType() == 10) nBIGNextStm++;
+                if(infpair.second.getSINType() == 5) nMIDNextStm++;
+                if(infpair.second.getSINType() == 1) nLILNextStm++;
+            }
+        }
+
+        if(nEndOfStmBIG == 0 || nEndOfStmMID == 0 || nEndOfStmLIL == 0 ||
+           (nEndOfStmLIL > 0 && nEndOfStmLIL <= Params().MaxReorganizationDepth()) ||
+           (nEndOfStmMID > 0 && nEndOfStmMID <= Params().MaxReorganizationDepth()) ||
+           (nEndOfStmBIG > 0 && nEndOfStmBIG <= Params().MaxReorganizationDepth())
+          ){
+
+
+            if(nEndOfStmBIG == 0){
+                itLastBIG->second = nBIG;
+                mapStatementBIG.insert(itBIG, make_pair(nextHeight, nBIGNextStm));
+            } else if(nEndOfStmBIG > 0 && nEndOfStmBIG <= Params().MaxReorganizationDepth()) {
+                itLastBIG->second = nBIG;
+            }
+
+            if(nEndOfStmMID == 0){
+                itLastMID->second = nMID;
+                mapStatementMID.insert(itMID, make_pair(nextHeight, nMIDNextStm));
+            } else if(nEndOfStmMID > 0 && nEndOfStmMID <= Params().MaxReorganizationDepth()) {
+                itLastMID->second = nMID;
+            }
+
+            if(nEndOfStmLIL == 0){
+                itLastLIL->second = nLIL;
+                mapStatementLIL.insert(itLIL, make_pair(nextHeight, nLILNextStm));
+            } else if(nEndOfStmLIL > 0 && nEndOfStmLIL <= Params().MaxReorganizationDepth()){
+                itLastLIL->second = nLIL;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
 /*TODO: optimisation this programme*/
 bool CInfinitynodeMan::deterministicRewardStatement(int nSinType)
 {
@@ -941,6 +1048,7 @@ bool CInfinitynodeMan::deterministicRewardStatement(int nSinType)
         
         if (nSinType == 1) {
             std::map<int, int>::iterator it = mapStatementLIL.upper_bound(stm_height_temp);
+            }
             if (it == mapStatementLIL.begin() || (--it)->first < stm_height_temp) {
                 mapStatementLIL.insert(it, make_pair(stm_height_temp, totalSinType));
             } else {

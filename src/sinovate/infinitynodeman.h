@@ -151,6 +151,7 @@ public:
     bool getLRForHeight(int height, std::vector<CLockRewardExtractInfo>& vecLockRewardRet);
 
     //this function build the map of STM from genesis
+    bool calculStatementOnValidation(int nHeight);
     bool deterministicRewardStatement(int nSinType);
     bool deterministicRewardAtHeight(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet);
     std::map<int, CInfinitynode> calculInfinityNodeRank(int nBlockHeight, int nSinType, bool updateList=false, bool flagExtCall = false);

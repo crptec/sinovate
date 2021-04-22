@@ -2105,6 +2105,8 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
     }
     LogPrint(BCLog::INFINITYLOCK,"\n");
 
+    LogPrint(BCLog::INFINITYLOCK,"Candidate: %s at height: %d\n", candidate.vinBurnFund.prevout.ToStringFull(), nRewardHeight);
+
     LogPrint(BCLog::INFINITYLOCK,"combined_pk: ");
     for(int i=0; i<64; i++) {
         LogPrint(BCLog::INFINITYLOCK,"%d ", combined_pk.data[i]);
