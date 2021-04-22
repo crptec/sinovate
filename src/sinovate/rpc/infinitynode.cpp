@@ -66,6 +66,8 @@ static RPCHelpMan infinitynode()
                     + HelpExampleCli("infinitynode", "build-stm")
                     + "\nShow current statement of Infinitynode\n"
                     + HelpExampleCli("infinitynode", "show-stm")
+                    + "\nShow current statement of Infinitynode at Height\n"
+                    + HelpExampleCli("infinitynode", "show-stm-at")
                     + "\nShow the candidates for Height\n"
                     + HelpExampleCli("infinitynode", "show-candiate height")
                     + "\nShow informations about all infinitynodes of network.\n"
@@ -171,9 +173,85 @@ static RPCHelpMan infinitynode()
         return obj;
     }
 
+    if (strCommand == "build-stm-to")
+    {
+        if (request.params.size() != 2)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Correct usage is 'infinitynode build-stm-to \"nHeight\"'");
+
+        const std::string strFilter = request.params[1].get_str();
+
+        int nHeight = atoi(strFilter);
+        int nLoop = 0;
+        int begin = Params().GetConsensus().nInfinityNodeGenesisStatement;
+
+	if (nHeight <= begin){
+            infnodeman.calculStatementOnValidation(nHeight);
+            nLoop++;
+        } else {
+            for(int i = begin; i < nHeight; i++){
+                infnodeman.calculStatementOnValidation(i);
+                nLoop++;
+            }
+        }
+        obj.pushKV("Begin at", begin);
+        obj.pushKV("End at", nHeight);
+        obj.pushKV("End of operator", nLoop);
+        return obj;
+    }
+
     if (strCommand == "show-stm")
     {
         return infnodeman.getLastStatementString();
+    }
+
+    if (strCommand == "show-stm-at")
+    {
+        if (request.params.size() != 2)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Correct usage is 'infinitynode show-stm-at \"nHeight\"'");
+
+        const std::string strFilter = request.params[1].get_str();
+
+        int nHeight = atoi(strFilter);
+
+        std::map<int, int> mapBIG = infnodeman.getStatementMap(10);
+        std::map<int, int> mapMID = infnodeman.getStatementMap(5);
+        std::map<int, int> mapLIL = infnodeman.getStatementMap(1);
+
+        std::map<int,int>::iterator itBIG, itMID, itLIL;
+
+        itBIG = mapBIG.lower_bound(nHeight);
+        itMID = mapMID.lower_bound(nHeight);
+        itLIL = mapLIL.lower_bound(nHeight);
+
+        if(nHeight == Params().GetConsensus().nInfinityNodeGenesisStatement){
+            std::ostringstream streamInfo;
+            streamInfo << " " << nHeight << " BIG:" <<
+                               itBIG->first << "/" << itBIG->second << " " <<
+                               " MID:" <<
+                               itMID->first << "/" << itMID->second << " " <<
+                               " LIL:" <<
+                               itLIL->first << "/" << itLIL->second << " "
+                               ;
+            std::string strInfo = streamInfo.str();
+            obj.pushKV("Statement at", strInfo);
+        } else if (nHeight > Params().GetConsensus().nInfinityNodeGenesisStatement){
+            std::map<int, int>::iterator itLastBIG = --itBIG;
+            std::map<int, int>::iterator itLastMID = --itMID;
+            std::map<int, int>::iterator itLastLIL = --itLIL;
+
+            std::ostringstream streamInfo;
+            streamInfo << " " << nHeight << " BIG:" <<
+                               itLastBIG->first << "/" << itLastBIG->second << " " <<
+                               " MID:" <<
+                               itLastMID->first << "/" << itLastMID->second << " " <<
+                               " LIL:" <<
+                               itLastLIL->first << "/" << itLastLIL->second << " "
+                               ;
+            std::string strInfo = streamInfo.str();
+            obj.pushKV("Statement at", strInfo);
+        }
+
+        return obj;
     }
 
     if (strCommand == "show-candidate")
