@@ -368,15 +368,17 @@ bool CInfinitynodeMan::updateFinalList(CBlockIndex* pindex)
 
     nCachedBlockHeight = pindex->nHeight;
 
-    //bool updateStm = deterministicRewardStatement(10) && deterministicRewardStatement(5) && deterministicRewardStatement(1);
     bool updateStm=false;
-    if(nCachedBlockHeight != Params().GetConsensus().nDINActivationHeight){
-        updateStm=calculStatementOnValidation(nCachedBlockHeight);
-    } else {
+    if(nCachedBlockHeight < Params().GetConsensus().nDINActivationHeight){
+        //do nothing
+    } else if (nCachedBlockHeight == Params().GetConsensus().nDINActivationHeight){
         //rebuild Stm at fork Height
         for(int i = Params().GetConsensus().nInfinityNodeGenesisStatement; i < Params().GetConsensus().nDINActivationHeight; i++){
             updateStm=calculStatementOnValidation(i);
         }
+    } else {
+        //update Stm map
+        updateStm=calculStatementOnValidation(nCachedBlockHeight);
     }
 
     if (updateStm){
@@ -1048,7 +1050,6 @@ bool CInfinitynodeMan::deterministicRewardStatement(int nSinType)
         
         if (nSinType == 1) {
             std::map<int, int>::iterator it = mapStatementLIL.upper_bound(stm_height_temp);
-            }
             if (it == mapStatementLIL.begin() || (--it)->first < stm_height_temp) {
                 mapStatementLIL.insert(it, make_pair(stm_height_temp, totalSinType));
             } else {
