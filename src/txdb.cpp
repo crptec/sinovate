@@ -277,9 +277,11 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
                 pindexNew->nFlags = diskindex.nFlags;
                 pindexNew->vStakeModifier = diskindex.vStakeModifier;
 
+                /* As the txindex isn't consistent with loading blocks from the disk directly, avoid proof checks on startup
                 if (pindexNew->IsProofOfWork() && !CheckProofOfWork(pindexNew->GetValidationBlockHash(), pindexNew->nBits, consensusParams)) {
                     return error("%s: CheckProofOfWork failed: %s", __func__, pindexNew->ToString());
                 }
+                */
 
                 pcursor->Next();
             } else {
