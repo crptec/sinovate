@@ -120,7 +120,7 @@ bool CInfinitynodeMeta::Remove(CMetadata &meta)
         return true;
     } else {
         CMetadata m = it->second;
-        if(m.getMetaID() == meta.getMetaID() && m.getHistoSize() == 1){
+        if(m.getMetaID() == meta.getMetaID() && m.getHistoSize() == 1 && meta.getMetadataHeight() == m.getMetadataHeight()){
             //we have only 1 entry => remove
             mapNodeMetadata.erase(meta.getMetaID());
             return true;
