@@ -2399,7 +2399,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
             }
         } else {
             LogPrintf("Validation -- PoS + Infinitynode\n");
-            if (!LockRewardValidation(pindex->nHeight, block.vtx[1])) {
+            if (!LockRewardValidation(pindex->nHeight, block.vtx[1], true)) {
                 LogPrintf("LockRewardValidation -- disconnect block!\n");
                 return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cs-bad-infinity-node-reward");
             }
@@ -3555,11 +3555,30 @@ static bool CheckBlockHeader(const CBlockHeader& block, BlockValidationState& st
     return true;
 }
 
+bool CoinStakeCheckWitness(const CBlock& block)
+{
+    // Coinbase output should be empty if proof-of-stake block
+    int commitpos = GetWitnessCommitmentIndex(block);
+    if(commitpos < 0)
+    {
+        if (block.vtx[0]->vout.size() != 1 || !block.vtx[0]->vout[0].IsEmpty())
+            return false;
+    }
+    else
+    {
+        if (block.vtx[0]->vout.size() != 2 || !block.vtx[0]->vout[0].IsEmpty() || block.vtx[0]->vout[1].nValue)
+            return false;
+    }
+
+    return true;
+}
+
 bool CheckBlock(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW, bool fCheckMerkleRoot)
 {
     // These are checks that are independent of context.
 
     const bool IsProofOfStake = block.IsProofOfStake();
+    bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
 
     if (block.fChecked)
         return true;
@@ -3568,6 +3587,11 @@ bool CheckBlock(const CBlock& block, BlockValidationState& state, const Consensu
     // redundant with the call in AcceptBlockHeader.
     if (!IsProofOfStake && !CheckBlockHeader(block, state, consensusParams, fCheckPOW))
         return false;
+
+    // Check if mask is met on PoS blocks
+    if (!fRegTest && IsProofOfStake && !Params().GetConsensus().IsValidBlockTimeStamp(block.GetBlockTime())) {
+        return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "invalid-mask-pos", "proof-of-stake block's timestamp doesn't meet network mask");
+    }
 
     // Signet only: check block solution
     if (consensusParams.signet_blocks && fCheckPOW && !CheckSignetBlockSolution(block, consensusParams)) {
@@ -3607,8 +3631,8 @@ bool CheckBlock(const CBlock& block, BlockValidationState& state, const Consensu
 
     if (IsProofOfStake) {
         // Coinbase output should be empty if proof-of-stake block
-        if (block.vtx[0]->vout.size() != 2 || !block.vtx[0]->HasWitness())
-            return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "bad-cb-pos", "coinbase is not empty for proof-of-stake block");
+        if (!CoinStakeCheckWitness(block))
+            return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "bad-cb-pos", "coinbase is not empty/doesn't comply with witness requirements for proof-of-stake block");
 
         // Second transaction must be coinstake, the rest must not be
         if (block.vtx.empty() || !block.vtx[1]->IsCoinStake())
@@ -3767,10 +3791,6 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
         // Check for PoS timestamp
         if (block.GetBlockTime() > pindexPrev->MaxFutureBlockTime()) {
             return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new-pos", "proof-of-stake block timestamp too far in the future");
-        }
-        // Check if mask is met on PoS blocks
-        if (!Params().GetConsensus().IsValidBlockTimeStamp(block.GetBlockTime())) {
-            return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "invalid-mask-pos", "proof-of-stake block's timestamp doesn't meet network mask");
         }
     }
 

@@ -388,7 +388,7 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
         for (unsigned int index = 0; index < pcoin->tx->vout.size(); index++) {
 
             // Check min value requirement for stake inputs
-            if (pcoin->tx->vout[index].nValue < Params().GetConsensus().nPoSMinStakeValue) continue;
+            if (pcoin->tx->vout[index].nValue < Params().GetConsensus().nPoSMinStakeValue * COIN) continue;
 
             auto res = CheckOutputAvailability(
                     pcoin->tx->vout[index],
@@ -639,6 +639,36 @@ void CWallet::AddToSpends(const uint256& wtxid)
 
     for (const CTxIn& txin : thisTx.tx->vin)
         AddToSpends(txin.prevout, wtxid);
+}
+
+void CWallet::RemoveFromSpends(const COutPoint& outpoint, const uint256& wtxid)
+{
+    std::pair<TxSpends::iterator, TxSpends::iterator> range;
+    range = mapTxSpends.equal_range(outpoint);
+    TxSpends::iterator it = range.first;
+    for(; it != range.second; ++ it)
+    {
+        if(it->second == wtxid)
+        {
+            mapTxSpends.erase(it);
+            break;
+        }
+    }
+    range = mapTxSpends.equal_range(outpoint);
+    SyncMetaData(range);
+}
+
+
+void CWallet::RemoveFromSpends(const uint256& wtxid)
+{
+    auto it = mapWallet.find(wtxid);
+    assert(it != mapWallet.end());
+    CWalletTx& thisTx = it->second;
+    if (thisTx.IsCoinBase()) // Coinbases don't spend anything!
+        return;
+
+    for (const CTxIn& txin : thisTx.tx->vin)
+        RemoveFromSpends(txin.prevout, wtxid);
 }
 
 bool CWallet::EncryptWallet(const SecureString& strWalletPassphrase)
@@ -961,6 +991,11 @@ CWalletTx* CWallet::AddToWallet(CTransactionRef tx, const CWalletTx::Confirmatio
             wtx.SetTx(tx);
             fUpdated = true;
         }
+        // Add coinstake to spends
+        if(fUpdated && wtx.IsCoinStake())
+        {
+            AddToSpends(hash);
+        }
     }
 
     //// debug print
@@ -1210,8 +1245,42 @@ void CWallet::MarkConflicted(const uint256& hashBlock, int conflicting_height, c
     }
 }
 
+// disable transaction (only for coinstake)
+void CWallet::DisableTransaction(const CTransaction &tx)
+{
+    if (!tx.IsCoinStake() || !IsFromMe(tx))
+        return; // only disconnecting coinstake requires marking input unspent
+
+    uint256 hash = tx.GetHash();
+    if(AbandonTransaction(hash))
+    {
+        LOCK(cs_wallet);
+        RemoveFromSpends(hash);
+        std::set<CWalletTx*> setCoins;
+        for(const CTxIn& txin : tx.vin)
+        {
+            CWalletTx &coin = mapWallet.at(txin.prevout.hash);
+            NotifyTransactionChanged(this, coin.GetHash(), CT_UPDATED);
+        }
+
+        NotifyTransactionChanged(this, hash, CT_DELETED);
+    }
+}
+
 void CWallet::SyncTransaction(const CTransactionRef& ptx, CWalletTx::Confirmation confirm, bool update_tx)
 {
+    // special rule for Coinstakes
+    if (confirm.hashBlock.IsNull() && confirm.nIndex == -1)
+    {
+        // wallets need to refund inputs when disconnecting coinstake
+        const CTransaction& tx = *ptx;
+        if (tx.IsCoinStake() && IsFromMe(tx))
+        {
+            DisableTransaction(tx);
+            return;
+        }
+    }
+
     if (!AddToWalletIfInvolvingMe(ptx, confirm, update_tx))
         return; // Not one of ours
 
@@ -1293,7 +1362,8 @@ void CWallet::blockDisconnected(const CBlock& block, int height)
     m_last_block_processed_height = height - 1;
     m_last_block_processed = block.hashPrevBlock;
     for (const CTransactionRef& ptx : block.vtx) {
-        SyncTransaction(ptx, {CWalletTx::Status::UNCONFIRMED, /* block height */ 0, /* block hash */ {}, /* index */ 0});
+        int index = ptx->IsCoinStake() ? -1 : 0;
+        SyncTransaction(ptx, {CWalletTx::Status::UNCONFIRMED, /* block height */ 0, /* block hash */ {}, /* index */ index});
     }
 }
 
