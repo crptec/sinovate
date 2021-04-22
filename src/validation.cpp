@@ -2399,7 +2399,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
             }
         } else {
             LogPrintf("Validation -- PoS + Infinitynode\n");
-            if (!LockRewardValidation(pindex->nHeight, block.vtx[1])) {
+            if (!LockRewardValidation(pindex->nHeight, block.vtx[1], true)) {
                 LogPrintf("LockRewardValidation -- disconnect block!\n");
                 return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cs-bad-infinity-node-reward");
             }

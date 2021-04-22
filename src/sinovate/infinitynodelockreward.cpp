@@ -2292,7 +2292,7 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight, bool IsProofOfStake
 /*
  * Takes a block as argument, returns if it contains a valid LR commitment or not.
  */
-bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew)
+bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, bool fProofOfStake)
 {
     //fork height for DIN
     if(nBlockHeight < Params().GetConsensus().nDINActivationHeight) return true;
@@ -2311,17 +2311,27 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew)
         LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- LR size: %d\n", (int) vecLockRewardRet.size());
 
         int txIndex = 0;
+        int nStartPaymentIdx = 3;
+        int nEndPaymentIdx = 5;
+        int nStartSmallIdx = 6;
+        int nEndSmallIdx = 8;
+        if (fProofOfStake) {
+            nStartPaymentIdx++;
+            nEndPaymentIdx++;
+            nStartSmallIdx++;
+            nEndSmallIdx++;
+        }
         for (auto txout : txNew->vout) {
             txIndex ++;
-            if (3 <= txIndex && txIndex <=5) {
+            if (nStartPaymentIdx <= txIndex && txIndex <= nEndPaymentIdx) {
                 //BEGIN
                 CScript DINPayee;
 
                 int SINType = 0;
                 //choose tier value
-                if (txIndex == 3) {
+                if (txIndex == nStartPaymentIdx) {
                     SINType = 10;
-                } else if (txIndex == 4) {
+                } else if (txIndex == (nStartPaymentIdx + 1)) {
                     SINType = 5;
                 } else {
                     SINType = 1;
@@ -2402,15 +2412,15 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew)
                     }
                 }
             } // from 6 to 8th positiion of payment small payment for VPS
-            if (6 <= txIndex && txIndex <=8) {
+            if (nStartSmallIdx <= txIndex && txIndex <= nEndSmallIdx) {
                 //BEGIN
                 CScript DINPayeeNode;
 
                 int SINType = 0;
                 //choose tier value
-                if (txIndex == 6) {
+                if (txIndex == nStartSmallIdx) {
                     SINType = 10;
-                } else if (txIndex == 7) {
+                } else if (txIndex == (nStartSmallIdx + 1)) {
                     SINType = 5;
                 } else {
                     SINType = 1;
@@ -2475,7 +2485,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew)
             }
         }//end loop output
 
-        if ( counterNodePayment == 6 ) {
+        if (counterNodePayment == 6) {
             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- 6 payments are validated\n");
             return true;
         } else {

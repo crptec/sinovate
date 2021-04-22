@@ -310,7 +310,7 @@ public:
     void UpdatedBlockTip(const CBlockIndex *pindex, CConnman& connman);
 };
 // validation
-bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew);
+bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, bool fProofOfStake = false);
 // miner
 void FillBlock(CMutableTransaction& txNew, int nBlockHeight, bool IsProofOfStake = false);
 
