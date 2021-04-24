@@ -1748,6 +1748,80 @@ void CWalletTx::GetAmounts(std::list<COutputEntry>& listReceived,
 
 }
 
+std::map<COutPoint, std::string> CWallet::GetOnchainDataInfo()
+{
+    std::map<COutPoint, std::string> ret;
+    {
+        LegacyScriptPubKeyMan* spk_man = GetLegacyScriptPubKeyMan();
+        assert(spk_man != nullptr);
+
+        LOCK2(cs_main, cs_wallet);
+        for (std::map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
+        {
+            const CWalletTx* pcoin = &(*it).second;
+            uint256 txHash = (*it).first;
+
+            for (unsigned int i = 0; i < pcoin->tx->vout.size(); i++) {
+                std::vector<valtype> vSolutions;
+                TxoutType whichType;
+                whichType = Solver(pcoin->tx->vout[i].scriptPubKey, vSolutions);
+                if (whichType == TxoutType::TX_BURN_DATA && vSolutions.size() == 2){
+                    CKeyID keyId = CKeyID(uint160(vSolutions[0]));
+
+                    if (spk_man->HaveKey(keyId) || IsAllFromMe((CTransaction)*pcoin->tx, ISMINE_SPENDABLE)){
+                        std::string data(vSolutions[1].begin(), vSolutions[1].end());
+                        std::string strMessage = "";
+                        CTxDestination dest = PKHash(uint160(vSolutions[0]));
+
+                        if(EncodeDestination(dest) == Params().GetConsensus().cBurnAddress){
+                            strMessage = strprintf("BurnAddress;%s",data);
+                            CAmount valueOut = pcoin->tx->vout[i].nValue;
+                            if(
+                            ((Params().GetConsensus().nMasternodeBurnSINNODE_1 - 1) * COIN < valueOut && valueOut <= Params().GetConsensus().nMasternodeBurnSINNODE_1 * COIN) ||
+                            ((Params().GetConsensus().nMasternodeBurnSINNODE_5 - 1) * COIN < valueOut && valueOut <= Params().GetConsensus().nMasternodeBurnSINNODE_5 * COIN) ||
+                            ((Params().GetConsensus().nMasternodeBurnSINNODE_10 - 1) * COIN < valueOut && valueOut <= Params().GetConsensus().nMasternodeBurnSINNODE_10 * COIN)
+                            ) {
+                                strMessage = strprintf("NodeCreation;%s",data);
+                            }
+                        }
+                        if(EncodeDestination(dest) == Params().GetConsensus().cGovernanceAddress){
+                            strMessage = strprintf("GovernanceAddress;%s",data);
+                        }
+                        if(EncodeDestination(dest) == Params().GetConsensus().cMetadataAddress){
+                            strMessage = strprintf("MetadataAddress;%s",data);
+                        }
+                        if(EncodeDestination(dest) == Params().GetConsensus().cNotifyAddress){
+                            strMessage = strprintf("NotifyAddress;%s",data);
+                        }
+                        if(EncodeDestination(dest) == Params().GetConsensus().cLockRewardAddress){
+                            //find address of LockReward
+                            //Address payee: we known that there is only 1 address for metadata
+                            const CTxIn& txin = pcoin->tx->vin[0];
+                            int index = txin.prevout.n;
+
+                            CTransactionRef prevtx;
+                            uint256 hashblock;
+                            if(!GetTransaction(txin.prevout.hash, prevtx, hashblock)) {
+                                continue;
+                            }
+
+                            CTxDestination addressLR;
+                            if(!ExtractDestination(prevtx->vout[index].scriptPubKey, addressLR)){
+                                continue;
+                            }
+                            strMessage = strprintf("LockReward;%s;%s",EncodeDestination(addressLR),data);
+
+                        }
+                        ret[COutPoint(txHash, i)] = strMessage;
+                    }
+                }
+            }
+
+        }
+    }
+    return ret;
+}
+
 /**
  * Scan active chain for relevant transactions after importing keys. This should
  * be called whenever new keys are added to the wallet, with the oldest key

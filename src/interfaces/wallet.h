@@ -358,6 +358,7 @@ struct WalletBalances
     CAmount watch_only_balance = 0;
     CAmount unconfirmed_watch_only_balance = 0;
     CAmount immature_watch_only_balance = 0;
+    std::map<COutPoint, std::string> onchaindata_info;
 
     bool balanceChanged(const WalletBalances& prev) const
     {

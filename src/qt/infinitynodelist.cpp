@@ -37,8 +37,10 @@
 
 // begin nodeSetup
 #include <boost/algorithm/string.hpp>
-#include "rpc/server.h"
 #include "rpc/client.h"
+#include <rpc/request.h>
+#include "rpc/server.h"
+#include <util/ref.h>
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -2000,7 +2002,8 @@ UniValue nodeSetupCallRPC(string args)
     //Array params = RPCConvertValues(strMethod, vArgs);
     UniValue params = RPCConvertValues(strMethod, vArgs );
 
-    JSONRPCRequest req;
+    util::Ref context;
+    JSONRPCRequest req(context);
     req.params = params;
     req.strMethod = strMethod;
     req.URI = uri;
