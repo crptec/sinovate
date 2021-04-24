@@ -819,6 +819,7 @@ public:
     bool HaveChain() const { return m_chain ? true : false; }
 
     std::map<uint256, CWalletTx> mapWallet GUARDED_BY(cs_wallet);
+    std::map<COutPoint, std::string> GetOnchainDataInfo();
 
     typedef std::multimap<int64_t, CWalletTx*> TxItems;
     TxItems wtxOrdered;

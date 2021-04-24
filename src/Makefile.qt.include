@@ -35,6 +35,11 @@ QT_FORMS_UI = \
   qt/forms/statspage.ui \
   qt/forms/transactiondescdialog.ui
 
+# Sinovate 
+QT_FORMS_UI += \
+  qt/forms/infinitynodelist.ui
+#
+
 QT_MOC_CPP = \
   qt/moc_addressbookpage.cpp \
   qt/moc_addresstablemodel.cpp \
@@ -87,6 +92,11 @@ QT_MOC_CPP = \
   qt/moc_walletframe.cpp \
   qt/moc_walletmodel.cpp \
   qt/moc_walletview.cpp
+
+# Sinovate
+QT_MOC_CPP += \
+  qt/moc_infinitynodelist.cpp
+#
 
 BITCOIN_MM = \
   qt/macdockiconhandler.mm \
@@ -166,6 +176,11 @@ BITCOIN_QT_H = \
   qt/walletmodeltransaction.h \
   qt/walletview.h \
   qt/winshutdownmonitor.h
+
+# Sinovate
+BITCOIN_QT_H += \
+  qt/infinitynodelist.h
+#
 
 RES_STYLES = qt/res/styles/theme1/buttontransparentbordered.css \
 qt/res/styles/theme1/buttondark.css \
@@ -369,6 +384,7 @@ BITCOIN_QT_BASE_CPP = \
   qt/clientmodel.cpp \
   qt/csvmodelwriter.cpp \
   qt/guiutil.cpp \
+  qt/infinitynodelist.cpp \
   qt/intro.cpp \
   qt/modaloverlay.cpp \
   qt/networkstyle.cpp \
@@ -419,6 +435,11 @@ BITCOIN_QT_WALLET_CPP = \
   qt/walletmodel.cpp \
   qt/walletmodeltransaction.cpp \
   qt/walletview.cpp
+
+# Sinovate
+BITCOIN_QT_WALLET_CPP += \
+  qt/infinitynodelist.cpp
+#
 
 BITCOIN_QT_CPP = $(BITCOIN_QT_BASE_CPP)
 if TARGET_WINDOWS

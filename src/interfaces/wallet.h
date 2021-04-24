@@ -255,6 +255,9 @@ public:
     // Return whether private keys enabled.
     virtual bool privateKeysDisabled() = 0;
 
+    // * Get onchain data (used by InfinitynodeList).
+    virtual std::map<COutPoint, std::string> GetOnchainDataInfo() = 0;
+
     // Get default address type.
     virtual OutputType getDefaultAddressType() = 0;
 
@@ -355,6 +358,7 @@ struct WalletBalances
     CAmount watch_only_balance = 0;
     CAmount unconfirmed_watch_only_balance = 0;
     CAmount immature_watch_only_balance = 0;
+    std::map<COutPoint, std::string> onchaindata_info;
 
     bool balanceChanged(const WalletBalances& prev) const
     {
