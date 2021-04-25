@@ -281,6 +281,33 @@ static RPCHelpMan infinitynode()
         return obj;
     }
 
+    if (strCommand == "show-candidates")
+    {
+        if (request.params.size() != 2)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Correct usage is 'infinitynode show-candidate \"nHeight\"'");
+
+        const std::string strFilter = request.params[1].get_str();
+
+        int nextHeight = atoi(strFilter);
+
+        if (nextHeight < Params().GetConsensus().nInfinityNodeGenesisStatement) {
+            strError = strprintf("nHeight must be higher than the Genesis Statement height (%s)", Params().GetConsensus().nInfinityNodeGenesisStatement);
+            throw JSONRPCError(RPC_INVALID_PARAMETER, strError);
+        }
+
+        CInfinitynode infBIG, infMID, infLIL;
+        LOCK(infnodeman.cs);
+        infnodeman.deterministicRewardAtHeightOnValidation(nextHeight, 10, infBIG);
+        infnodeman.deterministicRewardAtHeightOnValidation(nextHeight, 5, infMID);
+        infnodeman.deterministicRewardAtHeightOnValidation(nextHeight, 1, infLIL);
+
+        obj.pushKV("CandidateBIG: ", infBIG.getCollateralAddress());
+        obj.pushKV("CandidateMID: ", infMID.getCollateralAddress());
+        obj.pushKV("CandidateLIL: ", infLIL.getCollateralAddress());
+
+        return obj;
+    }
+
     if (strCommand == "show-infos")
     {
         std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
