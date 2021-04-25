@@ -91,12 +91,14 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     clientModel(0),
     walletModel(0)
 {
+LogPrintf("infinitynodelist: start \n");
     motdTimer = new QTimer();
     motd_networkManager = new QNetworkAccessManager();
     motd_request = new QNetworkRequest();
 
+    LogPrintf("infinitynodelist: setup UI\n");
     ui->setupUi(this);
-
+LogPrintf("infinitynodelist: DIN stats\n");
     // ++ DIN ROI Stats
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
@@ -107,7 +109,7 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
 
 
  ////// +++++++++ motd
-
+LogPrintf("infinitynodelist: load motd\n");
   // Load Motd
        
 
@@ -244,6 +246,7 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     connect(checkAllNodesTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckDINNodeTimer()));
 
     nodeSetupInitialize();
+
 }
 
 InfinitynodeList::~InfinitynodeList()

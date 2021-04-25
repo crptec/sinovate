@@ -292,6 +292,24 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(historyAction);
 
 #ifdef ENABLE_WALLET
+    // SIN
+/*
+    QSettings settings;
+    if (settings.value("fShowMasternodesTab").toBool()) {
+        masternodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/stats", PlatformStyle::NavBar), tr(" &Infinity Nodes"), this);
+        masternodeAction->setStatusTip(tr("Browse Infinitynodes"));
+        masternodeAction->setToolTip(masternodeAction->statusTip());
+        masternodeAction->setCheckable(true);
+#ifdef Q_OS_MAC
+        masternodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_5));
+#else
+        masternodeAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+#endif
+        tabGroup->addAction(masternodeAction);
+        connect(masternodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+        connect(masternodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
+    }
+*/
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
     // can be triggered from the tray menu, and need to show the GUI to be useful.
     connect(overviewAction, &QAction::triggered, [this]{ showNormalIfMinimized(); });
@@ -588,6 +606,14 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(overviewAction);
         toolbar->addAction(sendCoinsAction);
         toolbar->addAction(receiveCoinsAction);
+
+        // SIN
+/*        QSettings settings;
+        if (settings.value("fShowMasternodesTab").toBool())
+        {
+            toolbar->addAction(masternodeAction); //8
+        }
+*/
         toolbar->addAction(statsPageAction);
         toolbar->addAction(historyAction);
         overviewAction->setChecked(true);
@@ -652,7 +678,6 @@ void BitcoinGUI::createToolBars()
         bottomSetupButton->setIconSize(QSize(38, 16));
         bottomSetupButton->setToolTip( "Open SetUP Wizard"  );
         bottomSetupButton->setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; } QPushButton {background-color: transparent; border: none; min-width: 38px;} QPushButton:hover {border: 1px solid" + colcode + "; }");
-    
     
         bottomConsoleButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/debugwindow",PlatformStyle::NavBar));
         bottomConsoleButton->setIconSize(QSize(16, 16));
@@ -976,6 +1001,17 @@ void BitcoinGUI::gotoHistoryPage()
     if (walletFrame) walletFrame->gotoHistoryPage();
 }
 
+// SIN
+void BitcoinGUI::gotoMasternodePage()
+{
+    /*
+    QSettings settings;
+    if (settings.value("fShowMasternodesTab").toBool()) {
+        masternodeAction->setChecked(true);
+        if (walletFrame) walletFrame->gotoMasternodePage();
+    }
+    */
+}
 void BitcoinGUI::gotoReceiveCoinsPage()
 {
     receiveCoinsAction->setChecked(true);

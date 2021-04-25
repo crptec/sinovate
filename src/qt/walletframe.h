@@ -73,6 +73,8 @@ public Q_SLOTS:
     void gotoOverviewPage();
     /** Switch to stats page */
     void gotoStatsPage();
+    /** Switch to masternode page */
+    void gotoMasternodePage();      //SIN
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */
