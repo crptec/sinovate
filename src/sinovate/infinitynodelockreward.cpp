@@ -1757,7 +1757,7 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
             std::string sErrorRegister = "";
             std::string sErrorCheck = "";
 
-            if(!CheckLockRewardRegisterInfo(sLockRewardMusig, sErrorCheck, mapLockRewardGroupSigners[nHashGroupSigner].vin.prevout)){
+            if(!CheckLockRewardRegisterInfo(sLockRewardMusig, sErrorCheck, mapLockRewardGroupSigners[nHashGroupSigner].vin)){
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::FindAndBuildMusigLockReward -- Check error: %s, Register LockReward error: %s\n",
                          sErrorCheck, sErrorRegister);
                 free(pubkeys); pubkeys = NULL;
@@ -1900,7 +1900,7 @@ bool CInfinityNodeLockReward::AutoResigterLockReward(std::string sLockReward, st
 /**
  * STEP 7 : Check LockReward Musig - use in ConnectBlock
  */
-bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockReward, std::string& strErrorRet, const COutPoint& infCheck)
+bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockReward, std::string& strErrorRet, const CTxIn& infCheck)
 {
     std::string s;
     stringstream ss(sLockReward);
@@ -1963,19 +1963,6 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
     }
 
     //step 7.1 identify candidate
-    CInfinitynode candidate;
-    LOCK(infnodeman.cs);
-    if(!infnodeman.deterministicRewardAtHeight(nRewardHeight, nSINtype, candidate)){
-        strErrorRet = strprintf("Cannot find candidate for Height of LockRequest: %d and SINtype: %d\n", nRewardHeight, nSINtype);
-        free(signerIndexes);
-        return false;
-    }
-
-    if(candidate.vinBurnFund.prevout != infCheck){
-        strErrorRet = strprintf("Dont match candidate for height: %d and SINtype: %d\n", nRewardHeight, nSINtype);
-        free(signerIndexes);
-        return false;
-    }
 
     //step 7.2 identify Topnode and signer publicKey
     secp256k1_pubkey *pubkeys;
@@ -2071,7 +2058,7 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
 
     //message Musig
     CHashWriter ssmsg(SER_GETHASH, PROTOCOL_VERSION);
-    ssmsg << candidate.vinBurnFund;
+    ssmsg << infCheck;
     ssmsg << nRewardHeight;
     uint256 messageHash = ssmsg.GetHash();
     memcpy(msg, messageHash.begin(), 32);
@@ -2105,7 +2092,7 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
     }
     LogPrint(BCLog::INFINITYLOCK,"\n");
 
-    LogPrint(BCLog::INFINITYLOCK,"Candidate: %s at height: %d\n", candidate.vinBurnFund.prevout.ToStringFull(), nRewardHeight);
+    LogPrint(BCLog::INFINITYLOCK,"Candidate: %s at height: %d\n", infCheck.prevout.ToStringFull(), nRewardHeight);
 
     LogPrint(BCLog::INFINITYLOCK,"combined_pk: ");
     for(int i=0; i<64; i++) {
@@ -2128,7 +2115,7 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
     }
 
     LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- LockReward is valid for height: %d, SINtype: %d, Outpoint: %s\n",
-              nRewardHeight, nSINtype, infCheck.ToStringFull());
+              nRewardHeight, nSINtype, infCheck.prevout.ToStringFull());
     secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
     free(signerIndexes);
     free(pubkeys);
@@ -2175,7 +2162,7 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight, bool IsProofOfStake
                 for (auto& v : vecLockRewardRet) {
                     if(v.nSINtype == SINType && v.nRewardHeight == nBlockHeight){
                         //check schnorr musig
-                        if(inflockreward.CheckLockRewardRegisterInfo(v.sLRInfo, sErrorCheck, infOwner.getBurntxOutPoint())){
+                        if(inflockreward.CheckLockRewardRegisterInfo(v.sLRInfo, sErrorCheck, infOwner.vinBurnFund)){
                                 CMetadata meta = infnodemeta.Find(infOwner.getMetaID());
                                 if(meta.getMetadataHeight() == 0){
                                     LogPrint(BCLog::INFINITYLOCK, "IsBlockPayeeValid -- Not found metadata for candidate at height: %d\n", nBlockHeight);
@@ -2306,11 +2293,14 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
 
         //extract LockReward
         std::vector<CLockRewardExtractInfo> vecLockRewardRet;
+        infnodelrinfo.getLRInfo(nBlockHeight, vecLockRewardRet);
+        /*
         if (!infnodeman.getLRForHeight(nBlockHeight-1, vecLockRewardRet)) {
             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- use externe LR database\n");
             infnodelrinfo.getLRInfo(nBlockHeight, vecLockRewardRet);
         }
         LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- LR size: %d\n", (int) vecLockRewardRet.size());
+        */
 
         int txIndex = 0;
         int nStartPaymentIdx = 3;
@@ -2344,7 +2334,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                 std::string sErrorCheck = "";
 
                 LOCK(infnodeman.cs);
-                if (infnodeman.deterministicRewardAtHeight(nBlockHeight, SINType, infOwner)){
+                if (infnodeman.deterministicRewardAtHeightOnValidation(nBlockHeight, SINType, infOwner)){
 
                     CAmount InfPaymentOwner = 0;
                     InfPaymentOwner = GetInfinitynodePayment(nBlockHeight, SINType);
@@ -2358,7 +2348,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                     for (auto& v : vecLockRewardRet) {
                         if(v.nSINtype == SINType && v.nRewardHeight == nBlockHeight && txout.nValue == InfPaymentOwner){
                             //and LR was sent from good metadata: v.scriptPubKey
-                            if(inflockreward.CheckLockRewardRegisterInfo(v.sLRInfo, sErrorCheck, infOwner.getBurntxOutPoint())){
+                            if(inflockreward.CheckLockRewardRegisterInfo(v.sLRInfo, sErrorCheck, infOwner.GetInfo().vinBurnFund)){
                                 CMetadata meta = infnodemeta.Find(infOwner.getMetaID());
                                 if(meta.getMetadataHeight() == 0){
                                     LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- Not found metadata for candidate at height: %d\n", nBlockHeight);
@@ -2444,7 +2434,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                 ExtractDestination(txout.scriptPubKey, addressTxDIN);
                 addressTxDIN2 = EncodeDestination(addressTxDIN);
 
-                if (infnodeman.deterministicRewardAtHeight(nBlockHeight, SINType, infOwner)){
+                if (infnodeman.deterministicRewardAtHeightOnValidation(nBlockHeight, SINType, infOwner)){
                     CMetadata metaSender = infnodemeta.Find(infOwner.getMetaID());
                     if (metaSender.getMetadataHeight() == 0){
                         LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- Not found metadata for candidate at height: %d\n", nBlockHeight);
@@ -2827,21 +2817,21 @@ void CInfinityNodeLockReward::UpdatedBlockTip(const CBlockIndex *pindex, CConnma
 }
 
 
-void CInfinityNodeLockReward::CheckAndRemove(CConnman& connman)
+void CInfinityNodeLockReward::CheckAndRemove(int nHeight)
 {
     /*this function is called in InfinityNode thread*/
     LOCK(cs); //cs_main needs to be called by the parent function
 
     //nothing to remove
-    if (nCachedBlockHeight <= Params().GetConsensus().nInfinityNodeBeginHeight) { return;}
+    if (nHeight <= Params().GetConsensus().nInfinityNodeBeginHeight) { return;}
 
     //remove mapLockRewardRequest
     std::map<uint256, CLockRewardRequest>::iterator itRequest = mapLockRewardRequest.begin();
     while(itRequest != mapLockRewardRequest.end()) {
-        if(itRequest->second.nRewardHeight < nCachedBlockHeight - LIMIT_MEMORY)
+        if(itRequest->second.nRewardHeight < (nHeight - LIMIT_MEMORY))
         {
             LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckAndRemove -- remove mapLockRewardRequest for height: %d, current: %d\n",
-                     itRequest->second.nRewardHeight, nCachedBlockHeight);
+                     itRequest->second.nRewardHeight, nHeight);
             mapSigners.erase(itRequest->second.GetHash());
             mapLockRewardRequest.erase(itRequest++);
         }else{
@@ -2852,9 +2842,9 @@ void CInfinityNodeLockReward::CheckAndRemove(CConnman& connman)
     //remove mapLockRewardCommitment
     std::map<uint256, CLockRewardCommitment>::iterator itCommit = mapLockRewardCommitment.begin();
     while(itCommit != mapLockRewardCommitment.end()) {
-        if (itCommit->second.nRewardHeight < nCachedBlockHeight - LIMIT_MEMORY) {
+        if (itCommit->second.nRewardHeight < (nHeight - LIMIT_MEMORY)) {
             LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckAndRemove -- remove mapLockRewardCommitment for height: %d, current: %d\n",
-                     itCommit->second.nRewardHeight, nCachedBlockHeight);
+                     itCommit->second.nRewardHeight, nHeight);
             mapLockRewardCommitment.erase(itCommit++);
         } else {
             ++itCommit;
@@ -2864,9 +2854,9 @@ void CInfinityNodeLockReward::CheckAndRemove(CConnman& connman)
     //remove mapLockRewardGroupSigners
     std::map<uint256, CGroupSigners>::iterator itGroup = mapLockRewardGroupSigners.begin();
     while(itGroup != mapLockRewardGroupSigners.end()) {
-        if (itGroup->second.nRewardHeight < nCachedBlockHeight - LIMIT_MEMORY) {
+        if (itGroup->second.nRewardHeight < (nHeight - LIMIT_MEMORY)) {
             LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckAndRemove -- remove mapLockRewardGroupSigners for height: %d, current: %d\n",
-                     itGroup->second.nRewardHeight, nCachedBlockHeight);
+                     itGroup->second.nRewardHeight, nHeight);
             mapLockRewardGroupSigners.erase(itGroup++);
         } else {
             ++itGroup;
@@ -2876,9 +2866,9 @@ void CInfinityNodeLockReward::CheckAndRemove(CConnman& connman)
     //remove mapPartialSign
     std::map<uint256, CMusigPartialSignLR>::iterator itSign = mapPartialSign.begin();
     while(itSign != mapPartialSign.end()) {
-        if (itSign->second.nRewardHeight < nCachedBlockHeight - LIMIT_MEMORY) {
+        if (itSign->second.nRewardHeight < nHeight - LIMIT_MEMORY) {
             LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckAndRemove -- remove mapPartialSign for height: %d, current: %d\n",
-                     itSign->second.nRewardHeight, nCachedBlockHeight);
+                     itSign->second.nRewardHeight, nHeight);
             mapMyPartialSigns.erase(itSign->second.nHashGroupSigners);
             mapPartialSign.erase(itSign++);
         } else {

@@ -17,7 +17,7 @@ class CLockRewardCommitment;
 extern CInfinityNodeLockReward inflockreward;
 
 static const int MIN_INFINITYNODE_PAYMENT_PROTO_VERSION = 250003;
-static const int LIMIT_MEMORY = 10; //nblocks
+static const int LIMIT_MEMORY = 55; //nblocks, same value as reorge limit
 
 class CLockRewardRequest
 {
@@ -292,11 +292,11 @@ public:
     bool AutoResigterLockReward(std::string sLR, std::string& strErrorRet, const COutPoint& infCheck);
 
     //Check CheckLockRewardRegisterInfo for candidate is OK or KO
-    bool CheckLockRewardRegisterInfo(std::string sLR, std::string& strErrorRet, const COutPoint& infCheck);
+    bool CheckLockRewardRegisterInfo(std::string sLR, std::string& strErrorRet, const CTxIn& infCheck);
 
     //remove unused data to avoid memory issue
     //call int init.cpp
-    void CheckAndRemove(CConnman& connman);
+    void CheckAndRemove(int nHeight);
     std::string GetMemorySize();
 
     //Connection

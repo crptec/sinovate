@@ -13,6 +13,8 @@ class CInfinitynodeLockInfo;
 
 extern CInfinitynodeLockInfo infnodelrinfo;
 
+static const int LIMIT_LR_MEMORY = 55; //nblocks, same value as reorge limit
+
 class CLockRewardExtractInfo
 {
 public:
@@ -81,7 +83,7 @@ public:
                   CCoinsViewCache& view, const CChainParams& chainparams, std::vector<CLockRewardExtractInfo>& vecLRRet);
 
     std::string ToString() const;
-    /// This is dummy overload to be used for dumping/loading mncache.dat
-    void CheckAndRemove() {}
+    void CheckAndRemove(){};
+    void RemoveCache(int nHeight);
 };
 #endif // SIN_INFINITYNODELRINFO_H
