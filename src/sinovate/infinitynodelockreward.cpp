@@ -1757,7 +1757,7 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
             std::string sErrorRegister = "";
             std::string sErrorCheck = "";
 
-            if(!CheckLockRewardRegisterInfo(sLockRewardMusig, sErrorCheck, mapLockRewardGroupSigners[nHashGroupSigner].vin)){
+            if(!CheckLockRewardRegisterInfo(sLockRewardMusig, sErrorCheck, mapLockRewardGroupSigners[nHashGroupSigner].vin, mapInfinityNodeRank)){
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::FindAndBuildMusigLockReward -- Check error: %s, Register LockReward error: %s\n",
                          sErrorCheck, sErrorRegister);
                 free(pubkeys); pubkeys = NULL;
@@ -1900,7 +1900,7 @@ bool CInfinityNodeLockReward::AutoResigterLockReward(std::string sLockReward, st
 /**
  * STEP 7 : Check LockReward Musig - use in ConnectBlock
  */
-bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockReward, std::string& strErrorRet, const CTxIn& infCheck)
+bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockReward, std::string& strErrorRet, const CTxIn& infCheck, const std::map<int, CInfinitynode>& mapInfinityNodeRankArg)
 {
     std::string s;
     stringstream ss(sLockReward);
@@ -1913,6 +1913,8 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
     size_t N_SIGNERS = (size_t)Params().GetConsensus().nInfinityNodeLockRewardSigners;
     int registerNbInfos = Params().GetConsensus().nInfinityNodeLockRewardSigners + 3;
     signerIndexes = (int*) malloc(Params().GetConsensus().nInfinityNodeLockRewardSigners * sizeof(int));
+    int nSINtypeCanLockReward = Params().GetConsensus().nInfinityNodeLockRewardSINType;
+    int nTopNodeScore = Params().GetConsensus().nInfinityNodeLockRewardTop;
 
     while (getline(ss, s,';')) {
         if(i==0){nRewardHeight = atoi(s);}
@@ -1963,15 +1965,23 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
     }
 
     //step 7.1 identify candidate
+    std::map<int, CInfinitynode> mapInfinityNodeRank = mapInfinityNodeRankArg;
+    std::vector<COutPoint> vOutpoint;
+
+    for(int i=0; i < N_SIGNERS; i++){
+        COutPoint signerID = mapInfinityNodeRank[signerIndexes[i]].getBurntxOutPoint();
+        vOutpoint.push_back(signerID);
+    }
+
+    if(!infnodeman.isValidTopNode(vOutpoint, nSINtypeCanLockReward, nRewardHeight - 101, nTopNodeScore)){
+        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- signers rank is not in Top node: %s\n",sLockReward);
+        free(signerIndexes);
+        return false;
+    }
 
     //step 7.2 identify Topnode and signer publicKey
     secp256k1_pubkey *pubkeys;
     pubkeys = (secp256k1_pubkey*) malloc(Params().GetConsensus().nInfinityNodeLockRewardSigners * sizeof(secp256k1_pubkey));
-    int nSINtypeCanLockReward = Params().GetConsensus().nInfinityNodeLockRewardSINType;
-
-    std::map<int, CInfinitynode> mapInfinityNodeRank = infnodeman.calculInfinityNodeRank(nRewardHeight, nSINtypeCanLockReward, false, true);
-    LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- Identify %d TopNode from register info. Map rank: %d\n",
-              Params().GetConsensus().nInfinityNodeLockRewardTop, mapInfinityNodeRank.size());
 
     int nSignerFound = 0;
         {
@@ -1991,8 +2001,8 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
                 bool fFindMetaHisto = false;
                 std::string pubkeyMetaHisto = metaTopNode.getMetaPublicKey();//last Pubkey
                 int nBestDistant = 10000000; //blocks
-	            int nLimitMetaCheck = metaTopNode.getMetadataHeight() + Params().MaxReorganizationDepth() * 2;
-                LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- nRewardHeight: %d, Metadata Height Check Limit: %d\n", nRewardHeight, nLimitMetaCheck);
+                int nLimitMetaCheck = metaTopNode.getMetadataHeight() + Params().MaxReorganizationDepth() * 2;
+
                 if(nRewardHeight < nLimitMetaCheck){
                     LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- Find info in hisroty\n");
                     //height of current metadata is KO for Musig => find in history to get good metadata info
@@ -2013,11 +2023,8 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
                         return false;
                     }
                 }
-                LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- Pubkey signer %d: %s\n", signerIndexes[i], pubkeyMetaHisto);
-
+/*
                 int nScore;
-                int nSINtypeCanLockReward = Params().GetConsensus().nInfinityNodeLockRewardSINType; //mypeer must be this SINtype, if not, score is NULL
-
                 if(!infnodeman.getNodeScoreAtHeight(sInfNode.getBurntxOutPoint(), nSINtypeCanLockReward, nRewardHeight - 101, nScore)) {
                     LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- Can't calculate score signer Rank %d\n",signerIndexes[i]);
                     free(signerIndexes);
@@ -2032,7 +2039,7 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
                     free(pubkeys);
                     return false;
                 }
-
+*/
                 {
                     std::string metaPublicKey = pubkeyMetaHisto;
                     std::vector<unsigned char> tx_data = DecodeBase64(metaPublicKey.c_str());
@@ -2077,35 +2084,6 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
         return false;
     }
 
-    for(int i=0; i< N_SIGNERS; i++) {
-        LogPrint(BCLog::INFINITYLOCK,"PublicKey %d: ", i);
-        for(int j=0; j<64; j++) {
-            LogPrint(BCLog::INFINITYLOCK,"%d ", pubkeys[i].data[j]);
-        }
-        LogPrint(BCLog::INFINITYLOCK,"\n");
-    }
-
-    LogPrint(BCLog::INFINITYLOCK,"read signature: %s\n",signature);
-    LogPrint(BCLog::INFINITYLOCK,"msg: ");
-    for(int i=0; i<32; i++) {
-        LogPrint(BCLog::INFINITYLOCK,"%d ", msg[i]);
-    }
-    LogPrint(BCLog::INFINITYLOCK,"\n");
-
-    LogPrint(BCLog::INFINITYLOCK,"Candidate: %s at height: %d\n", infCheck.prevout.ToStringFull(), nRewardHeight);
-
-    LogPrint(BCLog::INFINITYLOCK,"combined_pk: ");
-    for(int i=0; i<64; i++) {
-        LogPrint(BCLog::INFINITYLOCK,"%d ", combined_pk.data[i]);
-    }
-    LogPrint(BCLog::INFINITYLOCK,"\n");
-
-    LogPrint(BCLog::INFINITYLOCK,"final_sig: ");
-    for(int i=0; i<64; i++) {
-        LogPrint(BCLog::INFINITYLOCK,"%d ", final_sig.data[i]);
-    }
-    LogPrint(BCLog::INFINITYLOCK,"\n");
-
     if(!secp256k1_schnorr_verify(secp256k1_context_musig, &final_sig, msg, &combined_pk)){
         LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- Check register info FAILED\n");
         secp256k1_scratch_space_destroy(secp256k1_context_musig, scratch);
@@ -2138,6 +2116,10 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight, bool IsProofOfStake
             infnodelrinfo.getLRInfo(nBlockHeight, vecLockRewardRet);
         }
 
+        int nSINtypeCanLockReward = Params().GetConsensus().nInfinityNodeLockRewardSINType;
+        std::map<int, CInfinitynode> mapInfinityNodeRank = infnodeman.calculInfinityNodeRank(nBlockHeight, nSINtypeCanLockReward, false, true);
+
+
         CScript DINPayee;
         CInfinitynode infOwner;
         int SINType = 0;
@@ -2162,7 +2144,7 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight, bool IsProofOfStake
                 for (auto& v : vecLockRewardRet) {
                     if(v.nSINtype == SINType && v.nRewardHeight == nBlockHeight){
                         //check schnorr musig
-                        if(inflockreward.CheckLockRewardRegisterInfo(v.sLRInfo, sErrorCheck, infOwner.vinBurnFund)){
+                        if(inflockreward.CheckLockRewardRegisterInfo(v.sLRInfo, sErrorCheck, infOwner.vinBurnFund, mapInfinityNodeRank)){
                                 CMetadata meta = infnodemeta.Find(infOwner.getMetaID());
                                 if(meta.getMetadataHeight() == 0){
                                     LogPrint(BCLog::INFINITYLOCK, "IsBlockPayeeValid -- Not found metadata for candidate at height: %d\n", nBlockHeight);
@@ -2294,13 +2276,9 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
         //extract LockReward
         std::vector<CLockRewardExtractInfo> vecLockRewardRet;
         infnodelrinfo.getLRInfo(nBlockHeight, vecLockRewardRet);
-        /*
-        if (!infnodeman.getLRForHeight(nBlockHeight-1, vecLockRewardRet)) {
-            LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- use externe LR database\n");
-            infnodelrinfo.getLRInfo(nBlockHeight, vecLockRewardRet);
-        }
-        LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- LR size: %d\n", (int) vecLockRewardRet.size());
-        */
+
+        int nSINtypeCanLockReward = Params().GetConsensus().nInfinityNodeLockRewardSINType;
+        std::map<int, CInfinitynode> mapInfinityNodeRank = infnodeman.calculInfinityNodeRank(nBlockHeight, nSINtypeCanLockReward, false, true);
 
         int txIndex = 0;
         int nStartPaymentIdx = 3;
@@ -2315,6 +2293,8 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
         }
         for (auto txout : txNew->vout) {
             txIndex ++;
+            int64_t nTime1;
+            nTime1  = GetTimeMicros();
             if (nStartPaymentIdx <= txIndex && txIndex <= nEndPaymentIdx) {
                 //BEGIN
                 CScript DINPayee;
@@ -2348,7 +2328,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                     for (auto& v : vecLockRewardRet) {
                         if(v.nSINtype == SINType && v.nRewardHeight == nBlockHeight && txout.nValue == InfPaymentOwner){
                             //and LR was sent from good metadata: v.scriptPubKey
-                            if(inflockreward.CheckLockRewardRegisterInfo(v.sLRInfo, sErrorCheck, infOwner.GetInfo().vinBurnFund)){
+                            if(inflockreward.CheckLockRewardRegisterInfo(v.sLRInfo, sErrorCheck, infOwner.GetInfo().vinBurnFund, mapInfinityNodeRank)){
                                 CMetadata meta = infnodemeta.Find(infOwner.getMetaID());
                                 if(meta.getMetadataHeight() == 0){
                                     LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- Not found metadata for candidate at height: %d\n", nBlockHeight);
@@ -2369,7 +2349,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                                 }
 
                                 if(fLRSenderCheck){
-                                    LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, LockReward for SINtype: %d, address: %d\n", txIndex, SINType, addressTxDIN2);
+                                    LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, LockReward for SINtype: %d, address: %s\n", txIndex, SINType, addressTxDIN2);
                                     fCandidateValid = true;
                                 } else {
                                     LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- %s <<<<>>>> %s\n", ScriptToAsmStr(v.scriptPubKey), ScriptToAsmStr(senderScript));
@@ -2384,8 +2364,10 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                     //LR and amount of reward is valid, check script to make sure that destination is candidate
                     if(fCandidateValid){
                         if (txout.scriptPubKey == infOwner.GetInfo().scriptPubKey){
-                            LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, Payment for SINtype: %d, address: %d\n", txIndex, SINType, addressTxDIN2);
+                            LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, Payment for SINtype: %d, address: %s\n", txIndex, SINType, addressTxDIN2);
                             counterNodePayment ++;
+                        } else {
+                            LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- INVALID tx out: %d, Payment for SINtype: %d, payment address: %s, colateral address: %s\n", txIndex, SINType, addressTxDIN2, infOwner.getCollateralAddress());
                         }
                     }
                     //No LR found for candidate => payment is correct if reward is burnt
@@ -2475,6 +2457,9 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                     }
                 }
             }
+            int64_t nTime2;
+            nTime2  = GetTimeMicros();
+            LogPrint(BCLog::BENCH, "    - Sinovate check vout(LR signatures) %d: %.2fms\n", txIndex, (nTime2 - nTime1) * 0.001);
         }//end loop output
 
         if (counterNodePayment == 6) {

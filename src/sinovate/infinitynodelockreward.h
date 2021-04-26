@@ -240,7 +240,6 @@ private:
     bool fMusigBuilt;
 
 public:
-
     CInfinityNodeLockReward() : nCachedBlockHeight(0) {}
 
     SERIALIZE_METHODS(CInfinityNodeLockReward, obj)
@@ -292,7 +291,7 @@ public:
     bool AutoResigterLockReward(std::string sLR, std::string& strErrorRet, const COutPoint& infCheck);
 
     //Check CheckLockRewardRegisterInfo for candidate is OK or KO
-    bool CheckLockRewardRegisterInfo(std::string sLR, std::string& strErrorRet, const CTxIn& infCheck);
+    bool CheckLockRewardRegisterInfo(std::string sLR, std::string& strErrorRet, const CTxIn& infCheck, const std::map<int, CInfinitynode>& mapInfinityNodeRank);
 
     //remove unused data to avoid memory issue
     //call int init.cpp

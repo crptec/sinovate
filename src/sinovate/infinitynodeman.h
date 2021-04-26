@@ -36,6 +36,7 @@ public:
     std::map<int, int> mapStatementLIL;
     // map to hold payee and lastPaid Height
     std::map<CScript, int> mapLastPaid;
+    //cache for last situation per block
     int nBIGLastStmHeight;
     int nMIDLastStmHeight;
     int nLILLastStmHeight;
@@ -166,8 +167,9 @@ public:
     bool getScoreVector(const uint256& nBlockHash, int nSinType, int nBlockHeight, CInfinitynodeMan::score_pair_vec_t& vecScoresRet);
     bool getNodeScoreAtHeight(const COutPoint& outpoint, int nSinType, int nBlockHeight, int& nRankRet);
     bool getTopNodeScoreAtHeight(int nSinType, int nBlockHeight, int nTop, std::vector<CInfinitynode>& vecInfRet);
+    bool isValidTopNode(const std::vector<COutPoint>  &vOutpoint, int nSinType, int nBlockHeight, int nTop);
 
-    std::string getVectorNodeRankAtHeight(const std::vector<COutPoint>  &vOutpoint, int nSinType, int nBlockHeight);
+    std::string getVectorNodeRankAtHeight(const std::vector<COutPoint>& vOutpoint, int nSinType, int nBlockHeight);
 
     //this function update lastStm and size from UpdatedBlockTip and map
     void updateLastStmHeightAndSize(int nBlockHeight, int nSinType);
