@@ -2362,7 +2362,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
             return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-amount");
         }
     }
-
+//>SIN
     //Sinovate specific consensus (devfee)
 
     int i = 0, j = 1;
@@ -2393,10 +2393,13 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         if (block.IsProofOfWork()) {
             //DIN mode: validation LR
             LogPrintf("Validation -- POW + Infinitynode\n");
+            int64_t nTime3_1 = GetTimeMicros(); 
             if (!LockRewardValidation(pindex->nHeight, block.vtx[0])) {
                 LogPrintf("LockRewardValidation -- disconnect block!\n");
                 return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-bad-infinity-node-reward");
             }
+            int64_t nTime3_2 = GetTimeMicros(); 
+            LogPrint(BCLog::BENCH, "    - Sinovate LockRewardValidation: %.2fms\n", (nTime3_2 - nTime3_1) * MILLI);
         } else {
             LogPrintf("Validation -- PoS + Infinitynode\n");
             if (!LockRewardValidation(pindex->nHeight, block.vtx[1], true)) {
@@ -2405,7 +2408,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
             }
         }
     }
-
+//<SIN
     if (!control.Wait()) {
         LogPrintf("ERROR: %s: CheckQueue failed\n", __func__);
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "block-validation-failed");
@@ -2823,15 +2826,34 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
 //>SIN
         std::vector<CLockRewardExtractInfo> vecLockRewardRet;
         infnodelrinfo.ExtractLRFromBlock(blockConnecting, pindexNew, view, chainparams, vecLockRewardRet);
+        int64_t nTime3_1;
+        nTime3_1  = GetTimeMicros();
+        LogPrint(BCLog::BENCH, "  - Sinovate ExtractLR: %.2fms\n", (nTime3_1 - nTime2) * MILLI);
+
         infnodeman.buildNonMaturedListFromBlock(blockConnecting, pindexNew, view, chainparams);
+        int64_t nTime3_2;
+        nTime3_2  = GetTimeMicros();
+        LogPrint(BCLog::BENCH, "  - Sinovate BuildNonMatured: %.2fms\n", (nTime3_2 - nTime3_1) * MILLI);
 //<SIN
         bool rv = ConnectBlock(blockConnecting, state, pindexNew, view, chainparams);
+        int64_t nTime3_3;
+        nTime3_3  = GetTimeMicros();
+        LogPrint(BCLog::BENCH, "  - Sinovate ConnectBlock: %.2fms\n", (nTime3_3 - nTime3_2) * MILLI);
 //>SIN
         if (rv) {
             for (auto& v : vecLockRewardRet) {
                 infnodelrinfo.Add(v);
             }
+            int64_t nTime3_4;
+            nTime3_4  = GetTimeMicros();
+            LogPrint(BCLog::BENCH, "  - Sinovate AddLR: %.2fms\n", (nTime3_4 - nTime3_3) * MILLI);
+
             infnodeman.updateFinalList(pindexNew);
+            inflockreward.CheckAndRemove(pindexNew->nHeight);
+            infnodelrinfo.RemoveCache(pindexNew->nHeight);
+            int64_t nTime3_5;
+            nTime3_5  = GetTimeMicros();
+            LogPrint(BCLog::BENCH, "  - Sinovate updateFinalList: %.2fms\n", (nTime3_5 - nTime3_4) * MILLI);
         } else {
         }
 //<SIN
