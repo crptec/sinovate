@@ -39,6 +39,7 @@ class WalletModel;
 class HelpMessageDialog;
 class ModalOverlay;
 class StatsPage;
+class StakePage;
 enum class SynchronizationState;
 
 namespace interfaces {
@@ -136,6 +137,7 @@ private:
     QToolBar* appToolBar = nullptr;
     QAction* overviewAction = nullptr;
     QAction* statsPageAction = nullptr;
+    QAction* stakePageAction = nullptr;
     QAction* historyAction = nullptr;
     QAction* quitAction = nullptr;
     QAction* sendCoinsAction = nullptr;
@@ -178,6 +180,7 @@ private:
     Notificator* notificator = nullptr;
     RPCConsole* rpcConsole = nullptr;
     StatsPage  *statsWindow;
+    StakePage  *stakeWindow;
     HelpMessageDialog* helpMessageDialog = nullptr;
     ModalOverlay* modalOverlay = nullptr;
 
@@ -280,6 +283,8 @@ public Q_SLOTS:
     void gotoOverviewPage();
     /** Switch to stats page */
     void gotoStatsPage(); 
+    /** Switch to stake page */
+    void gotoStakePage(); 
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */

@@ -19,6 +19,7 @@
 #include <qt/transactionview.h>
 #include <qt/walletmodel.h>
 #include "statspage.h"
+#include "stakepage.h"
 
 #include <interfaces/node.h>
 #include <node/ui_interface.h>
@@ -73,6 +74,10 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
      //StatsPage
     statsWindow = new StatsPage(platformStyle);
     addWidget(statsWindow);
+    //
+     //StakePage
+    stakeWindow = new StakePage(platformStyle);
+    addWidget(stakeWindow);
     //
 
     connect(overviewPage, &OverviewPage::transactionClicked, this, &WalletView::transactionClicked);
@@ -180,7 +185,12 @@ void WalletView::gotoStatsPage()
     setCurrentWidget(statsWindow);
 }
 //
-
+// StakePage
+void WalletView::gotoStakePage()
+{
+    setCurrentWidget(stakeWindow);
+}
+//
 void WalletView::gotoReceiveCoinsPage()
 {
     setCurrentWidget(receiveCoinsPage);

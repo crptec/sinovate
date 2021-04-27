@@ -19,6 +19,7 @@ class TransactionView;
 class WalletModel;
 class AddressBookPage;
 class StatsPage;
+class StakePage;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -67,6 +68,10 @@ private:
      // StatsPage
     StatsPage *statsWindow;
     //
+    // StakePage
+    StakePage *stakeWindow;
+    //
+
 
     TransactionView *transactionView;
 
@@ -82,6 +87,8 @@ public Q_SLOTS:
     void gotoReceiveCoinsPage();
     /** Switch to stats page */
     void gotoStatsPage();
+    /** Switch to stake page */
+    void gotoStakePage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
 
