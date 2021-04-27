@@ -62,8 +62,6 @@ static RPCHelpMan infinitynode()
                     + HelpExampleCli("infinitynode", "getrawblockcount")
                     + "\nInfinitynode: show peer info\n"
                     + HelpExampleCli("infinitynode", "mypeerinfo")
-                    + "\nBuild statement of Infinitynode from height 1\n"
-                    + HelpExampleCli("infinitynode", "build-stm")
                     + "\nShow current statement of Infinitynode\n"
                     + HelpExampleCli("infinitynode", "show-stm")
                     + "\nShow current statement of Infinitynode at Height\n"
@@ -156,21 +154,6 @@ static RPCHelpMan infinitynode()
         infinitynodePeer.ManageState(*node.connman);
         infObj.pushKV("MyPeerInfo", infinitynodePeer.GetMyPeerInfo());
         return infObj;
-    }
-
-    if (strCommand == "build-stm")
-    {
-        CBlockIndex* pindex = NULL;
-        {
-                LOCK(cs_main);
-                pindex = ::ChainActive().Tip();
-        }
-        bool updateStm = false;
-        LOCK(cs_main);
-        updateStm = infnodeman.buildInfinitynodeList(1, pindex->nHeight);
-        obj.pushKV("Height", pindex->nHeight);
-        obj.pushKV("Result", updateStm);
-        return obj;
     }
 
     if (strCommand == "build-stm-to")
@@ -273,33 +256,6 @@ static RPCHelpMan infinitynode()
         infnodeman.deterministicRewardAtHeight(nextHeight, 10, infBIG);
         infnodeman.deterministicRewardAtHeight(nextHeight, 5, infMID);
         infnodeman.deterministicRewardAtHeight(nextHeight, 1, infLIL);
-
-        obj.pushKV("CandidateBIG: ", infBIG.getCollateralAddress());
-        obj.pushKV("CandidateMID: ", infMID.getCollateralAddress());
-        obj.pushKV("CandidateLIL: ", infLIL.getCollateralAddress());
-
-        return obj;
-    }
-
-    if (strCommand == "show-candidates")
-    {
-        if (request.params.size() != 2)
-            throw JSONRPCError(RPC_INVALID_PARAMETER, "Correct usage is 'infinitynode show-candidate \"nHeight\"'");
-
-        const std::string strFilter = request.params[1].get_str();
-
-        int nextHeight = atoi(strFilter);
-
-        if (nextHeight < Params().GetConsensus().nInfinityNodeGenesisStatement) {
-            strError = strprintf("nHeight must be higher than the Genesis Statement height (%s)", Params().GetConsensus().nInfinityNodeGenesisStatement);
-            throw JSONRPCError(RPC_INVALID_PARAMETER, strError);
-        }
-
-        CInfinitynode infBIG, infMID, infLIL;
-        LOCK(infnodeman.cs);
-        infnodeman.deterministicRewardAtHeightOnValidation(nextHeight, 10, infBIG);
-        infnodeman.deterministicRewardAtHeightOnValidation(nextHeight, 5, infMID);
-        infnodeman.deterministicRewardAtHeightOnValidation(nextHeight, 1, infLIL);
 
         obj.pushKV("CandidateBIG: ", infBIG.getCollateralAddress());
         obj.pushKV("CandidateMID: ", infMID.getCollateralAddress());
@@ -469,7 +425,7 @@ static RPCHelpMan infinitynodeburnfund()
     const std::string address = request.params[0].get_str();
     CTxDestination NodeOwnerAddress = DecodeDestination(address);
     if (!IsValidDestination(NodeOwnerAddress)) {
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Bitcoin address: ") + address);
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Sinovate address: ") + address);
     }
 
     CAmount nAmount = AmountFromValue(request.params[1]);
@@ -489,13 +445,13 @@ static RPCHelpMan infinitynodeburnfund()
     std::vector<COutput> vPossibleCoins;
     pwallet->AvailableCoins(vPossibleCoins, true, NULL, false);
 
-    UniValue results(UniValue::VARR);
+    UniValue results(UniValue::VOBJ);
 
     // BurnAddress
     CTxDestination dest = DecodeDestination(Params().GetConsensus().cBurnAddress);
     CScript scriptPubKeyBurnAddress = GetScriptForDestination(dest);
     std::vector<std::vector<unsigned char> > vSolutions;
-    TxoutType whichType = Solver(scriptPubKeyBurnAddress, vSolutions);;
+    TxoutType whichType = Solver(scriptPubKeyBurnAddress, vSolutions);
     PKHash keyid = PKHash(uint160(vSolutions[0]));
 
     //Infinitynode info
@@ -555,11 +511,178 @@ static RPCHelpMan infinitynodeburnfund()
             results.pushKV("OWNER_ADDRESS",EncodeDestination(NodeOwnerAddress));
             results.pushKV("BACKUP_ADDRESS",EncodeDestination(BKaddress));
 
-            break; //immediat
+            return results;
         }
     }
 
-    return results;
+    return NullUniValue;
+},
+    };
+}
+
+/**
+ * @xtdevcoin
+ * this function help user burn correctly their funds to update metadata of DIN
+ */
+static RPCHelpMan infinitynodeupdatemeta()
+{
+    return RPCHelpMan{"infinitynodeupdatemeta",
+                "\nBurn funds to update metadata of DIN.\n"
+                "\nReturns JSON info or Null.\n",
+                {
+                    {"nodeowneraddress", RPCArg::Type::STR, RPCArg::Optional::NO, "Address of owner which burnt funds (will receive the reward)."},
+                    {"publickey", RPCArg::Type::STR, RPCArg::Optional::NO, "Address of node (will receive the small reward)"},
+                    {"nodeip", RPCArg::Type::STR, RPCArg::Optional::NO, "Ip of node"},
+                    {"nodeid", RPCArg::Type::STR, RPCArg::Optional::NO, "First 16 characters of BurnTx (to create node)"},
+                },
+                RPCResult{
+                        RPCResult::Type::OBJ, "", "",
+                        {
+                            {RPCResult::Type::STR, "METADATA", "The metadata of DIN which will be sent to network"},
+                        },
+                },
+                RPCExamples{
+                    "\nBurn 25 SIN coins to update metadata of DIN\n"
+                    + HelpExampleCli("infinitynodeupdatemeta", "nodeowneraddress publickey xxx.xxx.xxx.xxx ABCDABCDABCDABCD")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    UniValue results(UniValue::VOBJ);
+
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    if (!wallet) return NullUniValue;
+    CWallet* const pwallet = wallet.get();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    // Grab locks here as BlockUntilSyncedToCurrentChain() handles them on its own, but we need them for most other funcs
+    LOCK2(cs_main, pwallet->cs_wallet);
+
+    const std::string strOwnerAddress = request.params[0].get_str();
+    CTxDestination NodeOwnerAddress = DecodeDestination(strOwnerAddress);
+    if (!IsValidDestination(NodeOwnerAddress)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Sinovate address: ") + strOwnerAddress);
+    }
+
+    //limit data carrier, so we accept only 66 char
+    std::string nodePublickey = "";
+    if(request.params[1].get_str().length() == 44){
+        nodePublickey = request.params[1].get_str();
+    } else {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid node publickey");
+    }
+
+    std::string strService = request.params[2].get_str();
+    CService service;
+    if(Params().NetworkIDString() != CBaseChainParams::REGTEST) {
+        if (!Lookup(strService.c_str(), service, 0, false)){
+               throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid IP address");
+        }
+    }
+    CAddress addMeta = CAddress(service, NODE_NETWORK);
+
+    std::string burnfundTxID = "";
+    if(request.params[3].get_str().length() == 16){
+        burnfundTxID = request.params[3].get_str();
+    } else {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "node BurnFundTx ID is invalid. Please enter first 16 characters of BurnFundTx");
+    }
+
+    std::string metaID = strprintf("%s-%s", strOwnerAddress, burnfundTxID);
+    CMetadata myMeta = infnodemeta.Find(metaID);
+    int nCurrentHeight = ::ChainActive().Height();
+    if(myMeta.getMetadataHeight() > 0 && nCurrentHeight < myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2){
+        int nWait = myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2 - nCurrentHeight;
+        std::string strError = strprintf("Error: Please wait %d blocks and try to update again.", nWait);
+        throw JSONRPCError(RPC_TYPE_ERROR, strError);
+    }
+
+    //check ip and pubkey dont exist
+    if(Params().NetworkIDString() != CBaseChainParams::REGTEST) {
+        std::map<std::string, CMetadata> mapInfMetadata = infnodemeta.GetFullNodeMetadata();
+        for (auto& infmetapair : mapInfMetadata) {
+            CMetadata m = infmetapair.second;
+            CAddress add = CAddress(infmetapair.second.getService(), NODE_NETWORK);
+            //found metaID => check expire or not
+            if (m.getMetaID() != metaID && (m.getMetaPublicKey() == nodePublickey || addMeta.ToStringIP() == add.ToStringIP())) {
+                std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
+                for (auto& infnodepair : mapInfinitynodes) {
+                    if (infnodepair.second.getMetaID() == m.getMetaID() && infnodepair.second.getExpireHeight() >= nCurrentHeight) {
+                        std::string strError = strprintf("Error: Pubkey or IP address already exist in network");
+                        throw JSONRPCError(RPC_TYPE_ERROR, strError);
+                    }
+                }
+            }
+        }
+    }
+
+    EnsureWalletIsUnlocked(pwallet);
+
+    std::string strError;
+    std::vector<COutput> vPossibleCoins;
+    pwallet->AvailableCoins(vPossibleCoins, true, NULL, false);
+
+    // cMetadataAddress
+    CTxDestination dest = DecodeDestination(Params().GetConsensus().cMetadataAddress);
+    CScript scriptPubKeyMetaAddress = GetScriptForDestination(dest);
+    std::vector<std::vector<unsigned char> > vSolutions;
+    TxoutType whichType = Solver(scriptPubKeyMetaAddress, vSolutions);
+    PKHash keyid = PKHash(uint160(vSolutions[0]));
+
+    std::ostringstream streamInfo;
+
+    for (COutput& out : vPossibleCoins) {
+        CTxDestination addressCoin;
+        const CScript& scriptPubKey = out.tx->tx->vout[out.i].scriptPubKey;
+        bool fValidAddress = ExtractDestination(scriptPubKey, addressCoin);
+
+        if (!fValidAddress || addressCoin != NodeOwnerAddress)
+            continue;
+
+        //use coin with limit value
+        if (out.tx->tx->vout[out.i].nValue / COIN >= Params().GetConsensus().nInfinityNodeUpdateMeta
+            && out.tx->tx->vout[out.i].nValue / COIN < Params().GetConsensus().nInfinityNodeUpdateMeta*100
+            && out.nDepth >= 2) {
+
+            CAmount nAmount = Params().GetConsensus().nInfinityNodeUpdateMeta*COIN;
+
+            // Wallet comments
+            mapValue_t mapValue;
+            bool fSubtractFeeFromAmount = true;
+            CCoinControl coin_control;
+            coin_control.Select(COutPoint(out.tx->GetHash(), out.i));
+            coin_control.destChange = NodeOwnerAddress;//fund go back to NodeOwnerAddress
+
+            streamInfo << nodePublickey << ";" << strService << ";" << burnfundTxID;
+            std::string strInfo = streamInfo.str();
+            CScript script;
+            script = GetScriptForBurn(keyid, streamInfo.str());
+
+            CAmount nFeeRequired;
+            FeeCalculation fee_calc_out;
+            bilingual_str strErrorRet;
+
+            std::vector<CRecipient> vecSend;
+            int nChangePosRet = -1;
+            CRecipient recipient = {script, nAmount, fSubtractFeeFromAmount};
+            vecSend.push_back(recipient);
+
+            CTransactionRef tx;
+            if (!pwallet->CreateTransaction(vecSend, tx, nFeeRequired, nChangePosRet, strErrorRet, coin_control, fee_calc_out, true)) {
+                throw JSONRPCError(RPC_WALLET_ERROR, strErrorRet.original);
+            }
+
+            pwallet->CommitTransaction(tx, std::move(mapValue), {} /* orderForm */);
+
+            results.pushKV("METADATA",streamInfo.str());
+
+            return results;
+        }
+    }
+
+    return NullUniValue;
 },
     };
 }
@@ -572,6 +695,7 @@ static const CRPCCommand commands[] =
   //  --------------------- ------------------------  -----------------------                       ----------
   { "SIN",                  "infinitynode",           &infinitynode,                                {"strCommand", "strFilter", "strOption"} },
   { "SIN",                  "infinitynodeburnfund",   &infinitynodeburnfund,                        {"nodeowneraddress", "amount", "backupaddress"} },
+  { "SIN",                  "infinitynodeupdatemeta", &infinitynodeupdatemeta,                      {"nodeowneraddress", "publickey", "nodeip", "nodeid"} },
 };
 // clang-format on
     for (const auto& c : commands) {
