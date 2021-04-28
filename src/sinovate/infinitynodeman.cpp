@@ -924,6 +924,7 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
                 if(infpair.second.getSINType() == 1) nLIL++;
             }
         }
+
         mapStatementBIG.insert(mapStatementBIG.begin(), make_pair(nHeight, nBIG));
         mapStatementMID.insert(mapStatementMID.begin(), make_pair(nHeight, nMID));
         mapStatementLIL.insert(mapStatementLIL.begin(), make_pair(nHeight, nLIL));
@@ -946,10 +947,6 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
         int nEndOfStmMID = itLastMID->first + itLastMID->second - nextHeight;
         int nEndOfStmLIL = itLastLIL->first + itLastLIL->second - nextHeight;
 
-        int nextStmBIG = itLastBIG->first + itLastBIG->second;
-        int nextStmMID = itLastMID->first + itLastMID->second;
-        int nextStmLIL = itLastLIL->first + itLastLIL->second;
-
         nBIGLastStmHeight = itLastBIG->first;
         nBIGLastStmSize = itLastBIG->second;
 
@@ -960,12 +957,19 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
         nLILLastStmSize = itLastLIL->second;
 
         int nBIGNextStm = 0, nMIDNextStm = 0, nLILNextStm = 0;
+        int nBIGHeight = 0, nMIDHeight = 0, nLILHeight = 0;
 
         //calcul number of nodes at nHeight
         for (auto& infpair : mapInfinitynodes) {
             if (infpair.second.getSINType() == 10 && infpair.second.getHeight() < itLastBIG->first && itLastBIG->first <= infpair.second.getExpireHeight()) nBIG++;
             if (infpair.second.getSINType() == 5 && infpair.second.getHeight() < itLastMID->first && itLastMID->first <= infpair.second.getExpireHeight()) nMID++;
             if (infpair.second.getSINType() == 1 && infpair.second.getHeight() < itLastLIL->first && itLastLIL->first <= infpair.second.getExpireHeight()) nLIL++;
+
+            if (infpair.second.getHeight() < nHeight && nHeight <= infpair.second.getExpireHeight()){
+                if(infpair.second.getSINType() == 10) nBIGHeight++;
+                if(infpair.second.getSINType() == 5) nMIDHeight++;
+                if(infpair.second.getSINType() == 1) nLILHeight++;
+            }
 
             if (infpair.second.getHeight() < nextHeight && nextHeight <= infpair.second.getExpireHeight()){
                 if(infpair.second.getSINType() == 10) nBIGNextStm++;
@@ -974,6 +978,13 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
             }
         }
 
+        //begin of network, so not at end of Stm
+
+        if(itLastBIG->second == 0 || itLastBIG->second == 1) mapStatementBIG.insert(itBIG, make_pair(nHeight, nBIGHeight));
+        if(itLastMID->second == 0 || itLastMID->second == 1) mapStatementMID.insert(itMID, make_pair(nHeight, nMIDHeight));
+        if(itLastLIL->second == 0 || itLastLIL->second == 1) mapStatementLIL.insert(itLIL, make_pair(nHeight, nLILHeight));
+
+        //end of Stm
         if(nEndOfStmBIG == 0 || nEndOfStmMID == 0 || nEndOfStmLIL == 0 ||
            (nEndOfStmLIL > 0 && nEndOfStmLIL <= Params().MaxReorganizationDepth()) ||
            (nEndOfStmMID > 0 && nEndOfStmMID <= Params().MaxReorganizationDepth()) ||
