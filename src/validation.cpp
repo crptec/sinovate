@@ -4134,7 +4134,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
     const bool IsProofOfStake = block.IsProofOfStake();
 
     // only run PoS checks if we never saw this block
-    if ((!dbp && IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev)) ||
+    if (((pindex->nHeight > 3000) && IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev)) ||
         !CheckBlock(block, state, chainparams.GetConsensus()) ||
         !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev)) {
         if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
