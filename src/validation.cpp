@@ -3770,6 +3770,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     bool IsPoS = false;
     bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
 
+//>SIN
     // Check reorg bounds
     int nMaxReorgDepth = gArgs.GetArg("-maxreorg", Params().MaxReorganizationDepth());
     bool fGreaterThanMaxReorg = ::ChainActive().Height() - (nHeight - 1) >= nMaxReorgDepth;
@@ -3777,6 +3778,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
         LogPrintf("ERROR: %s: forked chain older than max reorganization depth (height %d)\n", __func__, nHeight);
         return state.Invalid(BlockValidationResult::BLOCK_MAXREORGDEPTH, "bad-fork-prior-to-maxreorgdepth");
     }
+//<SIN
 
     // Check proof of work/proof-of-stake diff
     if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams, false)) {

@@ -691,11 +691,11 @@ void RegisterInfinitynodeRPCCommands(CRPCTable &t)
 {
 // clang-format off
 static const CRPCCommand commands[] =
-{ //  category              name                      actor (function)                              argNames
-  //  --------------------- ------------------------  -----------------------                       ----------
-  { "SIN",                  "infinitynode",           &infinitynode,                                {"strCommand", "strFilter", "strOption"} },
-  { "SIN",                  "infinitynodeburnfund",   &infinitynodeburnfund,                        {"nodeowneraddress", "amount", "backupaddress"} },
-  { "SIN",                  "infinitynodeupdatemeta", &infinitynodeupdatemeta,                      {"nodeowneraddress", "publickey", "nodeip", "nodeid"} },
+{ //  category  name                      actor (function)                argNames
+  //  --------- ------------------------  -----------------------         ----------
+  { "SIN",      "infinitynode",           &infinitynode,                  {"strCommand", "strFilter", "strOption"} },
+  { "SIN",      "infinitynodeburnfund",   &infinitynodeburnfund,          {"nodeowneraddress", "amount", "backupaddress"} },
+  { "SIN",      "infinitynodeupdatemeta", &infinitynodeupdatemeta,        {"nodeowneraddress", "publickey", "nodeip", "nodeid"} },
 };
 // clang-format on
     for (const auto& c : commands) {
