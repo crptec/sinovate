@@ -37,6 +37,9 @@
 #include <reverse_iterator.h>
 #include <script/script.h>
 #include <script/sigcache.h>
+//>SIN
+#include <script/standard.h>
+//<SIN
 #include <shutdown.h>
 #include <signet.h>
 #include <timedata.h>
@@ -598,6 +601,23 @@ private:
     size_t m_limit_descendant_size;
 };
 
+//>SIN
+bool CheckInputTimeLockInterest(const CTransaction &tx, const CCoinsViewCache& view, int nBlockHeight)
+{
+    for (const auto& txin : tx.vin)
+    {
+        const COutPoint &prevout = txin.prevout;
+        const Coin& coin = view.AccessCoin(prevout);
+
+        std::vector<std::vector<unsigned char>> vSolutions;
+        TxoutType whichType = Solver(coin.out.scriptPubKey, vSolutions);
+
+        if (whichType == TxoutType::TX_CHECKLOCKTIMEVERIFY && coin.nHeight <= nBlockHeight) return true;
+    }
+    return false;
+}
+//<SIN
+
 bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
 {
     const CTransactionRef& ptx = ws.m_ptx;
@@ -696,6 +716,14 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
     m_view.SetBackend(m_viewmempool);
 
     CCoinsViewCache& coins_cache = ::ChainstateActive().CoinsTip();
+
+//>SIN
+    if (CheckInputTimeLockInterest(tx, coins_cache, 170000) && ::ChainActive().Height() >= 600000) {
+        return state.Invalid(TxValidationResult::TX_CONSENSUS, "bad-txns-spends-timelock-interest-tx",
+                    strprintf("%s spends with timelock and interest", hash.ToString()));
+    }
+//<SIN
+
     // do all inputs exist?
     for (const CTxIn& txin : tx.vin) {
         if (!coins_cache.HaveCoinInCache(txin.prevout)) {
@@ -3770,6 +3798,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     bool IsPoS = false;
     bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
 
+//>SIN
     // Check reorg bounds
     int nMaxReorgDepth = gArgs.GetArg("-maxreorg", Params().MaxReorganizationDepth());
     bool fGreaterThanMaxReorg = ::ChainActive().Height() - (nHeight - 1) >= nMaxReorgDepth;
@@ -3777,6 +3806,7 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
         LogPrintf("ERROR: %s: forked chain older than max reorganization depth (height %d)\n", __func__, nHeight);
         return state.Invalid(BlockValidationResult::BLOCK_MAXREORGDEPTH, "bad-fork-prior-to-maxreorgdepth");
     }
+//<SIN
 
     // Check proof of work/proof-of-stake diff
     if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams, false)) {
@@ -4104,9 +4134,9 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
     const bool IsProofOfStake = block.IsProofOfStake();
 
     // only run PoS checks if we never saw this block
-    if ((!dbp && IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev)) ||
-        !CheckBlock(block, state, chainparams.GetConsensus()) ||
-        !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev)) {
+    if (!CheckBlock(block, state, chainparams.GetConsensus()) ||
+        !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev) ||
+        ((pindex->nHeight > 3000) && IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev))) {
         if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);

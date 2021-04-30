@@ -2023,23 +2023,7 @@ bool CInfinityNodeLockReward::CheckLockRewardRegisterInfo(std::string sLockRewar
                         return false;
                     }
                 }
-/*
-                int nScore;
-                if(!infnodeman.getNodeScoreAtHeight(sInfNode.getBurntxOutPoint(), nSINtypeCanLockReward, nRewardHeight - 101, nScore)) {
-                    LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- Can't calculate score signer Rank %d\n",signerIndexes[i]);
-                    free(signerIndexes);
-                    free(pubkeys);
-                    return false;
-                }
 
-                if(nScore > Params().GetConsensus().nInfinityNodeLockRewardTop){
-                    LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRegisterInfo -- signer Rank %d is not Top Node: %d(%d)\n",
-                                 signerIndexes[i], Params().GetConsensus().nInfinityNodeLockRewardTop, nScore);
-                    free(signerIndexes);
-                    free(pubkeys);
-                    return false;
-                }
-*/
                 {
                     std::string metaPublicKey = pubkeyMetaHisto;
                     std::vector<unsigned char> tx_data = DecodeBase64(metaPublicKey.c_str());
@@ -2454,7 +2438,19 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                     if (txout.scriptPubKey == burnfundScript){
                         LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, No Candiate found for SINtype: %d.\n", txIndex, SINType);
                         counterNodePayment ++;
+                    } else {
+                        //testnet condition
+                        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nBlockHeight < 11000) {
+                            LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, TESTNET condition: No Candiate found for SINtype: %d.\n", txIndex, SINType);
+                            counterNodePayment ++;
+                        }
                     }
+                } else if(fNodeAddressValid == false && fBurnRewardNode == false){
+                        //testnet condition
+                        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nBlockHeight < 11000) {
+                            LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, TESTNET condition: No Candiate found for SINtype: %d.\n", txIndex, SINType);
+                            counterNodePayment ++;
+                        }
                 }
             }
             int64_t nTime2;
