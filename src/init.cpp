@@ -295,6 +295,8 @@ void Shutdown(NodeContext& node)
 //>SIN
     if (node.chainman) {
         LOCK(cs_main);
+        LogPrintf("SINOVATE INFO:\n");
+        LogPrintf("Statement: %s\n", infnodeman.getLastStatementString());
         int nLastBlock = node.chainman->ActiveHeight();
         int nLowHeight = nLastBlock - Params().MaxReorganizationDepth();
         LogPrintf("Sinovate: scan blocks before close from: %d, to: %d\n", nLowHeight, nLastBlock);
