@@ -104,7 +104,7 @@ static bool fFeeEstimatesInitialized = false;
 static const bool DEFAULT_PROXYRANDOMIZE = true;
 static const bool DEFAULT_REST_ENABLE = false;
 static const bool DEFAULT_STOPAFTERBLOCKIMPORT = false;
-static const bool DEFAULT_STAKING = true;
+static const bool DEFAULT_STAKING = false;
 
 #ifdef WIN32
 // Win32 LevelDB doesn't use filedescriptors, and the ones used for
@@ -291,18 +291,6 @@ void Shutdown(NodeContext& node)
     // After there are no more peers/RPC left to give us new data which may generate
     // CValidationInterface callbacks, flush them...
     GetMainSignals().FlushBackgroundCallbacks();
-
-//>SIN
-    if (node.chainman) {
-        LOCK(cs_main);
-        int nLastBlock = node.chainman->ActiveHeight();
-        int nLowHeight = nLastBlock - Params().MaxReorganizationDepth();
-        LogPrintf("Sinovate: scan blocks before close from: %d, to: %d\n", nLowHeight, nLastBlock);
-        infnodeman.buildInfinitynodeList(nLowHeight, nLastBlock);
-        LogPrintf("SINOVATE INFO:\n");
-        LogPrintf("Statement: %s\n", infnodeman.getLastStatementString());
-    }
-//<SIN
 
     // Stop and delete all indexes only after flushing background callbacks.
     if (g_txindex) {
@@ -1347,7 +1335,7 @@ void ThreadCheckInfinityNode(CConnman& connman)
                 ENTER_CRITICAL_SECTION(cs_main);
                 //call buildInfinitynodeList and deterministicRewardStatement(nSINtype)
                 infnodeman.CheckAndRemove(connman);
-                inflockreward.CheckAndRemove(connman);
+                //inflockreward.CheckAndRemove();
                 LEAVE_CRITICAL_SECTION(cs_main);
             }
         }

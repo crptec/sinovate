@@ -126,3 +126,15 @@ bool CInfinitynodeLockInfo::ExtractLRFromBlock(const CBlock& block, CBlockIndex*
     }
     return true;
 }
+
+void CInfinitynodeLockInfo::RemoveCache(int nHeight)
+{
+    LOCK(cs);
+    for(auto it = vecLRInfo.begin(); it != vecLRInfo.end(); ){
+        if((*it).nBlockHeight <= (nHeight - LIMIT_LR_MEMORY)) {
+            it = vecLRInfo.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}

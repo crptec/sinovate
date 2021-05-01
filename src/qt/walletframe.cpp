@@ -176,6 +176,15 @@ void WalletFrame::gotoStatsPage()
 }
 //
 
+// StakePage
+void WalletFrame::gotoStakePage()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoStakePage();
+}
+//
+
 void WalletFrame::gotoSendCoinsPage(QString addr)
 {
     QMap<WalletModel*, WalletView*>::const_iterator i;
