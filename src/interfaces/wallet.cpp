@@ -361,6 +361,7 @@ public:
             result.unconfirmed_watch_only_balance = bal.m_watchonly_untrusted_pending;
             result.immature_watch_only_balance = bal.m_watchonly_immature;
         }
+        result.onchaindata_info = m_wallet->GetOnchainDataInfo();
         return result;
     }
     bool tryGetBalances(WalletBalances& balances, uint256& block_hash) override
@@ -483,6 +484,11 @@ public:
     {
         return MakeHandler(m_wallet->NotifyCanGetAddressesChanged.connect(fn));
     }
+    std::map<COutPoint, std::string> GetOnchainDataInfo() override
+    {
+        return m_wallet->GetOnchainDataInfo();
+    }
+
     CWallet* wallet() override { return m_wallet.get(); }
 
     std::shared_ptr<CWallet> m_wallet;
