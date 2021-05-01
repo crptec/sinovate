@@ -7,6 +7,9 @@
 
 #include <amount.h>
 
+// SIN
+#include <qt/infinitynodelist.h>
+
 #include <QStackedWidget>
 
 class ClientModel;
@@ -65,7 +68,11 @@ private:
     SendCoinsDialog *sendCoinsPage;
     AddressBookPage *usedSendingAddressesPage;
     AddressBookPage *usedReceivingAddressesPage;
-     // StatsPage
+
+    // SIN
+    InfinitynodeList *masternodeListPage;
+
+    // StatsPage
     StatsPage *statsWindow;
     //
     // StakePage
@@ -85,6 +92,8 @@ public Q_SLOTS:
     void gotoHistoryPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
+    /** Switch to masternode page */
+    void gotoMasternodePage();  // SIN
     /** Switch to stats page */
     void gotoStatsPage();
     /** Switch to stake page */

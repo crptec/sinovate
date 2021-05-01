@@ -66,6 +66,7 @@ public:
         SpendZeroConfChange,    // bool
         Listen,                 // bool
         Theme,                  // QString
+        ShowMasternodesTab,     // bool
         OptionIDRowCount,
     };
 
