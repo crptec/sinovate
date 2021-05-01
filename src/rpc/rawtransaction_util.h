@@ -7,6 +7,7 @@
 
 #include <map>
 #include <string>
+#include <script/script.h>
 
 class FillableSigningProvider;
 class UniValue;
@@ -38,5 +39,9 @@ void ParsePrevouts(const UniValue& prevTxsUnival, FillableSigningProvider* keyst
 
 /** Create a transaction from univalue parameters */
 CMutableTransaction ConstructTransaction(const UniValue& inputs_in, const UniValue& outputs_in, const UniValue& locktime, bool rbf);
+
+//>SIN
+CMutableTransaction ConstructTransactionWithScript(const UniValue& inputs_in, const CScript& scriptMeta);
+//<SIN
 
 #endif // BITCOIN_RPC_RAWTRANSACTION_UTIL_H

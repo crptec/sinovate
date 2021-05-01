@@ -137,6 +137,58 @@ CMutableTransaction ConstructTransaction(const UniValue& inputs_in, const UniVal
     return rawTx;
 }
 
+//>SIN
+CMutableTransaction ConstructTransactionWithScript(const UniValue& inputs_in, const CScript& scriptMeta)
+{
+    if (inputs_in.isNull())
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, argument must be non-null");
+
+    UniValue inputs = inputs_in.get_array();
+
+    if (inputs.size() > 1) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, pre-scripted transactions should only have one input");
+    }
+
+    CMutableTransaction rawTx;
+
+    for (unsigned int idx = 0; idx < inputs.size(); idx++) {
+        const UniValue& input = inputs[idx];
+        const UniValue& o = input.get_obj();
+
+        uint256 txid = ParseHashO(o, "txid");
+
+        const UniValue& vout_v = find_value(o, "vout");
+        if (!vout_v.isNum())
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, missing vout key");
+        int nOutput = vout_v.get_int();
+        if (nOutput < 0)
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, vout must be positive");
+
+        uint32_t nSequence = std::numeric_limits<uint32_t>::max();
+
+        // set the sequence number if passed in the parameters object
+        const UniValue& sequenceObj = find_value(o, "sequence");
+        if (sequenceObj.isNum()) {
+            int64_t seqNr64 = sequenceObj.get_int64();
+            if (seqNr64 < 0 || seqNr64 > std::numeric_limits<uint32_t>::max()) {
+                throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid parameter, sequence number is out of range");
+            } else {
+                nSequence = (uint32_t)seqNr64;
+            }
+        }
+
+        CTxIn in(COutPoint(txid, nOutput), CScript(), nSequence);
+
+        rawTx.vin.push_back(in);
+    }
+
+    CTxOut out(Params().GetConsensus().nInfinityNodeUpdateMeta * COIN, scriptMeta);
+    rawTx.vout.push_back(out);
+
+    return rawTx;
+}
+//<SIN
+
 /** Pushes a JSON object for script verification or signing errors to vErrorsRet. */
 static void TxInErrorToJSON(const CTxIn& txin, UniValue& vErrorsRet, const std::string& strMessage)
 {
