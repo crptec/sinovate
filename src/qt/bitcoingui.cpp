@@ -293,7 +293,6 @@ void BitcoinGUI::createActions()
 
 #ifdef ENABLE_WALLET
     // SIN
-/*
     QSettings settings;
     if (settings.value("fShowMasternodesTab").toBool()) {
         masternodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/stats", PlatformStyle::NavBar), tr(" &Infinity Nodes"), this);
@@ -309,7 +308,7 @@ void BitcoinGUI::createActions()
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
     }
-*/
+
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
     // can be triggered from the tray menu, and need to show the GUI to be useful.
     connect(overviewAction, &QAction::triggered, [this]{ showNormalIfMinimized(); });
@@ -608,12 +607,12 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(receiveCoinsAction);
 
         // SIN
-/*        QSettings settings;
+        QSettings settings;
         if (settings.value("fShowMasternodesTab").toBool())
         {
             toolbar->addAction(masternodeAction); //8
         }
-*/
+
         toolbar->addAction(statsPageAction);
         toolbar->addAction(historyAction);
         overviewAction->setChecked(true);
@@ -1004,13 +1003,11 @@ void BitcoinGUI::gotoHistoryPage()
 // SIN
 void BitcoinGUI::gotoMasternodePage()
 {
-    /*
     QSettings settings;
     if (settings.value("fShowMasternodesTab").toBool()) {
         masternodeAction->setChecked(true);
         if (walletFrame) walletFrame->gotoMasternodePage();
     }
-    */
 }
 void BitcoinGUI::gotoReceiveCoinsPage()
 {

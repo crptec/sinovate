@@ -202,12 +202,10 @@ void WalletView::gotoHistoryPage()
 // SIN
 void WalletView::gotoMasternodePage()
 {
-    /*
     QSettings settings;
     if (settings.value("fShowMasternodesTab").toBool()) {
         setCurrentWidget(masternodeListPage);
     }
-    */
 }
 
 // StatsPage

@@ -1055,9 +1055,6 @@ min-width: 270px;
                   <height>28</height>
                  </size>
                 </property>
-                <property name="styleSheet">
-                 <string notr="true"/>
-                </property>
                </widget>
               </item>
               <item row="2" column="3">
