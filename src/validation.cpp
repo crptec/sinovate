@@ -2435,6 +2435,8 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
                 return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cs-bad-infinity-node-reward");
             }
         }
+        LogPrintf("SINOVATE INFO:\n");
+        LogPrintf("Statement: %s\n", infnodeman.getLastStatementString());
     }
 //<SIN
     if (!control.Wait()) {

@@ -292,18 +292,6 @@ void Shutdown(NodeContext& node)
     // CValidationInterface callbacks, flush them...
     GetMainSignals().FlushBackgroundCallbacks();
 
-//>SIN
-    if (node.chainman) {
-        LOCK(cs_main);
-        int nLastBlock = node.chainman->ActiveHeight();
-        int nLowHeight = nLastBlock - Params().MaxReorganizationDepth();
-        LogPrintf("Sinovate: scan blocks before close from: %d, to: %d\n", nLowHeight, nLastBlock);
-        infnodeman.buildInfinitynodeList(nLowHeight, nLastBlock);
-        LogPrintf("SINOVATE INFO:\n");
-        LogPrintf("Statement: %s\n", infnodeman.getLastStatementString());
-    }
-//<SIN
-
     // Stop and delete all indexes only after flushing background callbacks.
     if (g_txindex) {
         g_txindex->Stop();
