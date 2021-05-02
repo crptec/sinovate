@@ -5,6 +5,8 @@
 #include <sinovate/rpc/infinitynode.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
+#include <rpc/rawtransaction_util.h>
+#include <core_io.h>
 
 
 static RPCHelpMan infinitynode()
@@ -687,15 +689,227 @@ static RPCHelpMan infinitynodeupdatemeta()
     };
 }
 
+
+/**
+ * @xtdevcoin co-authored by @giaki3003
+ * this function help user burn correctly their funds to run infinity node
+ * (giaki3003) from an array of inputs, without signing
+ */
+static RPCHelpMan infinitynodeburnfund_external()
+{
+    return RPCHelpMan{"infinitynodeburnfund_external",
+                "\nPrepare a burn transaction with the given inputs.\n"
+                "\nReturns JSON info or Null.\n",
+                {
+                    {"inputs", RPCArg::Type::ARR, RPCArg::Optional::NO, "Specify inputs, a json array of json objects",
+                        {
+                            {"txid", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "The transaction id"},
+                            {"vout", RPCArg::Type::NUM, RPCArg::Optional::NO, "The output number"},
+                            {"sequence", RPCArg::Type::NUM, RPCArg::Optional::NO, "The sequence number"},
+                        },
+                    },
+                    {"nodeowneraddress", RPCArg::Type::STR, RPCArg::Optional::NO, "Address of owner (will receive the reward)."},
+                    {"amount", RPCArg::Type::AMOUNT, RPCArg::Optional::NO, "The amount in " + CURRENCY_UNIT + " to create Node (Example: 100000). "},
+                    {"backupaddress", RPCArg::Type::STR, RPCArg::Optional::NO, "backup of owner address"},
+                },
+                RPCResult{
+                        RPCResult::Type::OBJ, "", "",
+                        {
+                            {RPCResult::Type::STR, "rawMetaTx", "raw transaction"},
+                            {RPCResult::Type::STR, "BURNADDRESS", "The BURNADDRESS of sinovate network"},
+                            {RPCResult::Type::STR_HEX, "BURNPUBLICKEY", "The public key of owner"},
+                            {RPCResult::Type::STR_HEX, "BURNSCRIPT", "The script of burn"},
+                            {RPCResult::Type::STR, "BACKUPADDRESS", "The BACKUPADDRESS of owner (use in next feature)"},
+                        },
+                },
+                RPCExamples{
+                    "\nBurn 1 Milion SIN coins to create BIG Infinitynode\n"
+                    + HelpExampleCli("infinitynodeburnfund_external", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\" NodeOwnerAddress 1000000 SINBackupAddress")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+
+    if(request.params[0].isNull()) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid inputs");
+    }
+    RPCTypeCheckArgument(request.params[0], UniValue::VARR);
+    UniValue inputs = request.params[0].get_array();
+
+    const std::string address = request.params[1].get_str();
+    CTxDestination NodeOwnerAddress = DecodeDestination(address);
+    if (!IsValidDestination(NodeOwnerAddress)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Sinovate address: ") + address);
+    }
+
+    CAmount nAmount = AmountFromValue(request.params[2]);
+    if (nAmount != Params().GetConsensus().nMasternodeBurnSINNODE_1 * COIN &&
+        nAmount != Params().GetConsensus().nMasternodeBurnSINNODE_5 * COIN &&
+        nAmount != Params().GetConsensus().nMasternodeBurnSINNODE_10 * COIN)
+    {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount to burn and run an InfinityNode");
+    }
+
+    const std::string addressbk = request.params[3].get_str();
+    CTxDestination BKaddress = DecodeDestination(addressbk);
+    if (!IsValidDestination(BKaddress))
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SIN address as SINBackupAddress");
+
+    UniValue results(UniValue::VOBJ);
+
+    // BurnAddress
+    CTxDestination dest = DecodeDestination(Params().GetConsensus().cBurnAddress);
+    CScript scriptPubKeyBurnAddress = GetScriptForDestination(dest);
+    std::vector<std::vector<unsigned char> > vSolutions;
+    TxoutType whichType = Solver(scriptPubKeyBurnAddress, vSolutions);
+    PKHash keyid = PKHash(uint160(vSolutions[0]));
+
+    CScript script;
+    script = GetScriptForBurn(keyid, request.params[3].get_str());
+
+    CMutableTransaction rawMetaTx = ConstructTransactionWithScript(request.params[0], script);
+
+    results.pushKV("rawMetaTx", EncodeHexTx(CTransaction(rawMetaTx)));
+    results.pushKV("BURNADDRESS", EncodeDestination(dest));
+    results.pushKV("BURNPUBLICKEY", HexStr(keyid));
+    results.pushKV("BURNSCRIPT", HexStr(scriptPubKeyBurnAddress));
+    results.pushKV("BACKUP_ADDRESS",EncodeDestination(BKaddress));
+
+    return results;
+},
+    };
+}
+
+static RPCHelpMan infinitynodeupdatemeta_external()
+{
+    return RPCHelpMan{"infinitynodeupdatemeta_external",
+                "\nPrepare a metadata update transaction with the given inputs.\n"
+                "\nReturns JSON info or Null.\n",
+                {
+                    {"inputs", RPCArg::Type::ARR, RPCArg::Optional::NO, "Specify inputs, a json array of json objects",
+                        {
+                            {"txid", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "The transaction id"},
+                            {"vout", RPCArg::Type::NUM, RPCArg::Optional::NO, "The output number"},
+                            {"sequence", RPCArg::Type::NUM, RPCArg::Optional::NO, "The sequence number"},
+                        },
+                    },
+                    {"nodeowneraddress", RPCArg::Type::STR, RPCArg::Optional::NO, "Address of owner which burnt funds (will receive the reward)."},
+                    {"publickey", RPCArg::Type::STR, RPCArg::Optional::NO, "Address of node (will receive the small reward)"},
+                    {"nodeip", RPCArg::Type::STR, RPCArg::Optional::NO, "Ip of node"},
+                    {"nodeid", RPCArg::Type::STR, RPCArg::Optional::NO, "First 16 characters of BurnTx (to create node)"},
+                },
+                RPCResult{
+                    RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::STR, "Update message", "(UpdateInfo) Update message"},
+                    },
+                },
+                RPCExamples{
+                    "\nBurn 25 SIN coins to update metadata of DIN\n"
+                    + HelpExampleCli("infinitynodeburnfund_external", "\"[{\\\"txid\\\":\\\"myid\\\",\\\"vout\\\":0}]\" nodeowneraddress  publickey nodeip nodeid")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    UniValue results(UniValue::VOBJ);
+
+    if(request.params[0].isNull()) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid inputs");
+    }
+    RPCTypeCheckArgument(request.params[0], UniValue::VARR);
+    UniValue inputs = request.params[0].get_array();
+
+    std::string strOwnerAddress = request.params[1].get_str();
+    CTxDestination INFAddress = DecodeDestination(strOwnerAddress);
+    if (!IsValidDestination(INFAddress)) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid OwnerAddress");
+    }
+
+    //limit data carrier, so we accept only 66 char
+    std::string nodePublickeyHexStr = "";
+    if(request.params[2].get_str().length() == 44){
+        nodePublickeyHexStr = request.params[2].get_str();
+    } else {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid node publickey");
+    }
+
+    std::string strService = request.params[3].get_str();
+    CService service;
+    if(Params().NetworkIDString() != CBaseChainParams::REGTEST) {
+        if (!Lookup(strService.c_str(), service, 0, false)){
+               throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid IP address");
+        }
+    }
+    CAddress addMeta = CAddress(service, NODE_NETWORK);
+
+    std::string burnfundTxID = "";
+    if(request.params[4].get_str().length() == 16){
+        burnfundTxID = request.params[4].get_str();
+    } else {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "node BurnFundTx ID is invalid. Please enter first 16 characters of BurnFundTx");
+    }
+
+    std::string metaID = strprintf("%s-%s", strOwnerAddress, burnfundTxID);
+    CMetadata myMeta = infnodemeta.Find(metaID);
+    int nCurrentHeight = ::ChainActive().Height();
+    if(myMeta.getMetadataHeight() > 0 && nCurrentHeight < myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2){
+        int nWait = myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2 - nCurrentHeight;
+        std::string strError = strprintf("Error: Please wait %d blocks and try to update again.", nWait);
+        throw JSONRPCError(RPC_TYPE_ERROR, strError);
+    }
+
+    //check ip and pubkey dont exist
+    if(Params().NetworkIDString() != CBaseChainParams::REGTEST) {
+        std::map<std::string, CMetadata> mapInfMetadata = infnodemeta.GetFullNodeMetadata();
+        for (auto& infmetapair : mapInfMetadata) {
+            CMetadata m = infmetapair.second;
+            CAddress add = CAddress(infmetapair.second.getService(), NODE_NETWORK);
+            //found metaID => check expire or not
+            if (m.getMetaID() != metaID && (m.getMetaPublicKey() == nodePublickeyHexStr || addMeta.ToStringIP() == add.ToStringIP())) {
+                std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
+                for (auto& infnodepair : mapInfinitynodes) {
+                    if (infnodepair.second.getMetaID() == m.getMetaID() && infnodepair.second.getExpireHeight() >= nCurrentHeight) {
+                        std::string strError = strprintf("Error: Pubkey or IP address already exist in network");
+                        throw JSONRPCError(RPC_TYPE_ERROR, strError);
+                    }
+                }
+            }
+        }
+    }
+
+    // cMetadataAddress
+    CTxDestination dest = DecodeDestination(Params().GetConsensus().cMetadataAddress);
+    CScript scriptPubKeyMetaAddress = GetScriptForDestination(dest);
+    std::vector<std::vector<unsigned char> > vSolutions;
+    TxoutType whichType = Solver(scriptPubKeyMetaAddress, vSolutions);
+    PKHash keyid = PKHash(uint160(vSolutions[0]));
+
+    std::ostringstream streamInfo;
+
+    streamInfo << nodePublickeyHexStr << ";" << strService << ";" << burnfundTxID;
+    std::string strInfo = streamInfo.str();
+    CScript script;
+    script = GetScriptForBurn(keyid, streamInfo.str());
+
+    CMutableTransaction rawMetaTx = ConstructTransactionWithScript(request.params[0], script);
+
+    results.pushKV("rawMetaTx", EncodeHexTx(CTransaction(rawMetaTx)));
+
+    return results;
+},
+    };
+}
+
+
 void RegisterInfinitynodeRPCCommands(CRPCTable &t)
 {
 // clang-format off
 static const CRPCCommand commands[] =
-{ //  category  name                      actor (function)                argNames
-  //  --------- ------------------------  -----------------------         ----------
-  { "SIN",      "infinitynode",           &infinitynode,                  {"strCommand", "strFilter", "strOption"} },
-  { "SIN",      "infinitynodeburnfund",   &infinitynodeburnfund,          {"nodeowneraddress", "amount", "backupaddress"} },
-  { "SIN",      "infinitynodeupdatemeta", &infinitynodeupdatemeta,        {"nodeowneraddress", "publickey", "nodeip", "nodeid"} },
+{ //  category  name                                actor (function)                  argNames
+  //  --------- ------------------------            -----------------------           ----------
+  { "SIN",      "infinitynode",                     &infinitynode,                    {"strCommand", "strFilter", "strOption"} },
+  { "SIN",      "infinitynodeburnfund",             &infinitynodeburnfund,            {"nodeowneraddress", "amount", "backupaddress"} },
+  { "SIN",      "infinitynodeupdatemeta",           &infinitynodeupdatemeta,          {"nodeowneraddress", "publickey", "nodeip", "nodeid"} },
+  { "SIN",      "infinitynodeburnfund_external",    &infinitynodeburnfund_external,   {"inputs", "nodeowneraddress", "amount", "backupaddress"} },
+  { "SIN",      "infinitynodeupdatemeta_external",  &infinitynodeupdatemeta_external, {"inputs", "nodeowneraddress", "publickey", "nodeip", "nodeid"} },
 };
 // clang-format on
     for (const auto& c : commands) {
