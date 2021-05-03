@@ -528,6 +528,107 @@ static RPCHelpMan sendtoaddress()
     };
 }
 
+
+//>SIN
+static RPCHelpMan sendwithlockedtoaddress()
+{
+    return RPCHelpMan{"sendwithlockedtoaddress",
+                "\nSend an amount to a given address with timelock condition." +
+        HELP_REQUIRING_PASSPHRASE,
+                {
+                    {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The Sinovate address to send to."},
+                    {"amount", RPCArg::Type::AMOUNT, RPCArg::Optional::NO, "The amount in " + CURRENCY_UNIT + " to send. eg 0.1"},
+                    {"nblocklock", RPCArg::Type::NUM, RPCArg::Optional::NO, "The number of blocks (from current height) when the coins will be locked."},
+                    {"comment", RPCArg::Type::STR, RPCArg::Optional::OMITTED_NAMED_ARG, "A comment used to store what the transaction is for.\n"
+                                         "This is not part of the transaction, just kept in your wallet."},
+                    {"comment_to", RPCArg::Type::STR, RPCArg::Optional::OMITTED_NAMED_ARG, "A comment to store the name of the person or organization\n"
+                                         "to which you're sending the transaction. This is not part of the \n"
+                                         "transaction, just kept in your wallet."},
+                    {"subtractfeefromamount", RPCArg::Type::BOOL, "false", "The fee will be deducted from the amount being sent.\n"
+                                         "The recipient will receive less bitcoins than you enter in the amount field."},
+                },
+                {
+                    RPCResult{
+                        RPCResult::Type::STR_HEX, "txid", "The transaction id."
+                    },
+                },
+                RPCExamples{
+                    "\nSend 5 SIN with lock 720 blocks\n"
+                    + HelpExampleCli("sendwithlockedtoaddress", "\"SV74ZZ937YqRGQjYR5WaAYyyDXqjakFMfA\" 5 720")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    UniValue results(UniValue::VOBJ);
+
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    if (!wallet) return NullUniValue;
+    CWallet* const pwallet = wallet.get();
+
+    // Make sure the results are valid at least up to the most recent block
+    // the user could have gotten from another RPC command prior to now
+    pwallet->BlockUntilSyncedToCurrentChain();
+
+    LOCK(pwallet->cs_wallet);
+
+    // Wallet comments
+    mapValue_t mapValue;
+    if (!request.params[3].isNull() && !request.params[3].get_str().empty())
+        mapValue["comment"] = request.params[3].get_str();
+    if (!request.params[4].isNull() && !request.params[4].get_str().empty())
+        mapValue["to"] = request.params[4].get_str();
+
+    bool fSubtractFeeFromAmount = false;
+    if (!request.params[5].isNull()) {
+        fSubtractFeeFromAmount = request.params[5].get_bool();
+    }
+
+    CTxDestination address = DecodeDestination(request.params[0].get_str());
+    if (!IsValidDestination(address))
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SIN address");
+
+    // Amount
+    CAmount nAmount = AmountFromValue(request.params[1]);
+
+    // Term Deposit
+    int nBlockLocked=0;
+    nBlockLocked = atoi(request.params[2].get_str());
+    if (nBlockLocked < 5)
+       throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid lock time (inf 5 blocks)");
+
+    // Parse SIN address
+    CScript scriptPubKey;
+    if (nBlockLocked == 0)
+      scriptPubKey = GetScriptForDestination(address);
+    else{
+        scriptPubKey = GetTimeLockScriptForDestination(address, pwallet->GetLastBlockHeight()+1+nBlockLocked);
+    }
+    std::vector<CRecipient> vecSend;
+    CRecipient recipient = {scriptPubKey, nAmount, fSubtractFeeFromAmount};
+    vecSend.push_back(recipient);
+
+    CAmount nFeeRequired;
+    FeeCalculation fee_calc_out;
+    int nChangePosRet = -1;
+    bilingual_str strErrorRet;
+    CCoinControl coin_control;
+
+    CTransactionRef tx;
+    bool fCreated = pwallet->CreateTransaction(vecSend, tx, nFeeRequired, nChangePosRet, strErrorRet, coin_control, fee_calc_out, !pwallet->IsWalletFlagSet(WALLET_FLAG_DISABLE_PRIVATE_KEYS));
+    if (!fCreated) {
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, strErrorRet.original);
+    }
+
+    pwallet->CommitTransaction(tx, std::move(mapValue), {} /* orderForm */);
+
+    results.pushKV("txid",tx->GetHash().GetHex());
+
+    return results;
+},
+    };
+}
+//<SIN
+
+
 static RPCHelpMan listaddressgroupings()
 {
     return RPCHelpMan{"listaddressgroupings",
@@ -4603,6 +4704,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "send",                             &send,                          {"outputs","conf_target","estimate_mode","fee_rate","options"} },
     { "wallet",             "sendmany",                         &sendmany,                      {"dummy","amounts","minconf","comment","subtractfeefrom","replaceable","conf_target","estimate_mode","fee_rate","verbose"} },
     { "wallet",             "sendtoaddress",                    &sendtoaddress,                 {"address","amount","comment","comment_to","subtractfeefromamount","replaceable","conf_target","estimate_mode","avoid_reuse","fee_rate","verbose"} },
+    { "wallet",             "sendwithlockedtoaddress",          &sendwithlockedtoaddress,       {"address", "amount", "nblocklock", "comment", "comment_to", "subtractfeefromamount"} },
     { "wallet",             "sethdseed",                        &sethdseed,                     {"newkeypool","seed"} },
     { "wallet",             "setlabel",                         &setlabel,                      {"address","label"} },
     { "wallet",             "settxfee",                         &settxfee,                      {"amount"} },
