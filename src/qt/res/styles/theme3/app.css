@@ -1310,7 +1310,7 @@ QWidget#toolBoxWidget .QToolButton {
     }
 
     /*infinityNodes Page*/
-MasternodeList .QLabel {
+    InfinitynodeList .QLabel {
     color: #6f80ab;
   }
   

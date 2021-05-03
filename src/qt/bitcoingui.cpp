@@ -304,15 +304,11 @@ void BitcoinGUI::createActions()
     // SIN
     QSettings settings;
     if (settings.value("fShowMasternodesTab").toBool()) {
-        masternodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/stats", PlatformStyle::NavBar), tr(" &Infinity Nodes"), this);
+        masternodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::NavBar), tr(" &Infinity Nodes"), this);
         masternodeAction->setStatusTip(tr("Browse Infinitynodes"));
         masternodeAction->setToolTip(masternodeAction->statusTip());
         masternodeAction->setCheckable(true);
-#ifdef Q_OS_MAC
         masternodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_5));
-#else
-        masternodeAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
-#endif
         tabGroup->addAction(masternodeAction);
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
         connect(masternodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
@@ -678,9 +674,9 @@ void BitcoinGUI::createToolBars()
         QHBoxLayout *bottomBarLayout = new QHBoxLayout;
 
          bottomBarLayout->addWidget(bottomOptionButton);
-        //if (settings.value("fShowMasternodesTab").toBool()) { 
+        if (settings.value("fShowMasternodesTab").toBool()) { 
         bottomBarLayout->addWidget(bottomSetupButton);
-        //}
+        }
         bottomBarLayout->addWidget(bottomConsoleButton);
                 
         bottomOptionButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/options",PlatformStyle::NavBar));
@@ -702,7 +698,7 @@ void BitcoinGUI::createToolBars()
         toolbar->addWidget(bottomBar);
 
         connect(bottomOptionButton, SIGNAL(released()), this, SLOT(optionsClicked()));
-        //connect(bottomSetupButton, SIGNAL(released()), this, SLOT(gotoSetupTab()));
+        connect(bottomSetupButton, SIGNAL(released()), this, SLOT(gotoSetupTab()));
         connect(bottomConsoleButton, SIGNAL (released()), this, SLOT (showDebugWindowActivateConsole()));
     
         //// bottomBar end ////

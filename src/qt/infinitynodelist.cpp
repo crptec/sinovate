@@ -13,6 +13,7 @@
 #include <qt/clientmodel.h>
 #include <qt/optionsmodel.h>
 #include <qt/guiutil.h>
+#include <qt/styleSheet.h>
 #include <init.h>
 #include <key_io.h>
 #include <core_io.h>
@@ -135,9 +136,6 @@ LogPrintf("infinitynodelist: load motd\n");
  
  ///// ---------- motd
 
-    ui->btnSetup->setIcon(QIcon(":/icons/setup"));
-    ui->btnSetup->setIconSize(QSize(177, 26));
-    
     ui->dinTable->setContextMenuPolicy(Qt::CustomContextMenu);
 
     mCheckNodeAction = new QAction(tr("Check node status"), this);
@@ -658,7 +656,7 @@ void InfinitynodeList::on_btnSetup_clicked()
 
     // check for chain synced...
     if ( false /* TODO  !masternodeSync.IsBlockchainSynced() */)    {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText("Chain is out-of-sync. Please wait until it's fully synced.");
         return;
     }
@@ -666,7 +664,7 @@ void InfinitynodeList::on_btnSetup_clicked()
     // check again in case they changed the tier...
     nodeSetupCleanProgress();
     if ( !nodeSetupCheckFunds() )   {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText("You didn't pass the funds check. Please review.");
         return;
     }
@@ -695,7 +693,7 @@ void InfinitynodeList::on_btnSetup_clicked()
         strStatus = nodeSetupCheckInvoiceStatus();
     }
     else    {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText(strError);
     }
 }
@@ -714,7 +712,7 @@ void InfinitynodeList::on_payButton_clicked()
         //LogPrintf("nodeSetupCheckPendingPayments nodeSetupAPIGetInvoice %s, %d \n", strStatus.toStdString(), invoiceToPay );
 
         if ( !res )   {
-            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
             ui->labelMessage->setText(strError);
             return;
         }
@@ -802,7 +800,7 @@ QString InfinitynodeList::nodeSetupGetNewAddress()    {
     }
     catch ( std::runtime_error e)
     {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( QString::fromStdString( "ERROR getnewaddress: unexpected error " ) + QString::fromStdString( e.what() ));
     }
 
@@ -834,7 +832,7 @@ QString InfinitynodeList::nodeSetupSendToAddress( QString strAddress, int amount
     }
     catch ( std::runtime_error e)
     {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( QString::fromStdString( "ERROR sendtoaddress: unexpected error " ) + QString::fromStdString( e.what() ));
     }
 
@@ -866,7 +864,7 @@ UniValue InfinitynodeList::nodeSetupGetTxInfo( QString txHash, std::string attri
     }
     catch ( std::runtime_error e)
     {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( QString::fromStdString( "ERROR gettransaction: unexpected error " ) + QString::fromStdString( e.what() ));
     }
 
@@ -917,7 +915,7 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
                 mPaymentTx = nodeSetupSendToAddress( paymentAddress, invoiceAmount, invoiceTimer );
             }
             else   {
-                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
                 ui->labelMessage->setText( "Unlocking wallet is required to make the payments." );
                 return "cancelled";
             }
@@ -984,7 +982,7 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
             }
 
             if ( mBurnPrepareTx=="" )  {
-               ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+               ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
                ui->labelMessage->setText( "ERROR: failed to prepare burn transaction." );
             }
             nodeSetupStep( "setupWait", "Preparing burn transaction");
@@ -1026,16 +1024,16 @@ LogPrintf("nodeSetupGetOwnerAddressFromBurnTx vout=%d, address %s \n", vOutN, ad
             }
         }
         else {
-            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
             ui->labelMessage->setText( "Error calling RPC getrawtransaction");
         }
     } catch (UniValue& objError ) {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( "Error RPC obtaining owner address");
     }
     catch ( std::runtime_error e)
     {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( QString::fromStdString( "ERROR get owner address: unexpected error " ) + QString::fromStdString( e.what() ));
     }
     return address;
@@ -1062,7 +1060,7 @@ void InfinitynodeList::nodeSetupCheckBurnPrepareConfirmations()   {
             }
         }
         else    {
-            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
             ui->labelMessage->setText( "ERROR: failed to create burn transaction." );
         }
     }
@@ -1119,14 +1117,14 @@ LogPrintf("[nodeSetup] infinitynodeupdatemeta SUCCESS \n" );
             }
             catch ( std::runtime_error e)
             {
-                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
                 ui->labelMessage->setText( QString::fromStdString( "ERROR infinitynodeupdatemeta: unexpected error " ) + QString::fromStdString( e.what() ));
                 nodeSetupStep( "setupKo", "Node setup failed");
             }
         }
         else    {
             LogPrintf("infinitynodeupdatemeta Error while obtaining node info \n");
-            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
             ui->labelMessage->setText( "ERROR: infinitynodeupdatemeta " );
             nodeSetupStep( "setupKo", "Node setup failed");
         }
@@ -1170,12 +1168,12 @@ QString InfinitynodeList::nodeSetupRPCBurnFund( QString collateralAddress, CAmou
     }
     catch (const UniValue& objError)
     {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( QString::fromStdString(find_value(objError, "message").get_str()) );
     }
     catch ( std::runtime_error e)
     {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( QString::fromStdString( "ERROR infinitynodeburnfund: unexpected error " ) + QString::fromStdString( e.what() ));
     }
     return burnTx;
@@ -1194,7 +1192,7 @@ void InfinitynodeList::on_btnLogin_clicked()
 
     int clientId = nodeSetupAPIAddClient( "", "", ui->txtEmail->text(), ui->txtPassword->text(), strError );
     if ( strError != "" )  {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( strError );
     }
 
@@ -1306,9 +1304,7 @@ void InfinitynodeList::nodeSetupEnableOrderUI( bool bEnable, int orderID , int i
         ui->labelOrder->setVisible(true);
         ui->labelOrderID->setVisible(true);
         ui->labelOrderID->setText(QString::fromStdString("#")+QString::number(orderID));
-        ui->btnSetup->setIcon(QIcon(":/icons/setup_con"));
-        ui->btnSetup->setIconSize(QSize(200, 32));
-        ui->btnSetup->setText(QString::fromStdString(""));
+        ui->btnSetup->setText(QString::fromStdString("Continue setUP"));
         ui->labelInvoice->setVisible(true);
         ui->labelInvoiceID->setVisible(true);
         ui->labelInvoiceID->setText(QString::fromStdString("#")+QString::number(mInvoiceid));
@@ -1346,9 +1342,7 @@ void InfinitynodeList::nodeSetupResetOrderId( )   {
     nodeSetupSetOrderId( 0, 0, "");
     ui->btnSetupReset->setEnabled(false);
     ui->btnSetup->setEnabled(true);
-    ui->btnSetup->setIcon(QIcon(":/icons/setup"));
-    ui->btnSetup->setIconSize(QSize(200, 32));
-    ui->btnSetup->setText(QString::fromStdString(""));
+    ui->btnSetup->setText(QString::fromStdString("1-click setUP"));
     ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: #BC8F3A;}");
     ui->labelMessage->setText("Select a node Tier and then follow below steps for setup.");
     mOrderid = mInvoiceid = mServiceId = 0;
@@ -2118,6 +2112,10 @@ void InfinitynodeList::loadMotd()
         motd_request->setUrl(QUrl("https://setup.sinovate.io/motd.php"));
     
     motd_networkManager->get(*motd_request);
+}
+
+void InfinitynodeList::on_setupSinovateButton_clicked() {
+    QDesktopServices::openUrl(QUrl("https://setup.sinovate.io/", QUrl::TolerantMode));
 }
 // --
 
