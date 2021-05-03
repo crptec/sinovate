@@ -31,7 +31,6 @@
 #include <QInputDialog>
 #include <QTimer>
 #include <QMessageBox>
-#include <QStyleFactory>
 #include <QDesktopServices>
 #include <QTextCodec>
 #include <QSignalMapper>
@@ -888,7 +887,6 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
     }
 
     if ( strStatus == "Unpaid" )  {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: #BC8F3A;}");
         ui->labelMessage->setText(QString::fromStdString(strprintf("Invoice amount %f SIN", invoiceAmount)));
         if ( mPaymentTx != "" ) {   // already paid, waiting confirmations
             nodeSetupStep( "setupWait", "Invoice paid, waiting for confirmation");
@@ -906,7 +904,6 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
                 invoiceTimer->stop();
                 ui->btnSetup->setEnabled(true);
                 ui->btnSetupReset->setEnabled(true);
-                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: #BC8F3A;}");
                 ui->labelMessage->setText( "Press Reset Order button to cancel node setup process, or Continue setUP button to resume." );
                 return "cancelled";
             }
@@ -930,7 +927,6 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
                 }
 
                 nodeSetupSetPaymentTx(mPaymentTx);
-                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: #BC8F3A;}");
                 ui->labelMessage->setText( "Payment finished, please wait until platform confirms payment to proceed to node creation." );
                 ui->btnSetup->setEnabled(false);
                 ui->btnSetupReset->setEnabled(false);
@@ -943,7 +939,6 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
 
     if ( strStatus == "Paid" )  {           // launch node setup (RPC)
         if (invoiceAmount==0)   {
-            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: #BC8F3A;}");
             ui->labelMessage->setText(QString::fromStdString("Invoice paid with balance"));
         }
 
@@ -1244,17 +1239,6 @@ void InfinitynodeList::nodeSetupInitialize()   {
     }
     ui->comboBilling->setCurrentIndex(2);
 
-#if defined(Q_OS_WIN)
-#else
-    ui->payButton->setStyleSheet("font-size: 16px");
-    ui->comboBilling->setStyle(QStyleFactory::create("Windows"));
-    ui->comboInvoice->setStyle(QStyleFactory::create("Windows"));
-    ui->comboBurnTx->setStyle(QStyleFactory::create("Windows"));
-
-    ui->comboStatus->setStyle(QStyleFactory::create("Windows"));
-    ui->comboTier->setStyle(QStyleFactory::create("Windows"));
-#endif
-
     // buttons
     ui->btnSetup->setEnabled(false);
 
@@ -1281,7 +1265,6 @@ void InfinitynodeList::nodeSetupInitialize()   {
 
     mOrderid = nodeSetupGetOrderId( mInvoiceid, mProductIds );
     if ( mOrderid > 0 )    {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: #BC8F3A;}");
         ui->labelMessage->setText(QString::fromStdString(strprintf("There is an order ongoing (#%d). Press 'Continue' or 'Reset' order.", mOrderid)));
         nodeSetupEnableOrderUI(true, mOrderid, mInvoiceid);
         mPaymentTx = nodeSetupGetPaymentTx();
@@ -1333,7 +1316,6 @@ void InfinitynodeList::nodeSetupResetClientId( )  {
     ui->btnSetup->setEnabled(false);
     mClientid = 0;
     nodeSetupResetOrderId();
-    ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: #BC8F3A;}");
     ui->labelMessage->setText("Enter your client data and create a new user or login an existing one.");
 }
 
@@ -1343,7 +1325,6 @@ void InfinitynodeList::nodeSetupResetOrderId( )   {
     ui->btnSetupReset->setEnabled(false);
     ui->btnSetup->setEnabled(true);
     ui->btnSetup->setText(QString::fromStdString("1-click setUP"));
-    ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: #BC8F3A;}");
     ui->labelMessage->setText("Select a node Tier and then follow below steps for setup.");
     mOrderid = mInvoiceid = mServiceId = 0;
     mPaymentTx = "";
@@ -1358,7 +1339,6 @@ void InfinitynodeList::nodeSetupEnableClientId( int clientId )  {
     ui->setupButtons->show();
     ui->labelClientIdValue->show();
     ui->labelClientId->setText("#"+QString::number(clientId));
-    ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: #BC8F3A;}");
     ui->labelMessage->setText("Select a node Tier and press '1-Click setUP' to verify if you meet the prerequisites");
     mClientid = clientId;
     ui->btnRestore->setText("Support");
