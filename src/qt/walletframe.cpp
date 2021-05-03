@@ -213,6 +213,14 @@ void WalletFrame::gotoVerifyMessageTab(QString addr)
         walletView->gotoVerifyMessageTab(addr);
 }
 
+void WalletFrame::gotoSetupTab()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoSetupTab();
+
+}
+
 void WalletFrame::gotoLoadPSBT(bool from_clipboard)
 {
     WalletView *walletView = currentWalletView();

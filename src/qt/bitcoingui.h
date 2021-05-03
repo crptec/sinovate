@@ -296,6 +296,9 @@ public Q_SLOTS:
     // SIN
     /** Switch to masternode page */
     void gotoMasternodePage();
+    //** Switch to setUP tab */
+    void gotoSetupTab();
+    //
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");

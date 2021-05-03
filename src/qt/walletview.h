@@ -100,6 +100,10 @@ public Q_SLOTS:
     void gotoStakePage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
+     // setUP
+    /** Switch to setUP Tab */
+    void gotoSetupTab();
+    //
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");

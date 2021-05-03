@@ -250,6 +250,14 @@ void WalletView::gotoSignMessageTab(QString addr)
         signVerifyMessageDialog->setAddress_SM(addr);
 }
 
+void WalletView::gotoSetupTab()
+{
+    // calls show() in showTab_setUP()
+    setCurrentWidget(masternodeListPage);
+    masternodeListPage->showTab_setUP(true);
+
+}
+
 void WalletView::gotoVerifyMessageTab(QString addr)
 {
     // calls show() in showTab_VM()
