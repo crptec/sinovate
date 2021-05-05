@@ -28,9 +28,6 @@ void CInfinitynodeTip::UpdatedBlockTip(const CBlockIndex *pindexNew, bool fIniti
 
     fReachedBestHeader = fReachedBestHeaderNew;
 
-    LogPrintf("CInfinitynodeTip::UpdatedBlockTip -- pindexNew->nHeight: %d pindexBestHeader->nHeight: %d fInitialDownload=%d fReachedBestHeader=%d\n",
-                pindexNew->nHeight, pindexBestHeader->nHeight, fInitialDownload, fReachedBestHeader);
-
     if (fReachedBestHeader) {
         infnodeman.setSyncStatus(true);
         // We must be at the tip already

@@ -54,6 +54,7 @@
 #include <sinovate/infinitynodepeer.h>
 #include <sinovate/infinitynodemeta.h>
 #include <sinovate/infinitynodelockreward.h>
+#include <sinovate/infvalidationinterface.h>
 #include <sinovate/flat-database.h>
 #include <sinovate/messagesigner.h>
 //<SIN
@@ -329,6 +330,13 @@ void Shutdown(NodeContext& node)
     flatdb3.Dump(infnodemeta);
     CFlatDB<CInfinitynodeLockInfo> flatdb4("infinitynodelockinfo.dat", "magicInfinityLockInfo");
     flatdb4.Dump(infnodelrinfo);
+
+    if(g_inf_validation_interface->registerStatus()){
+        LogPrintf("Unregister Validation Interface for DIN system\n");
+        UnregisterValidationInterface(g_inf_validation_interface);
+        delete g_inf_validation_interface;
+        g_inf_validation_interface = NULL;
+    }
 //<SIN
 
 #if ENABLE_ZMQ
@@ -1653,8 +1661,16 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
         return false;
     }
 
-    LogPrintf("SINOVATE INFO:\n");
-    LogPrintf("Statement: %s\n", infnodeman.getLastStatementString());
+    LogPrintf("INIT SINOVATE INFO:\n");
+    LogPrintf("Statement at height: %s\n", infnodeman.getLastStatementString());
+
+    g_inf_validation_interface = new InfValidationInterface(*node.connman);
+    RegisterValidationInterface(g_inf_validation_interface);
+    if(g_inf_validation_interface->registerStatus()){
+        LogPrintf("Registered Validation Interface for DIN system.\n");
+    } else {
+        LogPrintf("false to Register Validation Interface for DIN system.\n");
+    }
 //<SIN
     fReindex = args.GetBoolArg("-reindex", false);
     bool fReindexChainState = args.GetBoolArg("-reindex-chainstate", false);
@@ -2038,7 +2054,6 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
     }
 //>SIN
     // ********************************************************* Step 11.1: start sinovate threads
-    //threadGroup.create_thread(boost::bind(&ThreadCheckInfinityNode, boost::ref(node.connman)));
     std::thread t(ThreadCheckInfinityNode, boost::ref(*node.connman));
     t.detach();
 //<SIN
