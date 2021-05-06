@@ -3,11 +3,11 @@
 *.exe
 *.pdb
 src/bitcoin
-src/bitcoind
-src/bitcoin-cli
+src/sind
+src/sin-cli
 src/bitcoin-gui
 src/bitcoin-node
-src/bitcoin-tx
+src/sin-tx
 src/bitcoin-wallet
 src/test/fuzz/*
 !src/test/fuzz/*.*
@@ -92,7 +92,7 @@ src/qt/bitcoin-qt.includes
 *.qm
 Makefile
 !depends/Makefile
-src/qt/bitcoin-qt
+src/qt/sin-qt
 Bitcoin-Qt.app
 background.tiff*
 
