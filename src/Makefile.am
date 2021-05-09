@@ -662,7 +662,7 @@ sin_bin_cxxflags = $(AM_CXXFLAGS) $(PIE_FLAGS)
 sin_bin_ldflags = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-sin_daemon_sources += sind-res.rc
+sin_daemon_sources += bitcoind-res.rc
 endif
 
 sin_bin_ldadd = \
@@ -699,7 +699,7 @@ sin_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 sin_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-sin_cli_SOURCES += sin-cli-res.rc
+sin_cli_SOURCES += bitcoin-cli-res.rc
 endif
 
 sin_cli_LDADD = \
@@ -718,7 +718,7 @@ sin_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 sin_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS) $(PTHREAD_FLAGS)
 
 if TARGET_WINDOWS
-sin_tx_SOURCES += sin-tx-res.rc
+sin_tx_SOURCES += bitcoin-tx-res.rc
 endif
 
 sin_tx_LDADD = \
