@@ -311,7 +311,7 @@ void BitcoinGUI::createActions()
         infinitynodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_5));
         tabGroup->addAction(infinitynodeAction);
         connect(infinitynodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-        connect(infinitynodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
+        connect(infinitynodeAction, SIGNAL(triggered()), this, SLOT(gotoInfinitynodePage()));
     }
 
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
