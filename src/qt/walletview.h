@@ -71,7 +71,7 @@ private:
     AddressBookPage *usedReceivingAddressesPage;
 
     // SIN
-    InfinitynodeList *masternodeListPage;
+    InfinitynodeList *infinitynodeListPage;
 
     // StatsPage
     StatsPage *statsWindow;
@@ -94,8 +94,8 @@ public Q_SLOTS:
     void gotoHistoryPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
-    /** Switch to masternode page */
-    void gotoMasternodePage();  // SIN
+    /** Switch to infinitynode page */
+    void gotoInfinitynodePage();  // SIN
     /** Switch to stats page */
     void gotoStatsPage();
     /** Switch to stake page */

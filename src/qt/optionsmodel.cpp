@@ -55,8 +55,8 @@ void OptionsModel::Init(bool resetSettings)
     // These are Qt-only settings:
 
     //InfinityNode Tab Set default Enable
-    if (!settings.contains("fShowMasternodesTab"))
-        settings.setValue("fShowMasternodesTab", true);
+    if (!settings.contains("fShowInfinitynodeTab"))
+        settings.setValue("fShowInfinitynodeTab", true);
 
     // Window
     if (!settings.contains("fHideTrayIcon"))
@@ -315,7 +315,7 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
         case SpendZeroConfChange:
             return settings.value("bSpendZeroConfChange");
         case ShowMasternodesTab:
-            return settings.value("fShowMasternodesTab");
+            return settings.value("fShowInfinitynodeTab");
 #endif
         case DisplayUnit:
             return nDisplayUnit;
@@ -436,8 +436,8 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
 // SIN
             /*
         case ShowMasternodesTab:
-            if (settings.value("fShowMasternodesTab") != value) {
-                settings.setValue("fShowMasternodesTab", value);
+            if (settings.value("fShowInfinitynodeTab") != value) {
+                settings.setValue("fShowInfinitynodeTab", value);
                 setRestartRequired(true);
             }
             break;

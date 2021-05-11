@@ -76,9 +76,9 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     // SIN
 
     QSettings settings;
-    if (settings.value("fShowMasternodesTab").toBool()) {
-        masternodeListPage = new InfinitynodeList(platformStyle);
-        addWidget(masternodeListPage);
+    if (settings.value("fShowInfinitynodeTab").toBool()) {
+        infinitynodeListPage = new InfinitynodeList(platformStyle);
+        addWidget(infinitynodeListPage);
     }
 
      //StatsPage
@@ -127,13 +127,9 @@ void WalletView::setClientModel(ClientModel *_clientModel)
     sendCoinsPage->setClientModel(_clientModel);
     if (walletModel) walletModel->setClientModel(_clientModel);
 
-    // SIN
-    /*
-    QSettings settings;
-    if (settings.value("fShowMasternodesTab").toBool()) {
-        masternodeListPage->setClientModel(clientModel);
-    }
-    */
+    //>SIN
+    infinitynodeListPage->setClientModel(clientModel);
+    //<SIN
 }
 
 void WalletView::setWalletModel(WalletModel *_walletModel)
@@ -144,13 +140,10 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     transactionView->setModel(_walletModel);
     overviewPage->setWalletModel(_walletModel);
 
-    // SIN
-    /*
-    QSettings settings;
-    if (settings.value("fShowMasternodesTab").toBool()) {
-        masternodeListPage->setWalletModel(walletModel);
-    }
-*/
+    //<SIN
+    infinitynodeListPage->setWalletModel(_walletModel);
+    //>SIN
+
     receiveCoinsPage->setModel(_walletModel);
     sendCoinsPage->setModel(_walletModel);
     usedReceivingAddressesPage->setModel(_walletModel ? _walletModel->getAddressTableModel() : nullptr);
@@ -210,11 +203,11 @@ void WalletView::gotoHistoryPage()
 }
 
 // SIN
-void WalletView::gotoMasternodePage()
+void WalletView::gotoInfinitynodePage()
 {
     QSettings settings;
-    if (settings.value("fShowMasternodesTab").toBool()) {
-        setCurrentWidget(masternodeListPage);
+    if (settings.value("fShowInfinitynodeTab").toBool()) {
+        setCurrentWidget(infinitynodeListPage);
     }
 }
 
@@ -265,8 +258,8 @@ void WalletView::gotoSignMessageTab(QString addr)
 void WalletView::gotoSetupTab()
 {
     // calls show() in showTab_setUP()
-    setCurrentWidget(masternodeListPage);
-    masternodeListPage->showTab_setUP(true);
+    setCurrentWidget(infinitynodeListPage);
+    infinitynodeListPage->showTab_setUP(true);
 
 }
 

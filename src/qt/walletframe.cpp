@@ -161,11 +161,11 @@ void WalletFrame::gotoHistoryPage()
         i.value()->gotoHistoryPage();
 }
 
-void WalletFrame::gotoMasternodePage()
+void WalletFrame::gotoInfinitynodePage()
 {
     QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoMasternodePage();
+        i.value()->gotoInfinitynodePage();
 }
 
 void WalletFrame::gotoReceiveCoinsPage()
