@@ -86,7 +86,12 @@ bool CInfinitynodeMeta::Add(CMetadata &meta)
                         CAddress add = CAddress(infpair.second.getService(), NODE_NETWORK);
 
                         if (m.getMetaID() != meta.getMetaID() && (m.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == add.ToStringIP())) {
-                            fCheckExistant = true;
+                            std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
+                            for (auto& infnodepair : mapInfinitynodes) {
+                                if (infnodepair.second.getMetaID() == meta.getMetaID() && infnodepair.second.getExpireHeight() >= meta.getMetadataHeight()) {
+                                    fCheckExistant = true;
+                                }
+                            }
                         }
                     }
                 }
