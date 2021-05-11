@@ -6,9 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>776</width>
-    <height>396</height>
+    <width>860</width>
+    <height>510</height>
    </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Request payment</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
    <item>
@@ -357,15 +360,15 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>SinPushButton</class>
+   <extends>QPushButton</extends>
+   <header>qt/sinpushbutton.h</header>
+  </customwidget>
+  <customwidget>
    <class>BitcoinAmountField</class>
    <extends>QLineEdit</extends>
    <header>qt/bitcoinamountfield.h</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SinPushButton</class>
-   <extends>QPushButton</extends>
-   <header>qt/sinpushbutton.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>

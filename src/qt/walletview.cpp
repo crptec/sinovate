@@ -18,6 +18,7 @@
 #include <qt/transactiontablemodel.h>
 #include <qt/transactionview.h>
 #include <qt/walletmodel.h>
+#include <qt/walletframe.h>
 #include "statspage.h"
 #include "stakepage.h"
 
@@ -36,12 +37,14 @@
 #include <QPushButton>
 #include <QSettings>
 #include <QVBoxLayout>
+#include <qt/sinpushbutton.h>
 
 WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     QStackedWidget(parent),
     clientModel(nullptr),
     walletModel(nullptr),
-    platformStyle(_platformStyle)
+    platformStyle(_platformStyle),
+    walletFrame(qobject_cast<WalletFrame*>(parent))
 {
     // Create tabs
     overviewPage = new OverviewPage(platformStyle);
@@ -51,27 +54,25 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     QHBoxLayout *hbox_buttons = new QHBoxLayout();
     transactionView = new TransactionView(platformStyle, this);
     vbox->addWidget(transactionView);
-    QPushButton *exportButton = new QPushButton(tr("&Export"), this);
+    QPushButton *exportButton = new SinPushButton(tr("&Export"), this);
     exportButton->setToolTip(tr("Export the data in the current tab to a file"));
     if (platformStyle->getImagesOnButtons()) {
-        exportButton->setIcon(platformStyle->SingleColorIcon(":/icons/export"));
+        exportButton->setIcon(platformStyle->MultiStatesIcon(":/icons/export", PlatformStyle::PushButton));
     }
     hbox_buttons->addStretch();
     hbox_buttons->addWidget(exportButton);
     vbox->addLayout(hbox_buttons);
     transactionsPage->setLayout(vbox);
 
-    receiveCoinsPage = new ReceiveCoinsDialog(platformStyle);
-    sendCoinsPage = new SendCoinsDialog(platformStyle);
+    receiveCoinsPage = new ReceiveCoinsDialog(platformStyle, overviewPage);
+    sendCoinsPage = new SendCoinsDialog(platformStyle, overviewPage);
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
     usedReceivingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::ReceivingTab, this);
 
     addWidget(overviewPage);
     addWidget(transactionsPage);
-    addWidget(receiveCoinsPage);
-    addWidget(sendCoinsPage);
-
+   
     // SIN
 
     QSettings settings;
@@ -89,11 +90,16 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     addWidget(stakeWindow);
     //
 
-    connect(overviewPage, &OverviewPage::transactionClicked, this, &WalletView::transactionClicked);
-    // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
-    connect(overviewPage, &OverviewPage::transactionClicked, transactionView, static_cast<void (TransactionView::*)(const QModelIndex&)>(&TransactionView::focusTransaction));
-
     connect(overviewPage, &OverviewPage::outOfSyncWarningClicked, this, &WalletView::requestedSyncWarningInfo);
+
+    // Clicking on a transaction on the overview page simply sends you to transaction history page
+    connect(overviewPage, &OverviewPage::showMoreClicked, this, &WalletView::showMore);
+
+     // Clicking send coins button show send coins dialog
+    connect(overviewPage, &OverviewPage::sendCoinsClicked, this, &WalletView::sendCoins);
+
+    // Clicking receive coins button show receive coins dialog
+    connect(overviewPage, &OverviewPage::receiveCoinsClicked, this, &WalletView::receiveCoins);
 
     connect(sendCoinsPage, &SendCoinsDialog::coinsSent, this, &WalletView::coinsSent);
     // Highlight transaction after send
@@ -106,8 +112,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     connect(sendCoinsPage, &SendCoinsDialog::message, this, &WalletView::message);
     // Pass through messages from transactionView
     connect(transactionView, &TransactionView::message, this, &WalletView::message);
-
-    connect(this, &WalletView::setPrivacy, overviewPage, &OverviewPage::setPrivacy);
+    
 }
 
 WalletView::~WalletView()
@@ -227,15 +232,22 @@ void WalletView::gotoStakePage()
 //
 void WalletView::gotoReceiveCoinsPage()
 {
-    setCurrentWidget(receiveCoinsPage);
+    setCurrentWidget(overviewPage);
+    if(walletFrame && walletFrame->currentWalletView() == this)
+    {
+        receiveCoinsPage->show();
+    }
 }
 
 void WalletView::gotoSendCoinsPage(QString addr)
 {
-    setCurrentWidget(sendCoinsPage);
-
-    if (!addr.isEmpty())
-        sendCoinsPage->setAddress(addr);
+    setCurrentWidget(overviewPage);
+    if(walletFrame && walletFrame->currentWalletView() == this)
+    {
+        if (!addr.isEmpty())
+            sendCoinsPage->setAddress(addr);
+        sendCoinsPage->show();
+    }
 }
 
 void WalletView::gotoSignMessageTab(QString addr)

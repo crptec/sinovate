@@ -10,6 +10,10 @@
 #include <QWidget>
 #include <memory>
 
+#include <QtNetwork/QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+
 class ClientModel;
 class TransactionFilterProxy;
 class TxViewDelegate;
@@ -22,6 +26,8 @@ namespace Ui {
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
+class QNetworkAccessManager;
+class QNetworkRequest;
 QT_END_NAMESPACE
 
 /** Overview ("home") page widget */
@@ -42,14 +48,21 @@ public Q_SLOTS:
     void setPrivacy(bool privacy);
 
 Q_SIGNALS:
+    void showMoreClicked();
     void transactionClicked(const QModelIndex &index);
     void outOfSyncWarningClicked();
+    void sendCoinsClicked(QString addr = "");
+    void receiveCoinsClicked();
 
 private:
     Ui::OverviewPage *ui;
     ClientModel *clientModel;
     WalletModel *walletModel;
     interfaces::WalletBalances m_balances;
+    QTimer* m_timer;
+    QNetworkAccessManager* m_networkManager;
+    QNetworkRequest* request;
+    qint64 totalBalance;
     bool m_privacy{false};
 
     TxViewDelegate *txdelegate;
@@ -61,7 +74,12 @@ private Q_SLOTS:
     void updateWatchOnlyLabels(bool showWatchOnly);
     void handleOutOfSyncWarningClicks();
 
+    void on_showMoreButton_clicked();
+    void on_buttonSend_clicked();
+    void on_buttonReceive_clicked();
     void showDetails();
+    void onResult(QNetworkReply* replystats);
+    void getStatistics();
 };
 
 #endif // BITCOIN_QT_OVERVIEWPAGE_H

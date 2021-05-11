@@ -23,6 +23,7 @@ class WalletModel;
 class AddressBookPage;
 class StatsPage;
 class StakePage;
+class WalletFrame;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -84,6 +85,7 @@ private:
 
     QProgressDialog* progressDialog{nullptr};
     const PlatformStyle *platformStyle;
+    WalletFrame *walletFrame;
 
 public Q_SLOTS:
     /** Switch to overview (home) page */
@@ -141,7 +143,6 @@ public Q_SLOTS:
     void requestedSyncWarningInfo();
 
 Q_SIGNALS:
-    void setPrivacy(bool privacy);
     void transactionClicked();
     void coinsSent();
     /**  Fired when a message should be reported to the user */
@@ -154,6 +155,9 @@ Q_SIGNALS:
     void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& walletName);
     /** Notify that the out of sync warning icon has been pressed */
     void outOfSyncWarningClicked();
+    void showMore();
+    void sendCoins(QString addr = "");
+    void receiveCoins();
 };
 
 #endif // BITCOIN_QT_WALLETVIEW_H

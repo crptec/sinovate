@@ -104,8 +104,6 @@ public:
     /** Disconnect core signals from GUI client */
     void unsubscribeFromCoreSignals();
 
-    bool isPrivacyModeActivated() const;
-
 protected:
     void changeEvent(QEvent *e) override;
     void closeEvent(QCloseEvent *event) override;
@@ -226,7 +224,6 @@ Q_SIGNALS:
     void receivedURI(const QString &uri);
     /** Signal raised when RPC console shown */
     void consoleShown(RPCConsole* console);
-    void setPrivacy(bool privacy);
 
 public Q_SLOTS:
     /** Set number of connections shown in the UI */

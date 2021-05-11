@@ -25,6 +25,10 @@
 #include <QStatusTipEvent>
 #include <QMessageBox>
 #include <QTimer>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QUrl>
 
 #include <QStandardItem>
 #include <QStandardItemModel>
@@ -190,7 +194,13 @@ private:
 
 OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) :
     QWidget(parent),
+    // ++ Price Stats
+    m_timer(nullptr),
+    // --
     ui(new Ui::OverviewPage),
+    // ++ Price Stats
+    m_networkManager(new QNetworkAccessManager(this)),
+    // --
     clientModel(nullptr),
     walletModel(nullptr),
     txdelegate(new TxViewDelegate(platformStyle, this))
@@ -234,6 +244,14 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     showOutOfSyncWarning(true);
     connect(ui->labelWalletStatus, &QPushButton::clicked, this, &OverviewPage::handleOutOfSyncWarningClicks);
     connect(ui->labelTransactionsStatus, &QPushButton::clicked, this, &OverviewPage::handleOutOfSyncWarningClicks);
+
+    // Price Stats
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
+    m_timer->start(30000);
+    connect(m_networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
+    getStatistics();
+    // --
 }
 
 void OverviewPage::handleOutOfSyncWarningClicks()
@@ -258,24 +276,44 @@ void OverviewPage::setPrivacy(bool privacy)
 
 OverviewPage::~OverviewPage()
 {
+    // ++ Price Stats
+    if(m_timer) disconnect(m_timer, SIGNAL(timeout()), this, SLOT(privateSendStatus()));
+    delete m_networkManager;
+    // --
+    
     delete ui;
 }
+
+// ++ Price Stats
+void OverviewPage::getStatistics()
+{
+    QUrl summaryUrl("https://stats.sinovate.io/summary.php");
+    QNetworkRequest request;
+    request.setUrl(summaryUrl);
+    m_networkManager->get(request);
+}
+// --
 
 void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
 {
     int unit = walletModel->getOptionsModel()->getDisplayUnit();
     m_balances = balances;
+
+// ++ Price Stats
+    totalBalance = balances.balance + balances.unconfirmed_balance + balances.immature_balance;
+// --
+    
     if (walletModel->wallet().isLegacy()) {
         if (walletModel->wallet().privateKeysDisabled()) {
             ui->labelBalance->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.watch_only_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
             ui->labelUnconfirmed->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.unconfirmed_watch_only_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
             ui->labelImmature->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.immature_watch_only_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
-            ui->labelTotal->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
+            //ui->labelTotal->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.watch_only_balance + balances.unconfirmed_watch_only_balance + balances.immature_watch_only_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
         } else {
             ui->labelBalance->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
             ui->labelUnconfirmed->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.unconfirmed_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
             ui->labelImmature->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.immature_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
-            ui->labelTotal->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
+            //ui->labelTotal->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
             ui->labelWatchAvailable->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.watch_only_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
             ui->labelWatchPending->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.unconfirmed_watch_only_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
             ui->labelWatchImmature->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.immature_watch_only_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
@@ -285,7 +323,7 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
         ui->labelBalance->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
         ui->labelUnconfirmed->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.unconfirmed_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
         ui->labelImmature->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.immature_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
-        ui->labelTotal->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
+        //ui->labelTotal->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.balance + balances.unconfirmed_balance + balances.immature_balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
     }
     // only show immature (newly mined) balance if it's non-zero, so as not to complicate things
     // for the non-mining users
@@ -293,14 +331,14 @@ void OverviewPage::setBalance(const interfaces::WalletBalances& balances)
     bool showWatchOnlyImmature = balances.immature_watch_only_balance != 0;
 
     // for symmetry reasons also show immature label when the watch-only one is shown
-    ui->widgetImmature->setVisible(showImmature || showWatchOnlyImmature);
+    //ui->widgetImmature->setVisible(showImmature || showWatchOnlyImmature);
     ui->widgetWatchImmature->setVisible(!walletModel->wallet().privateKeysDisabled() && showWatchOnlyImmature); // show watch-only immature balance
 }
 
 // show/hide watch-only labels
 void OverviewPage::updateWatchOnlyLabels(bool showWatchOnly)
 {
-    ui->labelSpendable->setVisible(showWatchOnly);      // show spendable label (only when watch-only is active)
+    //ui->labelSpendable->setVisible(showWatchOnly);      // show spendable label (only when watch-only is active)
     ui->labelWatchonly->setVisible(showWatchOnly);      // show watch-only label
     ui->widgetWatchAvailable->setVisible(showWatchOnly); // show watch-only available balance
     ui->widgetWatchPending->setVisible(showWatchOnly);   // show watch-only pending balance
@@ -386,6 +424,11 @@ void OverviewPage::showOutOfSyncWarning(bool fShow)
     ui->labelTransactionsStatus->setVisible(fShow);
 }
 
+void OverviewPage::on_showMoreButton_clicked()
+{
+    Q_EMIT showMoreClicked();
+}
+
 void OverviewPage::showDetails()
 {
     if(!ui->listTransactions->selectionModel())
@@ -397,4 +440,58 @@ void OverviewPage::showDetails()
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         dlg->show();
     }
+}
+
+void OverviewPage::on_buttonSend_clicked()
+{
+    Q_EMIT sendCoinsClicked();
+}
+
+void OverviewPage::on_buttonReceive_clicked()
+{
+    Q_EMIT receiveCoinsClicked();
+}
+
+// ++ Price Stats
+void OverviewPage::onResult(QNetworkReply* replystats)
+{
+    QVariant statusCode = replystats->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+    if( statusCode == 200)
+    {
+        QString replyString = (QString) replystats->readAll();
+
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(replyString.toUtf8());
+        QJsonObject jsonObject = jsonResponse.object();
+
+        QJsonObject dataObject = jsonObject.value("data").toArray()[0].toObject();
+
+        QLocale l = QLocale(QLocale::English);
+
+        // Set BTC price strings
+        ui->labelCurrentPriceBTC->setText(QString::number(dataObject.value("lastPrice").toDouble(), 'f', 8)); 
+
+        double currentBTC = dataObject.value("lastPrice").toDouble();
+        double availableBTC = (currentBTC * totalBalance / 100000000);
+        ui->labelBTCTotal->setText(QString::number(availableBTC, 'f', 8) + " BTC");
+
+        // Set UDS price strings
+        ui->labelCurrentPriceUSD->setText(QString::number(dataObject.value("usdPrice").toDouble(), 'f', 8)); 
+
+        double currentUSD = dataObject.value("usdPrice").toDouble();
+        double availableUSD = (currentUSD * totalBalance / 100000000);
+        ui->labelUSDTotal->setText(QString::number(availableUSD, 'f', 8) + " BTC");
+
+       
+    }
+    else
+    {
+        const QString noValue = "NaN";
+       
+        ui->labelCurrentPriceBTC->setText(noValue);
+        ui->labelCurrentPriceUSD->setText(noValue);
+       
+    }
+
+    replystats->deleteLater();
 }
