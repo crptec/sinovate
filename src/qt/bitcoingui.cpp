@@ -303,15 +303,15 @@ void BitcoinGUI::createActions()
 #ifdef ENABLE_WALLET
     // SIN
     QSettings settings;
-    if (settings.value("fShowMasternodesTab").toBool()) {
-        masternodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::NavBar), tr(" &Infinity Nodes"), this);
-        masternodeAction->setStatusTip(tr("Browse Infinitynodes"));
-        masternodeAction->setToolTip(masternodeAction->statusTip());
-        masternodeAction->setCheckable(true);
-        masternodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_5));
-        tabGroup->addAction(masternodeAction);
-        connect(masternodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-        connect(masternodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
+    if (settings.value("fShowInfinitynodeTab").toBool()) {
+        infinitynodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::NavBar), tr(" &Infinity Nodes"), this);
+        infinitynodeAction->setStatusTip(tr("Browse Infinitynodes"));
+        infinitynodeAction->setToolTip(infinitynodeAction->statusTip());
+        infinitynodeAction->setCheckable(true);
+        infinitynodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_5));
+        tabGroup->addAction(infinitynodeAction);
+        connect(infinitynodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+        connect(infinitynodeAction, SIGNAL(triggered()), this, SLOT(gotoMasternodePage()));
     }
 
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
@@ -609,9 +609,9 @@ void BitcoinGUI::createToolBars()
 
         // SIN
         QSettings settings;
-        if (settings.value("fShowMasternodesTab").toBool())
+        if (settings.value("fShowInfinitynodeTab").toBool())
         {
-            toolbar->addAction(masternodeAction); //8
+            toolbar->addAction(infinitynodeAction); //8
         }
 
         toolbar->addAction(statsPageAction);
@@ -665,7 +665,7 @@ void BitcoinGUI::createToolBars()
         QHBoxLayout *bottomBarLayout = new QHBoxLayout;
 
          bottomBarLayout->addWidget(bottomOptionButton);
-        if (settings.value("fShowMasternodesTab").toBool()) { 
+        if (settings.value("fShowInfinitynodeTab").toBool()) {
         bottomBarLayout->addWidget(bottomSetupButton);
         }
         bottomBarLayout->addWidget(bottomConsoleButton);
@@ -1010,12 +1010,12 @@ void BitcoinGUI::gotoHistoryPage()
 }
 
 // SIN
-void BitcoinGUI::gotoMasternodePage()
+void BitcoinGUI::gotoInfinitynodePage()
 {
     QSettings settings;
-    if (settings.value("fShowMasternodesTab").toBool()) {
-        masternodeAction->setChecked(true);
-        if (walletFrame) walletFrame->gotoMasternodePage();
+    if (settings.value("fShowInfinitynodeTab").toBool()) {
+        infinitynodeAction->setChecked(true);
+        if (walletFrame) walletFrame->gotoInfinitynodePage();
     }
 }
 void BitcoinGUI::gotoReceiveCoinsPage()
@@ -1665,6 +1665,6 @@ void UnitDisplayStatusBarControl::onMenuSelection(QAction* action)
 void BitcoinGUI::gotoSetupTab()
 {
     if (walletFrame) walletFrame->gotoSetupTab();
-    masternodeAction->setChecked(true);
+    infinitynodeAction->setChecked(true);
 
 }

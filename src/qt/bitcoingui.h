@@ -134,7 +134,7 @@ private:
     QMenuBar* appMenuBar = nullptr;
     QToolBar* appToolBar = nullptr;
     QAction* overviewAction = nullptr;    
-    QAction* masternodeAction = nullptr;    // SIN
+    QAction* infinitynodeAction = nullptr;    // SIN
     QAction* statsPageAction = nullptr;
     QAction* stakePageAction = nullptr;
     QAction* historyAction = nullptr;
@@ -291,8 +291,8 @@ public Q_SLOTS:
     void gotoSendCoinsPage(QString addr = "");
 
     // SIN
-    /** Switch to masternode page */
-    void gotoMasternodePage();
+    /** Switch to infinitynide page */
+    void gotoInfinitynodePage();
     //** Switch to setUP tab */
     void gotoSetupTab();
     //

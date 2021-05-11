@@ -88,8 +88,8 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     // --
     ui(new Ui::InfinitynodeList),
     m_networkManager(new QNetworkAccessManager(this)),
-    clientModel(0),
-    walletModel(0)
+    clientModel(nullptr),
+    walletModel(nullptr)
 {
 LogPrintf("infinitynodelist: start \n");
     motdTimer = new QTimer();
@@ -1869,51 +1869,42 @@ QJsonObject InfinitynodeList::nodeSetupAPINodeInfo( int serviceid, int clientid,
 std::map<std::string, pair_burntx> InfinitynodeList::nodeSetupGetUnusedBurnTxs( ) {
 
     std::map<std::string, pair_burntx> ret;
-
-    CAmount nFee;
     std::string strSentAccount;
-    std::list<COutputEntry> listReceived;
-    std::list<COutputEntry> listSent;
     isminefilter filter = ISMINE_SPENDABLE;
 
-    std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
-    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
-
-    if (pwallet==nullptr)   return ret;
-
-    LOCK2(cs_main, pwallet->cs_wallet);
-
-    const CWallet::TxItems & txOrdered = pwallet->wtxOrdered;
-
+    if(walletModel){
+    interfaces::Wallet& wallet = walletModel->wallet();
     // iterate backwards until we reach >1 yr to return:
-    for (CWallet::TxItems::const_reverse_iterator it = txOrdered.rbegin(); it != txOrdered.rend(); ++it)
-    {
-        CWalletTx *const pwtx = (*it).second;
-        if (pwtx == nullptr)    continue;
+    for (const auto& wtx : wallet.getWalletTxs()) {
+        interfaces::WalletTxStatus wtxs;
+        int numBlocks;
+        int64_t block_time;
 
-        int confirms = pwtx->GetDepthInMainChain();
+        if(!walletModel->wallet().tryGetTxStatus(wtx.tx->GetHash(), wtxs, numBlocks, block_time)) continue;
+
+        int confirms = wtxs.depth_in_main_chain;
         if (confirms>720*365)   continue;  // expired
 
-        pwtx->GetAmounts(listReceived, listSent, nFee, filter);
-        for (const COutputEntry& s : listSent)
+        std::string txHash = wtx.tx->GetHash().GetHex();
+        for(unsigned int i = 0; i < wtx.tx->vout.size(); i++)
         {
+            const CTxOut& txout = wtx.tx->vout[i];
             std::string destAddress="";
-            if (IsValidDestination(s.destination)) {
-                destAddress = EncodeDestination(s.destination);
-            }
-            std::string txHash = pwtx->GetHash().GetHex();
+            destAddress = EncodeDestination(wtx.txout_address[i]);
+
             if (destAddress == Params().GetConsensus().cBurnAddress && confirms<720*365 && nodeSetupUsedBurnTxs.find(txHash.substr(0, 16)) == nodeSetupUsedBurnTxs.end() )  {
 
                 std::string description = "";
                 QString strNodeType = "";
-                CAmount roundAmount = ((int)(s.amount / COIN)+1);
+                CAmount roundAmount = ((int)(txout.nValue / COIN)+1);
                 strNodeType = nodeSetupGetNodeType(roundAmount);
 
-                description = strNodeType.toStdString() + " " + GUIUtil::dateTimeStr(pwtx->GetTxTime()).toUtf8().constData() + " " + txHash.substr(0, 8);
+                description = strNodeType.toStdString() + " " + GUIUtil::dateTimeStr(wtx.time).toUtf8().constData() + " " + txHash.substr(0, 8);
 //LogPrintf("nodeSetupGetUnusedBurnTxs  confirmed %s, %d, %s \n", txHash.substr(0, 16), roundAmount, description);
                 ret.insert( { txHash,  std::make_pair(confirms, description) } );
             }
         }
+    }
     }
 
     return ret;
