@@ -1823,9 +1823,11 @@ std::map<COutPoint, std::string> CWallet::GetOnchainDataInfo()
     std::map<COutPoint, std::string> ret;
     {
         LegacyScriptPubKeyMan* spk_man = GetLegacyScriptPubKeyMan();
-        assert(spk_man != nullptr);
+        if (!spk_man) {
+            return ret;
+        }
 
-        LOCK2(cs_main, cs_wallet);
+        LOCK2(cs_wallet, cs_main);
         for (std::map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
         {
             const CWalletTx* pcoin = &(*it).second;
