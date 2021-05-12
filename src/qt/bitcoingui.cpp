@@ -257,6 +257,13 @@ void BitcoinGUI::createActions()
     overviewAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
     tabGroup->addAction(overviewAction);
 
+    homeAction =new QAction(overviewAction);
+    homeAction->setText("Home");
+    homeAction->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/home",PlatformStyle::NavBar));
+    homeAction->setToolTip(homeAction->statusTip());
+    homeAction->setCheckable(true);
+    tabGroup->addAction(homeAction);
+
     sendCoinsAction = new QAction(platformStyle->MultiStatesIcon(":/icons/send", PlatformStyle::NavBar), tr(" &Send"), this);
     sendCoinsAction->setStatusTip(tr("Send coins to a SIN address"));
     sendCoinsAction->setToolTip(sendCoinsAction->statusTip());
@@ -318,6 +325,7 @@ void BitcoinGUI::createActions()
     // can be triggered from the tray menu, and need to show the GUI to be useful.
     connect(overviewAction, &QAction::triggered, [this]{ showNormalIfMinimized(); });
     connect(overviewAction, &QAction::triggered, this, &BitcoinGUI::gotoOverviewPage);
+    connect(homeAction, SIGNAL(triggered()), this, SLOT(gotoHomePage()));
     connect(sendCoinsAction, &QAction::triggered, [this]{ showNormalIfMinimized(); });
     connect(sendCoinsAction, &QAction::triggered, [this]{ gotoSendCoinsPage(); });
     connect(sendCoinsMenuAction, &QAction::triggered, [this]{ showNormalIfMinimized(); });
@@ -604,6 +612,7 @@ void BitcoinGUI::createToolBars()
         toolbar->addWidget(mainIcon);  
         toolbar->addWidget(mainBrand); 
 
+        toolbar->addAction(homeAction);
         toolbar->addAction(overviewAction);
         toolbar->addAction(stakePageAction);
 
@@ -611,13 +620,13 @@ void BitcoinGUI::createToolBars()
         QSettings settings;
         if (settings.value("fShowInfinitynodeTab").toBool())
         {
-            toolbar->addAction(infinitynodeAction); //8
+            toolbar->addAction(infinitynodeAction); 
         }
 
         toolbar->addAction(statsPageAction);
         toolbar->addAction(statsPageAction);
         toolbar->addAction(historyAction);
-        overviewAction->setChecked(true);
+        homeAction->setChecked(true);
 
         QWidget* empty = new QWidget();
 		empty->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
@@ -983,6 +992,12 @@ void BitcoinGUI::openClicked()
     {
         Q_EMIT receivedURI(dlg.getURI());
     }
+}
+
+void BitcoinGUI::gotoHomePage()
+{
+    homeAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoHomePage();
 }
 
 void BitcoinGUI::gotoOverviewPage()

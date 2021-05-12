@@ -194,6 +194,15 @@ void WalletView::processNewTransaction(const QModelIndex& parent, int start, int
 
 void WalletView::gotoOverviewPage()
 {
+    overviewPage->showTransactionWidget(true);
+    overviewPage->showToolBoxWidget(false);
+    setCurrentWidget(overviewPage);
+}
+
+void WalletView::gotoHomePage()
+{
+    overviewPage->showTransactionWidget(false);
+    overviewPage->showToolBoxWidget(true);
     setCurrentWidget(overviewPage);
 }
 

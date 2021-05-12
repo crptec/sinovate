@@ -43,6 +43,9 @@ public:
     void setWalletModel(WalletModel *walletModel);
     void showOutOfSyncWarning(bool fShow);
 
+    void showTransactionWidget(bool bShow);
+    void showToolBoxWidget(bool bShow);
+
 public Q_SLOTS:
     void setBalance(const interfaces::WalletBalances& balances);
     void setPrivacy(bool privacy);
@@ -80,6 +83,15 @@ private Q_SLOTS:
     void showDetails();
     void onResult(QNetworkReply* replystats);
     void getStatistics();
+    void on_toolButtonBlog_clicked();
+    void on_toolButtonDocs_clicked();
+    void on_toolButtonExchanges_clicked();
+    void on_toolButtonExplorer_clicked();
+    void on_toolButtonRoadmap_clicked();
+    void on_toolButtonWallet_clicked();
+    void on_toolButtonWebTool_clicked();
+    void on_toolButtonWhitePaper_clicked();
+    void on_toolButtonDiscord_clicked();
 };
 
 #endif // BITCOIN_QT_OVERVIEWPAGE_H

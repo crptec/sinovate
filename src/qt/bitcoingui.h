@@ -133,6 +133,7 @@ private:
 
     QMenuBar* appMenuBar = nullptr;
     QToolBar* appToolBar = nullptr;
+    QAction* homeAction = nullptr;
     QAction* overviewAction = nullptr;    
     QAction* infinitynodeAction = nullptr;    // SIN
     QAction* statsPageAction = nullptr;
@@ -279,6 +280,7 @@ public Q_SLOTS:
 #ifdef ENABLE_WALLET
     /** Switch to overview (home) page */
     void gotoOverviewPage();
+    void gotoHomePage();
     /** Switch to stats page */
     void gotoStatsPage(); 
     /** Switch to stake page */

@@ -72,6 +72,7 @@ public:
 public Q_SLOTS:
     /** Switch to overview (home) page */
     void gotoOverviewPage();
+    void gotoHomePage();
     /** Switch to stats page */
     void gotoStatsPage();
     /** Switch to stake page */

@@ -81,7 +81,7 @@ bool WalletFrame::addWallet(WalletModel *walletModel)
     if (current_wallet_view) {
         walletView->setCurrentIndex(current_wallet_view->currentIndex());
     } else {
-        walletView->gotoOverviewPage();
+        walletView->gotoHomePage();
     }
 
     walletStack->addWidget(walletView);
@@ -152,6 +152,13 @@ void WalletFrame::gotoOverviewPage()
     QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoOverviewPage();
+}
+
+void WalletFrame::gotoHomePage()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoHomePage();
 }
 
 void WalletFrame::gotoHistoryPage()
