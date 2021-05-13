@@ -735,7 +735,7 @@ bool CInfinityNodeLockReward::CheckVerifyReply(CNode* pnode, CVerifyRequest& vre
         return false;
     }
 
-    //step 3.2 Sig2 from Candidate
+    //step 3.2 Sig2 from Top Node
     std::string strMessage2 = strprintf("%s%d%s%s%s", vrequest.addr.ToString(), vrequest.nBlockHeight, vrequest.nHashRequest.ToString(),
         vrequest.vin1.prevout.ToStringFull(), vrequest.vin2.prevout.ToStringFull());
 
@@ -2629,7 +2629,7 @@ bool CInfinityNodeLockReward::ProcessBlock(int nBlockHeight, CConnman& connman)
     return false;
 }
 
-void CInfinityNodeLockReward::ProcessDirectMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman)
+void CInfinityNodeLockReward::ProcessDirectMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos)
 {
     if(!fInfinityNode) return;
 
@@ -2638,10 +2638,9 @@ void CInfinityNodeLockReward::ProcessDirectMessage(CNode* pfrom, const std::stri
         vRecv >> vrequest;
         LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessDirectMessage -- new VerifyRequest from %d, Sig1: %d, Sig2: %d, hash: %s\n",
                      pfrom->GetId(), vrequest.vchSig1.size(), vrequest.vchSig2.size(), vrequest.GetHash().ToString());
-        //pfrom->setAskFor.erase(vrequest.GetHash());
+        pfrom->setAskFor.erase(vrequest.GetHash());
         {
             LOCK2(cs_main, cs);
-            int nDos=0;
             if(vrequest.vchSig1.size() > 0 &&  vrequest.vchSig2.size() == 0) {
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessDirectMessage -- VerifyRequest: I am candidate. Reply the verify from: %d, hash: %s\n",
                           pfrom->GetId(), vrequest.GetHash().ToString());
@@ -2672,7 +2671,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
         vRecv >> lockReq;
         //dont ask pfrom for this Request anymore
         uint256 nHash = lockReq.GetHash();
-        //pfrom->setAskFor.erase(nHash);
+        pfrom->setAskFor.erase(nHash);
         {
             LOCK2(cs_main, cs);
             if(mapLockRewardRequest.count(nHash)){
@@ -2681,7 +2680,6 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
             }
             if(!CheckLockRewardRequest(pfrom, lockReq, connman, nCachedBlockHeight, nDos)){
                 //Ban Misbehaving here
-                //Misbehaving(pfrom->GetId(), nDos, strprintf("CheckLockRewardRequest is false."));
                 return;
             }
             LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- receive and add new LockRewardRequest from %d\n",pfrom->GetId());
@@ -2699,7 +2697,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
         CLockRewardCommitment commitment;
         vRecv >> commitment;
         uint256 nHash = commitment.GetHash();
-        //pfrom->setAskFor.erase(nHash);
+        pfrom->setAskFor.erase(nHash);
         {
             LOCK2(cs_main, cs);
             if(mapLockRewardCommitment.count(nHash)){
@@ -2726,7 +2724,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
         CGroupSigners gSigners;
         vRecv >> gSigners;
         uint256 nHash = gSigners.GetHash();
-        //pfrom->setAskFor.erase(nHash);
+        pfrom->setAskFor.erase(nHash);
         {
             LOCK2(cs_main, cs);
             if(mapLockRewardGroupSigners.count(nHash)){
@@ -2752,7 +2750,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
         CMusigPartialSignLR partialSign;
         vRecv >> partialSign;
         uint256 nHash = partialSign.GetHash();
-        //pfrom->setAskFor.erase(nHash);
+        pfrom->setAskFor.erase(nHash);
         {
             LOCK2(cs_main, cs);
             if(mapPartialSign.count(nHash)){
