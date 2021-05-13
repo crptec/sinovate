@@ -1753,7 +1753,7 @@ void static ProcessGetData(CNode& pfrom, Peer& peer, const CChainParams& chainpa
 
     // Only process one BLOCK item per call, since they're uncommon and can be
     // expensive to process.
-    if (it != peer.m_getdata_requests.end() && !pfrom.fPauseSend) {
+    if (it != peer.m_getdata_requests.end() && !pfrom.fPauseSend && it->IsGenBlkMsg()) {
         const CInv &inv = *it++;
         if (inv.IsGenBlkMsg()) {
             ProcessGetBlockData(pfrom, chainparams, inv, connman);
@@ -1771,7 +1771,7 @@ void static ProcessGetData(CNode& pfrom, Peer& peer, const CChainParams& chainpa
         if (pfrom.fPauseSend) break;
 
         const CInv &inv = *it++;
-        LogPrint(BCLog::NET, "ProcessGetData from peer=%d for inv: %s\n", pfrom.GetId(), inv.ToString());
+        LogPrint(BCLog::NET, "ProcessGetData Sinovate from peer=%d for inv: %s\n", pfrom.GetId(), inv.ToString());
             // All node INV
             {
                 bool pushed = false;
@@ -2372,7 +2372,7 @@ void PeerManager::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDat
 //>SIN
     if (msg_type == NetMsgType::INFLOCKREWARDINIT || msg_type == NetMsgType::INFVERIFY || msg_type == NetMsgType::INFCOMMITMENT ||
         msg_type == NetMsgType::INFLRMUSIG || msg_type == NetMsgType::INFLRGROUP) {
-        LogPrint(BCLog::NET, "ProcessMessage: sinovate %s message from peer=%d\n", SanitizeString(msg_type), pfrom.GetId());
+        LogPrint(BCLog::NET, "ProcessMessage: Sinovate %s message from peer=%d\n", SanitizeString(msg_type), pfrom.GetId());
         int nDos = 0;
         inflockreward.ProcessMessage(&pfrom, msg_type, vRecv, m_connman, nDos);
         if (nDos > 0) Misbehaving(pfrom.GetId(), nDos, "bad sinovate message");
@@ -4561,7 +4561,7 @@ bool PeerManager::SendMessages(CNode* pto)
                 vInv.push_back(inv);
                 if (vInv.size() >= 1000)
                 {
-                    LogPrint(BCLog::NET, "SendMessages -- pushing vInventorySinToSend inv's: count=%d peer=%d\n", vInv.size(), pto->GetId());
+                    LogPrint(BCLog::NET, "SendMessages -- pushing Sinovate vInventorySinToSend inv's: count=%d peer=%d\n", vInv.size(), pto->GetId());
                     m_connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
                     vInv.clear();
                 }
@@ -4570,7 +4570,7 @@ bool PeerManager::SendMessages(CNode* pto)
         }
         if (!vInv.empty()) {
             m_connman.PushMessage(pto, msgMaker.Make(NetMsgType::INV, vInv));
-            LogPrint(BCLog::NET, "SendMessages -- pushing vInventorySinToSend tailing inv's: count=%d peer=%d\n", vInv.size(), pto->GetId());
+            LogPrint(BCLog::NET, "SendMessages -- pushing Sinovate vInventorySinToSend tailing inv's: count=%d peer=%d\n", vInv.size(), pto->GetId());
         }
 //>SIN
         // Detect whether we're stalling
