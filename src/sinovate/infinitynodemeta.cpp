@@ -85,11 +85,19 @@ bool CInfinitynodeMeta::Add(CMetadata &meta)
                         CMetadata m = infpair.second;
                         CAddress add = CAddress(infpair.second.getService(), NODE_NETWORK);
 
-                        if (m.getMetaID() != meta.getMetaID() && (m.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == add.ToStringIP())) {
-                            std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
-                            for (auto& infnodepair : mapInfinitynodes) {
-                                if (infnodepair.second.getMetaID() == meta.getMetaID() && infnodepair.second.getExpireHeight() >= meta.getMetadataHeight()) {
-                                    fCheckExistant = true;
+                        if (m.getMetaID() != meta.getMetaID() && (m.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == add.ToStringIP()))
+                        {
+                            if(m.getMetaPublicKey() == sPublicKey){
+                                fCheckExistant = true;
+                                LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::PubKey %s existant in network\n", sPublicKey);
+                            } else if(addMeta.ToStringIP() == add.ToStringIP()){
+                                std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
+                                for (auto& infnodepair : mapInfinitynodes) {
+                                    if (infnodepair.second.getMetaID() == meta.getMetaID() && infnodepair.second.getExpireHeight() >= meta.getMetadataHeight())
+                                    {
+                                        fCheckExistant = true;
+                                        LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::IP %s existant in network for non expired node.\n", addMeta.ToStringIP());
+                                    }
                                 }
                             }
                         }
