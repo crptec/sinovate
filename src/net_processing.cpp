@@ -2374,7 +2374,11 @@ void PeerManager::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDat
         msg_type == NetMsgType::INFLRMUSIG || msg_type == NetMsgType::INFLRGROUP) {
         LogPrint(BCLog::NET, "ProcessMessage: Sinovate %s message from peer=%d\n", SanitizeString(msg_type), pfrom.GetId());
         int nDos = 0;
-        inflockreward.ProcessMessage(&pfrom, msg_type, vRecv, m_connman, nDos);
+        if(msg_type == NetMsgType::INFVERIFY) {
+            inflockreward.ProcessDirectMessage(&pfrom, msg_type, vRecv, m_connman, nDos);
+        } else {
+            inflockreward.ProcessMessage(&pfrom, msg_type, vRecv, m_connman, nDos);
+        }
         if (nDos > 0) Misbehaving(pfrom.GetId(), nDos, "bad sinovate message");
         return;
     }

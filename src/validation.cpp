@@ -3115,7 +3115,13 @@ static bool NotifyHeaderTip() LOCKS_EXCLUDED(cs_main) {
 static void LimitValidationInterfaceQueue() LOCKS_EXCLUDED(cs_main) {
     AssertLockNotHeld(cs_main);
 
-    if (GetMainSignals().CallbacksPending() > 10) {
+    int nThreshold = 10;
+
+    if ((Params().NetworkIDString() == CBaseChainParams::TESTNET) || (Params().NetworkIDString() == CBaseChainParams::REGTEST)) {
+        nThreshold = 9;
+    }
+
+    if (GetMainSignals().CallbacksPending() > nThreshold) {
         SyncWithValidationInterfaceQueue();
     }
 }
@@ -3482,6 +3488,7 @@ void CChainState::ReceivedBlockTransactions(const CBlock& block, CBlockIndex* pi
     }
     // proof-of-stake: set modifier and set flags
     if (block.IsProofOfStake() && pindexNew->nHeight > consensusParams.nStartPoSHeight) {
+        LogPrintf("Setting stake modifier %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
         pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash); 
     }
     if (block.IsProofOfStake()) {
@@ -4137,8 +4144,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
 
     // only run PoS checks if we never saw this block
     if (!CheckBlock(block, state, chainparams.GetConsensus()) ||
-        !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev) ||
-        ((pindex->nHeight > 3000) && IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev))) {
+        !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev)) {
         if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);
@@ -4162,6 +4168,16 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
         ReceivedBlockTransactions(block, pindex, blockPos, chainparams.GetConsensus());
     } catch (const std::runtime_error& e) {
         return AbortNode(state, std::string("System error: ") + e.what());
+    }
+
+    //run PoS checks after txes have been cached
+    if (((pindex->nHeight > 3000) && IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev))) {
+        if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
+            pindex->nStatus |= BLOCK_FAILED_VALID;
+            setDirtyBlockIndex.insert(pindex);
+        }
+        return error("%s: %s", __func__, state.ToString());
+
     }
 
     FlushStateToDisk(chainparams, state, FlushStateMode::NONE);

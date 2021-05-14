@@ -74,7 +74,7 @@ bool CInfinitynodeMan::AddUpdateLastPaid(CScript scriptPubKey, int nHeightLastPa
 
     CTxDestination addressBurnFund;
     ExtractDestination(scriptPubKey, addressBurnFund);
-    LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::AddUpdateLastPaid -- %s: %d\n", EncodeDestination(addressBurnFund), nHeightLastPaid);
+    //LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::AddUpdateLastPaid -- %s: %d\n", EncodeDestination(addressBurnFund), nHeightLastPaid);
 
     auto it = mapLastPaid.find(scriptPubKey);
     if (it != mapLastPaid.end()) {
@@ -657,7 +657,7 @@ bool CInfinitynodeMan::updateLastPaidList(int nBlockHeight, int nLowHeight)
     if (nLowHeight <= 0) nLowHeight = 1;
 
     LOCK2(cs_main, cs);
-    LogPrint(BCLog::INFINITYNODE, "CInfinitynodeMan::updateLastPaidList -- from %d to %d\n", nBlockHeight, nLowHeight);
+    //LogPrint(BCLog::INFINITYNODE, "CInfinitynodeMan::updateLastPaidList -- from %d to %d\n", nBlockHeight, nLowHeight);
 
     CBlockIndex* pindex  = ::ChainActive()[nBlockHeight];
     CBlockIndex* prevBlockIndex = pindex;

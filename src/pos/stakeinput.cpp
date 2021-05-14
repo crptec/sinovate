@@ -9,6 +9,7 @@
 #include <amount.h>
 #include <chain.h>
 #include <txdb.h>
+#include <index/txindex.h>
 #include <wallet/wallet.h>
 #include <validation.h>
 #include <chainparams.h>
@@ -17,16 +18,21 @@ CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
 {
 
     // Find the previous transaction in database
-    uint256 hashBlock;
-    CTransactionRef txPrev;
-    if (!GetTransaction(txin.prevout.hash, txPrev, hashBlock)) {
+    uint256 hash_block;
+    if (!g_txindex) {
+        error("%s : FATAL: No txindex enabled, PoS validation failed", __func__);
+        return nullptr;
+    }
+
+    const CTransactionRef txPrev = GetTransaction(nullptr, nullptr, txin.prevout.hash, Params().GetConsensus(), hash_block);
+    if (txPrev == nullptr) {
         error("%s : INFO: read txPrev failed, tx id prev: %s", __func__, txin.prevout.hash.GetHex());
         return nullptr;
     }
 
     const CBlockIndex* pindexFrom = nullptr;
     // Find the index of the block of the previous transaction
-    CBlockIndex* pindex = LookupBlockIndex(hashBlock);
+    CBlockIndex* pindex = LookupBlockIndex(hash_block);
     if (pindex) {
         if (::ChainActive().Contains(pindex)) {
             pindexFrom = pindex;
