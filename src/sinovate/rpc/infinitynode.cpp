@@ -609,11 +609,16 @@ static RPCHelpMan infinitynodeupdatemeta()
             CAddress add = CAddress(infmetapair.second.getService(), NODE_NETWORK);
             //found metaID => check expire or not
             if (m.getMetaID() != metaID && (m.getMetaPublicKey() == nodePublickey || addMeta.ToStringIP() == add.ToStringIP())) {
-                std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
-                for (auto& infnodepair : mapInfinitynodes) {
-                    if (infnodepair.second.getMetaID() == m.getMetaID() && infnodepair.second.getExpireHeight() >= nCurrentHeight) {
-                        std::string strError = strprintf("Error: Pubkey or IP address already exist in network");
-                        throw JSONRPCError(RPC_TYPE_ERROR, strError);
+                if(m.getMetaPublicKey() == nodePublickey){
+                    std::string strError = strprintf("Error: Pubkey already exist in network");
+                    throw JSONRPCError(RPC_TYPE_ERROR, strError);
+                } else if(addMeta.ToStringIP() == add.ToStringIP()){
+                    std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
+                    for (auto& infnodepair : mapInfinitynodes) {
+                        if (infnodepair.second.getMetaID() == m.getMetaID() && infnodepair.second.getExpireHeight() >= nCurrentHeight) {
+                            std::string strError = strprintf("Error: IP address already exist in network for non expired node");
+                            throw JSONRPCError(RPC_TYPE_ERROR, strError);
+                        }
                     }
                 }
             }
