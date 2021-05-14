@@ -191,7 +191,7 @@ bool GetTransaction(const uint256& hash, CTransactionRef& tx, uint256& hashBlock
  * validationinterface callback.
  */
 bool ActivateBestChain(BlockValidationState& state, const CChainParams& chainparams, std::shared_ptr<const CBlock> pblock = std::shared_ptr<const CBlock>());
-CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, bool fProofOfStake = false);
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, bool fProofOfStake = false, bool fOnlyPoS = false);
 // Sinovate
 CAmount GetInfinitynodePayment(int nHeight, int sintype);
 CAmount GetDevCoin(int nHeight, CAmount reward);

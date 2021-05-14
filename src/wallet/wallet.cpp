@@ -2204,6 +2204,15 @@ CAmount CWalletTx::GetAvailableCredit(bool fUseCache, const isminefilter& filter
     return nCredit;
 }
 
+CAmount CWalletTx::GetStakeCredit(const bool fUseCache) const
+{
+    if ((IsCoinStake() && GetBlocksToMaturity() > 0) && IsInMainChain()) {
+        return GetCachableAmount(IMMATURE_CREDIT, ISMINE_SPENDABLE, !fUseCache);
+    }
+
+    return 0;
+}
+
 CAmount CWalletTx::GetImmatureWatchOnlyCredit(const bool fUseCache) const
 {
     if (IsImmatureCoinBase() && IsInMainChain()) {
@@ -2359,6 +2368,7 @@ CWallet::Balance CWallet::GetBalance(const int min_depth, bool avoid_reuse) cons
                 ret.m_watchonly_untrusted_pending += tx_credit_watchonly;
             }
             ret.m_mine_immature += wtx.GetImmatureCredit();
+            ret.m_mine_stake = wtx.GetStakeCredit();
             ret.m_watchonly_immature += wtx.GetImmatureWatchOnlyCredit();
         }
     }

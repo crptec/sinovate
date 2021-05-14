@@ -304,7 +304,7 @@ void StakerCtx::StakerPipe()
         CheckForCoins(pwallet, &availableCoins);
 
         while ((Params().NetworkIDString() != CBaseChainParams::REGTEST && (m_connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0))
-                || pwallet->IsLocked() || !fStakeableCoins) {
+                || pwallet->IsLocked() || !pwallet->m_enabled_staking || !fStakeableCoins) {
             LogPrintf("%s : wallet needs atleast one connection and some stakeable coins to stake, checking again in %d seconds...\n", __func__, nAverageSpacing);
             if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
                 return;

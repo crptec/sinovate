@@ -1346,7 +1346,7 @@ bool ReadRawBlockFromDisk(std::vector<uint8_t>& block, const CBlockIndex* pindex
     return ReadRawBlockFromDisk(block, block_pos, message_start);
 }
 
-CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, bool fProofOfStake)
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, bool fProofOfStake, bool fOnlyPoS)
 {
     CAmount reward = 0;
 
@@ -1365,7 +1365,9 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, b
         reward = 50 * COIN;
     }
 
-    reward += GetInfinitynodePayment(nHeight, 1) + GetInfinitynodePayment(nHeight, 5) + GetInfinitynodePayment(nHeight, 10);
+    if (!fOnlyPoS) {
+        reward += GetInfinitynodePayment(nHeight, 1) + GetInfinitynodePayment(nHeight, 5) + GetInfinitynodePayment(nHeight, 10);
+    }
 
     return reward;
 }

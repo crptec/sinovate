@@ -172,6 +172,15 @@ public:
     //! Get unspent outputs associated with a transaction.
     virtual bool getUnspentOutput(const COutPoint& output, Coin& coin) = 0;
 
+    //! Get block subsidy at specific height, boolean flag for PoS
+    virtual int64_t getBlockSubsidy(int nHeight, bool fProofOfStake, bool fOnlyPoS) = 0;
+
+    //! Get the network stake weight
+    virtual uint64_t getNetworkStakeWeight() = 0;
+
+    //! Get the estimated annual roi
+    virtual double getEstimatedAnnualROI() = 0;
+
     //! Get wallet client.
     virtual WalletClient& walletClient() = 0;
 

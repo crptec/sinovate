@@ -231,6 +231,21 @@ public:
         LOCK(::cs_main);
         return ::ChainstateActive().CoinsTip().GetCoin(output, coin);
     }
+    int64_t getBlockSubsidy(int nHeight, bool fProofOfStake, bool fOnlyPoS) override
+    {
+        const CChainParams& chainparams = Params();
+        return GetBlockSubsidy(nHeight, chainparams.GetConsensus(), fProofOfStake, fOnlyPoS);
+    }
+    uint64_t getNetworkStakeWeight() override
+    {
+        LOCK(::cs_main);
+        return GetPoSKernelPS();
+    }
+    double getEstimatedAnnualROI() override
+    {
+        LOCK(::cs_main);
+        return GetEstimatedAnnualROI();
+    }
     WalletClient& walletClient() override
     {
         return *Assert(m_context->wallet_client);
