@@ -22,6 +22,7 @@ class TransactionView;
 class WalletModel;
 class AddressBookPage;
 class StatsPage;
+class FaqPage;
 class StakePage;
 class WalletFrame;
 
@@ -76,6 +77,11 @@ private:
     // StatsPage
     StatsPage *statsWindow;
     //
+
+     // FaqPage
+    FaqPage *faqWindow;
+    //
+
     // StakePage
     StakePage *stakeWindow;
     //
@@ -99,6 +105,8 @@ public Q_SLOTS:
     void gotoInfinitynodePage();  // SIN
     /** Switch to stats page */
     void gotoStatsPage();
+    /** Switch to faq page */
+    void gotoFaqPage();
     /** Switch to stake page */
     void gotoStakePage();
     /** Switch to send coins page */
