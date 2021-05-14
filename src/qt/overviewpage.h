@@ -56,6 +56,7 @@ Q_SIGNALS:
     void outOfSyncWarningClicked();
     void sendCoinsClicked(QString addr = "");
     void receiveCoinsClicked();
+    void toolButtonFaqClicked();
 
 private:
     Ui::OverviewPage *ui;
@@ -92,6 +93,7 @@ private Q_SLOTS:
     void on_toolButtonWebTool_clicked();
     void on_toolButtonWhitePaper_clicked();
     void on_toolButtonDiscord_clicked();
+    void on_toolButtonFaq_clicked();
 };
 
 #endif // BITCOIN_QT_OVERVIEWPAGE_H

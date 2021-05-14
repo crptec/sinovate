@@ -34,6 +34,7 @@ QT_FORMS_UI = \
   qt/forms/signverifymessagedialog.ui \
   qt/forms/stakepage.ui \
   qt/forms/statspage.ui \
+  qt/forms/faqpage.ui \
   qt/forms/transactiondescdialog.ui
 
 # Sinovate 
@@ -82,6 +83,7 @@ QT_MOC_CPP = \
   qt/moc_signverifymessagedialog.cpp \
   qt/moc_splashscreen.cpp \
   qt/moc_statspage.cpp \
+  qt/moc_faqpage.cpp \
   qt/moc_qswitchcontrol.cpp \
   qt/moc_stakepage.cpp \
   qt/moc_trafficgraphwidget.cpp \
@@ -164,6 +166,7 @@ BITCOIN_QT_H = \
   qt/sinpushbutton.h \
   qt/splashscreen.h \
   qt/statspage.h \
+  qt/faqpage.h \
   qt/qswitchcontrol.h \
   qt/stakepage.h \
   qt/styleSheet.h \
@@ -426,6 +429,7 @@ BITCOIN_QT_WALLET_CPP = \
   qt/signverifymessagedialog.cpp \
   qt/sinpushbutton.cpp \
   qt/statspage.cpp \
+  qt/faqpage.cpp \
   qt/stakepage.cpp \
   qt/qswitchcontrol.cpp \
   qt/styleSheet.cpp \

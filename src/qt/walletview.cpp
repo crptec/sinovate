@@ -20,6 +20,7 @@
 #include <qt/walletmodel.h>
 #include <qt/walletframe.h>
 #include "statspage.h"
+#include "faqpage.h"
 #include "stakepage.h"
 
 #include <interfaces/node.h>
@@ -85,6 +86,12 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     statsWindow = new StatsPage(platformStyle);
     addWidget(statsWindow);
     //
+
+     //FaqPage
+    faqWindow = new FaqPage(platformStyle);
+    addWidget(faqWindow);
+    //
+
      //StakePage
     stakeWindow = new StakePage(platformStyle);
     addWidget(stakeWindow);
@@ -100,6 +107,9 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     // Clicking receive coins button show receive coins dialog
     connect(overviewPage, &OverviewPage::receiveCoinsClicked, this, &WalletView::receiveCoins);
+
+    // Clicking Faq button show Faq Page
+    connect(overviewPage, &OverviewPage::toolButtonFaqClicked, [this]{ gotoFaqPage(); });
 
     connect(sendCoinsPage, &SendCoinsDialog::coinsSent, this, &WalletView::coinsSent);
     // Highlight transaction after send
@@ -226,6 +236,14 @@ void WalletView::gotoStatsPage()
     setCurrentWidget(statsWindow);
 }
 //
+
+// FaqPage
+void WalletView::gotoFaqPage()
+{
+    setCurrentWidget(faqWindow);
+}
+//
+
 // StakePage
 void WalletView::gotoStakePage()
 {

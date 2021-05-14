@@ -614,3 +614,7 @@ void OverviewPage::on_toolButtonWebTool_clicked() {
 void OverviewPage::on_toolButtonWhitePaper_clicked() {
     QDesktopServices::openUrl(QUrl("https://sinovate.io/sin-whitepaper/", QUrl::TolerantMode));
 }
+
+void OverviewPage::on_toolButtonFaq_clicked() {
+     Q_EMIT toolButtonFaqClicked();
+}
