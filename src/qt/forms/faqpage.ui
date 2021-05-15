@@ -25,6 +25,9 @@
   <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="rightMargin">
+      <number>25</number>
+     </property>
      <item>
       <widget class="QLabel" name="label">
        <property name="font">
@@ -55,6 +58,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="SinPushButton" name="pushButtonClose">
+       <property name="text">
+        <string>Close FAQ</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -552,7 +562,7 @@ margin-bottom: 10px;</string>
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-1427</y>
+                 <y>-2236</y>
                  <width>658</width>
                  <height>3686</height>
                 </rect>
@@ -625,7 +635,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>1</string>
+                      <string>1-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -730,7 +740,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>2</string>
+                      <string>2-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -838,7 +848,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>3</string>
+                      <string>3-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -943,7 +953,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>4</string>
+                      <string>4-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1049,7 +1059,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>5</string>
+                      <string>5-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1154,7 +1164,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>6</string>
+                      <string>6-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1262,7 +1272,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>7</string>
+                      <string>7-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1367,7 +1377,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>8</string>
+                      <string>8-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1472,7 +1482,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>9</string>
+                      <string>9-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1577,7 +1587,7 @@ margin-bottom: 10px;</string>
                       <string notr="true"/>
                      </property>
                      <property name="text">
-                      <string>10</string>
+                      <string>10-</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1669,6 +1679,13 @@ margin-bottom: 10px;</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SinPushButton</class>
+   <extends>QPushButton</extends>
+   <header>qt/sinpushbutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

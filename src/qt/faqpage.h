@@ -26,6 +26,10 @@ void showEvent(QShowEvent *event) override;
 
 public Q_SLOTS:
     void setSection(int num);
+
+Q_SIGNALS:
+    void pushButtonCloseClicked();
+
 private Q_SLOTS:
     void onFaq1Clicked();
     void onFaq2Clicked();
@@ -37,6 +41,7 @@ private Q_SLOTS:
     void onFaq8Clicked();
     void onFaq9Clicked();
     void onFaq10Clicked();
+    void on_pushButtonClose_clicked();
     
 
 private:
@@ -45,6 +50,7 @@ private:
     int pos = 0;
 
     std::vector<QPushButton*> getButtons();
+
 };
 
 

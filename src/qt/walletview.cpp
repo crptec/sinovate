@@ -110,6 +110,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     // Clicking Faq button show Faq Page
     connect(overviewPage, &OverviewPage::toolButtonFaqClicked, [this]{ gotoFaqPage(); });
+    // Clicking Close FAQ button show Home Page
+    connect(faqWindow, &FaqPage::pushButtonCloseClicked, [this]{ gotoHomePage(); });
 
     connect(sendCoinsPage, &SendCoinsDialog::coinsSent, this, &WalletView::coinsSent);
     // Highlight transaction after send

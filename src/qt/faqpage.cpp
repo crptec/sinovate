@@ -17,7 +17,8 @@ FaqPage::FaqPage(const PlatformStyle *_platformStyle, QWidget *parent) :
 {
     ui->setupUi(this);
 
-	ui->labelContent2->setOpenExternalLinks(true);
+	ui->pushButtonClose->setIcon(platformStyle->MultiStatesIcon(":/icons/close", PlatformStyle::PushButton));
+    ui->labelContent2->setOpenExternalLinks(true);
     ui->labelContent8->setOpenExternalLinks(true);
     ui->labelContent9->setOpenExternalLinks(true);
     ui->labelContent10->setOpenExternalLinks(true);
@@ -121,5 +122,6 @@ FaqPage::~FaqPage()
     delete ui;
 }
 
-
-
+void FaqPage::on_pushButtonClose_clicked() {
+     Q_EMIT pushButtonCloseClicked();
+}

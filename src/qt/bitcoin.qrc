@@ -83,7 +83,7 @@
         <file alias="setupOk">res/icons/ok.png</file>
         <file alias="setupKo">res/icons/ko.png</file>
         <file alias="setupWait">res/icons/waitgif.gif</file>
-        
+        <file alias="close">res/icons/close.png</file>
     </qresource>
     <qresource prefix="/movies">
         <file alias="spinner-000">res/movies/spinner-000.png</file>
