@@ -7,6 +7,7 @@
 #include <sinovate/infinitynodepeer.h>
 #include <sinovate/infinitynodeman.h>
 #include <sinovate/infinitynodemeta.h>
+#include <sinovate/infwalletacces.h>
 
 #include <logging.h>
 #include <util/strencodings.h> // For EncodeBase64
@@ -73,6 +74,37 @@ std::string CInfinitynodePeer::GetMyPeerInfo() const
 {
     std::string myPeerInfo;
     infinitynode_info_t infoInf;
+
+
+    //check wallet
+    std::shared_ptr<CWallet> const wallet = infWalletAcces.GetWalletAcces();
+    if(!wallet){
+        myPeerInfo = strprintf("No wallet is loaded. Please create a wallet, complete the settings.json file and restart node or use 1 time solution with loadwallet.");
+       return myPeerInfo;
+    }
+
+    //check wallet is inlocked
+    CWallet* const pwallet = wallet.get();
+    LOCK(pwallet->cs_wallet);
+
+    if(infWalletAcces.IsWalletlocked(pwallet)) {
+        myPeerInfo = strprintf("Please dont set passphrase for node wallet.");
+        return myPeerInfo;
+    }
+
+    //check node Key in Wallet
+    CTxDestination dest = GetDestinationForKey(pubKeyInfinitynode, OutputType::LEGACY);
+    if(!infWalletAcces.IsMineNodeAddress(pwallet, dest)){
+        myPeerInfo = strprintf("Node PivateKey is not mine or not spendable.");
+        return myPeerInfo;
+    }
+
+    if(!infWalletAcces.IsBalancePositive(pwallet)){
+        myPeerInfo = strprintf("Balance of node is 0.");
+        return myPeerInfo;
+    }
+
+
     if(eType == INFINITYNODE_UNKNOWN)
     {
         myPeerInfo = strprintf("Unable to start peer. Check configuration options such as network behaviour (-listen, -externalip, -port)");
@@ -89,6 +121,8 @@ std::string CInfinitynodePeer::GetMyPeerInfo() const
     if(infnodeman.GetInfinitynodeInfo(EncodeBase64(sPubKey), infoInf)
       && eType == INFINITYNODE_REMOTE && nState == INFINITYNODE_PEER_STARTED) {
         myPeerInfo = strprintf("My Peer is running with metadata ID: %s", infoInf.metadataID);
+
+        //check expired node
         if(nCachedBlockHeight >= infoInf.nExpireHeight) {
             myPeerInfo = strprintf("My Peer is EXPIRED with metadata ID: %s", infoInf.metadataID);
         }

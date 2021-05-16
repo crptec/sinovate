@@ -23,8 +23,6 @@
 #include <script/script.h>
 
 #include <consensus/validation.h>
-#include <wallet/wallet.h>
-#include <wallet/coincontrol.h>
 #include <util/moneystr.h>
 #include <core_io.h>
 
@@ -1772,7 +1770,8 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
                 return false;
             } else {
                 //send register info
-                if(!AutoResigterLockReward(sLockRewardMusig, sErrorCheck, mapLockRewardGroupSigners[nHashGroupSigner].vin.prevout)){
+                //if(!AutoResigterLockReward(sLockRewardMusig, sErrorCheck, mapLockRewardGroupSigners[nHashGroupSigner].vin.prevout)){
+                if(!setRegisterInfo(sLockRewardMusig, mapLockRewardGroupSigners[nHashGroupSigner].vin.prevout)){
                     LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::FindAndBuildMusigLockReward -- Register LockReward false: %s\n", sErrorCheck);
                     free(pubkeys); pubkeys = NULL;
                     free(commitmentpk); commitmentpk = NULL;
@@ -1808,6 +1807,22 @@ bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
 /*
  * STEP 6 : register LockReward
  */
+bool CInfinityNodeLockReward::setRegisterInfo(std::string sLR, COutPoint& infcheck)
+{
+    LOCK(cs_register);
+    sRegisterInfo = sLR;
+    infCandidateOutPoint = infcheck;
+    return true;
+}
+
+void CInfinityNodeLockReward::getRegisterInfo(std::string& strLRInfo, COutPoint& infcheck)
+{
+    LOCK(cs_register);
+    strLRInfo = sRegisterInfo;
+    infcheck = infCandidateOutPoint;
+    return;
+}
+
 bool CInfinityNodeLockReward::AutoResigterLockReward(std::string sLockReward, std::string& strErrorRet, const COutPoint& infCheck)
 {
     if(infinitynodePeer.burntx != infCheck) {
@@ -1823,9 +1838,12 @@ bool CInfinityNodeLockReward::AutoResigterLockReward(std::string sLockReward, st
     std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
     CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
 
-    if(!pwallet || pwallet->IsLocked()) return false;
+    if(!pwallet){
+        strErrorRet = strprintf("No wallet is loaded. Load a wallet using loadwallet or create a new one with createwallet.");
+        return false;
+    }
 
-    LOCK2(cs_main, pwallet->cs_wallet);
+    //LOCK(pwallet->cs_wallet);
 
     bilingual_str strError;
     mapValue_t mapValue;

@@ -161,6 +161,7 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::INFINITYPEER, "infinitypeer"},
     {BCLog::INFINITYMETA, "infinitymeta"},
     {BCLog::INFINITYRSV, "infinityrsv"},
+    {BCLog::INFINITYWA, "infinitywa"},
     {BCLog::STAKING, "staking"},
     {BCLog::ALL, "1"},
     {BCLog::ALL, "all"},

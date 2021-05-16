@@ -9,6 +9,9 @@
 #include <string>
 #include <banman.h>
 
+#include <wallet/wallet.h>
+#include <wallet/coincontrol.h>
+
 class CInfinityNodeLockReward;
 class CLockRewardRequest;
 class CVerifyRequest;
@@ -219,6 +222,10 @@ public:
 
 class CInfinityNodeLockReward
 {
+public:
+    std::string sRegisterInfo;
+    COutPoint infCandidateOutPoint;
+    mutable RecursiveMutex cs_register;
 private:
 
     mutable RecursiveMutex cs;
@@ -286,12 +293,15 @@ public:
     bool CheckMusigPartialSignLR(CNode* pnode, const CMusigPartialSignLR& ps, int& nDos);
     void AddMyPartialSignsMap(const CMusigPartialSignLR& ps);
     bool FindAndBuildMusigLockReward();
-
-    //register LockReward by send tx if i am node of candidate
-    bool AutoResigterLockReward(std::string sLR, std::string& strErrorRet, const COutPoint& infCheck);
+    bool setRegisterInfo(std::string sLR, COutPoint& infcheck);
+    void getRegisterInfo(std::string& strLRInfo, COutPoint& infcheck);
 
     //Check CheckLockRewardRegisterInfo for candidate is OK or KO
     bool CheckLockRewardRegisterInfo(std::string sLR, std::string& strErrorRet, const CTxIn& infCheck, const std::map<int, CInfinitynode>& mapInfinityNodeRank);
+
+    //register LockReward by send tx if i am node of candidate. wallet acces is necessary
+    bool AutoResigterLockReward(std::string sLR, std::string& strErrorRet, const COutPoint& infCheck);
+    bool WalletAccesCheck();
 
     //remove unused data to avoid memory issue
     //call int init.cpp
@@ -305,7 +315,7 @@ public:
     //call in net_processing.cpp (PeerManager) when node receive INV
     void ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos);
     void ProcessDirectMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos);
-    //call in dsnotificationinterface.cpp when node connect a new block
+    //call in infvalidationinterface.cpp when node connect a new block
     void UpdatedBlockTip(const CBlockIndex *pindex, CConnman& connman);
 };
 // validation
