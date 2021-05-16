@@ -3,26 +3,26 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include <util/translation.h>
-#include <sinovate/infwalletacces.h>
+#include <sinovate/infwalletaccess.h>
 #include <sinovate/infinitynodelockreward.h>
 #include <sinovate/infinitynodepeer.h>
 
-CInfWalletAcces infWalletAcces;
+CInfWalletAccess infWalletAccess;
 
-std::shared_ptr<CWallet> CInfWalletAcces::GetWalletAcces() const{
+std::shared_ptr<CWallet> CInfWalletAccess::GetWalletAcces() const{
     std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
     std::shared_ptr<CWallet> pwallet = (wallets.size() > 0) ? wallets[0] : nullptr;
     return pwallet;
 }
 
-bool CInfWalletAcces::IsWalletlocked(const CWallet* pwallet)
+bool CInfWalletAccess::IsWalletlocked(const CWallet* pwallet)
 {
     LOCK(pwallet->cs_wallet);
 
     return pwallet->IsLocked();
 }
 
-bool CInfWalletAcces::IsMineNodeAddress(const CWallet* pwallet, CTxDestination dest)
+bool CInfWalletAccess::IsMineNodeAddress(const CWallet* pwallet, CTxDestination dest)
 {
     LOCK(pwallet->cs_wallet);
 
@@ -31,7 +31,7 @@ bool CInfWalletAcces::IsMineNodeAddress(const CWallet* pwallet, CTxDestination d
     return check;
 }
 
-bool CInfWalletAcces::IsBalancePositive(const CWallet* pwallet)
+bool CInfWalletAccess::IsBalancePositive(const CWallet* pwallet)
 {
     LOCK(pwallet->cs_wallet);
 
@@ -39,15 +39,15 @@ bool CInfWalletAcces::IsBalancePositive(const CWallet* pwallet)
     return (bal.m_mine_trusted > 0);
 }
 
-bool CInfWalletAcces::RegisterLROnchain()
+bool CInfWalletAccess::RegisterLROnchain()
 {
     std::string sLRInfo;
     COutPoint infCheck;
     inflockreward.getRegisterInfo(sLRInfo, infCheck);
 
-    std::shared_ptr<CWallet> const wallet = infWalletAcces.GetWalletAcces();
+    std::shared_ptr<CWallet> const wallet = infWalletAccess.GetWalletAcces();
     if(!wallet){
-        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- No wallet is loaded. Please complete json file\n");
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::RegisterLROnchain -- No wallet is loaded. Please complete json file\n");
         return false;
     }
 
@@ -55,7 +55,7 @@ bool CInfWalletAcces::RegisterLROnchain()
     LOCK(pwallet->cs_wallet);
 
     if(pwallet->IsLocked()){
-        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- Wallet is locked\n");
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::RegisterLROnchain -- Wallet is locked\n");
         return false;
     }
 
@@ -63,29 +63,29 @@ bool CInfWalletAcces::RegisterLROnchain()
     isminetype mine = pwallet->IsMine(nodeDest);
     bool check = bool(mine & ISMINE_SPENDABLE);
     if(!check){
-        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- Node PivateKey is not mine or not spendable\n");
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::RegisterLROnchain -- Node PivateKey is not mine or not spendable\n");
         return false;
     }
 
     const auto bal = pwallet->GetBalance();
     if(bal.m_mine_trusted == 0){
-        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- Balance is 0\n");
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::RegisterLROnchain -- Balance is 0\n");
         return false;
     }
 
     LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- Register: %s, OutPoint: %s\n", sLRInfo, infCheck.ToStringFull());
     if(sLRInfo == "" || sLRInfo.empty()){
-        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- Nothing to register!!!\n");
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::RegisterLROnchain -- Nothing to register!!!\n");
         return false;
     }
 
     if(infinitynodePeer.burntx != infCheck) {
-        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- I am not INFINITY NODE: %s\n", infCheck.ToStringFull());
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::RegisterLROnchain -- I am not INFINITY NODE: %s\n", infCheck.ToStringFull());
         return false;
     }
 
     if(infinitynodePeer.nState != INFINITYNODE_PEER_STARTED){
-        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- INFINITY NODE is not started\n");
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::RegisterLROnchain -- INFINITY NODE is not started\n");
         return false;
     }
 
@@ -111,6 +111,7 @@ bool CInfWalletAcces::RegisterLROnchain()
 
     //select coin from Node Address, accept only this address
     CAmount selected = 0;
+    int nInput = 0;
     for (COutput& out : vPossibleCoins) {
         if(selected >= nAmountToSelect) break;
         if(out.nDepth >= 2 && selected < nAmountToSelect){
@@ -119,12 +120,13 @@ bool CInfWalletAcces::RegisterLROnchain()
             if(pubScript == nodeScript){
                 coin_control.Select(COutPoint(out.tx->GetHash(), out.i));
                 selected += out.tx->tx->vout[out.i].nValue;
+                nInput++;
             }
         }
     }
 
     if(selected < nAmountToSelect){
-        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- Balance of Infinitynode is not enough.\n");
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::RegisterLROnchain -- Balance of Infinitynode is not enough.\n");
         return false;
     }
 
@@ -151,7 +153,7 @@ bool CInfWalletAcces::RegisterLROnchain()
     //Transaction
     CTransactionRef tx;
     if (!pwallet->CreateTransaction(vecSend, tx, nFeeRequired, nChangePosRet, strError, coin_control, fee_calc_out, true)) {
-        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAcces::RegisterLROnchain -- Can not create tx: %s\n",strError.original);
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::RegisterLROnchain -- Can not create tx: %s (nb input: %s Amount: %lld)\n",strError.original, nInput, selected);
         return false;
     }
 
@@ -164,7 +166,7 @@ bool CInfWalletAcces::RegisterLROnchain()
     return true;
 }
 
-void CInfWalletAcces::UpdatedBlockTip(const CBlockIndex *pindex)
+void CInfWalletAccess::UpdatedBlockTip(const CBlockIndex *pindex)
 {
     if(!pindex) return;
     LOCK(cs);

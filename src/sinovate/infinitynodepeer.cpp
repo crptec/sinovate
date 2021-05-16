@@ -7,7 +7,7 @@
 #include <sinovate/infinitynodepeer.h>
 #include <sinovate/infinitynodeman.h>
 #include <sinovate/infinitynodemeta.h>
-#include <sinovate/infwalletacces.h>
+#include <sinovate/infwalletaccess.h>
 
 #include <logging.h>
 #include <util/strencodings.h> // For EncodeBase64
@@ -77,7 +77,7 @@ std::string CInfinitynodePeer::GetMyPeerInfo() const
 
 
     //check wallet
-    std::shared_ptr<CWallet> const wallet = infWalletAcces.GetWalletAcces();
+    std::shared_ptr<CWallet> const wallet = infWalletAccess.GetWalletAcces();
     if(!wallet){
         myPeerInfo = strprintf("No wallet is loaded. Please create a wallet, complete the settings.json file and restart node or use 1 time solution with loadwallet.");
        return myPeerInfo;
@@ -87,19 +87,19 @@ std::string CInfinitynodePeer::GetMyPeerInfo() const
     CWallet* const pwallet = wallet.get();
     LOCK(pwallet->cs_wallet);
 
-    if(infWalletAcces.IsWalletlocked(pwallet)) {
+    if(infWalletAccess.IsWalletlocked(pwallet)) {
         myPeerInfo = strprintf("Please dont set passphrase for node wallet.");
         return myPeerInfo;
     }
 
     //check node Key in Wallet
     CTxDestination dest = GetDestinationForKey(pubKeyInfinitynode, OutputType::LEGACY);
-    if(!infWalletAcces.IsMineNodeAddress(pwallet, dest)){
+    if(!infWalletAccess.IsMineNodeAddress(pwallet, dest)){
         myPeerInfo = strprintf("Node PivateKey is not mine or not spendable.");
         return myPeerInfo;
     }
 
-    if(!infWalletAcces.IsBalancePositive(pwallet)){
+    if(!infWalletAccess.IsBalancePositive(pwallet)){
         myPeerInfo = strprintf("Balance of node is 0.");
         return myPeerInfo;
     }

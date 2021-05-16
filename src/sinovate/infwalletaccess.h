@@ -2,25 +2,25 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef SIN_INFWALLETACCES_H
-#define SIN_INFWALLETACCES_H
+#ifndef SIN_INFWALLETACCESS_H
+#define SIN_INFWALLETACCESS_H
 
 #include <wallet/wallet.h>
 #include <wallet/coincontrol.h>
 
 #include <sinovate/infinitynodelockreward.h>
 
-class CInfWalletAcces;
+class CInfWalletAccess;
 
-extern CInfWalletAcces infWalletAcces;
+extern CInfWalletAccess infWalletAccess;
 
-class CInfWalletAcces
+class CInfWalletAccess
 {
 private:
     int nCachedBlockHeight;
     mutable RecursiveMutex cs;
 public:
-    CInfWalletAcces() : nCachedBlockHeight(0) {}
+    CInfWalletAccess() : nCachedBlockHeight(0) {}
 
     std::shared_ptr<CWallet> GetWalletAcces() const;
     bool IsWalletlocked(const CWallet* pwallet);
@@ -32,4 +32,4 @@ public:
     void UpdatedBlockTip(const CBlockIndex *pindex);
 };
 
-#endif // SIN_INFWALLETACCES_H
+#endif // SIN_INFWALLETACCESS_H

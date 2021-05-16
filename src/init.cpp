@@ -55,7 +55,7 @@
 #include <sinovate/infinitynodemeta.h>
 #include <sinovate/infinitynodelockreward.h>
 #include <sinovate/infvalidationinterface.h>
-#include <sinovate/infwalletacces.h>
+#include <sinovate/infwalletaccess.h>
 #include <sinovate/flat-database.h>
 #include <sinovate/messagesigner.h>
 //<SIN
@@ -1339,7 +1339,7 @@ void ThreadCheckInfinityNode(CConnman& connman)
                 infinitynodePeer.ManageState(connman);
             }
             //check RegisterInfo and sendTx
-            bool checkRegister = infWalletAcces.RegisterLROnchain();
+            bool checkRegister = infWalletAccess.RegisterLROnchain();
         }
         if(nTickDIN % (60 * 5) == 0) {
             if(infnodeman.isReachedLastBlock()){
