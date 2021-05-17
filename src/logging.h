@@ -64,9 +64,10 @@ namespace BCLog {
         INFINITYPEER    = (1 << 25),
         INFINITYMETA    = (1 << 26),
         INFINITYRSV     = (1 << 27),
+        INFINITYWA      = (1 << 28),
 //<SIN
 // proof-of-stake: 
-        STAKING         = (1 << 28),
+        STAKING         = (1 << 29),
     };
 
     class Logger

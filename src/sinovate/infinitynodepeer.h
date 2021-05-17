@@ -80,4 +80,4 @@ private:
     void ManageStateRemote();
 };
 
-#endif // SIN_INFINITYNODEMAN_H
+#endif // SIN_INFINITYNODEPEER_H
