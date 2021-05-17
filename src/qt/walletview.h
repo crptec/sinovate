@@ -83,7 +83,7 @@ private:
     //
 
     // StakePage
-    StakePage *stakeWindow;
+    StakePage *stakePage;
     //
 
 

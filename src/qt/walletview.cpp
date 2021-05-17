@@ -93,8 +93,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     //
 
      //StakePage
-    stakeWindow = new StakePage(platformStyle);
-    addWidget(stakeWindow);
+    stakePage = new StakePage(platformStyle);
+    addWidget(stakePage);
     //
 
     connect(overviewPage, &OverviewPage::outOfSyncWarningClicked, this, &WalletView::requestedSyncWarningInfo);
@@ -142,6 +142,7 @@ void WalletView::setClientModel(ClientModel *_clientModel)
     //>SIN
     infinitynodeListPage->setClientModel(clientModel);
     //<SIN
+    stakePage->setClientModel(_clientModel);
 }
 
 void WalletView::setWalletModel(WalletModel *_walletModel)
@@ -158,6 +159,7 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
 
     receiveCoinsPage->setModel(_walletModel);
     sendCoinsPage->setModel(_walletModel);
+    stakePage->setWalletModel(_walletModel);
     usedReceivingAddressesPage->setModel(_walletModel ? _walletModel->getAddressTableModel() : nullptr);
     usedSendingAddressesPage->setModel(_walletModel ? _walletModel->getAddressTableModel() : nullptr);
 
@@ -178,7 +180,6 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
 
         // Ask for passphrase if needed
         connect(_walletModel, &WalletModel::requireUnlock, this, &WalletView::unlockWallet);
-
         // Show progress dialog
         connect(_walletModel, &WalletModel::showProgress, this, &WalletView::showProgress);
     }
@@ -249,7 +250,7 @@ void WalletView::gotoFaqPage()
 // StakePage
 void WalletView::gotoStakePage()
 {
-    setCurrentWidget(stakeWindow);
+    setCurrentWidget(stakePage);
 }
 //
 void WalletView::gotoReceiveCoinsPage()
