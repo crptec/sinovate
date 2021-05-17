@@ -422,7 +422,7 @@ static RPCHelpMan infinitynodeburnfund()
     pwallet->BlockUntilSyncedToCurrentChain();
 
     // Grab locks here as BlockUntilSyncedToCurrentChain() handles them on its own, but we need them for most other funcs
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     const std::string address = request.params[0].get_str();
     CTxDestination NodeOwnerAddress = DecodeDestination(address);
@@ -560,7 +560,7 @@ static RPCHelpMan infinitynodeupdatemeta()
     pwallet->BlockUntilSyncedToCurrentChain();
 
     // Grab locks here as BlockUntilSyncedToCurrentChain() handles them on its own, but we need them for most other funcs
-    LOCK2(cs_main, pwallet->cs_wallet);
+    LOCK2(pwallet->cs_wallet, cs_main);
 
     const std::string strOwnerAddress = request.params[0].get_str();
     CTxDestination NodeOwnerAddress = DecodeDestination(strOwnerAddress);
