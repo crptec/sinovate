@@ -135,7 +135,6 @@ public:
     int64_t getLastScanWithLimit(){return nLastScanHeight/* + INF_MATURED_LIMIT*/;} // We'll need to move this to functions who actually use it and match it with our max reorg depth
     //build DIN map by scan from nBlockHeight to nLowHeight
     bool updateLastPaidList(int nBlockHeight, int nLowHeight = 0); /* init this to zero for better compat with regtest/testnet/devnets */
-    bool buildInfinitynodeList(int nBeginHeight, int nEndHeight);
 
     //build DIN map immediate when connect block
     bool buildNonMaturedListFromBlock(const CBlock& block, CBlockIndex* pindex,
@@ -155,10 +154,8 @@ public:
     bool calculStatementOnValidation(int nHeight);
     bool deterministicRewardAtHeightOnValidation(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet);
 
-    bool deterministicRewardStatement(int nSinType);
     bool deterministicRewardAtHeight(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet);
     std::map<int, CInfinitynode> calculInfinityNodeRank(int nBlockHeight, int nSinType, bool updateList=false, bool flagExtCall = false);
-    void calculAllInfinityNodesRankAtLastStm();
     std::pair<int, int> getLastStatementBySinType(int nSinType);
     std::string getLastStatementString() const;
     int getRoi(int nSinType, int totalNode);
@@ -172,7 +169,6 @@ public:
     std::string getVectorNodeRankAtHeight(const std::vector<COutPoint>& vOutpoint, int nSinType, int nBlockHeight);
 
     //this function update lastStm and size from UpdatedBlockTip and map
-    void updateLastStmHeightAndSize(int nBlockHeight, int nSinType);
     void CheckAndRemove(CConnman& connman);
     /// This is dummy overload to be used for dumping/loading mncache.dat
     void CheckAndRemove() {}
