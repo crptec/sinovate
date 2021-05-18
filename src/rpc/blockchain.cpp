@@ -117,6 +117,7 @@ double GetPoSKernelPS()
 
     CBlockIndex* pindex = pindexBestHeader;
     CBlockIndex* pindexPrevStake = NULL;
+    const Consensus::Params& consensusParams = Params().GetConsensus();
 
     while (pindex && nStakesHandled < nPoSInterval)
     {
@@ -133,6 +134,9 @@ double GetPoSKernelPS()
         pindex = pindex->pprev;
     }
     double result = 0;
+
+    // Using a fixed denominator reduces the variation spikes //QTUM
+    nStakesTime = consensusParams.nPowTargetSpacing * nStakesHandled;
 
     if (nStakesTime)
         result = dStakeKernelsTriedAvg / nStakesTime;
@@ -257,6 +261,26 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIn
     }
 
     return result;
+}
+
+static RPCHelpMan getestimatedannualroi()
+{
+    return RPCHelpMan{"getestimatedannualroi",
+                "\nReturns the estimated annual return-on-investment (ROI) for staking.\n"
+                "This calculation assumes an always-active staker with no downtimes, so your mileage may vary.\n",
+                {},
+                RPCResult{
+                    RPCResult::Type::NUM, "", "The current estimated annual ROI"},
+                RPCExamples{
+                    HelpExampleCli("getestimatedannualroi", "")
+            + HelpExampleRpc("getestimatedannualroi", "")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    LOCK(cs_main);
+    return GetEstimatedAnnualROI();
+},
+    };
 }
 
 static RPCHelpMan getblockcount()
@@ -2572,6 +2596,7 @@ static const CRPCCommand commands[] =
     { "blockchain",         "getchaintxstats",        &getchaintxstats,        {"nblocks", "blockhash"} },
     { "blockchain",         "getblockstats",          &getblockstats,          {"hash_or_height", "stats"} },
     { "blockchain",         "getbestblockhash",       &getbestblockhash,       {} },
+    { "blockchain",         "getestimatedannualroi",  &getestimatedannualroi,  {} },
     { "blockchain",         "getblockcount",          &getblockcount,          {} },
     { "blockchain",         "getblock",               &getblock,               {"blockhash","verbosity|verbose"} },
     { "blockchain",         "getblockhash",           &getblockhash,           {"height"} },

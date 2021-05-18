@@ -598,6 +598,7 @@ static RPCHelpMan getstakinginfo()
         obj.pushKV("available_at_last_try", ptrStakerStatus->GetLastCoins());
         obj.pushKV("number_attempts_last_try", ptrStakerStatus->GetLastTries());
     }
+    obj.pushKV("staking_nethash",   GetPoSKernelPS());
     return obj;
 },
     };
