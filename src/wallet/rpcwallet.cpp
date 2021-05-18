@@ -4639,6 +4639,43 @@ static RPCHelpMan upgradewallet()
     };
 }
 
+static RPCHelpMan setstakingstatus()
+{
+    return RPCHelpMan{"setstakingstatus",
+                "\nSets staking status to either true or false\n",
+                {
+                    {"status", RPCArg::Type::BOOL, RPCArg::Optional::NO, "The status for staking, either true or false."},
+                },
+                RPCResult{
+                    RPCResult::Type::BOOL, "status", "The applied status"
+                },
+                RPCExamples{
+                    HelpExampleCli("setstakingstatus", "true")
+            + HelpExampleRpc("setstakingstatus", "true")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    RPCTypeCheck(request.params, {
+        UniValue::VBOOL
+        }, true
+    );
+
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    if (!wallet) return NullUniValue;
+    CWallet* const pwallet = wallet.get();
+
+    LOCK(pwallet->cs_wallet);
+
+    pwallet->m_enabled_staking = request.params[0].get_bool();
+
+    UniValue obj(UniValue::VOBJ);
+    obj.pushKV("status", pwallet->m_enabled_staking);
+
+    return obj;
+},
+    };
+}
+
 RPCHelpMan abortrescan();
 RPCHelpMan dumpprivkey();
 RPCHelpMan importprivkey();
@@ -4718,6 +4755,7 @@ static const CRPCCommand commands[] =
     { "wallet",             "walletpassphrase",                 &walletpassphrase,              {"passphrase","timeout"} },
     { "wallet",             "walletpassphrasechange",           &walletpassphrasechange,        {"oldpassphrase","newpassphrase"} },
     { "wallet",             "walletprocesspsbt",                &walletprocesspsbt,             {"psbt","sign","sighashtype","bip32derivs"} },
+    { "wallet",             "setstakingstatus",                 &setstakingstatus,              {"status"} },
 };
 // clang-format on
     return MakeSpan(commands);
