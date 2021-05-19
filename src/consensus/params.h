@@ -100,6 +100,7 @@ struct Params {
     bool fPoSNoRetargeting;
     int64_t nPoS_EMATargetTimespan;
     int nPoSMinStakeValue;
+    int nPoSModSwitch;
 
     // proof-of-stake: helper funcs
 
