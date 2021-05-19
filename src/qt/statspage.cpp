@@ -27,9 +27,8 @@ StatsPage::StatsPage(const PlatformStyle* platformStyle, QWidget *parent) :
 
 StatsPage::~StatsPage()
 {
-    if(m_timer) disconnect(m_timer, SIGNAL(timeout()), this, SLOT(privateSendStatus()));
     delete m_ui;
-    delete m_networkManager;
+    
 }
 
 void StatsPage::getStatistics()

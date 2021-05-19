@@ -331,11 +331,6 @@ void OverviewPage::setPrivacy(bool privacy)
 
 OverviewPage::~OverviewPage()
 {
-    // ++ Price Stats
-    if(m_timer) disconnect(m_timer, SIGNAL(timeout()), this, SLOT(privateSendStatus()));
-    delete m_networkManager;
-    // --
-    
     delete ui;
 }
 

@@ -336,7 +336,7 @@ QAbstractSpinBox::down-arrow:off {
 Scroll Area CSS
 --------------------------------------------*/
 QAbstractScrollArea::corner {
-    background: #transparent;
+    background: transparent;
     border: 0px;
 }
 /*--------------------------------------------
