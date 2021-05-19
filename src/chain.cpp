@@ -195,22 +195,26 @@ void CBlockIndex::SetStakeModifier(const uint256& nStakeModifier)
 // Generates and sets new stake modifier
 void CBlockIndex::SetNewStakeModifier(const uint256& prevoutId)
 {
-    // Shouldn't be called on V1 modifier's blocks (or before setting pprev)
-    //if (!Params().GetConsensus().NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V3_4)) return;
+    // Shouldn't be called  before setting pprev
     if (!pprev) throw std::runtime_error(strprintf("%s : ERROR: null pprev", __func__));
 
     // Generate Hash(prevoutId | prevModifier) - switch with genesis modifier (0) on upgrade block
+    // Shift algo on testnet, we'll be using this since activation block on mainnet
+    const CBlockIndex* pindexWalk = pprev;
+    if (pindexWalk->nHeight > Params().GetConsensus().nPoSModSwitch) {
+        while (pindexWalk && pindexWalk->pprev && (pindexWalk->IsProofOfStake() != true)) {
+            pindexWalk = pindexWalk->pprev;
+        }
+    }
     CHashWriter ss(SER_GETHASH, 0);
     ss << prevoutId;
-    ss << pprev->GetStakeModifier();
+    ss << pindexWalk->GetStakeModifier();
     SetStakeModifier(ss.GetHash());
 }
 
 // Returns V2 stake modifier (uint256)
 uint256 CBlockIndex::GetStakeModifier() const
 {
-    //if (vStakeModifier.empty() || !Params().GetConsensus().NetworkUpgradeActive(nHeight, Consensus::UPGRADE_V3_4))
-    //    return uint256();
     if (vStakeModifier.empty()) {
         return uint256();
     }

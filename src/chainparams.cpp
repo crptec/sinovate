@@ -131,6 +131,7 @@ public:
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;
         consensus.nPoSMinStakeValue = 1;
+        consensus.nPoSModSwitch = 0;
         
         // addresses
         consensus.devAddressPubKey = "841e6bf56b99a59545da932de2efb23ab93b4f44";
@@ -293,6 +294,7 @@ public:
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;
         consensus.nPoSMinStakeValue = 1;
+        consensus.nPoSModSwitch = 24500;
 
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
@@ -546,6 +548,7 @@ public:
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;
         consensus.nPoSMinStakeValue = 1;
+        consensus.nPoSModSwitch = 0;
 
         consensus.devAddress2PubKey = "d63bf3a5822bb2f7ac9ced84ae2c1f319c4253e2";
         consensus.devAddress2 = "n13iidFw2jiVVoz86ouMqv31x7oEe5V4Wm";
