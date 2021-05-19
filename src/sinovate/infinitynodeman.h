@@ -6,6 +6,7 @@
 #define SIN_INFINITYNODEMAN_H
 
 #include <sinovate/infinitynode.h>
+#include <sinovate/infinitynodemeta.h>
 #include <sinovate/infinitynodelockinfo.h>
 
 #include <logging.h>

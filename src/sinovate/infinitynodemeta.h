@@ -3,7 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef SIN_INFINITYNODEMETA_H
-#define SIN_INFINITYNODEMEYA_H
+#define SIN_INFINITYNODEMETA_H
 
 #include <key.h>
 #include <validation.h>
@@ -142,4 +142,4 @@ public:
     /// This is dummy overload to be used for dumping/loading mncache.dat
     void CheckAndRemove() {}
 };
-#endif // SIN_INFINITYNODERSV_H
+#endif // SIN_INFINITYNODEMETA_H

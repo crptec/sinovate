@@ -5,7 +5,6 @@
 #include <sinovate/infinitynodetip.h>
 #include <sinovate/infinitynodeman.h>
 #include <sinovate/infinitynodersv.h>
-#include <sinovate/infinitynodemeta.h>
 #include <sinovate/infinitynodepeer.h>
 #include <sinovate/flat-database.h>
 #include <chainparams.h>
@@ -207,7 +206,6 @@ int CInfinitynodeMan::getRoi(int nSinType, int totalNode)
 bool CInfinitynodeMan::buildNonMaturedListFromBlock(const CBlock& block, CBlockIndex* pindex,
                   CCoinsViewCache& view, const CChainParams& chainparams)
 {
-
     if (Params().NetworkIDString() == CBaseChainParams::MAIN) {
         if(pindex->nHeight < Params().GetConsensus().nInfinityNodeBeginHeight){
             mapInfinitynodesNonMatured.clear();
