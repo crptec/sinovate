@@ -5,7 +5,7 @@ QScrollBar:vertical {
     border-radius: 0px;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    background: #222222;
+    background: transparent;
     width: 19px;
     padding: 10px 4px;
 }
@@ -20,7 +20,7 @@ QScrollBar::handle:vertical:disabled {
 }
 
 QScrollBar:horizontal {
-    background: #222222;
+    background: transparent;
     height: 16px;
     padding: 4px 5px;
 }
@@ -35,7 +35,7 @@ QScrollBar::handle:horizontal:disabled {
 }
 #autoCompleterPopup QScrollBar:vertical {
     border-radius: 0px;
-    background: #222222;
+    background: transparent;
     width: 16px;
     padding: 5px 4px;
 }

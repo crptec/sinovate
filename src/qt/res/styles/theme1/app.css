@@ -382,7 +382,7 @@ QTextEdit QScrollBar:vertical {
     border-radius: 0px;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    background: #222222;
+    background: transparent;
     width: 19px;
     padding: 10px 4px;
 }
@@ -399,7 +399,7 @@ QPlainTextEdit QScrollBar:vertical {
     border-radius: 0px;
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
-    background: #222222;
+    background: transparent;
     width: 19px;
     padding: 10px 4px;
 }
@@ -849,10 +849,10 @@ QPushButton {
     margin: 0px;
 }
 QPushButton:hover{
-    background: #0188c4;
+    background: #1E2B47;
 }
 QPushButton:pressed {
-    background: #007cb3;
+    background: #1E2B47;
     color: #a4d1f0;
 }
 QPushButton::disabled {
@@ -1150,7 +1150,7 @@ DelegationItemWidget #delegationLogo{
     border-radius: 20px;
 }
 #coinControlContentsWidget{
-    background-color: #2e2e2e;
+    background-color: transparent;
 }
 SuperStakerListWidget{
     background-color: #2e2e2e;
