@@ -2,7 +2,6 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <sinovate/infinitynodemeta.h>
 #include <sinovate/infinitynodeman.h>
 #include <sinovate/infinitynodetip.h>
 #include <sinovate/flat-database.h>
@@ -82,21 +81,28 @@ bool CInfinitynodeMeta::Add(CMetadata &meta)
                 bool fCheckExistant = false;
                 if (Params().NetworkIDString() != CBaseChainParams::REGTEST) {
                     for (auto& infpair : mapNodeMetadata) {
-                        CMetadata m = infpair.second;
-                        CAddress add = CAddress(infpair.second.getService(), NODE_NETWORK);
+                        CMetadata mv = infpair.second;
+                        CAddress addv = CAddress(infpair.second.getService(), NODE_NETWORK);
 
-                        if (m.getMetaID() != meta.getMetaID() && (m.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == add.ToStringIP()))
+                        if (mv.getMetaID() != meta.getMetaID() && (mv.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == addv.ToStringIP()))
                         {
-                            if(m.getMetaPublicKey() == sPublicKey){
-                                fCheckExistant = true;
-                                LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::PubKey %s existant in network\n", sPublicKey);
-                            } else if(addMeta.ToStringIP() == add.ToStringIP()){
-                                std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
-                                for (auto& infnodepair : mapInfinitynodes) {
-                                    if (infnodepair.second.getMetaID() == meta.getMetaID() && infnodepair.second.getExpireHeight() >= meta.getMetadataHeight())
-                                    {
-                                        fCheckExistant = true;
-                                        LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::IP %s existant in network for non expired node.\n", addMeta.ToStringIP());
+                            //change consensus for update metadata at the same POS4 height
+                            if(meta.getMetadataHeight() < Params().GetConsensus().nPoSModSwitch){
+                                if (mv.getMetaID() != meta.getMetaID() && (mv.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == addv.ToStringIP())) {
+                                    fCheckExistant = true;
+                                }
+                            } else {
+                                if(mv.getMetaPublicKey() == sPublicKey){
+                                    fCheckExistant = true;
+                                    LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::PubKey %s existant in network\n", sPublicKey);
+                                } else if(addMeta.ToStringIP() == addv.ToStringIP()){
+                                    std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
+                                    for (auto& infnodepair : mapInfinitynodes) {
+                                        if (infnodepair.second.getMetaID() == mv.getMetaID() && infnodepair.second.getExpireHeight() >= meta.getMetadataHeight())
+                                        {
+                                            fCheckExistant = true;
+                                            LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::IP %s existant in network for non expired node.\n", addMeta.ToStringIP());
+                                        }
                                     }
                                 }
                             }

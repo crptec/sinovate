@@ -52,7 +52,6 @@
 #include <sinovate/infinitynodeman.h>
 #include <sinovate/infinitynodersv.h>
 #include <sinovate/infinitynodepeer.h>
-#include <sinovate/infinitynodemeta.h>
 #include <sinovate/infinitynodelockreward.h>
 #include <sinovate/infvalidationinterface.h>
 #include <sinovate/infwalletaccess.h>

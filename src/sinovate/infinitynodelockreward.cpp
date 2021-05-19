@@ -7,7 +7,6 @@
 #include <sinovate/infinitynodetip.h>
 #include <sinovate/infinitynodeman.h>
 #include <sinovate/infinitynodepeer.h>
-#include <sinovate/infinitynodemeta.h>
 #include <sinovate/messagesigner.h>
 #include <net_processing.h>
 #include <netmessagemaker.h>
@@ -2427,22 +2426,22 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                     //payment to the last metadata info, so do not do further check
 
                     if(!fBurnRewardNode){
-                        std::string metaPublicKey = metaSender.getMetaPublicKey();
-                        std::vector<unsigned char> tx_data = DecodeBase64(metaPublicKey.c_str());
-                        CPubKey pubKey(tx_data.begin(), tx_data.end());
-                        if(pubKey.IsValid() && pubKey.IsCompressed()){
-                            CTxDestination dest = GetDestinationForKey(pubKey, OutputType::LEGACY);
-                            std::string address2 = EncodeDestination(dest);
-                            LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- payment for node: %s amount %lld\n",address2, InfPayment);
+                            std::string metaPublicKey = metaSender.getMetaPublicKey();
+                            std::vector<unsigned char> tx_data = DecodeBase64(metaPublicKey.c_str());
+                            CPubKey pubKey(tx_data.begin(), tx_data.end());
+                            if(pubKey.IsValid() && pubKey.IsCompressed()){
+                                CTxDestination dest = GetDestinationForKey(pubKey, OutputType::LEGACY);
+                                std::string address2 = EncodeDestination(dest);
+                                LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- payment for node: %s amount %lld, meta info: %s, meta-ID: %s\n",addressTxDIN2, InfPayment, address2, infOwner.getMetaID());
 
-                            DINPayeeNode = GetScriptForDestination(dest);
-                            if(txout.scriptPubKey == DINPayeeNode && txout.nValue == InfPayment) {
-                                fNodeAddressValid = true;
-                                fBurnRewardNode = false;
+                                DINPayeeNode = GetScriptForDestination(dest);
+                                if(txout.scriptPubKey == DINPayeeNode && txout.nValue == InfPayment) {
+                                    fNodeAddressValid = true;
+                                    fBurnRewardNode = false;
+                                }
+                            }else{
+                                fBurnRewardNode=true;
                             }
-                        }else{
-                            fBurnRewardNode=true;
-                        }
                     }
                 } else {
                     LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- can not found infinitynode candidate %d at height %d\n", SINType, nBlockHeight);
@@ -2450,7 +2449,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                 }
 
                 if(fNodeAddressValid == true && fBurnRewardNode == false) {
-                    LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, Payment for SINtype: %d, address: %d\n", txIndex, SINType, addressTxDIN2);
+                    LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, Payment for SINtype: %d, address: %s\n", txIndex, SINType, addressTxDIN2);
                     counterNodePayment ++;
                 } else if (fNodeAddressValid == false && fBurnRewardNode == true) {
                     if (txout.scriptPubKey == burnfundScript){
@@ -2458,14 +2457,14 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                         counterNodePayment ++;
                     } else {
                         //testnet condition
-                        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nBlockHeight < 11000) {
+                        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nBlockHeight < Params().GetConsensus().nPoSModSwitch) {
                             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, TESTNET condition: No Candiate found for SINtype: %d.\n", txIndex, SINType);
                             counterNodePayment ++;
                         }
                     }
                 } else if(fNodeAddressValid == false && fBurnRewardNode == false){
                         //testnet condition
-                        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nBlockHeight < 11000) {
+                        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nBlockHeight < Params().GetConsensus().nPoSModSwitch) {
                             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, TESTNET condition: No Candiate found for SINtype: %d.\n", txIndex, SINType);
                             counterNodePayment ++;
                         }

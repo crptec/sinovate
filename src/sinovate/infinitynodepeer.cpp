@@ -6,7 +6,6 @@
 #include <sinovate/infinitynodetip.h>
 #include <sinovate/infinitynodepeer.h>
 #include <sinovate/infinitynodeman.h>
-#include <sinovate/infinitynodemeta.h>
 #include <sinovate/infwalletaccess.h>
 
 #include <logging.h>
