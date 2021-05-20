@@ -33,7 +33,7 @@ StakePage::StakePage(const PlatformStyle *_platformStyle, QWidget *parent) :
     m_expectedAnnualROI(0)
 {
     ui->setupUi(this);
-    ui->checkStake->setEnabled(gArgs.GetBoolArg("-staking", false));
+    ui->checkStake->setEnabled(gArgs.GetBoolArg("-staking", true));
     transactionView = new TransactionView(platformStyle, this, true);
     ui->frameStakeRecords->layout()->addWidget(transactionView);
 }
