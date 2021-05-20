@@ -377,7 +377,10 @@ static RPCHelpMan infinitynode()
         return obj;
     }
 
-    return NullUniValue;
+    std::string strInfo = "Unknown command";
+    obj.pushKV("Status:", strInfo);
+
+    return obj;
 },
     };
 }
@@ -602,22 +605,38 @@ static RPCHelpMan infinitynodeupdatemeta()
     }
 
     //check ip and pubkey dont exist
+    bool fExistMetaID = false;
+    std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
+    for (auto& infnodepair : mapInfinitynodes) {
+        if(infnodepair.second.getMetaID() == metaID) fExistMetaID = true;
+    }
+
+    if(!fExistMetaID){
+        std::string strError = strprintf("Error: MetadataID:%s does not exist in network", metaID);
+        throw JSONRPCError(RPC_TYPE_ERROR, strError);
+    }
+
     if(Params().NetworkIDString() != CBaseChainParams::REGTEST) {
         std::map<std::string, CMetadata> mapInfMetadata = infnodemeta.GetFullNodeMetadata();
         for (auto& infmetapair : mapInfMetadata) {
-            CMetadata m = infmetapair.second;
-            CAddress add = CAddress(infmetapair.second.getService(), NODE_NETWORK);
+            CMetadata mv = infmetapair.second;
+            CAddress addv = CAddress(infmetapair.second.getService(), NODE_NETWORK);
             //found metaID => check expire or not
-            if (m.getMetaID() != metaID && (m.getMetaPublicKey() == nodePublickey || addMeta.ToStringIP() == add.ToStringIP())) {
-                if(m.getMetaPublicKey() == nodePublickey){
-                    std::string strError = strprintf("Error: Pubkey already exist in network");
+            if (mv.getMetaID() != metaID && (mv.getMetaPublicKey() == nodePublickey || addMeta.ToStringIP() == addv.ToStringIP())) {
+                //change consensus for update metadata at the same POS4 height
+                if(nCurrentHeight < Params().GetConsensus().nPoSModSwitch){
+                    std::string strError = strprintf("Error: Pubkey or Ip address already exist in network");
                     throw JSONRPCError(RPC_TYPE_ERROR, strError);
-                } else if(addMeta.ToStringIP() == add.ToStringIP()){
-                    std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
-                    for (auto& infnodepair : mapInfinitynodes) {
-                        if (infnodepair.second.getMetaID() == m.getMetaID() && infnodepair.second.getExpireHeight() >= nCurrentHeight) {
-                            std::string strError = strprintf("Error: IP address already exist in network for non expired node");
-                            throw JSONRPCError(RPC_TYPE_ERROR, strError);
+                } else {
+                    if(mv.getMetaPublicKey() == nodePublickey){
+                        std::string strError = strprintf("Error: Pubkey already exist in network");
+                        throw JSONRPCError(RPC_TYPE_ERROR, strError);
+                    } else if(addMeta.ToStringIP() == addv.ToStringIP()){
+                        for (auto& infnodepair : mapInfinitynodes) {
+                            if (infnodepair.second.getMetaID() == mv.getMetaID() && infnodepair.second.getExpireHeight() >= nCurrentHeight) {
+                                std::string strError = strprintf("Error: IP address already exist in network for non expired node");
+                                throw JSONRPCError(RPC_TYPE_ERROR, strError);
+                            }
                         }
                     }
                 }
@@ -681,7 +700,7 @@ static RPCHelpMan infinitynodeupdatemeta()
                 throw JSONRPCError(RPC_WALLET_ERROR, strErrorRet.original);
             }
 
-            pwallet->CommitTransaction(tx, std::move(mapValue), {} /* orderForm */);
+            pwallet->CommitTransaction(tx, std::move(mapValue), {});
 
             results.pushKV("METADATA",streamInfo.str());
 
