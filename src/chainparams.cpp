@@ -131,7 +131,7 @@ public:
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;
         consensus.nPoSMinStakeValue = 1;
-        consensus.nPoSModSwitch = 0;
+        consensus.nPoSModSwitch = 9999999; // the same height is used for updatemetadata fork
         
         // addresses
         consensus.devAddressPubKey = "841e6bf56b99a59545da932de2efb23ab93b4f44";
