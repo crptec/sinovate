@@ -111,6 +111,7 @@ public:
         consensus.nINActivationHeight = 170000; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
         consensus.nINEnforcementHeight = 178000; // Enforcement of IN payments
         consensus.nDINActivationHeight = 550000; // Activation of DIN 1.0 payments, and new dev fee address.
+        consensus.nINMetaUpdateChangeHeight=9999999; // Activation newmethod updatemetadata. Sinovate mainnet The same as POS4
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 170000;
@@ -131,7 +132,7 @@ public:
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;
         consensus.nPoSMinStakeValue = 1;
-        consensus.nPoSModSwitch = 0;
+        consensus.nPoSModSwitch = 0; // the same height is used for updatemetadata fork
         
         // addresses
         consensus.devAddressPubKey = "841e6bf56b99a59545da932de2efb23ab93b4f44";
@@ -274,6 +275,7 @@ public:
         consensus.nINActivationHeight = 100; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
         consensus.nINEnforcementHeight = 120; // Enforcement of IN payments
         consensus.nDINActivationHeight = 2880; // Activation of DIN 1.0 payments, and new dev fee address.
+        consensus.nINMetaUpdateChangeHeight=24500; 
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 170000;
@@ -454,6 +456,8 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
 
+        consensus.nINMetaUpdateChangeHeight=0;
+
         // Activation of Taproot (BIPs 340-342)
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
@@ -528,6 +532,7 @@ public:
         consensus.nINActivationHeight = 5000; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
         consensus.nINEnforcementHeight = 5500; // Enforcement of IN payments
         consensus.nDINActivationHeight = 550000; // Activation of DIN 1.0 payments, and new dev fee address.
+        consensus.nINMetaUpdateChangeHeight=0; // can use last method on regnet
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 500;
