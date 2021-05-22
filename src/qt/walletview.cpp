@@ -219,6 +219,11 @@ void WalletView::gotoHomePage()
     setCurrentWidget(overviewPage);
 }
 
+void WalletView::hideTransactionWidget()
+{
+    overviewPage->showTransactionWidget(false);
+}
+
 void WalletView::gotoHistoryPage()
 {
     setCurrentWidget(transactionsPage);

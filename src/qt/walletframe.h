@@ -112,6 +112,8 @@ public Q_SLOTS:
     void usedReceivingAddresses();
     /** Pass on signal over requested out-of-sync-warning information */
     void outOfSyncWarningClicked();
+    /** Hide transfer summary when in home */
+    void hideTransactionWidget();
 };
 
 #endif // BITCOIN_QT_WALLETFRAME_H
