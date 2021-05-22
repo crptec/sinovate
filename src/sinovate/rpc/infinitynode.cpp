@@ -624,7 +624,7 @@ static RPCHelpMan infinitynodeupdatemeta()
             //found metaID => check expire or not
             if (mv.getMetaID() != metaID && (mv.getMetaPublicKey() == nodePublickey || addMeta.ToStringIP() == addv.ToStringIP())) {
                 //change consensus for update metadata at the same POS4 height
-                if(nCurrentHeight < Params().GetConsensus().nPoSModSwitch){
+                if(nCurrentHeight < Params().GetConsensus().nINMetaUpdateChangeHeight){
                     std::string strError = strprintf("Error: Pubkey or Ip address already exist in network");
                     throw JSONRPCError(RPC_TYPE_ERROR, strError);
                 } else {

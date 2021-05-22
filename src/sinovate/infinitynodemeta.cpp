@@ -87,7 +87,7 @@ bool CInfinitynodeMeta::Add(CMetadata &meta)
                         if (mv.getMetaID() != meta.getMetaID() && (mv.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == addv.ToStringIP()))
                         {
                             //change consensus for update metadata at the same POS4 height
-                            if(meta.getMetadataHeight() < Params().GetConsensus().nPoSModSwitch){
+                            if(meta.getMetadataHeight() < Params().GetConsensus().nINMetaUpdateChangeHeight){
                                 if (mv.getMetaID() != meta.getMetaID() && (mv.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == addv.ToStringIP())) {
                                     fCheckExistant = true;
                                 }
