@@ -113,6 +113,14 @@ void WalletFrame::setCurrentWallet(WalletModel* wallet_model)
     walletView->updateEncryptionStatus();
 }
 
+void WalletFrame::hideTransactionWidget()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)  {
+        i.value()->hideTransactionWidget();
+    }
+}
+
 void WalletFrame::removeWallet(WalletModel* wallet_model)
 {
     if (mapWalletViews.count(wallet_model) == 0) return;
