@@ -361,54 +361,6 @@ const CWalletTx* CWallet::GetWalletTx(const uint256& hash) const
     return &(it->second);
 }
 
-bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
-{
-
-    if (pCoins) pCoins->clear();
-
-    LOCK2(cs_wallet, cs_main);
-    for (const auto& it : mapWallet) {
-        const uint256& wtxid = it.first;
-        const CWalletTx* pcoin = &(it).second;
-
-        if (pcoin->IsCoinBase()) {
-            continue;
-        }
-
-        // Check if the tx is selectable
-        int nDepth;
-        if (!CheckTXAvailability(pcoin, true, nDepth))
-            continue;
-
-        // Check min depth requirement for stake inputs
-        if (nDepth < Params().GetConsensus().nStakeMinDepth) continue;
-
-
-        const CBlockIndex* pindex = nullptr;
-        for (unsigned int index = 0; index < pcoin->tx->vout.size(); index++) {
-
-            // Check min value requirement for stake inputs
-            if (pcoin->tx->vout[index].nValue < Params().GetConsensus().nPoSMinStakeValue * COIN) continue;
-
-            auto res = CheckOutputAvailability(
-                    pcoin->tx->vout[index],
-                    index,
-                    wtxid,
-                    nullptr, // coin control
-                    false,   // fCoinsSelected
-                    false);   // fIncludeLocked
-
-            if (!res.available) continue;
-
-            // found valid coin
-            if (!pCoins) return true;
-            if (!pindex) pindex = LookupBlockIndex(pcoin->m_confirm.hashBlock);
-            pCoins->emplace_back(CStakeableOutput(pcoin, (int) index, nDepth, res.spendable, res.solvable, false, false, pindex));
-        }
-    }
-    return (pCoins && !pCoins->empty());
-}
-
 void CWallet::UpgradeKeyMetadata()
 {
     if (IsLocked() || IsWalletFlagSet(WALLET_FLAG_KEY_ORIGIN_METADATA)) {
@@ -2390,73 +2342,104 @@ CAmount CWallet::GetAvailableBalance(const CCoinControl* coinControl) const
     return balance;
 }
 
-/**
- * proof-of-stake: Test if the transaction is spendable.
- */
-static bool CheckTXAvailabilityInternal(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
+
+bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
 {
-    if (fOnlyConfirmed && !pcoin->IsTrusted()) return false;
-    if (pcoin->GetBlocksToMaturity() > 0) return false;
+    AssertLockHeld(cs_wallet);
 
-    nDepth = pcoin->GetDepthInMainChain();
+    if (pCoins) pCoins->clear();
+    CAmount nTotal = 0;
 
-    // We should not consider coins which aren't at least in our mempool
-    // It's possible for these to be conflicted via ancestors which we may never be able to detect
-    if (nDepth == 0 && !pcoin->InMempool()) return false;
+    std::set<uint256> trusted_parents;
+    for (const auto& entry : mapWallet)
+    {
+        const uint256& wtxid = entry.first;
+        const CWalletTx& wtx = entry.second;
+        const CWalletTx* pcoin = &(entry).second;
 
-    return true;
-}
+        if (!chain().checkFinalTx(*wtx.tx)) {
+            continue;
+        }
 
-// cs_main lock required
-bool CWallet::CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth)
-{
-    AssertLockHeld(cs_main);
-    return CheckTXAvailabilityInternal(pcoin, fOnlyConfirmed, nDepth);
-}
+        if (wtx.IsImmatureCoinBase())
+            continue;
 
-CWallet::OutputAvailabilityResult CWallet::CheckOutputAvailability(
-        const CTxOut& output,
-        const unsigned int outIndex,
-        const uint256& wtxid,
-        const CCoinControl* coinControl,
-        const bool fCoinsSelected,
-        const bool fIncludeLocked) const
-{
-    OutputAvailabilityResult res;
-    std::vector<valtype> vSolutions;
+        int nDepth = wtx.GetDepthInMainChain();
+        if (nDepth < Params().GetConsensus().nStakeMinDepth)
+            continue;
 
-    TxoutType whichType = Solver(output.scriptPubKey, vSolutions);
-    if (whichType != TxoutType::PUBKEYHASH) {
-        return res;
+        // We should not consider coins which aren't at least in our mempool
+        // It's possible for these to be conflicted via ancestors which we may never be able to detect
+        if (nDepth == 0 && !wtx.InMempool())
+            continue;
+
+        bool safeTx = IsTrusted(wtx, trusted_parents);
+
+        // We should not consider coins from transactions that are replacing
+        // other transactions.
+        //
+        // Example: There is a transaction A which is replaced by bumpfee
+        // transaction B. In this case, we want to prevent creation of
+        // a transaction B' which spends an output of B.
+        //
+        // Reason: If transaction A were initially confirmed, transactions B
+        // and B' would no longer be valid, so the user would have to create
+        // a new transaction C to replace B'. However, in the case of a
+        // one-block reorg, transactions B' and C might BOTH be accepted,
+        // when the user only wanted one of them. Specifically, there could
+        // be a 1-block reorg away from the chain where transactions A and C
+        // were accepted to another chain where B, B', and C were all
+        // accepted.
+        if (nDepth == 0 && wtx.mapValue.count("replaces_txid")) {
+            safeTx = false;
+        }
+
+        // Similarly, we should not consider coins from transactions that
+        // have been replaced. In the example above, we would want to prevent
+        // creation of a transaction A' spending an output of A, because if
+        // transaction B were initially confirmed, conflicting with A and
+        // A', we wouldn't want to the user to create a transaction D
+        // intending to replace A', but potentially resulting in a scenario
+        // where A, A', and D could all be accepted (instead of just B and
+        // D, or just A and A' like the user would want).
+        if (nDepth == 0 && wtx.mapValue.count("replaced_by_txid")) {
+            safeTx = false;
+        }
+
+        if (!safeTx) {
+            continue;
+        }
+
+        const CBlockIndex* pindex = nullptr;
+
+        for (unsigned int i = 0; i < wtx.tx->vout.size(); i++) {
+            if (wtx.tx->vout[i].nValue < Params().GetConsensus().nPoSMinStakeValue * COIN) {
+                continue;
+            }
+
+            if (IsLockedCoin(entry.first, i))
+                continue;
+
+            if (IsSpent(wtxid, i))
+                continue;
+
+            isminetype mine = IsMine(wtx.tx->vout[i]);
+
+            if (mine == ISMINE_NO) {
+                continue;
+            }
+
+            std::unique_ptr<SigningProvider> provider = GetSolvingProvider(wtx.tx->vout[i].scriptPubKey);
+
+            bool solvable = provider ? IsSolvable(*provider, wtx.tx->vout[i].scriptPubKey) : false;
+            bool spendable = ((mine & ISMINE_SPENDABLE) != ISMINE_NO) || (((mine & ISMINE_WATCH_ONLY) != ISMINE_NO));
+
+            if (!pCoins) return true;
+            if (!pindex) pindex = LookupBlockIndex(wtx.m_confirm.hashBlock);
+            pCoins->emplace_back(CStakeableOutput(pcoin, (int) i, nDepth, spendable, solvable, false, false, pindex));
+        }
     }
-
-    // Check if the utxo was spent.
-    if (IsSpent(wtxid, outIndex)) return res;
-
-    isminetype mine = IsMine(output);
-
-    // Check If not mine
-    if (mine == ISMINE_NO) return res;
-
-    // Check if watch only utxo are allowed
-    if (mine == ISMINE_WATCH_ONLY && coinControl && !coinControl->fAllowWatchOnly) return res;
-
-    // Skip locked utxo
-    if (!fIncludeLocked && IsLockedCoin(wtxid, outIndex)) return res;
-
-    // Check if we should include zero value utxo
-    if (output.nValue <= 0) return res;
-
-    if (fCoinsSelected && coinControl && !coinControl->fAllowOtherInputs && !coinControl->IsSelected(COutPoint(wtxid, outIndex)))
-        return res;
-
-    std::unique_ptr<SigningProvider> provider = GetSolvingProvider(output.scriptPubKey);
-
-    res.solvable = provider ? IsSolvable(*provider, output.scriptPubKey) : false;
-
-    res.spendable = ((mine & ISMINE_SPENDABLE) != ISMINE_NO) || (((mine & ISMINE_WATCH_ONLY) != ISMINE_NO) && (coinControl && coinControl->fAllowWatchOnly && res.solvable));
-    res.available = true;
-    return res;
+    return (pCoins && !pCoins->empty());
 }
 
 void CWallet::AvailableCoins(std::vector<COutput>& vCoins, bool fOnlySafe, const CCoinControl* coinControl, const CAmount& nMinimumAmount, const CAmount& nMaximumAmount, const CAmount& nMinimumSumAmount, const uint64_t nMaximumCount) const
