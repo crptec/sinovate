@@ -5,7 +5,7 @@
 
 #include <qt/infinitynodelist.h>
 #include <qt/forms/ui_infinitynodelist.h>
-
+#include <qt/askpassphrasedialog.h>
 #include <clientversion.h>
 #include <qt/bitcoinunits.h>
 #include <interfaces/wallet.h>
@@ -1558,6 +1558,8 @@ void InfinitynodeList::nodeSetupSetPaymentTx( QString txHash )  {
 int InfinitynodeList::nodeSetupAPIAddClient( QString firstName, QString lastName, QString email, QString password, QString& strError )  {
     int ret = 0;
 
+LogPrintf("nodeSetupAPIAddClient -- %s\n", getGitCommitId());
+
     QString commit = QString::fromStdString(getGitCommitId());
     QString Service = QString::fromStdString("AddClient");
     QUrl url( InfinitynodeList::NODESETUP_ENDPOINT_BASIC );
@@ -1571,7 +1573,6 @@ int InfinitynodeList::nodeSetupAPIAddClient( QString firstName, QString lastName
     url.setQuery( urlQuery );
 
     QNetworkRequest request( url );
-//LogPrintf("nodeSetupAPIAddClient -- %s\n", url.toString().toStdString());
 
     QNetworkReply *reply = ConnectionManager->get(request);
     QEventLoop loop;
@@ -1990,26 +1991,26 @@ void InfinitynodeList::on_btnRestore_clicked()
 
 bool InfinitynodeList::nodeSetupUnlockWallet()    {
 
-    if (pUnlockCtx!=NULL)   return true; // already unlocked
-    WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
-    if(encStatus == walletModel->Locked) {
-        pUnlockCtx = new WalletModel::UnlockContext(walletModel->requestUnlock());
+    if(!walletModel)
+        return false;
 
-        if(!pUnlockCtx->isValid()) {
-            nodeSetupLockWallet();
-            return false; // Unlock wallet was cancelled
-        }
-//LogPrintf("nodeSetupUnlockWallet: unlocked \n" );
-        return true;
+    // Unlock wallet when requested by wallet model
+    if (walletModel->getEncryptionStatus() == WalletModel::Locked)
+    {
+        AskPassphraseDialog dlg(AskPassphraseDialog::Unlock, this);
+        dlg.setModel(walletModel);
+        dlg.exec();
     }
-    return true;
+
+    return (walletModel->getEncryptionStatus() != WalletModel::Locked);
 }
 
 void InfinitynodeList::nodeSetupLockWallet()    {
-    if (pUnlockCtx==NULL)   return; // already locked
-    delete pUnlockCtx;
-    pUnlockCtx = NULL;
-//LogPrintf("nodeSetupLockWallet: locked \n" );
+
+    if (!walletModel)
+        return;
+
+    walletModel->setWalletLocked(true);
 }
 
 QString InfinitynodeList::nodeSetupGetRPCErrorMessage( UniValue objError )    {
