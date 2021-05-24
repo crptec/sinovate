@@ -270,7 +270,16 @@ void WalletFrame::unlockWallet()
 {
     WalletView *walletView = currentWalletView();
     if (walletView)
-        walletView->unlockWallet();
+    walletView->unlockWallet();
+}
+
+void WalletFrame::lockWallet()
+{
+    WalletView *walletView = currentWalletView();
+    if (walletView)
+    {
+        walletView->lockWallet();
+    }
 }
 
 void WalletFrame::usedSendingAddresses()
