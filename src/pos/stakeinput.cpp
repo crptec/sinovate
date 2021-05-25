@@ -27,12 +27,16 @@ CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
         return nullptr;
     }
 
-    CBlockIndex* chain_tip = ::ChainActive().Tip();
-    while (g_txindex->GetSummary().best_block_height < chain_tip->nHeight) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+    CTransactionRef txPrev = GetTransaction(nullptr, nullptr, txin.prevout.hash, Params().GetConsensus(), hash_block);
+
+    if (txPrev == nullptr) {
+        const CBlockIndex* chain_tip = ::ChainActive().Tip();
+        while (chain_tip && chain_tip->pprev && !txPrev) {
+            txPrev = GetTransaction(chain_tip, nullptr, txin.prevout.hash, Params().GetConsensus(), hash_block);
+            chain_tip = chain_tip->pprev;
+        }
     }
 
-    const CTransactionRef txPrev = GetTransaction(nullptr, nullptr, txin.prevout.hash, Params().GetConsensus(), hash_block);
     if (txPrev == nullptr) {
         error("%s : INFO: read txPrev failed, tx id prev: %s", __func__, txin.prevout.hash.GetHex());
         return nullptr;
