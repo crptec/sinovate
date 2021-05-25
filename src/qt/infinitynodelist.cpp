@@ -1555,8 +1555,6 @@ void InfinitynodeList::nodeSetupSetPaymentTx( QString txHash )  {
 int InfinitynodeList::nodeSetupAPIAddClient( QString firstName, QString lastName, QString email, QString password, QString& strError )  {
     int ret = 0;
 
-LogPrintf("nodeSetupAPIAddClient -- %s\n", getGitCommitId());
-
     QString commit = QString::fromStdString(getGitCommitId());
     QString Service = QString::fromStdString("AddClient");
     QUrl url( InfinitynodeList::NODESETUP_ENDPOINT_BASIC );
@@ -1569,7 +1567,7 @@ LogPrintf("nodeSetupAPIAddClient -- %s\n", getGitCommitId());
     urlQuery.addQueryItem("ver", commit);
     url.setQuery( urlQuery );
 
-    LogPrintf("nodeSetupAPIAddClient -- %s\n", url.toString().toStdString());
+//    LogPrintf("nodeSetupAPIAddClient -- %s\n", url.toString().toStdString());
 
     QNetworkRequest request( url );
 
