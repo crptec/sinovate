@@ -97,6 +97,7 @@ public Q_SLOTS:
     /** Switch to overview (home) page */
     void gotoOverviewPage();
     void gotoHomePage();
+    void hideTransactionWidget();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */
@@ -136,6 +137,9 @@ public Q_SLOTS:
     void changePassphrase();
     /** Ask for passphrase to unlock wallet temporarily */
     void unlockWallet();
+    /** Lock the wallet */
+    void lockWallet();
+
 
     /** Show used sending addresses */
     void usedSendingAddresses();

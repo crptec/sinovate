@@ -179,7 +179,8 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
         connect(_walletModel->getTransactionTableModel(), &TransactionTableModel::rowsInserted, this, &WalletView::processNewTransaction);
 
         // Ask for passphrase if needed
-        connect(_walletModel, &WalletModel::requireUnlock, this, &WalletView::unlockWallet);
+        connect(_walletModel, SIGNAL(requireUnlock()), this, SLOT(unlockWallet()));
+        connect(stakePage, SIGNAL(requireUnlock(bool)), this, SLOT(unlockWallet(bool)));
         // Show progress dialog
         connect(_walletModel, &WalletModel::showProgress, this, &WalletView::showProgress);
     }
@@ -217,6 +218,11 @@ void WalletView::gotoHomePage()
     overviewPage->showTransactionWidget(false);
     overviewPage->showToolBoxWidget(true);
     setCurrentWidget(overviewPage);
+}
+
+void WalletView::hideTransactionWidget()
+{
+    overviewPage->showTransactionWidget(false);
 }
 
 void WalletView::gotoHistoryPage()
@@ -407,6 +413,15 @@ void WalletView::unlockWallet()
         dlg.exec();
     }
 }
+
+void WalletView::lockWallet()
+{
+    if(!walletModel)
+        return;
+
+    walletModel->setWalletLocked(true);
+}
+
 
 void WalletView::usedSendingAddresses()
 {

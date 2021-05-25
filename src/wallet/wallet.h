@@ -749,23 +749,6 @@ private:
 
     bool CreateTransactionInternal(const std::vector<CRecipient>& vecSend, CTransactionRef& tx, CAmount& nFeeRet, int& nChangePosInOut, bilingual_str& error, const CCoinControl& coin_control, FeeCalculation& fee_calc_out, bool sign);
 
-    bool CheckTXAvailability(const CWalletTx* pcoin, bool fOnlyConfirmed, int& nDepth);
-
-    // proof-of-stake specific functions
-    struct OutputAvailabilityResult
-    {
-        bool available{false};
-        bool solvable{false};
-        bool spendable{false};
-    };
-
-    OutputAvailabilityResult CheckOutputAvailability(const CTxOut& output,
-                                                     const unsigned int outIndex,
-                                                     const uint256& wtxid,
-                                                     const CCoinControl* coinControl,
-                                                     const bool fCoinsSelected,
-                                                     const bool fIncludeLocked) const;
-
 public:
     /*
      * Main wallet lock.

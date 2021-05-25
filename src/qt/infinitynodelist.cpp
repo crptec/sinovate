@@ -5,7 +5,7 @@
 
 #include <qt/infinitynodelist.h>
 #include <qt/forms/ui_infinitynodelist.h>
-
+#include <qt/askpassphrasedialog.h>
 #include <clientversion.h>
 #include <qt/bitcoinunits.h>
 #include <interfaces/wallet.h>
@@ -91,14 +91,12 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     clientModel(nullptr),
     walletModel(nullptr)
 {
-LogPrintf("infinitynodelist: start \n");
     motdTimer = new QTimer();
     motd_networkManager = new QNetworkAccessManager();
     motd_request = new QNetworkRequest();
 
     LogPrintf("infinitynodelist: setup UI\n");
     ui->setupUi(this);
-LogPrintf("infinitynodelist: DIN stats\n");
     // ++ DIN ROI Stats
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
@@ -109,7 +107,6 @@ LogPrintf("infinitynodelist: DIN stats\n");
 
 
  ////// +++++++++ motd
-LogPrintf("infinitynodelist: load motd\n");
   // Load Motd
        
 
@@ -1570,8 +1567,9 @@ int InfinitynodeList::nodeSetupAPIAddClient( QString firstName, QString lastName
     urlQuery.addQueryItem("ver", commit);
     url.setQuery( urlQuery );
 
+//    LogPrintf("nodeSetupAPIAddClient -- %s\n", url.toString().toStdString());
+
     QNetworkRequest request( url );
-//LogPrintf("nodeSetupAPIAddClient -- %s\n", url.toString().toStdString());
 
     QNetworkReply *reply = ConnectionManager->get(request);
     QEventLoop loop;
@@ -1990,26 +1988,26 @@ void InfinitynodeList::on_btnRestore_clicked()
 
 bool InfinitynodeList::nodeSetupUnlockWallet()    {
 
-    if (pUnlockCtx!=NULL)   return true; // already unlocked
-    WalletModel::EncryptionStatus encStatus = walletModel->getEncryptionStatus();
-    if(encStatus == walletModel->Locked) {
-        pUnlockCtx = new WalletModel::UnlockContext(walletModel->requestUnlock());
+    if(!walletModel)
+        return false;
 
-        if(!pUnlockCtx->isValid()) {
-            nodeSetupLockWallet();
-            return false; // Unlock wallet was cancelled
-        }
-//LogPrintf("nodeSetupUnlockWallet: unlocked \n" );
-        return true;
+    // Unlock wallet when requested by wallet model
+    if (walletModel->getEncryptionStatus() == WalletModel::Locked)
+    {
+        AskPassphraseDialog dlg(AskPassphraseDialog::Unlock, this);
+        dlg.setModel(walletModel);
+        dlg.exec();
     }
-    return true;
+
+    return (walletModel->getEncryptionStatus() != WalletModel::Locked);
 }
 
 void InfinitynodeList::nodeSetupLockWallet()    {
-    if (pUnlockCtx==NULL)   return; // already locked
-    delete pUnlockCtx;
-    pUnlockCtx = NULL;
-//LogPrintf("nodeSetupLockWallet: locked \n" );
+
+    if (!walletModel)
+        return;
+
+    walletModel->setWalletLocked(true);
 }
 
 QString InfinitynodeList::nodeSetupGetRPCErrorMessage( UniValue objError )    {
