@@ -872,7 +872,6 @@ int CInfinitynodeMan::isPossibleForLockReward(COutPoint burntx)
             int nHeightReward = nLastStmBySINtype + inf.getRank() - 1;
             if(nCachedBlockHeight <= nHeightReward)
             {
-                /*SIN TODO: use <= in next version and loop until N+5*/
                 if((nHeightReward - nCachedBlockHeight) <= Params().GetConsensus().nInfinityNodeCallLockRewardDeepth){
                 //if(nHeightReward == nCachedBlockHeight){
                     LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::isPossibleForLockReward -- Yes, Stm height: %d, reward height: %d, current height: %d\n", nLastStmBySINtype, nHeightReward, nCachedBlockHeight);
@@ -906,14 +905,11 @@ int CInfinitynodeMan::isPossibleForLockReward(COutPoint burntx)
                     int call_temp = nHeightRewardNextStm - nCachedBlockHeight - Params().GetConsensus().nInfinityNodeCallLockRewardDeepth;
                     LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::isPossibleForLockReward -- call for LockReward in %d block, next STM reward height: %d, current height: %d, next rank: %d\n",
                                  call_temp, nHeightRewardNextStm, nCachedBlockHeight, nextStmRank);
-                    /*SIN TODO: use <= in next version and loop until N+5*/
                     if((nHeightRewardNextStm - nCachedBlockHeight) <= Params().GetConsensus().nInfinityNodeCallLockRewardDeepth){
                         return nHeightRewardNextStm;
                     } else {
                         return 0;
                     }
-                    //eturn (nHeightRewardNextStm - nCachedBlockHeight) <= Params().GetConsensus().nInfinityNodeCallLockRewardDeepth;
-                    //return nHeightRewardNextStm == nCachedBlockHeight;
                 }
             }
         }
@@ -953,8 +949,15 @@ bool CInfinitynodeMan::deterministicRewardAtHeightOnValidation(int nBlockHeight,
         LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeightOnValidation -- can not calculate rank at %d\n", lastStatement);
         return false;
     }
+
+    /*at the begin of network, lastStatementSize=1, each block is begin/end of Stm at the same time*/
+    if(rankOfStatement.size() == 1){
+        infinitynodeRet = rankOfStatement[1];
+        return true;
+    }
+
     if((nBlockHeight < lastStatement) || (rankOfStatement.size() < (nBlockHeight - lastStatement + 1))){
-        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeightOnValidation -- out of range at %d\n", lastStatement);
+        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeightOnValidation -- out of range at lastStatement: %d, nBlockHeight: %d, size: %d\n", lastStatement, nBlockHeight, rankOfStatement.size());
         return false;
     }
     infinitynodeRet = rankOfStatement[nBlockHeight - lastStatement + 1];
@@ -1044,7 +1047,7 @@ bool CInfinitynodeMan::deterministicRewardAtHeight(int nBlockHeight, int nSinTyp
         return false;
     }
     if((nBlockHeight < lastStatement) || (rankOfStatement.size() < (nBlockHeight - lastStatement + 1))){
-        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight -- out of range at %d\n", lastStatement);
+        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight -- out of range at lastStatement:%d, nBlockHeight:%d, size:%d\n", lastStatement, nBlockHeight, rankOfStatement.size());
         return false;
     }
 
