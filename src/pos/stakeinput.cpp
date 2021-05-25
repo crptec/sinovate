@@ -14,6 +14,9 @@
 #include <validation.h>
 #include <chainparams.h>
 
+#include <chrono>
+#include <thread>
+
 CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
 {
 
@@ -22,6 +25,11 @@ CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
     if (!g_txindex) {
         error("%s : FATAL: No txindex enabled, PoS validation failed", __func__);
         return nullptr;
+    }
+
+    CBlockIndex* chain_tip = ::ChainActive().Tip();
+    while (g_txindex->GetSummary().best_block_height < chain_tip->nHeight) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
     const CTransactionRef txPrev = GetTransaction(nullptr, nullptr, txin.prevout.hash, Params().GetConsensus(), hash_block);
