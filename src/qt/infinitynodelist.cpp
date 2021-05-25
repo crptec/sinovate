@@ -91,14 +91,12 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     clientModel(nullptr),
     walletModel(nullptr)
 {
-LogPrintf("infinitynodelist: start \n");
     motdTimer = new QTimer();
     motd_networkManager = new QNetworkAccessManager();
     motd_request = new QNetworkRequest();
 
     LogPrintf("infinitynodelist: setup UI\n");
     ui->setupUi(this);
-LogPrintf("infinitynodelist: DIN stats\n");
     // ++ DIN ROI Stats
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
@@ -109,7 +107,6 @@ LogPrintf("infinitynodelist: DIN stats\n");
 
 
  ////// +++++++++ motd
-LogPrintf("infinitynodelist: load motd\n");
   // Load Motd
        
 
@@ -1558,8 +1555,6 @@ void InfinitynodeList::nodeSetupSetPaymentTx( QString txHash )  {
 int InfinitynodeList::nodeSetupAPIAddClient( QString firstName, QString lastName, QString email, QString password, QString& strError )  {
     int ret = 0;
 
-LogPrintf("nodeSetupAPIAddClient -- %s\n", getGitCommitId());
-
     QString commit = QString::fromStdString(getGitCommitId());
     QString Service = QString::fromStdString("AddClient");
     QUrl url( InfinitynodeList::NODESETUP_ENDPOINT_BASIC );
@@ -1571,6 +1566,8 @@ LogPrintf("nodeSetupAPIAddClient -- %s\n", getGitCommitId());
     urlQuery.addQueryItem("password2", password);
     urlQuery.addQueryItem("ver", commit);
     url.setQuery( urlQuery );
+
+//    LogPrintf("nodeSetupAPIAddClient -- %s\n", url.toString().toStdString());
 
     QNetworkRequest request( url );
 

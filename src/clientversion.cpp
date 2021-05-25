@@ -44,7 +44,7 @@ const std::string CLIENT_NAME("Satoshi");
     DO_STRINGIZE(suffix)
 
 const std::string CLIENT_BUILD(BUILD_DESC BUILD_SUFFIX);
-const std::string COMMIT_ID(BUILD_COMMIT(BUILD_SUFFIX));
+const std::string COMMIT_ID(BUILD_GIT_COMMIT);
 
 static std::string FormatVersion(int nVersion)
 {
