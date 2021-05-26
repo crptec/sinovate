@@ -37,10 +37,6 @@ private Q_SLOTS:
     void onFaq4Clicked();
     void onFaq5Clicked();
     void onFaq6Clicked();
-    void onFaq7Clicked();
-    void onFaq8Clicked();
-    void onFaq9Clicked();
-    void onFaq10Clicked();
     void on_pushButtonClose_clicked();
     
 

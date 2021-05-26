@@ -18,12 +18,8 @@ FaqPage::FaqPage(const PlatformStyle *_platformStyle, QWidget *parent) :
     ui->setupUi(this);
 
 	ui->pushButtonClose->setIcon(platformStyle->MultiStatesIcon(":/icons/close", PlatformStyle::PushButton));
-    ui->labelContent2->setOpenExternalLinks(true);
-    ui->labelContent8->setOpenExternalLinks(true);
-    ui->labelContent9->setOpenExternalLinks(true);
-    ui->labelContent10->setOpenExternalLinks(true);
-
-           
+    ui->labelContent3->setOpenExternalLinks(true);
+    ui->labelContent6->setOpenExternalLinks(true);
         
 
     // Buttons
@@ -33,10 +29,7 @@ FaqPage::FaqPage(const PlatformStyle *_platformStyle, QWidget *parent) :
     connect(ui->pushButtonFaq4, &QPushButton::clicked, this, &FaqPage::onFaq4Clicked);
     connect(ui->pushButtonFaq5, &QPushButton::clicked, this, &FaqPage::onFaq5Clicked);
     connect(ui->pushButtonFaq6, &QPushButton::clicked, this, &FaqPage::onFaq6Clicked);
-    connect(ui->pushButtonFaq7, &QPushButton::clicked, this, &FaqPage::onFaq7Clicked);
-    connect(ui->pushButtonFaq8, &QPushButton::clicked, this, &FaqPage::onFaq8Clicked);
-    connect(ui->pushButtonFaq9, &QPushButton::clicked, this, &FaqPage::onFaq9Clicked);
-    connect(ui->pushButtonFaq10, &QPushButton::clicked, this, &FaqPage::onFaq10Clicked);
+    
 }
     
 void FaqPage::showEvent(QShowEvent *event){
@@ -80,23 +73,6 @@ void FaqPage::onFaq6Clicked(){
     ui->scrollAreaFaq->verticalScrollBar()->setValue(ui->widgetFaq6->y());
 }
 
-void FaqPage::onFaq7Clicked(){
-    ui->scrollAreaFaq->verticalScrollBar()->setValue(ui->widgetFaq7->y());
-}
-
-void FaqPage::onFaq8Clicked(){
-    ui->scrollAreaFaq->verticalScrollBar()->setValue(ui->widgetFaq8->y());
-}
-
-void FaqPage::onFaq9Clicked(){
-    ui->scrollAreaFaq->verticalScrollBar()->setValue(ui->widgetFaq9->y());
-}
-
-void FaqPage::onFaq10Clicked(){
-    ui->scrollAreaFaq->verticalScrollBar()->setValue(ui->widgetFaq10->y());
-}
-
-
 
 std::vector<QPushButton*> FaqPage::getButtons(){
     return {
@@ -106,10 +82,6 @@ std::vector<QPushButton*> FaqPage::getButtons(){
             ui->pushButtonFaq4,
             ui->pushButtonFaq5,
             ui->pushButtonFaq6,
-            ui->pushButtonFaq7,
-            ui->pushButtonFaq8,
-            ui->pushButtonFaq9,
-            ui->pushButtonFaq10
     };
  	
 

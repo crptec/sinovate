@@ -243,7 +243,7 @@ margin-top:10px;
 margin-bottom: 10px;</string>
                     </property>
                     <property name="text">
-                     <string>3) What is an INFINITY NODE 1.0?</string>
+                     <string>3) Multi-Tiered Infinity Nodes</string>
                     </property>
                     <property name="checkable">
                      <bool>true</bool>
@@ -282,7 +282,7 @@ margin-top:10px;
 margin-bottom: 10px;</string>
                     </property>
                     <property name="text">
-                     <string>4) What differentiates Infinite Node 1.0 and masternode?</string>
+                     <string>4) What is Proof of Stake?</string>
                     </property>
                     <property name="checkable">
                      <bool>true</bool>
@@ -315,7 +315,7 @@ margin-top:10px;
 margin-bottom: 10px;</string>
                     </property>
                     <property name="text">
-                     <string>5) What is Proof of Stake?</string>
+                     <string>5) What are the Specs and Block Rewards?</string>
                     </property>
                     <property name="checkable">
                      <bool>true</bool>
@@ -348,139 +348,7 @@ margin-top:10px;
 margin-bottom: 10px;</string>
                     </property>
                     <property name="text">
-                     <string>6) What are the Specs and Block Rewards?</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="pushButtonFaq7">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>50</height>
-                     </size>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">border-radius: 0px;
-margin-top:10px;
-margin-bottom: 10px;</string>
-                    </property>
-                    <property name="text">
-                     <string>7) What is the X25X algorithm?</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="pushButtonFaq8">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>50</height>
-                     </size>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">border-radius: 0px;
-margin-top:10px;
-margin-bottom: 10px;</string>
-                    </property>
-                    <property name="text">
-                     <string>8) Where can I get support when needed?</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="pushButtonFaq9">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>50</height>
-                     </size>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">border-radius: 0px;
-margin-top:10px;
-margin-bottom: 10px;</string>
-                    </property>
-                    <property name="text">
-                     <string>9) What are SIN block Explorer functions?</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="pushButtonFaq10">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>50</height>
-                     </size>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">border-radius: 0px;
-margin-top:10px;
-margin-bottom: 10px;</string>
-                    </property>
-                    <property name="text">
-                     <string>10) Where can I get more detailed information?</string>
+                     <string>6) Where can I get support and more detailed information?</string>
                     </property>
                     <property name="checkable">
                      <bool>true</bool>
@@ -562,9 +430,9 @@ margin-bottom: 10px;</string>
                <property name="geometry">
                 <rect>
                  <x>0</x>
-                 <y>-2236</y>
+                 <y>-1039</y>
                  <width>658</width>
-                 <height>3686</height>
+                 <height>2524</height>
                 </rect>
                </property>
                <property name="autoFillBackground">
@@ -658,7 +526,7 @@ margin-bottom: 10px;</string>
                         </font>
                        </property>
                        <property name="text">
-                        <string>What is a SINOVATE?</string>
+                        <string>What is SINOVATE?</string>
                        </property>
                        <property name="wordWrap">
                         <bool>true</bool>
@@ -684,7 +552,7 @@ margin-bottom: 10px;</string>
                      <item>
                       <widget class="QLabel" name="labelContent1">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Blockchain Cloud Storage&lt;/span&gt;&lt;/p&gt;&lt;p&gt;SINOVATE (SIN) is a technically sound, open-source, and state of the art community-driven public blockchain for answering Big Data paradigms.&lt;/p&gt;&lt;p&gt;Incorruptible Data Storage (I.D.S) provides decentralized cloud storage, leveraging thousands of Infinity Nodes (Evolved Masternodes) that are low cost and highly secure.  &lt;/p&gt;&lt;p&gt;Combining the innovations on both the proof-of-work layer with the uniqueness of the Infinity Node coin burning system delivers a robust standard of security in the blockchain space. &lt;/p&gt;&lt;p&gt;SINOVATE did not have an ICO. There was no pre-sale of coins, and no coins were pre-mined. &lt;/p&gt;&lt;p&gt;Since its inception in September 2018, the SINOVATE project has strived to deliver innovative solutions in the blockchain space. A complete democratic solution was created by respecting and taking on board opinions from the community. Ultimately, the community is the most critical aspect of any blockchain project. It is vital for all members of the community to feel welcome and appreciated.&lt;/p&gt;&lt;p&gt;SINOVATE has a different perspective on how to utilize blockchain technology to improve private and corporate parties.&lt;/p&gt;&lt;p&gt;The goal is to create a blockchain platform in which the community's needs are accommodated while learning from past mistakes and misfortune. SINOVATE is committed to transparency, accountability, and honesty as they strive to solve existing problems within the blockchain technology space. As succinctly put by the slogan; create, build, and innovate. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SINOVATE is a state of the art innovative public Blockchain focused on decentralized cloud solutions to overcome scalability, decentralization, and security challenges. We are ready to adapt, evolve, and sustain our relevance in a continuously changing environment. The goal is to launch innovations combined with a user-friendly platform to integrate into daily life. Our team is committed to transparency, accountability, and honesty. Combining both the PoW chain security and PoS chain security through the usage of hybrid proofs and PoB for Infinity Node notarization as an additional Byzantine-Fault-Tolerant (BFT) chain-based algorithm gives the SINOVATE Blockchain the highest, academically proven level of on-chain security. IDS provides high-speed decentralized cloud storage. Leveraging thousands of Infinity Nodes that do not require high user fees and enforce network-wide security protocols give users power and control over their private data. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SINOVATE did not have an ICO. There was no pre-sale of coins, and no coins were pre-mined. &lt;/p&gt;&lt;p&gt;Since its inception in September 2018, the SINOVATE project has strived to deliver innovative solutions in the blockchain space. A complete democratic solution was created by respecting and taking on board opinions from the community. Ultimately, the community is the most critical aspect of any blockchain project. It is vital for all members of the community to feel welcome and appreciated.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SINOVATE has a different perspective on how to utilize blockchain technology to improve private and corporate parties.&lt;/p&gt;&lt;p&gt;The goal is to create a blockchain platform in which the community's needs are accommodated while learning from past mistakes and misfortune. SINOVATE is committed to transparency, accountability, and honesty as they strive to solve existing problems within the blockchain technology space. As succinctly put by the slogan; create, build, and innovate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -792,7 +660,7 @@ margin-bottom: 10px;</string>
                      <item>
                       <widget class="QLabel" name="labelContent2">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Infinity Nodes are similar to traditional masternodes implemented by other cryptocurrency projects but have been designed differently for SINOVATE. They help to support the network by granting their holders additional bespoke features via a continuously connected GUI (graphical user interface) wallet. &lt;/p&gt;&lt;p&gt;Like simple nodes, a full copy of the main SIN blockchain is replicated by the Infinity Node holder, who is regularly rewarded daily with SIN coins as compensation for the services provided. &lt;/p&gt;&lt;p&gt;Therefore, it is an alternative means to acquire SIN coins besides the proof-of-work mining layer. &lt;/p&gt;&lt;p&gt;Multi-Tiered Infinity Nodes&lt;/p&gt;&lt;p&gt;There are three different tiers of Infinity Node available for users of the SINOVATE network. It is described as an evolution of previously implemented masternode technology by other blockchain projects. Each tier or layer provides different functions, but they all increase the overall decentralization and stability of the network. &lt;/p&gt;&lt;p&gt;Each tier requires different collateral in order to create the Infinity Node: &lt;/p&gt;&lt;p&gt;1. 100,000 SIN coins for Mini SIN&lt;/p&gt;&lt;p&gt;2. 500,000 SIN coins for Mid SIN &lt;/p&gt;&lt;p&gt;3. 1,000,000 SIN coins for Big SIN &lt;/p&gt;&lt;p&gt;For full transparency, SIN coins used to create Infinity Nodes are burnt and sent to the unspendable SIN wallet address below.&lt;/p&gt;&lt;p&gt;SinBurnAddress123456789SuqaXbx3AMC&lt;/p&gt;&lt;p&gt;For the installation guides, please visit &lt;a href=&quot;https://docs.sinovate.io/#/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;https://docs.sinovate.io/#/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Infinity Nodes are a first of its kind of burn-collateralized nodes that receive monetary incentives for running their hardware and hosting files. They are the backbone of the IDS network. Like other Blockchains work, the main SINOVATE chain relies upon nodes dispersed across the globe without concern for borders or jurisdiction. Each node hosts a copy of the main SIN Blockchain. InfinityNodes use a custom deterministic reward algorithm secured by Schnorr signatures for node validation. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;They provide bespoke functions such as controlling inflation and storing data that regular nodes cannot deliver. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Deterministic Infinity Nodes are superior to Dash legacy masternodes or any other service nodes.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;1. Schnorr based Multi-Signature signing scheme (MuSig) &lt;/p&gt;&lt;p&gt;2. Provably fair and openly verifiable fully deterministic node rewards &lt;/p&gt;&lt;p&gt;3. Inflation control with a burn-to-run node ecosystem &lt;/p&gt;&lt;p&gt;4. Fully on-chain node registration and servicing &lt;/p&gt;&lt;p&gt;5. Decentralized Autonomous Organisation (DAO) with node democracy &lt;/p&gt;&lt;p&gt;6. Node incentives ensure sustainability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -871,7 +739,7 @@ margin-bottom: 10px;</string>
                         </font>
                        </property>
                        <property name="text">
-                        <string>What is an INFINITY NODE 1.0?</string>
+                        <string>Multi-Tiered Infinity Nodes</string>
                        </property>
                        <property name="wordWrap">
                         <bool>true</bool>
@@ -897,7 +765,7 @@ margin-bottom: 10px;</string>
                      <item>
                       <widget class="QLabel" name="labelContent3">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An Infinity Node is an improved version of a conventional masternode implemented by the DASH cryptocurrency. There are still many similarities between the two. Going forward SINOVATE Infinity Nodes will differentiate entirely from the DASH masternode code, and SINOVATE will become the first of its kind, a pure Infinity Node 1.0 Platform.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An Infinity Node is an improved version of a conventional masternode implemented by the DASH cryptocurrency. There are still many similarities between the two. Going forward SINOVATE Infinity Nodes will differentiate entirely from the DASH masternode code, and SINOVATE will become the first of its kind, a pure Infinity Node 1.0 Platform.There are three different tiers of Infinity Node available for users of the SINOVATE network. It is described as an evolution of previously implemented masternode technology by other blockchain projects. Each tier or layer provides different functions, but they all increase the overall decentralization and stability of the network. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Each tier requires different collateral in order to create the Infinity Node: &lt;/p&gt;&lt;p&gt;1. 100,000 SIN coins for Mini SIN&lt;/p&gt;&lt;p&gt;2. 500,000 SIN coins for Mid SIN &lt;/p&gt;&lt;p&gt;3. 1,000,000 SIN coins for Big SIN &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SIN coins used to create Infinity Nodes are burnt and sent to the unspendable SIN wallet address below for full transparency.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SinBurnAddress123456789SuqaXbx3AMC&lt;br/&gt;&lt;br/&gt;For the installation guides, please visit &lt;a href=&quot;https://docs.sinovate.io/#/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;https://docs.sinovate.io/#/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -976,8 +844,7 @@ margin-bottom: 10px;</string>
                         </font>
                        </property>
                        <property name="text">
-                        <string>What differentiates Infinite Node 1.0 
- and masternode technology?</string>
+                        <string>What is Proof of Stake?</string>
                        </property>
                        <property name="wordWrap">
                         <bool>true</bool>
@@ -1003,7 +870,7 @@ margin-bottom: 10px;</string>
                      <item>
                       <widget class="QLabel" name="labelContent4">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The Infinity Node 1.0 Platform will provide the SINOVATE public blockchain with:&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;· A more secure and efficient network protocol.&lt;/p&gt;&lt;p&gt;· A more streamlined network experience. Less CPU utilization and less network communication.&lt;/p&gt;&lt;p&gt;· The elimination of many discovered security flaws found in the masternode code.&lt;/p&gt;&lt;p&gt;· The revolution of on-chain node structures.&lt;/p&gt;&lt;p&gt;· A purely custom-built code different from masternodes.&lt;/p&gt;&lt;p&gt;· Infinity Nodes will communicate on-chain (no need to start alias)&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;1) Schnorr MuSig -&amp;gt; Schnorr based Multi-signature signing scheme (MuSig)&lt;/p&gt;&lt;p&gt;2) Provably fair and openly verifiable fully deterministic node rewards&lt;/p&gt;&lt;p&gt;3) Burn-to-run node ecosystem ensures inflation is controlled&lt;/p&gt;&lt;p&gt;4) Fully on-chain node registration and servicing&lt;/p&gt;&lt;p&gt;5) Decentralized Autonomous Organisation (DAO) with node democracy&lt;/p&gt;&lt;p&gt;6) Node incentives ensure sustainability&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Soon, the first phase of the transition will involve the simultaneous operation of both the Infinity Node 1.0 and masternode code. A complete transition to the sole Infinity Node 1.0 Platform will occur as soon as set requirements are met. It will result in the deletion of all legacy masternode code from the SINOVATE code base.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Proof of Stake, or PoS, is a consensus algorithm that helps secure the SINOVATE blockchain and rewards participants. Anyone with coins in their wallet can start staking, which grants a chance at winning rewards on successfully proposed blocks. All of this is seamlessly taken care of by the wallet backend, so once you have activated staking, you are good to go.&lt;/p&gt;&lt;p&gt;Coins will be staked automatically after 1440 blocks, and stake rewards can be spent after 1440 blocks. This is done to ensure fair participation and offers higher security from a chain perspective.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt; Anyone with coins can start staking. Staking grants a chance at winning rewards on successfully proposed blocks. To start Stake, click on the Staking &amp;quot;switch button&amp;quot; and keep the wallet running.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1082,7 +949,7 @@ margin-bottom: 10px;</string>
                         </font>
                        </property>
                        <property name="text">
-                        <string>What is Proof of Stake?</string>
+                        <string>What are the Specs and Block Rewards?</string>
                        </property>
                        <property name="wordWrap">
                         <bool>true</bool>
@@ -1108,7 +975,7 @@ margin-bottom: 10px;</string>
                      <item>
                       <widget class="QLabel" name="labelContent5">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Proof of Stake, or PoS, is a consensus algorithm which helps secure the SINOVATE blockchain and rewards participants for doing so.&lt;/p&gt;&lt;p&gt;Anyone with coins in their wallet can start staking, which grants a chance at winning rewards on successfully proposed blocks.&lt;/p&gt;&lt;p&gt;All of this is seamlessly taken care of by the wallet backend, so once you’ve activated staking you’re good to go.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name: SINOVATE&lt;/p&gt;&lt;p&gt;Ticker: SIN&lt;/p&gt;&lt;p&gt;Proof-of-Work Algorithm: X25X &lt;/p&gt;&lt;p&gt;Proof-of-Stake Algorithm: PoS4&lt;/p&gt;&lt;p&gt;Collateralized Nodes: Deterministic Infinity Nodes&lt;/p&gt;&lt;p&gt;Block Rewards: PoS 50 SIN, PoW 12.5 SIN &amp;amp; Infinity Nodes tiered rewards&lt;/p&gt;&lt;p&gt;Block Time: 1 minute&lt;/p&gt;&lt;p&gt;Current Blockchain Size: 2.8 GB&lt;/p&gt;&lt;p&gt;Difficulty Retargeting Algo: LWMA&lt;/p&gt;&lt;p&gt;DAO Governance: RSV Revolving Sovereignty Votes&lt;/p&gt;&lt;p&gt;51% Attack Solution: Deterministically signed chain tips and 55 blocks finality&lt;/p&gt;&lt;p&gt;Infinity Nodes Collateral: 100K-500K-1000K (three-tiers)&lt;/p&gt;&lt;p&gt;Max Supply: Yearly Deflating Supply with Proof-of-Burn (uncapped)&lt;/p&gt;&lt;p&gt;Premine: No&lt;/p&gt;&lt;p&gt;P2P Port: 20970&lt;/p&gt;&lt;p&gt;RPC Port: 20971&lt;/p&gt;&lt;p&gt;TPS: No segwit 1120 tx/s (theoretical), segwit-only 2240 tx/s (theoretical)&lt;/p&gt;&lt;p&gt;Treasury: 10% skim of each block subsidy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1216,7 +1083,7 @@ margin-bottom: 10px;</string>
                      <item>
                       <widget class="QLabel" name="labelContent6">
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name: SINOVATE&lt;/p&gt;&lt;p&gt;Ticker: SIN&lt;/p&gt;&lt;p&gt;Proof-of-Burn Algorithm:  X25X&lt;/p&gt;&lt;p&gt;Collateralized Nodes: Deterministic Infinity Nodes&lt;/p&gt;&lt;p&gt;Block Rewards: PoW 12.5 SIN &amp;amp; Infinity Nodes 3150 SIN&lt;/p&gt;&lt;p&gt;Block Time: 2 minutes&lt;/p&gt;&lt;p&gt;Current Blockchain Size: 1.9 GB&lt;/p&gt;&lt;p&gt;Difficulty Retargeting Algo: LWMA&lt;/p&gt;&lt;p&gt;E-Governance: R.S.V. Revolving Sovereignty Votes&lt;/p&gt;&lt;p&gt;51% Attack Solution: LWMA &amp;amp; Reorg 55 (fork rejection)&lt;/p&gt;&lt;p&gt;Infinity Nodes Collateral: 100K-500K-1000K (three-tiers)&lt;/p&gt;&lt;p&gt;Max Supply: Yearly Deflating Supply-Proof of Burn-No Cap&lt;/p&gt;&lt;p&gt;Pre-Mine: No&lt;/p&gt;&lt;p&gt;P2P Port: 20970&lt;/p&gt;&lt;p&gt;RPC Port: 20971&lt;/p&gt;&lt;p&gt;Treasury: 10%&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can get continuous support through our &lt;a href=&quot;https://discordapp.com/invite/CWbnW5y&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Discord&lt;/span&gt;&lt;/a&gt; support channel.&lt;/p&gt;&lt;p&gt;For more detailed information, you can visit the &lt;a href=&quot;https://sinovate.io/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;sinovate.io&lt;/span&gt;&lt;/a&gt; website. You can also check out our &lt;a href=&quot;https://sinovate.io/sin-whitepaper/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Whitepaper&lt;/span&gt;&lt;/a&gt; and &lt;a href=&quot;https://sinovate.io/SINOVATE_litepaper.pdf&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Litepaper&lt;/span&gt;&lt;/a&gt; documents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1246,422 +1113,7 @@ margin-bottom: 10px;</string>
                 </item>
                 <item>
                  <widget class="QWidget" name="widgetFaq7" native="true">
-                  <layout class="QHBoxLayout" name="horizontalpage_7" stretch="0,1">
-                   <item alignment="Qt::AlignTop">
-                    <widget class="QLabel" name="labelNumber7">
-                     <property name="minimumSize">
-                      <size>
-                       <width>24</width>
-                       <height>24</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>24</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>12</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string>7-</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayoutpage_7">
-                     <property name="leftMargin">
-                      <number>20</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>20</number>
-                     </property>
-                     <item>
-                      <widget class="QLabel" name="labelSubtitle7">
-                       <property name="font">
-                        <font>
-                         <pointsize>12</pointsize>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>What is the X25X algorithm?</string>
-                       </property>
-                       <property name="wordWrap">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_70">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeType">
-                        <enum>QSizePolicy::Fixed</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="labelContent7">
-                       <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;– Leading-edge and in-house built&lt;/p&gt;&lt;p&gt;– Custom GPU mining algorithm&lt;/p&gt;&lt;p&gt;– More complex&lt;/p&gt;&lt;p&gt;– Less power-hungry&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;To protect and enhance the decentralization of the SINOVATE blockchain, a leading-edge custom proof-of-work hashing algorithm was innovatively developed and implemented. The X25X algorithm is a brand new algorithm best suited for GPU mining. It is also ASIC, FPGA, and Quantum resistant with the addition of SWIFFTX to the algorithm chain. Ultimately, the X25X hashing algorithm prevents large mining operations or farms from dominating the SINOVATE blockchain. It is praised for being a very secure, fair, decentralized, and highly accessible method by which to mine SIN coins. &lt;/p&gt;&lt;p&gt;The X25X is an excellent example of how SINOVATE is evolving blockchain technology. &lt;/p&gt;&lt;p&gt;The purpose of the original X25X whitepaper was to design a proof of work algorithm that could provide the best possible combination of the following points:&lt;/p&gt;&lt;p&gt;Make ASIC and FPGA design much more difficult and expensive&lt;/p&gt;&lt;p&gt;Allow GPU optimised miners to be developed quickly&lt;/p&gt;&lt;p&gt;Allow GPU miners to have maximum efficiency&lt;/p&gt;&lt;p&gt;Add quantum resistance&lt;/p&gt;&lt;p&gt;Use components which are proven, industry standard algorithms, like sha-2 and sha-3, for best security&lt;/p&gt;&lt;p&gt;So far, X25X has proven to be successful, but for its effort to last, it needs to evolve and adapt to the increasing computing power and efficiency that current hardware does have. It was also necessary to make FPGA design (and thus ASIC chip design as a consequence) much less profitable, because of the short timeframe for using the product.&lt;/p&gt;&lt;p&gt;Additionally, X25X aims for lower power consumption of GPUs.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                       </property>
-                       <property name="wordWrap">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_71">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QWidget" name="widgetFaq8" native="true">
-                  <layout class="QHBoxLayout" name="horizontalpage_8" stretch="0,1">
-                   <item alignment="Qt::AlignTop">
-                    <widget class="QLabel" name="labelNumber8">
-                     <property name="minimumSize">
-                      <size>
-                       <width>24</width>
-                       <height>24</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>24</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>12</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string>8-</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayoutpage_8">
-                     <property name="leftMargin">
-                      <number>20</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>20</number>
-                     </property>
-                     <item>
-                      <widget class="QLabel" name="labelSubtitle8">
-                       <property name="font">
-                        <font>
-                         <pointsize>12</pointsize>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Where can I get support when needed?</string>
-                       </property>
-                       <property name="wordWrap">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_80">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeType">
-                        <enum>QSizePolicy::Fixed</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="labelContent8">
-                       <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can get continuous support through our &lt;a href=&quot;https://sinovate.io/links/discord&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Discord support channel&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                       </property>
-                       <property name="wordWrap">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_81">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QWidget" name="widgetFaq9" native="true">
-                  <layout class="QHBoxLayout" name="horizontalpage_9" stretch="0,1">
-                   <item alignment="Qt::AlignTop">
-                    <widget class="QLabel" name="labelNumber9">
-                     <property name="minimumSize">
-                      <size>
-                       <width>24</width>
-                       <height>24</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>24</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>12</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string>9-</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayoutpage_9">
-                     <property name="leftMargin">
-                      <number>20</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>20</number>
-                     </property>
-                     <item>
-                      <widget class="QLabel" name="labelSubtitle9">
-                       <property name="font">
-                        <font>
-                         <pointsize>12</pointsize>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>What are SIN block Explorer functions?</string>
-                       </property>
-                       <property name="wordWrap">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_90">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeType">
-                        <enum>QSizePolicy::Fixed</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="labelContent9">
-                       <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The custom &lt;a href=&quot;https://explorer.sinovate.io&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;SIN Block Explorer&lt;/span&gt;&lt;/a&gt; enables the following:&lt;/p&gt;&lt;p&gt;To view, all blocks timestamped since the launch of the blockchain&lt;/p&gt;&lt;p&gt;To trace all transactions sent/received&lt;/p&gt;&lt;p&gt;To investigate every wallet address created by the network&lt;/p&gt;&lt;p&gt;To monitor the total hash rate and difficulty of the network&lt;/p&gt;&lt;p&gt;To view the top 200 wallet addresses (SIN coin distribution)&lt;/p&gt;&lt;p&gt;To find out how many nodes are active&lt;/p&gt;&lt;p&gt;To see how many SIN coins have been burnt&lt;/p&gt;&lt;p&gt;To view the current ROI statistics (how many days before the initial Infinity Node-locked SIN coin investment is paid back)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                       </property>
-                       <property name="wordWrap">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_91">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QWidget" name="widgetFaq10" native="true">
-                  <layout class="QHBoxLayout" name="horizontalpage_10" stretch="0,1">
-                   <item alignment="Qt::AlignTop">
-                    <widget class="QLabel" name="labelNumber10">
-                     <property name="minimumSize">
-                      <size>
-                       <width>24</width>
-                       <height>24</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>24</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>12</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string>10-</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayoutpage_10">
-                     <property name="leftMargin">
-                      <number>20</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>20</number>
-                     </property>
-                     <item>
-                      <widget class="QLabel" name="labelSubtitle10">
-                       <property name="font">
-                        <font>
-                         <pointsize>12</pointsize>
-                        </font>
-                       </property>
-                       <property name="text">
-                        <string>Where can I get more detailed information?</string>
-                       </property>
-                       <property name="wordWrap">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_100">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeType">
-                        <enum>QSizePolicy::Fixed</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>30</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item>
-                      <widget class="QLabel" name="labelContent10">
-                       <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For more detailed information, you can visit the &lt;a href=&quot;https://sinovate.io&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;sinovate.io&lt;/span&gt;&lt;/a&gt; website. You can also check out our &lt;a href=&quot;https://docs.sinovate.io/#/SINOVATE_Whitepaper_Light&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Whitepaper&lt;/span&gt;&lt;/a&gt; document.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                       </property>
-                       <property name="wordWrap">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <spacer name="verticalSpacer_92">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>20</width>
-                         <height>20</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
+                  <layout class="QHBoxLayout" name="horizontalpage_7" stretch=""/>
                  </widget>
                 </item>
                </layout>
