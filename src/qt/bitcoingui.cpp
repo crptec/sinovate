@@ -876,6 +876,12 @@ void BitcoinGUI::removeAllWallets()
 void BitcoinGUI::setWalletActionsEnabled(bool enabled)
 {
     overviewAction->setEnabled(enabled);
+    homeAction->setEnabled(enabled);
+    QSettings settings;
+        if (settings.value("fShowInfinitynodeTab").toBool())
+        {
+            infinitynodeAction->setEnabled(enabled);
+        }
     sendCoinsAction->setEnabled(enabled);
     sendCoinsMenuAction->setEnabled(enabled);
     receiveCoinsAction->setEnabled(enabled);
