@@ -1014,7 +1014,7 @@ bool CInfinitynodeMan::deterministicRewardAtHeight(int nBlockHeight, int nSinTyp
         }
         loop++;
         if(lastStatement > 0 || fUpdateStm == true){
-            LogPrintf("CInfinitynodeMan::deterministicRewardAtHeight -- Height: %s, Stm height: %d, stm size: %d, Delta: %d, Need update:%d\n", nBlockHeight, stm.first, stm.second, nDelta, fUpdateStm);
+            LogPrintf("CInfinitynodeMan::deterministicRewardAtHeight -- Height: %s, Stm height: %d, stm size: %d, Delta: %d, Need update:%d, loop: %d, mapStmSize: %d\n", nBlockHeight, stm.first, stm.second, nDelta, fUpdateStm, loop, mapStatementSinType.size());
         }
     }
 
