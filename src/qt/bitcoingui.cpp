@@ -593,6 +593,9 @@ void BitcoinGUI::createToolBars()
 {
     if(walletFrame)
     {
+        QColor version_label_color = GetStringStyleValue("appstyle/version-label-color", "#6f80ab");
+        QVariant variant = version_label_color;
+        QString colcode = variant.toString();
         QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
         addToolBar(Qt::LeftToolBarArea, toolbar);
         appToolBar = toolbar;
@@ -653,8 +656,8 @@ void BitcoinGUI::createToolBars()
         connect(m_wallet_selector, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &BitcoinGUI::setCurrentWalletBySelectorIndex);
 
         m_wallet_selector_label = new QLabel();
-        m_wallet_selector_label->setStyleSheet("margin-left: 30px");
         m_wallet_selector_label->setText(tr("Wallet:") + " ");
+        m_wallet_selector_label->setStyleSheet("color:" + colcode + "; margin-left: 30px;");
         m_wallet_selector_label->setBuddy(m_wallet_selector);
 
         m_wallet_selector_label_action = appToolBar->addWidget(m_wallet_selector_label);
@@ -666,9 +669,6 @@ void BitcoinGUI::createToolBars()
                     
 		QLabel* labelVersion = new QLabel();
         labelVersion->setText(QString(tr("BETELGEUSE\nv%1\n")).arg(QString::fromStdString(FormatVersionFriendly())));
-        QColor version_label_color = GetStringStyleValue("appstyle/version-label-color", "#6f80ab");
-        QVariant variant = version_label_color;
-        QString colcode = variant.toString();
         labelVersion->setStyleSheet("color:" + colcode + "; margin-bottom: 2px; font-weight : bold;");
         labelVersion->setAlignment(Qt::AlignCenter);
         
