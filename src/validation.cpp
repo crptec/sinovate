@@ -4175,7 +4175,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
     }
 
     //run PoS checks after txes have been cached
-    if (((pindex->nHeight > 3000) && IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev))) {
+    if (((pindex->nHeight > 32000) && IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev))) {
         if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);
