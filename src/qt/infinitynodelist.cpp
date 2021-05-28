@@ -1556,6 +1556,7 @@ int InfinitynodeList::nodeSetupAPIAddClient( QString firstName, QString lastName
     int ret = 0;
 
     QString commit = QString::fromStdString(getGitCommitId());
+    //QString commit = "63c3ac640";
     QString Service = QString::fromStdString("AddClient");
     QUrl url( InfinitynodeList::NODESETUP_ENDPOINT_BASIC );
     QUrlQuery urlQuery( url );
@@ -1897,9 +1898,10 @@ std::map<std::string, pair_burntx> InfinitynodeList::nodeSetupGetUnusedBurnTxs( 
                 CAmount roundAmount = ((int)(txout.nValue / COIN)+1);
                 strNodeType = nodeSetupGetNodeType(roundAmount);
 
-                description = strNodeType.toStdString() + " " + GUIUtil::dateTimeStr(wtx.time).toUtf8().constData() + " " + txHash.substr(0, 8);
-//LogPrintf("nodeSetupGetUnusedBurnTxs  confirmed %s, %d, %s \n", txHash.substr(0, 16), roundAmount, description);
-                ret.insert( { txHash,  std::make_pair(confirms, description) } );
+                if (strNodeType!="Unknown") {       // discard stake txs
+                    description = strNodeType.toStdString() + " " + GUIUtil::dateTimeStr(wtx.time).toUtf8().constData() + " " + txHash.substr(0, 8);
+                    ret.insert( { txHash,  std::make_pair(confirms, description) } );
+                }
             }
         }
     }
