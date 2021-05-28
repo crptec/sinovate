@@ -112,6 +112,7 @@ public:
         consensus.nINEnforcementHeight = 178000; // Enforcement of IN payments
         consensus.nDINActivationHeight = 550000; // Activation of DIN 1.0 payments, and new dev fee address.
         consensus.nINMetaUpdateChangeHeight=9999999; // Activation newmethod updatemetadata. Sinovate mainnet The same as POS4
+        consensus.nINMetaUpdateCachedNextBlock=9999999; // Activation new method with cached next block. Sinovate mainnet The same as POS4
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 170000;
@@ -275,7 +276,8 @@ public:
         consensus.nINActivationHeight = 100; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
         consensus.nINEnforcementHeight = 120; // Enforcement of IN payments
         consensus.nDINActivationHeight = 2880; // Activation of DIN 1.0 payments, and new dev fee address.
-        consensus.nINMetaUpdateChangeHeight=24500; 
+        consensus.nINMetaUpdateChangeHeight=24500;
+        consensus.nINMetaUpdateCachedNextBlock=30000;
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 170000;
@@ -524,15 +526,16 @@ public:
         consensus.nInfinityNodeCallLockRewardLoop=2; //in number of blocks
         consensus.nInfinityNodeLockRewardTop=5; //in number
         consensus.nInfinityNodeLockRewardSigners=2; //in number
-        consensus.nInfinityNodeLockRewardSINType=1; //in number
+        consensus.nInfinityNodeLockRewardSINType=10; //in number
         consensus.nSchnorrActivationHeight = 1350000; // wait for active
         consensus.nInfinityNodeExpireTime=262800;//720*365 days = 1 year
 
         /*Previously used as simple constants in validation */
-        consensus.nINActivationHeight = 5000; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
-        consensus.nINEnforcementHeight = 5500; // Enforcement of IN payments
-        consensus.nDINActivationHeight = 550000; // Activation of DIN 1.0 payments, and new dev fee address.
+        consensus.nINActivationHeight = 500; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
+        consensus.nINEnforcementHeight = 550; // Enforcement of IN payments
+        consensus.nDINActivationHeight = 800; // Activation of DIN 1.0 payments, and new dev fee address.
         consensus.nINMetaUpdateChangeHeight=0; // can use last method on regnet
+        consensus.nINMetaUpdateCachedNextBlock=0; // can use last method on regnet
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 500;
@@ -559,7 +562,7 @@ public:
         consensus.devAddress2 = "n13iidFw2jiVVoz86ouMqv31x7oEe5V4Wm";
         consensus.devAddressPubKey = "d63bf3a5822bb2f7ac9ced84ae2c1f319c4253e2";
         consensus.devAddress = "n13iidFw2jiVVoz86ouMqv31x7oEe5V4Wm";
-        consensus.cBurnAddressPubKey = "76a9142be2e66836eda517af05e5b628eb9fedefcd669b88ac";
+        consensus.cBurnAddressPubKey = "2be2e66836eda517af05e5b628eb9fedefcd669b";
         consensus.cBurnAddress = "mjX1AbMEHU14PmHjG2wtSvoydnJ6RxYwC2";
         consensus.cMetadataAddress = "mueP7L3nMXdshqPEMZ3L5wJumKqhq5dFpm";
         consensus.cNotifyAddress = "mobk9h9A3QLYKsKw9xWSC4bqYSUsqEwnpk";

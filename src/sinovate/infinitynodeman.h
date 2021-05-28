@@ -31,6 +31,8 @@ public:
     // map to hold all INFs
     std::map<COutPoint, CInfinitynode> mapInfinitynodes;
     std::map<COutPoint, CInfinitynode> mapInfinitynodesNonMatured;
+    // map to hold tempo metadata of next block
+    std::vector<CMetadata> vMetaNextBlock;
     // map to hold all reward statement
     std::map<int, int> mapStatementBIG;
     std::map<int, int> mapStatementMID;

@@ -217,6 +217,7 @@ bool CInfinitynodeMan::buildNonMaturedListFromBlock(const CBlock& block, CBlockI
         }
     }
 
+    vMetaNextBlock.clear();
     LOCK(cs);
 
     //update NON matured map
@@ -328,7 +329,13 @@ bool CInfinitynodeMan::buildNonMaturedListFromBlock(const CBlock& block, CBlockI
                                                          streamInfo.str(), publicKeyString, service.ToString());
                                             int avtiveBK = 0;
                                             CMetadata meta = CMetadata(streamInfo.str(), publicKeyString, service, pindex->nHeight, avtiveBK);
-                                            infnodemeta.Add(meta);
+
+                                            //use new method to update metadata with cached info
+                                            if(pindex->nHeight < Params().GetConsensus().nINMetaUpdateCachedNextBlock){
+                                                infnodemeta.Add(meta);
+                                            } else {
+                                                vMetaNextBlock.push_back(meta);
+                                            }
                                         }
                                         i++;
                                     }
@@ -361,6 +368,13 @@ bool CInfinitynodeMan::updateFinalList(CBlockIndex* pindex)
         if(infpair.second.nHeight == nLastScanHeight) {
             CInfinitynode inf = infpair.second;
             Add(inf);
+        }
+    }
+
+    //use new method to update metadata with cached info
+    if(pindex->nHeight >= Params().GetConsensus().nINMetaUpdateCachedNextBlock){
+        for(auto& v : vMetaNextBlock){
+            infnodemeta.Add(v);
         }
     }
 
@@ -946,7 +960,7 @@ bool CInfinitynodeMan::deterministicRewardAtHeightOnValidation(int nBlockHeight,
     //update rank of node
     std::map<int, CInfinitynode> rankOfStatement = calculInfinityNodeRank(lastStatement, nSinType, true);
     if(rankOfStatement.empty()){
-        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeightOnValidation -- can not calculate rank at %d\n", lastStatement);
+        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeightOnValidation -- can not calculate rank at %d for SinType: %d\n", lastStatement, nSinType);
         return false;
     }
 
@@ -1014,7 +1028,7 @@ bool CInfinitynodeMan::deterministicRewardAtHeight(int nBlockHeight, int nSinTyp
         }
         loop++;
         if(lastStatement > 0 || fUpdateStm == true){
-            LogPrintf("CInfinitynodeMan::deterministicRewardAtHeight -- Height: %s, Stm height: %d, stm size: %d, Delta: %d, Need update:%d, loop: %d, mapStmSize: %d\n", nBlockHeight, stm.first, stm.second, nDelta, fUpdateStm, loop, mapStatementSinType.size());
+            LogPrintf("CInfinitynodeMan::deterministicRewardAtHeight -- Height: %s, Stm height: %d, stm size: %d, Delta: %d, Need update:%d, loop: %d, mapStmSize: %d, calculated last stm height: %d\n", nBlockHeight, stm.first, stm.second, nDelta, fUpdateStm, loop, mapStatementSinType.size(), lastStatement);
         }
     }
 
@@ -1046,6 +1060,13 @@ bool CInfinitynodeMan::deterministicRewardAtHeight(int nBlockHeight, int nSinTyp
         LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight -- can not calculate rank at %d\n", lastStatement);
         return false;
     }
+
+    /*at the begin of network, lastStatementSize=1, each block is begin/end of Stm at the same time*/
+    if(rankOfStatement.size() == 1){
+        infinitynodeRet = rankOfStatement[1];
+        return true;
+    }
+
     if((nBlockHeight < lastStatement) || (rankOfStatement.size() < (nBlockHeight - lastStatement + 1))){
         LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight -- out of range at lastStatement:%d, nBlockHeight:%d, size:%d\n", lastStatement, nBlockHeight, rankOfStatement.size());
         return false;

@@ -70,6 +70,7 @@ struct Params {
     int nINEnforcementHeight; // block height (int)
     int nDINActivationHeight; // block height (int) - DIN switch height
     int nINMetaUpdateChangeHeight; // block height (int) - new method of updatemetadata
+    int nINMetaUpdateCachedNextBlock; // block height (int) - fork to use cached metadata of next block
 
     // different constant addresses we use 
     const char *devAddressPubKey;

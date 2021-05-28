@@ -2424,7 +2424,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
             //DIN mode: validation LR
             LogPrintf("Validation -- POW + Infinitynode\n");
             int64_t nTime3_1 = GetTimeMicros(); 
-            if (!LockRewardValidation(pindex->nHeight, block.vtx[0])) {
+            if (!LockRewardValidation(pindex->nHeight, block.vtx[0], false)) {
                 LogPrintf("LockRewardValidation -- disconnect block!\n");
                 return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-bad-infinity-node-reward");
             }
@@ -2887,6 +2887,8 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
             nTime3_5  = GetTimeMicros();
             LogPrint(BCLog::BENCH, "  - Sinovate updateFinalList: %.2fms\n", (nTime3_5 - nTime3_4) * MILLI);
         } else {
+            //LR is not added, metadata is in cache, only NonMatured map need to be removed
+            infnodeman.removeNonMaturedList(pindexNew);
         }
 //<SIN
         GetMainSignals().BlockChecked(blockConnecting, state);
