@@ -2416,11 +2416,12 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                 std::string addressTxDIN2 = "";
                 ExtractDestination(txout.scriptPubKey, addressTxDIN);
                 addressTxDIN2 = EncodeDestination(addressTxDIN);
+                LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- payment for node: %s amount %lld\n", addressTxDIN2, InfPayment);
 
                 if (infnodeman.deterministicRewardAtHeightOnValidation(nBlockHeight, SINType, infOwner)){
                     CMetadata metaSender = infnodemeta.Find(infOwner.getMetaID());
                     if (metaSender.getMetadataHeight() == 0){
-                        LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- Not found metadata for candidate at height: %d\n", nBlockHeight);
+                        LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- Not found metadata %s for candidate at height: %d\n", infOwner.getMetaID(), nBlockHeight);
                         fBurnRewardNode=true;
                     }
                     //payment to the last metadata info, so do not do further check
@@ -2432,7 +2433,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                             if(pubKey.IsValid() && pubKey.IsCompressed()){
                                 CTxDestination dest = GetDestinationForKey(pubKey, OutputType::LEGACY);
                                 std::string address2 = EncodeDestination(dest);
-                                LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- payment for node: %s amount %lld, meta info: %s, meta-ID: %s\n",addressTxDIN2, InfPayment, address2, infOwner.getMetaID());
+                                LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- Meta info: %s, meta-ID: %s\n", address2, infOwner.getMetaID());
 
                                 DINPayeeNode = GetScriptForDestination(dest);
                                 if(txout.scriptPubKey == DINPayeeNode && txout.nValue == InfPayment) {

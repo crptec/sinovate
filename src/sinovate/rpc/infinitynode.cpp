@@ -611,6 +611,15 @@ static RPCHelpMan infinitynodeupdatemeta()
         if(infnodepair.second.getMetaID() == metaID) fExistMetaID = true;
     }
 
+    //check in NonMaturedMap
+    if(!fExistMetaID){
+        std::map<COutPoint, CInfinitynode> mapInfNonMatured = infnodeman.GetFullInfinitynodeNonMaturedMap();
+        for (auto& infnodepair : mapInfNonMatured) {
+            if(infnodepair.second.getMetaID() == metaID) fExistMetaID = true;
+        }
+    }
+
+    //MetaID does not exist
     if(!fExistMetaID){
         std::string strError = strprintf("Error: MetadataID:%s does not exist in network", metaID);
         throw JSONRPCError(RPC_TYPE_ERROR, strError);
