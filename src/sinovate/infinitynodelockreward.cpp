@@ -446,6 +446,8 @@ bool CInfinityNodeLockReward::CheckLockRewardRequest(CNode* pfrom, const CLockRe
         return false;
     }
 
+    LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRequest -- LockRewardRequest %s is valid\n", lockRewardRequestRet.GetHash().ToString());
+
     return true;
 }
 
@@ -2178,15 +2180,15 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight, bool IsProofOfStake
                 }
 
                 if(fFoundLockReward){
-                    LogPrint(BCLog::INFINITYLOCK, "FillBlockPayments -- TESTNET LockReward ADD Payment\n");
+                    LogPrint(BCLog::INFINITYLOCK, "FillBlockPayments -- LockReward ADD Payment\n");
                     txNew.vout[nIdx].nValue -= InfPaymentOwner;
                     txNew.vout.push_back(CTxOut(InfPaymentOwner, DINPayee));
                 }else{
                     fBurnRewardOwner=true;
-                    LogPrint(BCLog::INFINITYLOCK, "FillBlockPayments -- TESTNET LockReward NOT FOUND or NOT Valid (%s) => Burn\n", sErrorCheck);
+                    LogPrint(BCLog::INFINITYLOCK, "FillBlockPayments -- LockReward NOT FOUND or NOT Valid (%s) => Burn\n", sErrorCheck);
                 }
             } else {
-                LogPrint(BCLog::INFINITYLOCK, "FillBlockPayments -- TESTNET SINtype: %d, No candidate found\n", SINType);
+                LogPrint(BCLog::INFINITYLOCK, "FillBlockPayments -- SINtype: %d, No candidate found\n", SINType);
                 fBurnRewardOwner=true;
             }
 
@@ -2314,6 +2316,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                 CInfinitynode infOwner;
                 std::string sErrorCheck = "";
 
+                LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- index: %d, SinType: %d\n", txIndex, SINType);
                 LOCK(infnodeman.cs);
                 if (infnodeman.deterministicRewardAtHeightOnValidation(nBlockHeight, SINType, infOwner)){
 
@@ -2473,7 +2476,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
             }
             int64_t nTime2;
             nTime2  = GetTimeMicros();
-            LogPrint(BCLog::BENCH, "    - Sinovate check vout(LR signatures) %d: %.2fms\n", txIndex, (nTime2 - nTime1) * 0.001);
+            LogPrint(BCLog::BENCH, "    - Sinovate end check vout(LR signatures) %d: %.2fms\n", txIndex, (nTime2 - nTime1) * 0.001);
         }//end loop output
 
         if (counterNodePayment == 6) {
@@ -2700,7 +2703,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                 //Ban Misbehaving here
                 return;
             }
-            LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- receive and add new LockRewardRequest from %d\n",pfrom->GetId());
+            LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- LockRewardRequest is valid. Add new LockRewardRequest from %d\n",pfrom->GetId());
             if(AddLockRewardRequest(lockReq)){
                 lockReq.Relay(connman);
                 if(!CheckMyPeerAndSendVerifyRequest(pfrom, lockReq, connman, nDos)){

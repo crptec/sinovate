@@ -376,7 +376,7 @@ QToolBar {
 Scroll Area CSS
 --------------------------------------------*/
 QAbstractScrollArea::corner {
-    background: #1d2843;
+    background: transparent;
     border: 0px;
 }
 /*--------------------------------------------

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>740</width>
+    <width>744</width>
     <height>430</height>
    </rect>
   </property>
@@ -47,7 +47,7 @@
         <number>12</number>
        </property>
        <item row="0" column="0">
-        <widget class="QLabel" name="label_9">
+        <widget class="QLabel" name="labelGeneral">
          <property name="font">
           <font>
            <weight>75</weight>
@@ -109,7 +109,7 @@
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="label_12">
+        <widget class="QLabel" name="labelDataDir">
          <property name="text">
           <string>Datadir</string>
          </property>
@@ -138,7 +138,7 @@
         </widget>
        </item>
        <item row="4" column="0">
-        <widget class="QLabel" name="label_11">
+        <widget class="QLabel" name="labelBlocksDir">
          <property name="text">
           <string>Blocksdir</string>
          </property>
@@ -249,7 +249,7 @@
         </widget>
        </item>
        <item row="9" column="0">
-        <widget class="QLabel" name="label_10">
+        <widget class="QLabel" name="labelBlockChain">
          <property name="font">
           <font>
            <weight>75</weight>
@@ -262,7 +262,7 @@
         </widget>
        </item>
        <item row="10" column="0">
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="labelCurrentBlockHeight">
          <property name="text">
           <string>Current block height</string>
          </property>
@@ -1048,8 +1048,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>300</width>
-                <height>426</height>
+                <width>266</width>
+                <height>378</height>
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,1">
@@ -1146,7 +1146,7 @@
                 </widget>
                </item>
                <item row="4" column="0">
-                <widget class="QLabel" name="label_4">
+                <widget class="QLabel" name="labelServices">
                  <property name="text">
                   <string>Services</string>
                  </property>
