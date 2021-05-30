@@ -84,6 +84,10 @@ private:
 
     QWidget *createDateRangeWidget();
 
+    GUIUtil::TableViewLastColumnResizingFixer *columnResizingFixer;
+
+    virtual void resizeEvent(QResizeEvent* event);
+
     bool eventFilter(QObject *obj, QEvent *event) override;
 
 private Q_SLOTS:
