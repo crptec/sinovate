@@ -73,6 +73,7 @@
 CScript devScript;
 CScript devScript2;
 bool fInfinityNode = false;
+bool fInfinitynodeRelay = false;
 std::atomic<int> nRawBlockCount(0);
 //<SIN
 

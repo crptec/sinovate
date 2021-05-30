@@ -460,7 +460,7 @@ bool CInfinityNodeLockReward::CheckLockRewardRequest(CNode* pfrom, const CLockRe
 bool CInfinityNodeLockReward::CheckMyPeerAndSendVerifyRequest(CNode* pfrom, const CLockRewardRequest& lockRewardRequestRet, CConnman& connman, int& nDos)
 {
     // only Infinitynode will answer the verify LockRewardCandidate
-    if(!fInfinityNode) {return false;}
+    if(!fInfinityNode && !fInfinitynodeRelay) {return false;}
 
     AssertLockHeld(cs);
 
@@ -520,10 +520,25 @@ bool CInfinityNodeLockReward::CheckMyPeerAndSendVerifyRequest(CNode* pfrom, cons
         return false;
     }
 
-    //1.2.4 check if Ive connected to candidate or not
-    std::vector<CNode*> vNodesCopy = connman.CopyNodeVector();
+    //step 1.2.3: if we are in regnet, so relay immediat the commitment
     CService addr = metaCandidate.getService();
     CAddress add = CAddress(addr, NODE_NETWORK);
+
+    if(Params().NetworkIDString() == CBaseChainParams::REGTEST){
+        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckMyPeerAndSendVerifyRequest -- Relay commit in REGTEST, addr=%s. Relay commitment!\n", addr.ToString());
+        int nRewardHeight = lockRewardRequestRet.nRewardHeight;
+        uint256 hashLR = lockRewardRequestRet.GetHash();
+        //step 1.2.3.2 send commitment
+        if(!SendCommitment(hashLR, nRewardHeight, connman)){
+                LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckMyPeerAndSendVerifyRequest -- Cannot send commitment in REGTEST\n");
+                return false;
+        }
+        //return here and ignore all line bellow
+        return true;
+    }
+
+    //step 1.2.4 check if Ive connected to candidate or not
+    std::vector<CNode*> vNodesCopy = connman.CopyNodeVector();
 
     bool fconnected = false;
     std::string connectionType = "";
@@ -779,7 +794,7 @@ bool CInfinityNodeLockReward::CheckVerifyReply(CNode* pnode, CVerifyRequest& vre
  */
 bool CInfinityNodeLockReward::SendCommitment(const uint256& reqHash, int nRewardHeight, CConnman& connman)
 {
-    if(!fInfinityNode) return false;
+    if(!fInfinityNode && !fInfinitynodeRelay) return false;
 
     AssertLockHeld(cs);
 
@@ -807,7 +822,7 @@ bool CInfinityNodeLockReward::SendCommitment(const uint256& reqHash, int nReward
  */
 bool CInfinityNodeLockReward::CheckCommitment(CNode* pnode, const CLockRewardCommitment& commitment, int& nDos)
 {
-    if(!fInfinityNode) return false;
+    if(!fInfinityNode && !fInfinitynodeRelay) return false;
 
     AssertLockHeld(cs);
 
@@ -885,7 +900,7 @@ bool CInfinityNodeLockReward::CheckCommitment(CNode* pnode, const CLockRewardCom
 
 void CInfinityNodeLockReward::AddMySignersMap(const CLockRewardCommitment& commitment)
 {
-    if(!fInfinityNode) return;
+    if(!fInfinityNode && !fInfinitynodeRelay) return;
 
     AssertLockHeld(cs);
 
@@ -923,6 +938,7 @@ void CInfinityNodeLockReward::AddMySignersMap(const CLockRewardCommitment& commi
  */
 bool CInfinityNodeLockReward::FindAndSendSignersGroup(CConnman& connman)
 {
+    //only candidate Infinitynode will annonce the signers
     if (!fInfinityNode) return false;
 
     AssertLockHeld(cs);
@@ -974,7 +990,7 @@ bool CInfinityNodeLockReward::FindAndSendSignersGroup(CConnman& connman)
  */
 bool CInfinityNodeLockReward::CheckGroupSigner(CNode* pnode, const CGroupSigners& gsigners, int& nDos)
 {
-    if(!fInfinityNode) return false;
+    if(!fInfinityNode && !fInfinitynodeRelay) return false;
 
     AssertLockHeld(cs);
 
@@ -1040,6 +1056,7 @@ bool CInfinityNodeLockReward::CheckGroupSigner(CNode* pnode, const CGroupSigners
  */
 bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners& gsigners, CConnman& connman)
 {
+    //only Infinitynode will participate in Musig
     if(!fInfinityNode) return false;
 
     AssertLockHeld(cs);
@@ -1342,7 +1359,7 @@ bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners
 
 bool CInfinityNodeLockReward::CheckMusigPartialSignLR(CNode* pnode, const CMusigPartialSignLR& ps, int& nDos)
 {
-    if(!fInfinityNode) return false;
+    if(!fInfinityNode && !fInfinitynodeRelay) return false;
 
     AssertLockHeld(cs);
 
@@ -1425,6 +1442,7 @@ bool CInfinityNodeLockReward::CheckMusigPartialSignLR(CNode* pnode, const CMusig
  */
 void CInfinityNodeLockReward::AddMyPartialSignsMap(const CMusigPartialSignLR& ps)
 {
+    //only Infinitynode will add partial sign
     if(!fInfinityNode) return;
 
     AssertLockHeld(cs);
@@ -1466,6 +1484,7 @@ void CInfinityNodeLockReward::AddMyPartialSignsMap(const CMusigPartialSignLR& ps
  */
 bool CInfinityNodeLockReward::FindAndBuildMusigLockReward()
 {
+    //only candidate will build Musig
     if(!fInfinityNode) return false;
 
     AssertLockHeld(cs);
@@ -2494,6 +2513,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
  */
 void CInfinityNodeLockReward::TryConnectToMySigners(int rewardHeight, CConnman& connman)
 {
+    //only candidate will try to connect to signers
     if(!fInfinityNode) return;
 
     AssertLockHeld(cs);
@@ -2589,6 +2609,7 @@ void CInfinityNodeLockReward::TryConnectToMySigners(int rewardHeight, CConnman& 
  */
 bool CInfinityNodeLockReward::ProcessBlock(int nBlockHeight, CConnman& connman)
 {
+    //only candidate will try to do LRequest for each block
     if(!fInfinityNode){
         LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessBlock -- not Infinitynode\n");
         return false;
@@ -2652,6 +2673,7 @@ bool CInfinityNodeLockReward::ProcessBlock(int nBlockHeight, CConnman& connman)
 
 void CInfinityNodeLockReward::ProcessDirectMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos)
 {
+    //only infinitynode will do the direct message
     if(!fInfinityNode) return;
 
     if (strCommand == NetMsgType::INFVERIFY) {
@@ -2685,7 +2707,12 @@ void CInfinityNodeLockReward::ProcessDirectMessage(CNode* pfrom, const std::stri
 void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos)
 {
     //if we are downloading blocks, do nothing
-    if(!infnodeman.isReachedLastBlock()){return;}
+    if(!infnodeman.isReachedLastBlock()){
+        LogPrintf("CInfinityNodeLockReward::ProcessMessage -- Not Reached last block height. Do nothing\n");
+        return;
+    }
+
+    if(!fInfinityNode && !fInfinitynodeRelay) return;
 
     if (strCommand == NetMsgType::INFLOCKREWARDINIT) {
         CLockRewardRequest lockReq;
@@ -2696,7 +2723,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
         {
             LOCK2(cs_main, cs);
             if(mapLockRewardRequest.count(nHash)){
-                LogPrintf("CInfinityNodeLockReward::ProcessMessage -- I had this LockRequest %s. End process\n", nHash.ToString());
+                LogPrintf("CInfinityNodeLockReward::ProcessMessage -- Had this LockRequest %s. End process\n", nHash.ToString());
                 return;
             }
             if(!CheckLockRewardRequest(pfrom, lockReq, connman, nCachedBlockHeight, nDos)){
@@ -2706,6 +2733,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
             LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- LockRewardRequest is valid. Add new LockRewardRequest from %d\n",pfrom->GetId());
             if(AddLockRewardRequest(lockReq)){
                 lockReq.Relay(connman);
+
                 if(!CheckMyPeerAndSendVerifyRequest(pfrom, lockReq, connman, nDos)){
                     LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- CheckMyPeerAndSendVerifyRequest is false.\n");
                     //Ban Misbehaving here
@@ -2734,6 +2762,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- relay Commitment for LockRequest %s. Remind nFutureRewardHeight: %d, LockRequest: %s\n",
                            commitment.nHashRequest.ToString(), nFutureRewardHeight, currentLockRequestHash.ToString());
                 commitment.Relay(connman);
+
                 AddMySignersMap(commitment);
                 FindAndSendSignersGroup(connman);
             } else {
@@ -2762,6 +2791,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                           gSigners.signersId, gSigners.nHashRequest.ToString());
             }
             gSigners.Relay(connman);
+
             if(!MusigPartialSign(pfrom, gSigners, connman)){
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- MusigPartialSign is false\n");
             }
@@ -2787,6 +2817,7 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                 LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- receive Partial Sign from %s of group %s, hash: %s\n",
                           partialSign.vin.prevout.ToStringFull(), partialSign.nHashGroupSigners.ToString(), partialSign.GetHash().ToString());
                 partialSign.Relay(connman);
+
                 AddMyPartialSignsMap(partialSign);
                 if (!FindAndBuildMusigLockReward()) {
                     LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- Couldn't build MuSig\n");
