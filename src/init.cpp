@@ -635,6 +635,7 @@ void SetupServerArgs(NodeContext& node)
     argsman.AddArg("-server", "Accept command line and JSON-RPC commands", ArgsManager::ALLOW_ANY, OptionsCategory::RPC);
 //>SIN
     argsman.AddArg("-infinitynode", "Start the node as an InfinityNode", ArgsManager::ALLOW_ANY, OptionsCategory::INFINITYNODE);
+    argsman.AddArg("-infinitynoderelay", "Allow node relay infinitynode communication message", ArgsManager::ALLOW_ANY, OptionsCategory::INFINITYNODE);
     argsman.AddArg("-infinitynodeprivkey", "PrivateKey of node", ArgsManager::ALLOW_ANY, OptionsCategory::INFINITYNODE);
     argsman.AddArg("-staking", "Run in the background as a staker and participate in consensus", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
 //<SIN
@@ -1982,6 +1983,13 @@ bool AppInitMain(const util::Ref& context, NodeContext& node, interfaces::BlockA
     if (args.GetBoolArg("-infinitynode", false)) {
         fInfinityNode = true;
     }
+
+    if (args.GetBoolArg("-infinitynoderelay", true)) {
+        fInfinitynodeRelay = true;
+    }
+
+    LogPrintf("Infinitynode: %d, Infinitynoderelay: %d\n", fInfinityNode, fInfinitynodeRelay);
+
     if(fInfinityNode) {
         std::string strInfinityNodePrivKey = gArgs.GetArg("-infinitynodeprivkey", "");
         LogPrintf("readed privateKey: %s\n", strInfinityNodePrivKey);
