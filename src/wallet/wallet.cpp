@@ -2345,7 +2345,7 @@ CAmount CWallet::GetAvailableBalance(const CCoinControl* coinControl) const
 
 bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
 {
-    AssertLockHeld(cs_wallet);
+    LOCK2(cs_wallet, cs_main);
 
     if (pCoins) pCoins->clear();
     CAmount nTotal = 0;
