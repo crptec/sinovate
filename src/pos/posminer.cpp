@@ -51,7 +51,7 @@ bool CreateCoinStake(CWallet* pwallet,
         CMutableTransaction& txNew,
         int64_t& nTxNewTime,
         std::vector<CStakeableOutput>* availableCoins,
-        CStakerStatus* pStakerStatus) 
+        CStakerStatus* pStakerStatus, CAmount nFees, CScript burnAddressScript) 
 {
 
     int nHeight = pindexPrev->nHeight + 1;
@@ -146,13 +146,15 @@ bool CreateCoinStake(CWallet* pwallet,
 
         // Dev fee
         if (nHeight <= Params().GetConsensus().nDINActivationHeight) {
-            txNew.vout.push_back(CTxOut(GetDevCoin(nHeight, GetBlockSubsidy(nHeight, Params().GetConsensus(), true)), devScript));
+            txNew.vout.push_back(CTxOut(GetDevCoin(nHeight, GetBlockSubsidy(nHeight, Params().GetConsensus(), true) + nFees), devScript));
         } else {
-            txNew.vout.push_back(CTxOut(GetDevCoin(nHeight, GetBlockSubsidy(nHeight, Params().GetConsensus(), true)), devScript2));
+            txNew.vout.push_back(CTxOut(GetDevCoin(nHeight, GetBlockSubsidy(nHeight, Params().GetConsensus(), true) + nFees), devScript2));
         }
 
         // InfinityNode payment
         FillBlock(txNew, nHeight, true);
+
+        txNew.vout.push_back(CTxOut(nFees, burnAddressScript));
 
         const uint256& hashTxOut = txNew.GetHash();
         CTxIn in;
@@ -214,8 +216,6 @@ bool ProcessBlockFound(ChainstateManager& chainman, const std::shared_ptr<const 
     return true;
 }
 
-bool fStakeableCoins = false;
-
 void StakerCtx::CheckForCoins(CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins)
 {
 
@@ -230,7 +230,7 @@ void StakerCtx::CheckForCoins(CWallet* pwallet, std::vector<CStakeableOutput>* a
             return;
         }
     }
-    fStakeableCoins = pwallet->StakeableCoins(availableCoins);
+    pwallet->StakeableCoins(availableCoins);
 }
 
 void InitStakerStatus()
@@ -304,13 +304,13 @@ void StakerCtx::StakerPipe()
         CheckForCoins(pwallet, &availableCoins);
 
         while ((Params().NetworkIDString() != CBaseChainParams::REGTEST && (m_connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0))
-                || pwallet->IsLocked() || !pwallet->m_enabled_staking || !fStakeableCoins) {
+                || pwallet->IsLocked() || !pwallet->m_enabled_staking || availableCoins.size() == 0) {
             LogPrintf("%s : wallet needs atleast one connection and some stakeable coins to stake, checking again in %d seconds...\n", __func__, nAverageSpacing);
             if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
                 return;
             }
             // Do another check here to ensure fStakeableCoins is updated
-            if (!fStakeableCoins) CheckForCoins(pwallet, &availableCoins);
+            if (availableCoins.size() == 0) CheckForCoins(pwallet, &availableCoins);
         }
         
         //search our map of hashed blocks, see if bestblock has been hashed yet

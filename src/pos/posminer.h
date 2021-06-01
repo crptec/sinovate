@@ -95,7 +95,7 @@ bool CreateCoinStake(CWallet* pwallet, const CBlockIndex* pindexPrev,
                     CMutableTransaction& txNew,
                     int64_t& nTxNewTime,
                     std::vector<CStakeableOutput>* availableCoins,
-                    CStakerStatus* pStakerStatus);
+                    CStakerStatus* pStakerStatus, CAmount nFees, CScript burnAddressScript);
 
 void InitStakerStatus();
 

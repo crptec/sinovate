@@ -110,13 +110,13 @@ void BlockAssembler::resetBlock()
 Optional<int64_t> BlockAssembler::m_last_block_num_txs{boost::none};
 Optional<int64_t> BlockAssembler::m_last_block_weight{boost::none};
 
-bool SolveProofOfStake(CBlock* pblock, CBlockIndex* pindexPrev, CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins, CStakerStatus* pStakerStatus)
+bool SolveProofOfStake(CBlock* pblock, CBlockIndex* pindexPrev, CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins, CStakerStatus* pStakerStatus, CAmount nFees, CScript burnAddressScript)
 {
     pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, Params().GetConsensus(), true);
 
     CMutableTransaction txCoinStake;
     int64_t nTxNewTime = 0;
-    if (!CreateCoinStake(pwallet, pindexPrev, pblock->nBits, txCoinStake, nTxNewTime, availableCoins, pStakerStatus)) {
+    if (!CreateCoinStake(pwallet, pindexPrev, pblock->nBits, txCoinStake, nTxNewTime, availableCoins, pStakerStatus, nFees, burnAddressScript)) {
         LogPrint(BCLog::STAKING, "%s : stake not found\n", __func__);
         return false;
     }
@@ -173,10 +173,12 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewPoSBlock(CWallet* pwall
                        ? nMedianTimePast
                        : pblock->GetBlockTime();
 
-    // Try to find a coinstake who solves the block.
-    if (!SolveProofOfStake(pblock, pindexPrev, pwallet, availableCoins, pStakerStatus)) {
-        return nullptr;
-    }
+   CTxDestination burnDestination = DecodeDestination(Params().GetConsensus().cBurnAddress);
+   CScript scriptPubKeyBurnAddress = GetScriptForDestination(burnDestination);
+   std::vector<std::vector<unsigned char>> vSolutions;
+   TxoutType whichType = Solver(scriptPubKeyBurnAddress, vSolutions);
+   PKHash keyid = PKHash(uint160(vSolutions[0]));
+   CScript burnAddressScript = GetScriptForBurn(keyid, "burnfee");
 
     // Decide whether to include witness transactions
     // This is only needed in case the witness softfork activation is reverted
@@ -193,10 +195,17 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewPoSBlock(CWallet* pwall
     int nDescendantsUpdated = 0;
     addPackageTxs(nPackagesSelected, nDescendantsUpdated);
 
+    // Try to find a coinstake who solves the block.
+    if (!SolveProofOfStake(pblock, pindexPrev, pwallet, availableCoins, pStakerStatus, nFees, burnAddressScript)) {
+        return nullptr;
+    }
+
     int64_t nTime1 = GetTimeMicros();
 
     m_last_block_num_txs = nBlockTx;
     m_last_block_weight = nBlockWeight;
+
+    pblocktemplate->vTxFees[0] = -nFees;
 
     // Generate commitment(s)
 
