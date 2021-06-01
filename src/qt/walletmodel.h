@@ -152,6 +152,8 @@ public:
 
     bool isMultiwallet();
 
+    uint64_t getStakeWeight();
+    
     AddressTableModel* getAddressTableModel() const { return addressTableModel; }
 
     void refresh(bool pk_hash_only = false);
@@ -176,6 +178,8 @@ private:
     // Wallet has an options model for wallet-specific options
     // (transaction fee, for example)
     OptionsModel *optionsModel;
+
+     uint64_t nWeight;
 
     AddressTableModel *addressTableModel;
     TransactionTableModel *transactionTableModel;
