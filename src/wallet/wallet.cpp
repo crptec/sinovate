@@ -2343,7 +2343,7 @@ CAmount CWallet::GetAvailableBalance(const CCoinControl* coinControl) const
 }
 
 
-bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
+bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins, uint64_t& nWeight, bool fScale)
 {
     LOCK2(cs_wallet, cs_main);
 
@@ -2436,10 +2436,31 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins)
 
             if (!pCoins) return true;
             if (!pindex) pindex = LookupBlockIndex(wtx.m_confirm.hashBlock);
+
+            if (fScale) {
+                nWeight += wtx.tx->vout[i].nValue;
+            }
+
             pCoins->emplace_back(CStakeableOutput(pcoin, (int) i, nDepth, spendable, solvable, false, false, pindex));
         }
     }
     return (pCoins && !pCoins->empty());
+}
+
+uint64_t CWallet::GetStakeWeight()
+{
+    uint64_t nWeight = 0;
+
+    // Available outputs
+    std::vector<CStakeableOutput> availableCoins;
+
+    if (!StakeableCoins(&availableCoins, nWeight, true)) {
+        return nWeight;
+    }
+
+    std::cout << "Weight is " << nWeight << std::endl;
+
+    return nWeight;
 }
 
 void CWallet::AvailableCoins(std::vector<COutput>& vCoins, bool fOnlySafe, const CCoinControl* coinControl, const CAmount& nMinimumAmount, const CAmount& nMaximumAmount, const CAmount& nMinimumSumAmount, const uint64_t nMaximumCount) const

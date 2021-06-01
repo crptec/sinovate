@@ -10,6 +10,7 @@
 #include <policy/fees.h>
 #include <primitives/transaction.h>
 #include <rpc/server.h>
+#include <pos/posminer.h>
 #include <script/standard.h>
 #include <support/allocators/secure.h>
 #include <sync.h>
@@ -458,7 +459,27 @@ public:
     {
         return m_wallet->m_enabled_staking;
     }
-
+    bool trySetStakeWeight(uint64_t& nWeight) override
+    {
+        TRY_LOCK(m_wallet->cs_wallet, locked_wallet);
+        if (!locked_wallet) {
+            return false;
+        }
+        nWeight = m_wallet->GetStakeWeight();
+        return true;
+    }
+    uint64_t getStakeWeight() override
+    {
+        LOCK(m_wallet->cs_wallet);
+        return m_wallet->GetStakeWeight();
+    }
+    int64_t getLastStakeTime() override 
+    {
+        if (!pStakerStatus) {
+            InitStakerStatus();
+        }
+        return pStakerStatus->GetLastTime();
+    }
     void remove() override
     {
         RemoveWallet(m_wallet, false /* load_on_start */);

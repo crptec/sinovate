@@ -218,6 +218,7 @@ bool ProcessBlockFound(ChainstateManager& chainman, const std::shared_ptr<const 
 
 void StakerCtx::CheckForCoins(CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins)
 {
+    uint64_t nWeight;
 
     if (!pwallet || !pStakerStatus) {
         return;
@@ -230,7 +231,7 @@ void StakerCtx::CheckForCoins(CWallet* pwallet, std::vector<CStakeableOutput>* a
             return;
         }
     }
-    pwallet->StakeableCoins(availableCoins);
+    pwallet->StakeableCoins(availableCoins, nWeight);
 }
 
 void InitStakerStatus()

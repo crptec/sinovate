@@ -43,6 +43,9 @@
 #include <util/translation.h>
 #include <validation.h>
 
+//proof-of-stake icon
+#include <rpc/server.h>
+
 #include <QAction>
 #include <QApplication>
 #include <QComboBox>
@@ -1575,10 +1578,9 @@ void BitcoinGUI::updateStakingIcon()
         return;
     }
     WalletModel * const walletModel = walletView->getWalletModel();
-    /*
  
     uint64_t nWeight= walletModel->getStakeWeight();
-    if (walletModel->wallet().getLastCoinStakeSearchInterval() &&
+    if (walletModel->wallet().getLastStakeTime() &&
             walletModel->wallet().getEnabledStaking() && nWeight)
     {
         uint64_t nNetworkWeight = GetPoSKernelPS();
@@ -1613,20 +1615,19 @@ void BitcoinGUI::updateStakingIcon()
     }
     else
     {
-    */  
       labelStakingIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/staking_off").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
  
         if (m_node.getNodeCount(CConnman::CONNECTIONS_ALL) == 0)
             labelStakingIcon->setToolTip(tr("Not staking because wallet is offline"));
         else if (m_node.isInitialBlockDownload())
             labelStakingIcon->setToolTip(tr("Not staking because wallet is syncing"));
-        /*else if (!nWeight)
-            labelStakingIcon->setToolTip(tr("Not staking because you don't have mature coins"));*/
+        else if (!nWeight)
+            labelStakingIcon->setToolTip(tr("Not staking because you don't have mature coins"));
         else if (walletModel->wallet().isLocked())
             labelStakingIcon->setToolTip(tr("Not staking because wallet is locked"));
         else
             labelStakingIcon->setToolTip(tr("Not staking"));
-    /*}*/
+    }
 }
 #endif // ENABLE_WALLET
 
