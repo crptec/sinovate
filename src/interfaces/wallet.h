@@ -270,6 +270,15 @@ public:
     //! Get wallet enabled for staking
     virtual bool getEnabledStaking() = 0;
 
+    //! Set the stake weight
+    virtual bool trySetStakeWeight(uint64_t& nWeight) = 0;
+
+    //! Get the stake weight
+    virtual uint64_t getStakeWeight() = 0;
+
+    //! Get last coin stake search interval
+    virtual int64_t getLastStakeTime() = 0;
+
     // Remove wallet.
     virtual void remove() = 0;
 

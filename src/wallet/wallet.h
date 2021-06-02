@@ -836,8 +836,13 @@ public:
     /**
      * proof-of-stake: Populate the vector with coins eligible to stake.
      */
-    bool StakeableCoins(std::vector<CStakeableOutput>* pCoins = nullptr);
-        
+    bool StakeableCoins(std::vector<CStakeableOutput>* pCoins, uint64_t& nWeight, bool fScale = false);
+    
+    /**
+     * proof-of-stake: Get current stake weight
+     */
+    uint64_t GetStakeWeight();
+
     /**
      * Return list of available coins and locked coins grouped by non-change output address.
      */
