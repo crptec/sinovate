@@ -2379,7 +2379,7 @@ void PeerManager::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDat
         } else {
             inflockreward.ProcessMessage(&pfrom, msg_type, vRecv, m_connman, nDos);
         }
-        if (nDos > 0) Misbehaving(pfrom.GetId(), nDos, "bad sinovate message");
+        if (nDos > 0) Misbehaving(pfrom.GetId(), nDos, "bad Sinovate message");
         return;
     }
 //<SIN

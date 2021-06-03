@@ -437,12 +437,14 @@ bool CInfinityNodeLockReward::CheckLockRewardRequest(CNode* pfrom, const CLockRe
         || lockRewardRequestRet.nRewardHeight < nBlockHeight){
         LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRequest -- LockRewardRequest for invalid height: %d, current height: %d\n",
             lockRewardRequestRet.nRewardHeight, nBlockHeight);
+        nDos = 40;
         return false;
     }
 
     std::string strError = "";
     if(!lockRewardRequestRet.IsValid(pfrom, nBlockHeight, strError, connman, nDos)){
-        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRequest -- LockRewardRequest is invalid. ERROR: %s\n",strError);
+        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckLockRewardRequest -- LockRewardRequest %s is invalid. ERROR: %s\n",lockRewardRequestRet.GetHash().ToString(), strError);
+        nDos = 40;
         return false;
     }
 
