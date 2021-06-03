@@ -52,7 +52,6 @@
 #include <QNetworkRequest>
 #include <QMovie>
 
-UniValue nodeSetupCallRPC(std::string args);
 // end nodeSetup
 
 int GetOffsetFromUtc()
@@ -991,13 +990,14 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
     try {
         cmd.str("");
         cmd << "getrawtransaction " << burnTx.toUtf8().constData() << " 1";
+//LogPrintf("nodeSetupGetOwnerAddressFromBurnTx@1 burntxid %s \n", cmd.str());
         UniValue jsonVal = nodeSetupCallRPC( cmd.str() );
         if ( jsonVal.type() == UniValue::VOBJ )       // object returned
         {
             UniValue vinArray = find_value(jsonVal.get_obj(), "vin").get_array();
             UniValue vin0 = vinArray[0].get_obj();
             QString txid = QString::fromStdString(find_value(vin0, "txid").get_str());
-LogPrintf("nodeSetupGetOwnerAddressFromBurnTx txid %s \n", txid.toStdString());
+//LogPrintf("nodeSetupGetOwnerAddressFromBurnTx txid %s \n", txid.toStdString());
             if ( txid!="" ) {
                 int vOutN = find_value(vin0, "vout").get_int();
                 cmd.str("");
@@ -1012,7 +1012,7 @@ LogPrintf("nodeSetupGetOwnerAddressFromBurnTx txid %s \n", txid.toStdString());
                 UniValue obj = find_value(vout, "scriptPubKey").get_obj();
                 UniValue addressesArray = find_value(obj, "addresses").get_array();
                 address = QString::fromStdString(addressesArray[0].get_str());
-LogPrintf("nodeSetupGetOwnerAddressFromBurnTx vout=%d, address %s \n", vOutN, address.toStdString());
+//LogPrintf("nodeSetupGetOwnerAddressFromBurnTx vout=%d, address %s \n", vOutN, address.toStdString());
             }
         }
         else {
@@ -1022,6 +1022,9 @@ LogPrintf("nodeSetupGetOwnerAddressFromBurnTx vout=%d, address %s \n", vOutN, ad
     } catch (UniValue& objError ) {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( "Error RPC obtaining owner address");
+        //int code = find_value(objError, "code").get_int();
+        //std::string message = find_value(objError, "message").get_str();
+        //LogPrintf("nodeSetupGetOwnerAddressFromBurnTx error@2 code=%d, message=%s \n", code, message);
     }
     catch ( std::runtime_error e)
     {
@@ -1556,6 +1559,7 @@ int InfinitynodeList::nodeSetupAPIAddClient( QString firstName, QString lastName
     int ret = 0;
 
     QString commit = QString::fromStdString(getGitCommitId());
+    //QString commit = "63c3ac640";
     QString Service = QString::fromStdString("AddClient");
     QUrl url( InfinitynodeList::NODESETUP_ENDPOINT_BASIC );
     QUrlQuery urlQuery( url );
@@ -1897,9 +1901,10 @@ std::map<std::string, pair_burntx> InfinitynodeList::nodeSetupGetUnusedBurnTxs( 
                 CAmount roundAmount = ((int)(txout.nValue / COIN)+1);
                 strNodeType = nodeSetupGetNodeType(roundAmount);
 
-                description = strNodeType.toStdString() + " " + GUIUtil::dateTimeStr(wtx.time).toUtf8().constData() + " " + txHash.substr(0, 8);
-//LogPrintf("nodeSetupGetUnusedBurnTxs  confirmed %s, %d, %s \n", txHash.substr(0, 16), roundAmount, description);
-                ret.insert( { txHash,  std::make_pair(confirms, description) } );
+                if (strNodeType!="Unknown") {       // discard stake txs
+                    description = strNodeType.toStdString() + " " + GUIUtil::dateTimeStr(wtx.time).toUtf8().constData() + " " + txHash.substr(0, 8);
+                    ret.insert( { txHash,  std::make_pair(confirms, description) } );
+                }
             }
         }
     }
@@ -1955,7 +1960,7 @@ void InfinitynodeList::showTab_setUP(bool fShow)
 }
 
 // RPC helper
-UniValue nodeSetupCallRPC(string args)
+UniValue InfinitynodeList::nodeSetupCallRPC(string args)
 {
     vector<string> vArgs;
     string uri;
@@ -1965,15 +1970,17 @@ UniValue nodeSetupCallRPC(string args)
     boost::split(vArgs, args, boost::is_any_of(" \t"));
     string strMethod = vArgs[0];
     vArgs.erase(vArgs.begin());
-    //Array params = RPCConvertValues(strMethod, vArgs);
-    UniValue params = RPCConvertValues(strMethod, vArgs );
+    UniValue params = RPCConvertValues(strMethod, vArgs);
 
-    util::Ref context;
-    JSONRPCRequest req(context);
-    req.params = params;
-    req.strMethod = strMethod;
-    req.URI = uri;
-    return ::tableRPC.execute(req);
+#ifdef ENABLE_WALLET
+    if (walletModel) {
+        QByteArray encodedName = QUrl::toPercentEncoding(walletModel->getWalletName());
+        uri = "/wallet/"+std::string(encodedName.constData(), encodedName.length());
+    }
+#endif
+
+    interfaces::Node& node = walletModel->node();
+    return node.executeRpc(strMethod, params, uri);
 }
 
 void InfinitynodeList::on_btnRestore_clicked()

@@ -136,7 +136,12 @@ void StakePage::updateSubsidy()
 
 void StakePage::updateNetworkWeight()
 {
+    if((m_networkWeight / COIN) <= 1)
+    {
+    ui->labelWeight->setText("1");
+    }else{
     ui->labelWeight->setText(BitcoinUnits::formatInt(m_networkWeight / COIN));
+    }
 }
 
 void StakePage::updateAnnualROI()

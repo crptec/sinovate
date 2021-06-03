@@ -98,6 +98,7 @@ public Q_SLOTS:
     // node setup functions
     void nodeSetupInitialize();
     void nodeSetupCleanProgress();
+    UniValue nodeSetupCallRPC(std::string args);
     void nodeSetupEnableOrderUI( bool bEnable, int orderID = 0, int invoiceID = 0 );
     int nodeSetupAPIAddClient( QString firstName, QString lastName, QString email, QString password, QString& strError );
     int nodeSetupAPIAddOrder( int clientid, QString billingCycle, QString& productids, int& invoiceid, QString email, QString password, QString& strError );

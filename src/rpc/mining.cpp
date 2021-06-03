@@ -185,6 +185,7 @@ static UniValue generateBlocksPoS(ChainstateManager& chainman, const CTxMemPool&
 {
     int nHeightEnd = 0;
     int nHeight = 0;
+    uint64_t nWeight;
 
     // Available wallet(s), always use no 0.
     std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
@@ -203,7 +204,7 @@ static UniValue generateBlocksPoS(ChainstateManager& chainman, const CTxMemPool&
     {
         // Get available coins
         std::vector<CStakeableOutput> availableCoins;
-        if (!pwallet->StakeableCoins(&availableCoins)) {
+        if (!pwallet->StakeableCoins(&availableCoins, nWeight)) {
             throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "No available coins to stake");
         }
 
@@ -557,6 +558,7 @@ static RPCHelpMan getstakinginfo()
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
     int nHeight = 0;
+    uint64_t nWeight;
     double dDiff;
     {   // Don't keep cs_main locked
         LOCK(cs_main);
@@ -584,7 +586,7 @@ static RPCHelpMan getstakinginfo()
     obj.pushKV("warnings",         GetWarnings(false).original);
     obj.pushKV("staking",          pStakerStatus.get()->IsActive());
     std::vector<CStakeableOutput> availableCoins;
-    if (!pwallet->StakeableCoins(&availableCoins)) {
+    if (!pwallet->StakeableCoins(&availableCoins, nWeight)) {
         obj.pushKV("staking_available", 0);
     } else {
         obj.pushKV("staking_available", (int)availableCoins.size());
