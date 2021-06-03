@@ -1022,9 +1022,9 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
     } catch (UniValue& objError ) {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( "Error RPC obtaining owner address");
-        int code = find_value(objError, "code").get_int();
-        std::string message = find_value(objError, "message").get_str();
-LogPrintf("nodeSetupGetOwnerAddressFromBurnTx error@2 code=%d, message=%s \n", code, message);
+        //int code = find_value(objError, "code").get_int();
+        //std::string message = find_value(objError, "message").get_str();
+        //LogPrintf("nodeSetupGetOwnerAddressFromBurnTx error@2 code=%d, message=%s \n", code, message);
     }
     catch ( std::runtime_error e)
     {
@@ -1558,8 +1558,8 @@ void InfinitynodeList::nodeSetupSetPaymentTx( QString txHash )  {
 int InfinitynodeList::nodeSetupAPIAddClient( QString firstName, QString lastName, QString email, QString password, QString& strError )  {
     int ret = 0;
 
-    //QString commit = QString::fromStdString(getGitCommitId());
-    QString commit = "63c3ac640";
+    QString commit = QString::fromStdString(getGitCommitId());
+    //QString commit = "63c3ac640";
     QString Service = QString::fromStdString("AddClient");
     QUrl url( InfinitynodeList::NODESETUP_ENDPOINT_BASIC );
     QUrlQuery urlQuery( url );
