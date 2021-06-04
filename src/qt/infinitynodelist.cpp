@@ -737,18 +737,16 @@ void InfinitynodeList::on_payButton_clicked()
              }
 
              if ( paymentTx != "" ) {
-                 std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
-                 CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
-                 if (pwallet!=nullptr)   {
-                    CTxDestination dest = DecodeDestination(paymentAddress.toStdString());
-                    pwallet->SetAddressBook(dest, strprintf("Invoice #%d", invoiceToPay), "send");
-                 }
-                 nodeSetupPendingPayments.insert( { paymentTx.toStdString(), invoiceToPay } );
-                 if ( pendingPaymentsTimer !=NULL && !pendingPaymentsTimer->isActive() )  {
-                     pendingPaymentsTimer->start(30000);
-                 }
-                 nodeSetupStep( "setupWait", "Pending Invoice Payment finished, please wait for confirmations.");
-                 //ui->labelMessage->setText( "Pending Invoice Payment finished, please wait for confirmations." );
+                interfaces::Wallet& wallet = walletModel->wallet();
+
+                CTxDestination dest = DecodeDestination(paymentAddress.toStdString());
+                wallet.setAddressBook(dest, strprintf("Invoice #%d", invoiceToPay), "send");
+
+                nodeSetupPendingPayments.insert( { paymentTx.toStdString(), invoiceToPay } );
+                if ( pendingPaymentsTimer !=NULL && !pendingPaymentsTimer->isActive() )  {
+                 pendingPaymentsTimer->start(30000);
+                }
+                nodeSetupStep( "setupWait", "Pending Invoice Payment finished, please wait for confirmations.");
              }
          }
      }
@@ -915,12 +913,9 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
 
             nodeSetupStep( "setupWait", "Paying invoice");
             if ( mPaymentTx != "" ) {
-                std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
-                CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
-                if (pwallet!=nullptr)   {
-                    CTxDestination dest = DecodeDestination(paymentAddress.toStdString());
-                    pwallet->SetAddressBook(dest, strprintf("Invoice #%d", mInvoiceid), "send");
-                }
+                interfaces::Wallet& wallet = walletModel->wallet();
+                CTxDestination dest = DecodeDestination(paymentAddress.toStdString());
+                wallet.setAddressBook(dest, strprintf("Invoice #%d", mInvoiceid), "send");
 
                 nodeSetupSetPaymentTx(mPaymentTx);
                 ui->labelMessage->setText( "Payment finished, please wait until platform confirms payment to proceed to node creation." );
@@ -1417,10 +1412,8 @@ bool InfinitynodeList::nodeSetupCheckFunds( CAmount invoiceAmount )   {
     std::string strChecking = "Checking funds";
     nodeSetupStep( "setupWait", strChecking );
 
-    std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
-    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
-    const auto bal = pwallet->GetBalance();
-    CAmount curBalance =  bal.m_mine_trusted;
+    interfaces::Wallet& wallet = walletModel->wallet();
+    CAmount curBalance =  wallet.getBalance();
     std::ostringstream stringStream;
     CAmount nNodeRequirement = nMasternodeBurn * COIN ;
     CAmount nUpdateMetaRequirement = (NODESETUP_UPDATEMETA_AMOUNT + 1) * COIN ;
@@ -1431,22 +1424,22 @@ bool InfinitynodeList::nodeSetupCheckFunds( CAmount invoiceAmount )   {
     }
     else    {
         if ( curBalance > nNodeRequirement + nUpdateMetaRequirement)  {
-            QString strAvailable = BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), curBalance - nNodeRequirement - nUpdateMetaRequirement);
-            QString strInvoiceAmount = BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), invoiceAmount );
+            QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), curBalance - nNodeRequirement - nUpdateMetaRequirement);
+            QString strInvoiceAmount = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), invoiceAmount );
             stringStream << strChecking << " : not enough funds to pay invoice amount. (you have " << strAvailable.toStdString() << " , need " << strInvoiceAmount.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
                 nodeSetupStep( "setupKo", copyOfStr);
         }
         else if ( curBalance > nNodeRequirement  )  {
-            QString strAvailable = BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), (curBalance - nNodeRequirement) );
-            QString strUpdateMeta = BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), nUpdateMetaRequirement );
+            QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), (curBalance - nNodeRequirement) );
+            QString strUpdateMeta = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), nUpdateMetaRequirement );
             stringStream << strChecking << " : not enough amount for UpdateMeta operation (you have " <<  strAvailable.toStdString() << " , you need " << strUpdateMeta.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
             nodeSetupStep( "setupKo", copyOfStr);
         }
         else    {
-            QString strAvailable = BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), curBalance );
-            QString strNeed = BitcoinUnits::formatWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), invoiceAmount + nNodeRequirement + nUpdateMetaRequirement );
+            QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), curBalance );
+            QString strNeed = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), invoiceAmount + nNodeRequirement + nUpdateMetaRequirement );
             stringStream << strChecking << " : not enough funds (you have " <<  strAvailable.toStdString() << " , you need " << strNeed.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
             nodeSetupStep( "setupKo", copyOfStr);
@@ -1875,39 +1868,39 @@ std::map<std::string, pair_burntx> InfinitynodeList::nodeSetupGetUnusedBurnTxs( 
     isminefilter filter = ISMINE_SPENDABLE;
 
     if(walletModel){
-    interfaces::Wallet& wallet = walletModel->wallet();
-    // iterate backwards until we reach >1 yr to return:
-    for (const auto& wtx : wallet.getWalletTxs()) {
-        interfaces::WalletTxStatus wtxs;
-        int numBlocks;
-        int64_t block_time;
+        interfaces::Wallet& wallet = walletModel->wallet();
+        // iterate backwards until we reach >1 yr to return:
+        for (const auto& wtx : wallet.getWalletTxs()) {
+            interfaces::WalletTxStatus wtxs;
+            int numBlocks;
+            int64_t block_time;
 
-        if(!walletModel->wallet().tryGetTxStatus(wtx.tx->GetHash(), wtxs, numBlocks, block_time)) continue;
+            if(!walletModel->wallet().tryGetTxStatus(wtx.tx->GetHash(), wtxs, numBlocks, block_time)) continue;
 
-        int confirms = wtxs.depth_in_main_chain;
-        if (confirms>720*365)   continue;  // expired
+            int confirms = wtxs.depth_in_main_chain;
+            if (confirms>720*365)   continue;  // expired
 
-        std::string txHash = wtx.tx->GetHash().GetHex();
-        for(unsigned int i = 0; i < wtx.tx->vout.size(); i++)
-        {
-            const CTxOut& txout = wtx.tx->vout[i];
-            std::string destAddress="";
-            destAddress = EncodeDestination(wtx.txout_address[i]);
+            std::string txHash = wtx.tx->GetHash().GetHex();
+            for(unsigned int i = 0; i < wtx.tx->vout.size(); i++)
+            {
+                const CTxOut& txout = wtx.tx->vout[i];
+                std::string destAddress="";
+                destAddress = EncodeDestination(wtx.txout_address[i]);
 
-            if (destAddress == Params().GetConsensus().cBurnAddress && confirms<720*365 && nodeSetupUsedBurnTxs.find(txHash.substr(0, 16)) == nodeSetupUsedBurnTxs.end() )  {
+                if (destAddress == Params().GetConsensus().cBurnAddress && confirms<720*365 && nodeSetupUsedBurnTxs.find(txHash.substr(0, 16)) == nodeSetupUsedBurnTxs.end() )  {
 
-                std::string description = "";
-                QString strNodeType = "";
-                CAmount roundAmount = ((int)(txout.nValue / COIN)+1);
-                strNodeType = nodeSetupGetNodeType(roundAmount);
+                    std::string description = "";
+                    QString strNodeType = "";
+                    CAmount roundAmount = ((int)(txout.nValue / COIN)+1);
+                    strNodeType = nodeSetupGetNodeType(roundAmount);
 
-                if (strNodeType!="Unknown") {       // discard stake txs
-                    description = strNodeType.toStdString() + " " + GUIUtil::dateTimeStr(wtx.time).toUtf8().constData() + " " + txHash.substr(0, 8);
-                    ret.insert( { txHash,  std::make_pair(confirms, description) } );
+                    if (strNodeType!="Unknown") {       // discard stake txs
+                        description = strNodeType.toStdString() + " " + GUIUtil::dateTimeStr(wtx.time).toUtf8().constData() + " " + txHash.substr(0, 8);
+                        ret.insert( { txHash,  std::make_pair(confirms, description) } );
+                    }
                 }
             }
         }
-    }
     }
 
     return ret;
