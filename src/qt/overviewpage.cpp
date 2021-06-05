@@ -530,7 +530,7 @@ void OverviewPage::onResult(QNetworkReply* replystats)
 
         double currentUSD = dataObject.value("usdPrice").toDouble();
         double availableUSD = (currentUSD * totalBalance / 100000000);
-        ui->labelUSDTotal->setText("$" + QString::number(availableUSD, 'f', 8) + " USD");
+        ui->labelUSDTotal->setText("$" + QString::number(availableUSD, 'f', 2) + " USD");
 
        
     }
