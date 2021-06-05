@@ -80,9 +80,6 @@
         <file alias="biglogo_dark">res/icons/biglogo-dark.png</file>
         <file alias="about_white">res/icons/about_white.png</file>
         <file alias="about_black">res/icons/about_black.png</file>
-        <file alias="setupOk">res/icons/ok.png</file>
-        <file alias="setupKo">res/icons/ko.png</file>
-        <file alias="setupWait">res/icons/waitgif.gif</file>
         <file alias="close">res/icons/close.png</file>
     </qresource>
     <qresource prefix="/movies">
