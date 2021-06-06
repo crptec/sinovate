@@ -7,6 +7,9 @@
 
 #include <QObject>
 #include <QDateTime>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
 #include <atomic>
 #include <memory>
@@ -42,6 +45,25 @@ enum NumConnections {
     CONNECTIONS_ALL  = (CONNECTIONS_IN | CONNECTIONS_OUT),
 };
 
+struct SINStatsStruct {
+    QString blockcount = "";
+    double known_hashrate = 0.0;
+    QString difficulty = "";
+    double lastPrice = 0.0;
+    double usdPrice = 0.0;
+    int explorerTop10 = 0;
+    int explorerTop50 = 0;
+    QString explorerAddresses = "";
+    QString explorerActiveAddresses = "";
+    double supply = 0.0;
+    double burnFee = 0.0;
+    double burnNode = 0.0;
+    int burnNodeInt = 0;
+    double inf_online_big = 0.0;
+    double inf_online_mid = 0.0;
+    double inf_online_lil = 0.0;
+};
+
 /** Model for Bitcoin network client. */
 class ClientModel : public QObject
 {
@@ -75,6 +97,8 @@ public:
     QString dataDir() const;
     QString blocksDir() const;
 
+    SINStatsStruct getStats() const { return m_sinStats; }
+
     bool getProxyInfo(std::string& ip_port) const;
 
     // caches for the best header: hash, number of blocks and block time
@@ -104,6 +128,11 @@ private:
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();
 
+    // SIN
+    QTimer* m_timer;    // for stats data
+    QNetworkAccessManager* m_networkManager;
+    SINStatsStruct m_sinStats;
+
 Q_SIGNALS:
     void numConnectionsChanged(int count);
     void numBlocksChanged(int count, const QDateTime& blockDate, double nVerificationProgress, bool header, SynchronizationState sync_state);
@@ -123,6 +152,9 @@ public Q_SLOTS:
     void updateNetworkActive(bool networkActive);
     void updateAlert();
     void updateBanlist();
+    void onResult(QNetworkReply* replystats);
+    void getStatistics();
+
 };
 
 #endif // BITCOIN_QT_CLIENTMODEL_H

@@ -10,6 +10,7 @@ namespace Ui {
 class StatsPage;
 }
 
+class ClientModel;
 class WalletModel;
 
 class StatsPage :  public QWidget
@@ -19,16 +20,16 @@ class StatsPage :  public QWidget
 public:
     explicit StatsPage(const PlatformStyle* platformStyle, QWidget* parent = 0);
     ~StatsPage();
+    void setClientModel(ClientModel *clientModel);
     
 public Q_SLOTS:
     void getStatistics();
-    void onResult(QNetworkReply* reply);
 
 private:
     Ui::StatsPage* m_ui;
+    ClientModel *clientModel;
     QTimer* m_timer;
     const PlatformStyle* m_platformStyle;
-    QNetworkAccessManager* m_networkManager;
 };
 
 #endif // STATSPAGE_H

@@ -86,7 +86,6 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     m_timer(nullptr),
     // --
     ui(new Ui::InfinitynodeList),
-    m_networkManager(new QNetworkAccessManager(this)),
     clientModel(nullptr),
     walletModel(nullptr)
 {
@@ -96,11 +95,11 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
 
     LogPrintf("infinitynodelist: setup UI\n");
     ui->setupUi(this);
+
     // ++ DIN ROI Stats
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
     m_timer->start(30000);
-    connect(m_networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
     getStatistics();
     // --
 
@@ -2039,27 +2038,21 @@ QString InfinitynodeList::nodeSetupGetRPCErrorMessage( UniValue objError )    {
 
     return ret;
 }
-
-// ++ DIN ROI Stats
-void InfinitynodeList::onResult(QNetworkReply* replystats)
+    
+void InfinitynodeList::getStatistics()
 {
-    QVariant statusCode = replystats->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    if (this->clientModel==nullptr) {
+        return;
+    }
+    SINStatsStruct s = this->clientModel->getStats();
 
-    if( statusCode == 200)
-    {
-        QString replyString = (QString) replystats->readAll();
-
-        QJsonDocument jsonResponse = QJsonDocument::fromJson(replyString.toUtf8());
-        QJsonObject jsonObject = jsonResponse.object();
-
-        QJsonObject dataObject = jsonObject.value("data").toArray()[0].toObject();
-
+    if (s.lastPrice!=0.0)    {
         QLocale l = QLocale(QLocale::English);
 
           // Set INFINITY NODE STATS strings
-        int bigRoiDays = (365/(1000000/((720/dataObject.value("inf_online_big").toDouble())*1752)))*100-100;
-        int midRoiDays = (365/(500000/((720/dataObject.value("inf_online_mid").toDouble())*838)))*100-100;
-        int lilRoiDays = (365/(100000/((720/dataObject.value("inf_online_lil").toDouble())*560)))*100-100;
+        int bigRoiDays = (365/(1000000/((720/s.inf_online_big)*1752)))*100-100;
+        int midRoiDays = (365/(500000/((720/s.inf_online_mid)*838)))*100-100;
+        int lilRoiDays = (365/(100000/((720/s.inf_online_lil)*560)))*100-100;
 
         QString bigROIString = QString::number(bigRoiDays, 'f', 0);
         QString midROIString = QString::number(midRoiDays, 'f', 0);
@@ -2068,26 +2061,15 @@ void InfinitynodeList::onResult(QNetworkReply* replystats)
         ui->bigRoiLabel->setText("ROI " + bigROIString + "%");
         ui->midRoiLabel->setText("ROI " + midROIString + "%");
         ui->miniRoiLabel->setText("ROI " + lilROIString + "%");
-        
-       
     }
     else
     {
         const QString noValue = "NaN";
-       
+
         ui->bigRoiLabel->setText(noValue);
         ui->midRoiLabel->setText(noValue);
         ui->miniRoiLabel->setText(noValue);
-       
     }
-}
-    
-void InfinitynodeList::getStatistics()
-{
-    QUrl summaryUrl("https://explorer.sinovate.io/ext/summary");
-    QNetworkRequest request;
-    request.setUrl(summaryUrl);
-    m_networkManager->get(request);
 }
 
 void InfinitynodeList::loadMotd()

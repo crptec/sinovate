@@ -141,6 +141,7 @@ void WalletView::setClientModel(ClientModel *_clientModel)
 
     //>SIN
     infinitynodeListPage->setClientModel(clientModel);
+    statsWindow->setClientModel(clientModel);
     //<SIN
     stakePage->setClientModel(_clientModel);
 }

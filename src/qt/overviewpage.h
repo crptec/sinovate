@@ -10,10 +10,6 @@
 #include <QWidget>
 #include <memory>
 
-#include <QtNetwork/QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-
 class ClientModel;
 class TransactionFilterProxy;
 class TxViewDelegate;
@@ -26,8 +22,6 @@ namespace Ui {
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
-class QNetworkAccessManager;
-class QNetworkRequest;
 QT_END_NAMESPACE
 
 /** Overview ("home") page widget */
@@ -64,8 +58,6 @@ private:
     WalletModel *walletModel;
     interfaces::WalletBalances m_balances;
     QTimer* m_timer;
-    QNetworkAccessManager* m_networkManager;
-    QNetworkRequest* request;
     qint64 totalBalance;
     bool m_privacy{false};
 
@@ -82,7 +74,6 @@ private Q_SLOTS:
     void on_buttonSend_clicked();
     void on_buttonReceive_clicked();
     void showDetails();
-    void onResult(QNetworkReply* replystats);
     void getStatistics();
     void on_toolButtonBlog_clicked();
     void on_toolButtonDocs_clicked();

@@ -150,7 +150,6 @@ private:
     QTimer *motdTimer;
     QTimer* m_timer;
     Ui::InfinitynodeList *ui;
-    QNetworkAccessManager* m_networkManager;
     QNetworkAccessManager* motd_networkManager;
     QNetworkRequest* motd_request;
     QTimer *timer;
@@ -209,7 +208,6 @@ private Q_SLOTS:
     void on_btnLogin_clicked();
     void on_btnSetupReset_clicked();
     void on_btnRestore_clicked();
-    void onResult(QNetworkReply* replystats);
     void getStatistics();
     void loadMotd();
 };
