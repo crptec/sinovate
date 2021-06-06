@@ -23,6 +23,10 @@
 #include <QDebug>
 #include <QThread>
 #include <QTimer>
+#include <QUrl>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 static int64_t nLastHeaderTipUpdateNotification = 0;
 static int64_t nLastBlockTipUpdateNotification = 0;
@@ -33,7 +37,8 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     optionsModel(_optionsModel),
     peerTableModel(nullptr),
     banTableModel(nullptr),
-    m_thread(new QThread(this))
+    m_thread(new QThread(this)),
+    m_networkManager(new QNetworkAccessManager(this))
 {
     cachedBestHeaderHeight = -1;
     cachedBestHeaderTime = -1;
@@ -58,6 +63,14 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     });
 
     subscribeToCoreSignals();
+
+    // refresh Stats
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
+    m_timer->start(300000); // 5 mins
+    connect(m_networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
+    getStatistics();
+    // --
 }
 
 ClientModel::~ClientModel()
@@ -323,4 +336,48 @@ bool ClientModel::getProxyInfo(std::string& ip_port) const
       return true;
     }
     return false;
+}
+
+// get SIN Stats
+void ClientModel::getStatistics()
+{
+    QUrl summaryUrl("https://stats.sinovate.io/summary.php");
+    QNetworkRequest request;
+    request.setUrl(summaryUrl);
+    m_networkManager->get(request);
+}
+// --
+
+void ClientModel::onResult(QNetworkReply* reply)
+{
+    QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+    if( statusCode == 200)
+    {
+        QString replyString = (QString) reply->readAll();
+
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(replyString.toUtf8());
+        QJsonObject jsonObject = jsonResponse.object();
+
+        QJsonObject dataObject = jsonObject.value("data").toArray()[0].toObject();
+
+        // Set NETWORK strings
+        m_sinStats.blockcount = dataObject.value("blockcount").toVariant().toString();
+        m_sinStats.known_hashrate = dataObject.value("known_hashrate").toDouble();
+        m_sinStats.difficulty = dataObject.value("difficulty").toVariant().toString();
+        m_sinStats.lastPrice = dataObject.value("lastPrice").toDouble();
+        m_sinStats.usdPrice = dataObject.value("usdPrice").toDouble();
+        m_sinStats.explorerTop10 = (int)dataObject.value("explorerTop10").toDouble();
+        m_sinStats.explorerTop50 = (int)dataObject.value("explorerTop50").toDouble();
+        m_sinStats.explorerAddresses = dataObject.value("explorerAddresses").toVariant().toString();
+        m_sinStats.explorerActiveAddresses = dataObject.value("explorerActiveAddresses").toVariant().toString();
+        m_sinStats.supply = dataObject.value("supply").toDouble();
+        m_sinStats.burnFee = dataObject.value("burnFee").toDouble();
+        m_sinStats.burnNode = dataObject.value("burnNode").toDouble();
+        m_sinStats.burnNodeInt = (int)m_sinStats.burnNode;
+        m_sinStats.inf_online_big = dataObject.value("inf_online_big").toDouble();
+        m_sinStats.inf_online_mid = dataObject.value("inf_online_mid").toDouble();
+        m_sinStats.inf_online_lil = dataObject.value("inf_online_lil").toDouble();
+    }
+    reply->deleteLater();
 }

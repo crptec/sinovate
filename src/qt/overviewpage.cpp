@@ -25,10 +25,6 @@
 #include <QStatusTipEvent>
 #include <QMessageBox>
 #include <QTimer>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QUrl>
 #include <QToolButton>
 #include <QDesktopServices>
 
@@ -200,9 +196,6 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     m_timer(nullptr),
     // --
     ui(new Ui::OverviewPage),
-    // ++ Price Stats
-    m_networkManager(new QNetworkAccessManager(this)),
-    // --
     clientModel(nullptr),
     walletModel(nullptr),
     txdelegate(new TxViewDelegate(platformStyle, this))
@@ -304,7 +297,6 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
     m_timer->start(30000);
-    connect(m_networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
     getStatistics();
     // --
 }
@@ -337,10 +329,35 @@ OverviewPage::~OverviewPage()
 // ++ Price Stats
 void OverviewPage::getStatistics()
 {
-    QUrl summaryUrl("https://stats.sinovate.io/summary.php");
-    QNetworkRequest request;
-    request.setUrl(summaryUrl);
-    m_networkManager->get(request);
+    if (this->clientModel==nullptr) {
+        return;
+    }
+    SINStatsStruct s = this->clientModel->getStats();
+
+    if (s.lastPrice!=0.0)    {
+        QLocale l = QLocale(QLocale::English);
+
+        // Set BTC price strings
+        ui->labelCurrentPriceBTC->setText(QString::number(s.lastPrice, 'f', 8));
+
+        double currentBTC = s.lastPrice;
+        double availableBTC = (currentBTC * totalBalance / 100000000);
+        ui->labelBTCTotal->setText(QString::number(availableBTC, 'f', 8) + " BTC");
+
+        // Set UDS price strings
+        ui->labelCurrentPriceUSD->setText(QString::number(s.usdPrice, 'f', 8));
+
+        double currentUSD = s.usdPrice;
+        double availableUSD = (currentUSD * totalBalance / 100000000);
+        ui->labelUSDTotal->setText("$" + QString::number(availableUSD, 'f', 2) + " USD");
+    }
+    else
+    {
+        const QString noValue = "NaN";
+
+        ui->labelCurrentPriceBTC->setText(noValue);
+        ui->labelCurrentPriceUSD->setText(noValue);
+    }
 }
 // --
 
@@ -500,50 +517,6 @@ void OverviewPage::on_buttonSend_clicked()
 void OverviewPage::on_buttonReceive_clicked()
 {
     Q_EMIT receiveCoinsClicked();
-}
-
-// ++ Price Stats
-void OverviewPage::onResult(QNetworkReply* replystats)
-{
-    QVariant statusCode = replystats->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-
-    if( statusCode == 200)
-    {
-        QString replyString = (QString) replystats->readAll();
-
-        QJsonDocument jsonResponse = QJsonDocument::fromJson(replyString.toUtf8());
-        QJsonObject jsonObject = jsonResponse.object();
-
-        QJsonObject dataObject = jsonObject.value("data").toArray()[0].toObject();
-
-        QLocale l = QLocale(QLocale::English);
-
-        // Set BTC price strings
-        ui->labelCurrentPriceBTC->setText(QString::number(dataObject.value("lastPrice").toDouble(), 'f', 8)); 
-
-        double currentBTC = dataObject.value("lastPrice").toDouble();
-        double availableBTC = (currentBTC * totalBalance / 100000000);
-        ui->labelBTCTotal->setText(QString::number(availableBTC, 'f', 8) + " BTC");
-
-        // Set UDS price strings
-        ui->labelCurrentPriceUSD->setText(QString::number(dataObject.value("usdPrice").toDouble(), 'f', 8)); 
-
-        double currentUSD = dataObject.value("usdPrice").toDouble();
-        double availableUSD = (currentUSD * totalBalance / 100000000);
-        ui->labelUSDTotal->setText("$" + QString::number(availableUSD, 'f', 2) + " USD");
-
-       
-    }
-    else
-    {
-        const QString noValue = "NaN";
-       
-        ui->labelCurrentPriceBTC->setText(noValue);
-        ui->labelCurrentPriceUSD->setText(noValue);
-       
-    }
-
-    replystats->deleteLater();
 }
 
 void OverviewPage::showTransactionWidget(bool bShow)   {
