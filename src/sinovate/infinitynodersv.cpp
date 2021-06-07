@@ -5,6 +5,7 @@
 #include <sinovate/infinitynodersv.h>
 #include <sinovate/infinitynodeman.h>
 #include <sinovate/flat-database.h>
+#include <node/blockstorage.h>
 
 CInfinitynodersv infnodersv;
 

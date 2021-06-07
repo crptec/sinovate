@@ -11,6 +11,7 @@
 #include <key_io.h>
 #include <script/standard.h>
 #include <netbase.h>
+#include <node/blockstorage.h>
 
 
 CInfinitynodeMan infnodeman;

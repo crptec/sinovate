@@ -8,6 +8,7 @@
 
 #include <script/standard.h>
 #include <blockfilter.h>
+#include <node/blockstorage.h>
 #include <validation.h>
 
 CInfinitynodeMeta infnodemeta;
