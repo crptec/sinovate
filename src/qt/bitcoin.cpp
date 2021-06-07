@@ -45,10 +45,13 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QFontDatabase>
+#include <QLatin1String>
 #include <QLibraryInfo>
 #include <QLocale>
 #include <QMessageBox>
 #include <QSettings>
+#include <QStringBuilder>
 #include <QThread>
 #include <QTimer>
 #include <QTranslator>
@@ -61,6 +64,7 @@ Q_IMPORT_PLUGIN(QXcbIntegrationPlugin);
 Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin);
 #elif defined(QT_QPA_PLATFORM_COCOA)
 Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
+Q_IMPORT_PLUGIN(QMacStylePlugin);
 #endif
 Q_IMPORT_PLUGIN(QGifPlugin);
 #endif
@@ -79,7 +83,7 @@ static void RegisterMetaTypes()
   #ifdef ENABLE_WALLET
     qRegisterMetaType<WalletModel*>();
   #endif
-    // Register typedefs (see http://qt-project.org/doc/qt-5/qmetatype.html#qRegisterMetaType)
+    // Register typedefs (see https://doc.qt.io/qt-5/qmetatype.html#qRegisterMetaType)
     // IMPORTANT: if CAmount is no longer a typedef use the normal variant above (see https://doc.qt.io/qt-5/qmetatype.html#qRegisterMetaType-1)
     qRegisterMetaType<CAmount>("CAmount");
     qRegisterMetaType<size_t>("size_t");
@@ -417,8 +421,21 @@ void BitcoinApplication::shutdownResult()
 
 void BitcoinApplication::handleRunawayException(const QString &message)
 {
-    QMessageBox::critical(nullptr, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. %1 can no longer continue safely and will quit.").arg(PACKAGE_NAME) + QString("<br><br>") + message);
+    QMessageBox::critical(
+        nullptr, tr("Runaway exception"),
+        tr("A fatal error occurred. %1 can no longer continue safely and will quit.").arg(PACKAGE_NAME) %
+        QLatin1String("<br><br>") % GUIUtil::MakeHtmlLink(message, PACKAGE_BUGREPORT));
     ::exit(EXIT_FAILURE);
+}
+
+void BitcoinApplication::handleNonFatalException(const QString& message)
+{
+    assert(QThread::currentThread() == thread());
+    QMessageBox::warning(
+        nullptr, tr("Internal error"),
+        tr("An internal error occurred. %1 will attempt to continue safely. This is "
+           "an unexpected bug which can be reported as described below.").arg(PACKAGE_NAME) %
+        QLatin1String("<br><br>") % GUIUtil::MakeHtmlLink(message, PACKAGE_BUGREPORT));
 }
 
 WId BitcoinApplication::getMainWinId() const
@@ -464,11 +481,16 @@ int GuiMain(int argc, char* argv[])
 
     // Generate high-dpi pixmaps
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-#if QT_VERSION >= 0x050600
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+#if defined(QT_QPA_PLATFORM_ANDROID)
+    QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
+    QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+    QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
 #endif
 
     BitcoinApplication app;
+    QFontDatabase::addApplicationFont(":/fonts/monospace");
 
     /// 2. Parse command-line options. We do this after qt in order to show an error if there are problems parsing these
     // Command-line options take precedence:

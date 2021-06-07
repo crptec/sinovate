@@ -7,17 +7,27 @@
 
 #include <amount.h>
 #include <fs.h>
+#include <net.h>
+#include <netaddress.h>
+#include <util/check.h>
 
+#include <QApplication>
 #include <QEvent>
 #include <QHeaderView>
 #include <QItemDelegate>
+#include <QLabel>
 #include <QMessageBox>
+#include <QMetaObject>
 #include <QObject>
 #include <QProgressBar>
 #include <QString>
 #include <QTableView>
 #include <QLabel>
 #include <QToolButton>
+
+#include <cassert>
+#include <chrono>
+#include <utility>
 
 class QValidatedLineEdit;
 class SendCoinsRecipient;
@@ -44,12 +54,15 @@ QT_END_NAMESPACE
  */
 namespace GUIUtil
 {
+    // Use this flags to prevent a "What's This" button in the title bar of the dialog on Windows.
+    constexpr auto dialog_flags = Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint;
+
     // Create human-readable string from date
     QString dateTimeStr(const QDateTime &datetime);
     QString dateTimeStr(qint64 nTime);
 
     // Return a monospace font
-    QFont fixedPitchFont();
+    QFont fixedPitchFont(bool use_embedded_font = false);
 
     // Set up widget for address
     void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent);
@@ -218,25 +231,47 @@ namespace GUIUtil
         bool eventFilter(QObject* watched, QEvent* event) override;
     };
 
+
+    /**
+     * Qt event filter that intercepts QEvent::FocusOut events for QLabel objects, and
+     * resets their `textInteractionFlags' property to get rid of the visible cursor.
+     *
+     * This is a temporary fix of QTBUG-59514.
+     */
+    class LabelOutOfFocusEventFilter : public QObject
+    {
+        Q_OBJECT
+
+    public:
+        explicit LabelOutOfFocusEventFilter(QObject* parent);
+        bool eventFilter(QObject* watched, QEvent* event) override;
+    };
+
     bool GetStartOnSystemStartup();
     bool SetStartOnSystemStartup(bool fAutoStart);
 
-    /* Convert QString to OS specific boost path through UTF-8 */
+    /** Convert QString to OS specific boost path through UTF-8 */
     fs::path qstringToBoostPath(const QString &path);
 
-    /* Convert OS specific boost path to QString through UTF-8 */
+    /** Convert OS specific boost path to QString through UTF-8 */
     QString boostPathToQString(const fs::path &path);
 
-    /* Convert seconds into a QString with days, hours, mins, secs */
+    /** Convert enum Network to QString */
+    QString NetworkToQString(Network net);
+
+    /** Convert enum ConnectionType to QString */
+    QString ConnectionTypeToQString(ConnectionType conn_type, bool prepend_direction);
+
+    /** Convert seconds into a QString with days, hours, mins, secs */
     QString formatDurationStr(int secs);
 
-    /* Format CNodeStats.nServices bitmask into a user-readable string */
+    /** Format CNodeStats.nServices bitmask into a user-readable string */
     QString formatServicesStr(quint64 mask);
 
-    /* Format a CNodeStats.m_ping_usec into a user-readable string or display N/A, if 0*/
-    QString formatPingTime(int64_t ping_usec);
+    /** Format a CNodeStats.m_last_ping_time into a user-readable string or display N/A, if 0 */
+    QString formatPingTime(std::chrono::microseconds ping_time);
 
-    /* Format a CNodeCombinedStats.nTimeOffset into a user-readable string. */
+    /** Format a CNodeCombinedStats.nTimeOffset into a user-readable string */
     QString formatTimeOffset(int64_t nTimeOffset);
 
     QString formatNiceTimeOffset(qint64 secs);
@@ -344,7 +379,71 @@ namespace GUIUtil
     }
 
     void formatToolButtons(QToolButton* btn1, QToolButton* btn2 = 0, QToolButton* btn3 = 0);
+    /**
+     * Queue a function to run in an object's event loop. This can be
+     * replaced by a call to the QMetaObject::invokeMethod functor overload after Qt 5.10, but
+     * for now use a QObject::connect for compatibility with older Qt versions, based on
+     * https://stackoverflow.com/questions/21646467/how-to-execute-a-functor-or-a-lambda-in-a-given-thread-in-qt-gcd-style
+     */
+    template <typename Fn>
+    void ObjectInvoke(QObject* object, Fn&& function, Qt::ConnectionType connection = Qt::QueuedConnection)
+    {
+        QObject source;
+        QObject::connect(&source, &QObject::destroyed, object, std::forward<Fn>(function), connection);
+    }
 
+
+    /**
+     * Replaces a plain text link with an HTML tagged one.
+     */
+    QString MakeHtmlLink(const QString& source, const QString& link);
+
+    void PrintSlotException(
+        const std::exception* exception,
+        const QObject* sender,
+        const QObject* receiver);
+
+    /**
+     * A drop-in replacement of QObject::connect function
+     * (see: https://doc.qt.io/qt-5/qobject.html#connect-3), that
+     * guaranties that all exceptions are handled within the slot.
+     *
+     * NOTE: This function is incompatible with Qt private signals.
+     */
+    template <typename Sender, typename Signal, typename Receiver, typename Slot>
+    auto ExceptionSafeConnect(
+        Sender sender, Signal signal, Receiver receiver, Slot method,
+        Qt::ConnectionType type = Qt::AutoConnection)
+    {
+        return QObject::connect(
+            sender, signal, receiver,
+            [sender, receiver, method](auto&&... args) {
+                bool ok{true};
+                try {
+                    (receiver->*method)(std::forward<decltype(args)>(args)...);
+                } catch (const NonFatalCheckError& e) {
+                    PrintSlotException(&e, sender, receiver);
+                    ok = QMetaObject::invokeMethod(
+                        qApp, "handleNonFatalException",
+                        blockingGUIThreadConnection(),
+                        Q_ARG(QString, QString::fromStdString(e.what())));
+                } catch (const std::exception& e) {
+                    PrintSlotException(&e, sender, receiver);
+                    ok = QMetaObject::invokeMethod(
+                        qApp, "handleRunawayException",
+                        blockingGUIThreadConnection(),
+                        Q_ARG(QString, QString::fromStdString(e.what())));
+                } catch (...) {
+                    PrintSlotException(nullptr, sender, receiver);
+                    ok = QMetaObject::invokeMethod(
+                        qApp, "handleRunawayException",
+                        blockingGUIThreadConnection(),
+                        Q_ARG(QString, "Unknown failure occurred."));
+                }
+                assert(ok);
+            },
+            type);
+    }
 
 } // namespace GUIUtil
 

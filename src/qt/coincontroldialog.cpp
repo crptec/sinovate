@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -45,7 +45,7 @@ bool CCoinControlWidgetItem::operator<(const QTreeWidgetItem &other) const {
 }
 
 CoinControlDialog::CoinControlDialog(CCoinControl& coin_control, WalletModel* _model, const PlatformStyle *_platformStyle, QWidget *parent) :
-    QDialog(parent),
+    QDialog(parent, GUIUtil::dialog_flags),
     ui(new Ui::CoinControlDialog),
     m_coin_control(coin_control),
     model(_model),
@@ -67,22 +67,14 @@ CoinControlDialog::CoinControlDialog(CCoinControl& coin_control, WalletModel* _m
 
     // context menu
     contextMenu = new QMenu(this);
-    contextMenu->addAction(copyAddressAction);
-    contextMenu->addAction(copyLabelAction);
-    contextMenu->addAction(copyAmountAction);
-    contextMenu->addAction(copyTransactionHashAction);
+    contextMenu->addAction(tr("Copy address"), this, &CoinControlDialog::copyAddress);
+    contextMenu->addAction(tr("Copy label"), this, &CoinControlDialog::copyLabel);
+    contextMenu->addAction(tr("Copy amount"), this, &CoinControlDialog::copyAmount);
+    copyTransactionHashAction = contextMenu->addAction(tr("Copy transaction ID"), this, &CoinControlDialog::copyTransactionHash);
     contextMenu->addSeparator();
-    contextMenu->addAction(lockAction);
-    contextMenu->addAction(unlockAction);
-
-    // context menu signals
+    lockAction = contextMenu->addAction(tr("Lock unspent"), this, &CoinControlDialog::lockCoin);
+    unlockAction = contextMenu->addAction(tr("Unlock unspent"), this, &CoinControlDialog::unlockCoin);
     connect(ui->treeWidget, &QWidget::customContextMenuRequested, this, &CoinControlDialog::showMenu);
-    connect(copyAddressAction, &QAction::triggered, this, &CoinControlDialog::copyAddress);
-    connect(copyLabelAction, &QAction::triggered, this, &CoinControlDialog::copyLabel);
-    connect(copyAmountAction, &QAction::triggered, this, &CoinControlDialog::copyAmount);
-    connect(copyTransactionHashAction, &QAction::triggered, this, &CoinControlDialog::copyTransactionHash);
-    connect(lockAction, &QAction::triggered, this, &CoinControlDialog::lockCoin);
-    connect(unlockAction, &QAction::triggered, this, &CoinControlDialog::unlockCoin);
 
     // clipboard actions
     QAction *clipboardQuantityAction = new QAction(tr("Copy quantity"), this);
@@ -473,7 +465,7 @@ void CoinControlDialog::updateLabels(CCoinControl& m_coin_control, WalletModel *
         else if(ExtractDestination(out.txout.scriptPubKey, address))
         {
             CPubKey pubkey;
-            PKHash *pkhash = boost::get<PKHash>(&address);
+            PKHash* pkhash = std::get_if<PKHash>(&address);
             if (pkhash && model->wallet().getPubKey(out.txout.scriptPubKey, ToKeyID(*pkhash), pubkey))
             {
                 nBytesInputs += (pubkey.IsCompressed() ? 148 : 180);

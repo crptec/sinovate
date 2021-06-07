@@ -20,6 +20,8 @@
 #include "styleSheet.h"
 #include <qt/platformstyle.h>
 
+#include <functional>
+
 #include <QApplication>
 #include <QCloseEvent>
 #include <QPainter>

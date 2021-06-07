@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,6 +12,7 @@
 #include <qt/optionsmodel.h>
 #include <qt/platformstyle.h>
 #include <qt/transactionfilterproxy.h>
+#include <qt/transactionoverviewwidget.h>
 #include <qt/transactiontablemodel.h>
 #include <qt/walletmodel.h>
 #include <interfaces/wallet.h>
@@ -119,6 +120,7 @@ public:
             }
             QRect watchonlyRect(typeRect.right() + MARGIN, mainRect.top() + topMargin, DECORATION_SIZE, DECORATION_SIZE);
             iconWatchonly.paint(painter, watchonlyRect);
+            address_rect_min_width += 5 + watchonlyRect.width();
         }
 
         int addressMargin = watchOnly ? MARGIN + 20 : MARGIN;
@@ -175,7 +177,6 @@ public:
     }
 
     int unit;
-    const PlatformStyle *platformStyle;
 
 private:
     QColor background_color_selected;
@@ -434,6 +435,9 @@ void OverviewPage::setClientModel(ClientModel *model)
         // Show warning, for example if this is a prerelease version
         connect(model, &ClientModel::alertsChanged, this, &OverviewPage::updateAlerts);
         updateAlerts(model->getStatusBarWarnings());
+
+        connect(model->getOptionsModel(), &OptionsModel::useEmbeddedMonospacedFontChanged, this, &OverviewPage::setMonospacedFont);
+        setMonospacedFont(model->getOptionsModel()->getUseEmbeddedMonospacedFont());
     }
 }
 

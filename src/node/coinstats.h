@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2009-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -12,10 +12,12 @@
 #include <cstdint>
 #include <functional>
 
+class BlockManager;
 class CCoinsView;
 
 enum class CoinStatsHashType {
     HASH_SERIALIZED,
+    MUHASH,
     NONE,
 };
 
@@ -35,6 +37,6 @@ struct CCoinsStats
 };
 
 //! Calculate statistics about the unspent transaction output set
-bool GetUTXOStats(CCoinsView* view, CCoinsStats& stats, const CoinStatsHashType hash_type, const std::function<void()>& interruption_point = {});
+bool GetUTXOStats(CCoinsView* view, BlockManager& blockman, CCoinsStats& stats, const CoinStatsHashType hash_type, const std::function<void()>& interruption_point = {});
 
 #endif // BITCOIN_NODE_COINSTATS_H

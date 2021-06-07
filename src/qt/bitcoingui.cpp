@@ -34,6 +34,7 @@
 #include <qt/macdockiconhandler.h>
 #endif
 
+#include <functional>
 #include <chain.h>
 #include <chainparams.h>
 #include <interfaces/handler.h>
@@ -94,6 +95,8 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
         // Restore failed (perhaps missing setting), center the window
         move(QGuiApplication::primaryScreen()->availableGeometry().center() - frameGeometry().center());
     }
+
+    setContextMenuPolicy(Qt::PreventContextMenu);
 
 #ifdef ENABLE_WALLET
     enableWallet = WalletModel::isWalletEnabled();
@@ -617,7 +620,6 @@ void BitcoinGUI::createToolBars()
         QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
         addToolBar(Qt::LeftToolBarArea, toolbar);
         appToolBar = toolbar;
-        toolbar->setContextMenuPolicy(Qt::PreventContextMenu);
         toolbar->setMovable(false);
         toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
         
@@ -776,10 +778,10 @@ void BitcoinGUI::setClientModel(ClientModel *_clientModel, interfaces::BlockAndH
         OptionsModel* optionsModel = _clientModel->getOptionsModel();
         if (optionsModel && trayIcon) {
             // be aware of the tray icon disable state change reported by the OptionsModel object.
-            connect(optionsModel, &OptionsModel::hideTrayIconChanged, this, &BitcoinGUI::setTrayIconVisible);
+            connect(optionsModel, &OptionsModel::showTrayIconChanged, trayIcon, &QSystemTrayIcon::setVisible);
 
             // initialize the disable state of the tray icon with the current value in the model.
-            setTrayIconVisible(optionsModel->getHideTrayIcon());
+            trayIcon->setVisible(optionsModel->getShowTrayIcon());
         }
     } else {
         // Disable possibility to show main window via action
@@ -813,7 +815,7 @@ void BitcoinGUI::setWalletController(WalletController* wallet_controller)
     m_open_wallet_action->setEnabled(true);
     m_open_wallet_action->setMenu(m_open_wallet_menu);
 
-    connect(wallet_controller, &WalletController::walletAdded, this, &BitcoinGUI::addWallet);
+    GUIUtil::ExceptionSafeConnect(wallet_controller, &WalletController::walletAdded, this, &BitcoinGUI::addWallet);
     connect(wallet_controller, &WalletController::walletRemoved, this, &BitcoinGUI::removeWallet);
 
     for (WalletModel* wallet_model : m_wallet_controller->getOpenWallets()) {
@@ -1017,7 +1019,7 @@ void BitcoinGUI::showDebugWindowActivateConsole()
 
 void BitcoinGUI::showHelpMessageClicked()
 {
-    helpMessageDialog->show();
+    GUIUtil::bringToFront(helpMessageDialog);
 }
 
 #ifdef ENABLE_WALLET
@@ -1661,14 +1663,6 @@ void BitcoinGUI::showProgress(const QString &title, int nProgress)
     }
 }
 
-void BitcoinGUI::setTrayIconVisible(bool fHideTrayIcon)
-{
-    if (trayIcon)
-    {
-        trayIcon->setVisible(!fHideTrayIcon);
-    }
-}
-
 void BitcoinGUI::showModalOverlay()
 {
     if (modalOverlay && (progressBar->isVisible() || modalOverlay->isLayerVisible()))
@@ -1742,11 +1736,8 @@ void UnitDisplayStatusBarControl::mousePressEvent(QMouseEvent *event)
 void UnitDisplayStatusBarControl::createContextMenu()
 {
     menu = new QMenu(this);
-    for (const BitcoinUnits::Unit u : BitcoinUnits::availableUnits())
-    {
-        QAction *menuAction = new QAction(QString(BitcoinUnits::longName(u)), this);
-        menuAction->setData(QVariant(u));
-        menu->addAction(menuAction);
+    for (const BitcoinUnits::Unit u : BitcoinUnits::availableUnits()) {
+        menu->addAction(BitcoinUnits::longName(u))->setData(QVariant(u));
     }
     connect(menu, &QMenu::triggered, this, &UnitDisplayStatusBarControl::onMenuSelection);
 }

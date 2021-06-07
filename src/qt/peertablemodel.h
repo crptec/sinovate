@@ -28,18 +28,7 @@ struct CNodeCombinedStats {
     CNodeStateStats nodeStateStats;
     bool fNodeStateStatsAvailable;
 };
-
-class NodeLessThan
-{
-public:
-    NodeLessThan(int nColumn, Qt::SortOrder fOrder) :
-        column(nColumn), order(fOrder) {}
-    bool operator()(const CNodeCombinedStats &left, const CNodeCombinedStats &right) const;
-
-private:
-    int column;
-    Qt::SortOrder order;
-};
+Q_DECLARE_METATYPE(CNodeCombinedStats*)
 
 /**
    Qt model providing information about connected peers, similar to the
@@ -52,18 +41,22 @@ class PeerTableModel : public QAbstractTableModel
 public:
     explicit PeerTableModel(interfaces::Node& node, QObject* parent);
     ~PeerTableModel();
-    const CNodeCombinedStats *getNodeStats(int idx);
-    int getRowByNodeId(NodeId nodeid);
     void startAutoRefresh();
     void stopAutoRefresh();
 
     enum ColumnIndex {
         NetNodeId = 0,
-        Address = 1,
-        Ping = 2,
-        Sent = 3,
-        Received = 4,
-        Subversion = 5
+        Address,
+        ConnectionType,
+        Network,
+        Ping,
+        Sent,
+        Received,
+        Subversion
+    };
+
+    enum {
+        StatsRole = Qt::UserRole,
     };
 
     /** @name Methods overridden from QAbstractTableModel
@@ -74,7 +67,6 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
     QModelIndex index(int row, int column, const QModelIndex &parent) const override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
-    void sort(int column, Qt::SortOrder order) override;
     /*@}*/
 
 public Q_SLOTS:
@@ -82,7 +74,7 @@ public Q_SLOTS:
 
 private:
     interfaces::Node& m_node;
-    QStringList columns;
+    const QStringList columns{tr("Peer Id"), tr("Address"), tr("Type"), tr("Network"), tr("Ping"), tr("Sent"), tr("Received"), tr("User Agent")};
     std::unique_ptr<PeerTablePriv> priv;
     QTimer *timer;
 };

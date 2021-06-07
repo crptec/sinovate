@@ -277,4 +277,7 @@
         <file alias="setupKo">res/styles/theme3/app-icons/ko.png</file>
         <file alias="setupWait">res/styles/theme3/app-icons/wait.gif</file>
     </qresource>
+    <qresource prefix="/fonts">
+        <file alias="monospace">res/fonts/RobotoMono-Bold.ttf</file>
+    </qresource>
 </RCC>

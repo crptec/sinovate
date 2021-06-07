@@ -19,6 +19,8 @@ void RegisterMiscRPCCommands(CRPCTable &tableRPC);
 void RegisterMiningRPCCommands(CRPCTable &tableRPC);
 /** Register raw transaction RPC commands */
 void RegisterRawTransactionRPCCommands(CRPCTable &tableRPC);
+/** Register raw transaction RPC commands */
+void RegisterSignerRPCCommands(CRPCTable &tableRPC);
 //>SIN
 /** Register sinovate infinitynode RPC commands */
 void RegisterInfinitynodeRPCCommands(CRPCTable &tableRPC);
@@ -31,6 +33,9 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterMiscRPCCommands(t);
     RegisterMiningRPCCommands(t);
     RegisterRawTransactionRPCCommands(t);
+#ifdef ENABLE_EXTERNAL_SIGNER
+    RegisterSignerRPCCommands(t);
+#endif // ENABLE_EXTERNAL_SIGNER
 //>SIN
     RegisterInfinitynodeRPCCommands(t);
 //<SIN

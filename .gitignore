@@ -8,9 +8,9 @@ src/sin-cli
 src/bitcoin-gui
 src/bitcoin-node
 src/sin-tx
+src/sin-util
 src/bitcoin-wallet
-src/test/fuzz/*
-!src/test/fuzz/*.*
+src/test/fuzz/fuzz
 src/test/test_bitcoin
 src/qt/test/test_bitcoin-qt
 
@@ -76,6 +76,7 @@ src/qt/bitcoin-qt.includes
 *.log
 *.trs
 *.dmg
+*.iso
 
 *.json.h
 *.raw.h
@@ -148,3 +149,5 @@ db4/
 osx_volname
 dist/
 *.background.tiff
+
+/guix-build-*
