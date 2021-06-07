@@ -1257,7 +1257,7 @@ bool GetTransaction(const uint256& hash, CTransactionRef& txOut, uint256& hashBl
     return false;
 }
 //<SIN
-CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, bool fProofOfStake, bool fOnlyPoS);
+CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, bool fProofOfStake, bool fOnlyPoS)
 {
     CAmount reward = 0;
 
