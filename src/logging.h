@@ -32,6 +32,8 @@ struct LogCategory {
     bool active;
 };
 
+// As we currently overflow this enum, RSV and WA flags for InfinityNode related functuionality have been merged.
+
 namespace BCLog {
     enum LogFlags : uint32_t {
         NONE            = 0,
@@ -65,12 +67,12 @@ namespace BCLog {
         INFINITYPEER    = (1 << 25),
         INFINITYMETA    = (1 << 26),
         INFINITYRSV     = (1 << 27),
-        INFINITYWA      = (1 << 28),
+        INFINITYWA      = (1 << 27),
 //<SIN
 // proof-of-stake: 
-        STAKING         = (1 << 29),
-        I2P         = (1 << 30),
-        IPC         = (1 << 31),
+        STAKING         = (1 << 28),
+        I2P             = (1 << 29),
+        IPC             = (1 << 30),
     };
 
     class Logger
