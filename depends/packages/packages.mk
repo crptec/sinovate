@@ -1,6 +1,6 @@
 packages:=boost libevent
 
-qt_packages = openssl zlib
+qt_packages = openssl
 
 qrencode_packages = qrencode
 
