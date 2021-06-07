@@ -240,7 +240,7 @@ void InitStakerStatus()
     if (pStakerStatus) {
         pStakerStatus->SetNull();
     } else {
-        pStakerStatus = MakeUnique<CStakerStatus>();
+        pStakerStatus = std::make_unique<CStakerStatus>();
     }
 }
 
@@ -304,7 +304,7 @@ void StakerCtx::StakerPipe()
         // Check if we have any coins
         CheckForCoins(pwallet, &availableCoins);
 
-        while ((Params().NetworkIDString() != CBaseChainParams::REGTEST && (m_connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0))
+        while ((Params().NetworkIDString() != CBaseChainParams::REGTEST && (m_connman.GetNodeCount(ConnectionDirection::Both) == 0))
                 || pwallet->IsLocked() || !pwallet->m_enabled_staking || availableCoins.size() == 0) {
             LogPrintf("%s : wallet needs atleast one connection and some stakeable coins to stake, checking again in %d seconds...\n", __func__, nAverageSpacing);
             if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
@@ -327,7 +327,7 @@ void StakerCtx::StakerPipe()
         //
         // Create new block
         //
-        std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(m_mempool, Params()).CreateNewPoSBlock(pwallet, &availableCoins, pStakerStatus.get()));
+        std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(m_chainman.ActiveChainstate(), m_mempool, Params()).CreateNewPoSBlock(pwallet, &availableCoins, pStakerStatus.get()));
         if (!pblocktemplate.get()) {
             continue;
         }

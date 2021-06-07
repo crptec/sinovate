@@ -195,14 +195,6 @@ enum class ConnectionType {
 
 /** Convert ConnectionType enum to a string value */
 std::string ConnectionTypeAsString(ConnectionType conn_type);
-//>SIN
-    CNode* OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant* grantOutbound, const char* strDest, ConnectionType conn_type);
-//<SIN
-//>SIN
-    void RelayInv(CInv &inv);
-    std::vector<CNode*> CopyNodeVector();
-    void ReleaseNodeVector(const std::vector<CNode*>& vecNodes);
-//<SIN
 void Discover();
 uint16_t GetListenPort();
 
@@ -738,7 +730,7 @@ public:
 //>SIN
     void PushSinInventory(const CInv& inv)
     {
-        LOCK(cs_inventory);
+        LOCK(cs_sin_inventory);
         vInventorySinToSend.push_back(inv);
     }
 
@@ -915,6 +907,11 @@ public:
     bool GetUseAddrmanOutgoing() const { return m_use_addrman_outgoing; };
     void SetNetworkActive(bool active);
     void OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant* grantOutbound, const char* strDest, ConnectionType conn_type);
+    //>SIN
+    void RelayInv(CInv &inv);
+    std::vector<CNode*> CopyNodeVector();
+    void ReleaseNodeVector(const std::vector<CNode*>& vecNodes);
+    //<SIN
     bool CheckIncomingNonce(uint64_t nonce);
 
     bool ForNode(NodeId id, std::function<bool(CNode* pnode)> func);

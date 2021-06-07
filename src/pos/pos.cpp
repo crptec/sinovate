@@ -77,7 +77,7 @@ bool LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::uni
 {
     // If previous index is not provided, look for it in the blockmap
     if (!pindexPrev) {
-        pindexPrev = LookupBlockIndex(block.hashPrevBlock);
+        pindexPrev = g_chainman.m_blockman.LookupBlockIndex(block.hashPrevBlock);
         if (!pindexPrev) {
             return error("%s : couldn't find previous block", __func__);
         }
@@ -161,8 +161,9 @@ bool CheckProofOfStake(const CBlock& block, BlockValidationState& state, const C
     const auto& tx = block.vtx[1];
     const CTxIn& txin = tx->vin[0];
     ScriptError serror;
+    PrecomputedTransactionData txdata(tx);
     if (!VerifyScript(txin.scriptSig, stakePrevout.scriptPubKey, nullptr, STANDARD_SCRIPT_VERIFY_FLAGS,
-             TransactionSignatureChecker(tx.get(), 0, stakePrevout.nValue), &serror)) {
+             TransactionSignatureChecker(tx.get(), 0, stakePrevout.nValue, txdata, MissingDataBehavior::FAIL), &serror)) {
         return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "bad-pos-sig", serror ? ScriptErrorString(serror) : "signature failing");
     }
 

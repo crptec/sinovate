@@ -44,7 +44,7 @@ CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
 
     const CBlockIndex* pindexFrom = nullptr;
     // Find the index of the block of the previous transaction
-    CBlockIndex* pindex = LookupBlockIndex(hash_block);
+    CBlockIndex* pindex = g_chainman.m_blockman.LookupBlockIndex(hash_block);
     if (pindex) {
         if (::ChainActive().Contains(pindex)) {
             pindexFrom = pindex;

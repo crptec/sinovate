@@ -197,7 +197,7 @@ static UniValue generateBlocksPoS(ChainstateManager& chainman, const CTxMemPool&
     CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
 
     // Wallet must be unlocked.
-    EnsureWalletIsUnlocked(pwallet);
+    EnsureWalletIsUnlocked(*pwallet);
 
     {   // Don't keep cs_main locked
         LOCK(cs_main);
@@ -213,7 +213,7 @@ static UniValue generateBlocksPoS(ChainstateManager& chainman, const CTxMemPool&
             throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "No available coins to stake");
         }
 
-        std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(mempool, Params()).CreateNewPoSBlock(pwallet, &availableCoins, pStakerStatus));
+        std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(chainman.ActiveChainstate(), mempool, Params()).CreateNewPoSBlock(pwallet, &availableCoins, pStakerStatus));
         if (!pblocktemplate.get())
             throw JSONRPCError(RPC_INTERNAL_ERROR, "Couldn't create new block");
         CBlock *pblock = &pblocktemplate->block;
@@ -373,8 +373,9 @@ static RPCHelpMan generatepos()
 {
     const int num_blocks{request.params[0].get_int()};
 
-    const CTxMemPool& mempool = EnsureMemPool(request.context);
-    ChainstateManager& chainman = EnsureChainman(request.context);
+    NodeContext& node = EnsureAnyNodeContext(request.context);
+    const CTxMemPool& mempool = EnsureMemPool(node);
+    ChainstateManager& chainman = EnsureChainman(node);
     if (!pStakerStatus) {
         InitStakerStatus();
     }
@@ -578,8 +579,8 @@ static RPCHelpMan getstakinginfo()
         nHeight = ::ChainActive().Height();
         dDiff = GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), true));
     }
-    const CTxMemPool& mempool = EnsureMemPool(request.context);
-    NodeContext& node = EnsureNodeContext(request.context);
+    NodeContext& node = EnsureAnyNodeContext(request.context);
+    const CTxMemPool& mempool = EnsureMemPool(node);
     // Available wallet(s), always use no 0.
     std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
     CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
@@ -604,7 +605,7 @@ static RPCHelpMan getstakinginfo()
     } else {
         obj.pushKV("staking_available", (int)availableCoins.size());
     }
-    obj.pushKV("connections", (node.connman->GetNodeCount(CConnman::CONNECTIONS_ALL) > 0));
+    obj.pushKV("connections", (node.connman->GetNodeCount(ConnectionDirection::Both) > 0));
     obj.pushKV("unlockedwallet", !pwallet->IsLocked());
     if (ptrStakerStatus) {
         obj.pushKV("blocks_since_last_try", (int)(nHeight - ptrStakerStatus->GetLastHeight()));
