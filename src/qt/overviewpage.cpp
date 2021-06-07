@@ -350,6 +350,13 @@ void OverviewPage::getStatistics()
         double currentUSD = s.usdPrice;
         double availableUSD = (currentUSD * totalBalance / 100000000);
         ui->labelUSDTotal->setText("$" + QString::number(availableUSD, 'f', 2) + " USD");
+
+        // Set EUR price strings
+        ui->labelCurrentPriceEUR->setText(QString::number(s.eurPrice, 'f', 8));
+
+        double currentEUR = s.eurPrice;
+        double availableEUR = (currentEUR * totalBalance / 100000000);
+        ui->labelEURTotal->setText(QString::number(availableEUR, 'f', 2) + " EUR");
     }
     else
     {
@@ -357,6 +364,7 @@ void OverviewPage::getStatistics()
 
         ui->labelCurrentPriceBTC->setText(noValue);
         ui->labelCurrentPriceUSD->setText(noValue);
+        ui->labelCurrentPriceEUR->setText(noValue);
     }
 }
 // --

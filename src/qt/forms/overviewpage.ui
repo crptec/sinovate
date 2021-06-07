@@ -1534,6 +1534,71 @@
      </property>
     </spacer>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer_9">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelCurrentPriceEURText">
+       <property name="text">
+        <string>Value EUR: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelCurrentPriceEUR">
+       <property name="text">
+        <string>0.00000000 EUR</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>-</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelUSDTotalText">
+       <property name="text">
+        <string>Available EUR: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelEURTotal">
+       <property name="text">
+        <string>0.00000000 EUR</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_10">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
   </layout>
   <widget class="QLabel" name="labelAlerts">
    <property name="geometry">

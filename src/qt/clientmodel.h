@@ -51,6 +51,7 @@ struct SINStatsStruct {
     QString difficulty = "";
     double lastPrice = 0.0;
     double usdPrice = 0.0;
+    double eurPrice = 0.0;
     int explorerTop10 = 0;
     int explorerTop50 = 0;
     QString explorerAddresses = "";

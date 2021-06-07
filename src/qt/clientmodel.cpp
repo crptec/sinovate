@@ -367,6 +367,7 @@ void ClientModel::onResult(QNetworkReply* reply)
         m_sinStats.difficulty = dataObject.value("difficulty").toVariant().toString();
         m_sinStats.lastPrice = dataObject.value("lastPrice").toDouble();
         m_sinStats.usdPrice = dataObject.value("usdPrice").toDouble();
+        m_sinStats.eurPrice = dataObject.value("eurPrice").toDouble();
         m_sinStats.explorerTop10 = (int)dataObject.value("explorerTop10").toDouble();
         m_sinStats.explorerTop50 = (int)dataObject.value("explorerTop50").toDouble();
         m_sinStats.explorerAddresses = dataObject.value("explorerAddresses").toVariant().toString();
