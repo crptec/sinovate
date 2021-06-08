@@ -41,6 +41,7 @@
 #ifndef BUILD_BITCOIN_WALLET
 //SIN (proof-of-stake, infinitynodes)
 #include <chainparams.h>
+#include <node/blockstorage.h>
 #include <sinovate/infinitynodelockreward.h>
 #include <script/standard.h>
 #include <pos/stakeinput.h>

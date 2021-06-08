@@ -25,6 +25,9 @@
 #include <wallet/rpcwallet.h>
 #include <wallet/wallet.h>
 
+//proof-of-stake
+#include <pos/posminer.h>
+
 #include <memory>
 #include <string>
 #include <utility>
@@ -493,6 +496,43 @@ public:
     {
         return MakeHandler(m_wallet->NotifyCanGetAddressesChanged.connect(fn));
     }
+
+    std::map<COutPoint, std::string> GetOnchainDataInfo() override
+    {
+        return m_wallet->GetOnchainDataInfo();
+    }
+
+    void setEnabledStaking(bool enabled) override
+    {
+        m_wallet->m_enabled_staking = enabled;
+    }
+    bool getEnabledStaking() override
+    {
+        return m_wallet->m_enabled_staking;
+    }
+    bool trySetStakeWeight(uint64_t& nWeight) override
+    {
+        TRY_LOCK(m_wallet->cs_wallet, locked_wallet);
+        if (!locked_wallet) {
+            return false;
+        }
+        nWeight = m_wallet->GetStakeWeight();
+        return true;
+    }
+    uint64_t getStakeWeight() override
+    {
+        LOCK(m_wallet->cs_wallet);
+        return m_wallet->GetStakeWeight();
+    }
+    int64_t getLastStakeTime() override 
+    {
+        if (!pStakerStatus) {
+            InitStakerStatus();
+        }
+        return pStakerStatus->GetLastTime();
+    }
+
+
     CWallet* wallet() override { return m_wallet.get(); }
 
     std::shared_ptr<CWallet> m_wallet;

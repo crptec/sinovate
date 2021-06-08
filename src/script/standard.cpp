@@ -404,7 +404,7 @@ CScript GetTimeLockScriptForDestination(const CTxDestination& dest, const int64_
     script.clear();
 
     CTxDestination destination = dest;
-    const PKHash *keyID = boost::get<PKHash>(&destination);
+    const PKHash *keyID = std::get<PKHash>(&destination);
     if (!keyID) {
         return script;
     }

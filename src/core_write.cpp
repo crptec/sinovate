@@ -215,8 +215,10 @@ void TxToUniv(const CTransaction& tx, const uint256& hashBlock, bool include_add
         UniValue in(UniValue::VOBJ);
         if (tx.IsCoinBase()) {
             in.pushKV("coinbase", HexStr(txin.scriptSig));
-        if (tx.IsCoinStake())
+        }
+        if (tx.IsCoinStake()) {
             in.pushKV("coinstake", HexStr(txin.scriptSig));
+        }
         else {
             in.pushKV("txid", txin.prevout.hash.GetHex());
             in.pushKV("vout", (int64_t)txin.prevout.n);

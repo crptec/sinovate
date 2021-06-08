@@ -1164,6 +1164,9 @@ static UniValue ListReceived(const CWallet& wallet, const UniValue& params, bool
         has_filtered_address = true;
     }
 
+    std::shared_ptr<CWallet> const pwallet = GetWalletForJSONRPCRequest(request);
+    if (!pwallet) return NullUniValue;
+
     // Tally
     std::map<CTxDestination, tallyitem> mapTally;
     for (const std::pair<const uint256, CWalletTx>& pairWtx : wallet.mapWallet) {
