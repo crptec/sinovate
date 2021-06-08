@@ -219,12 +219,11 @@ void CInfinitynodePeer::ManageStateInitial(CConnman& connman)
     if (Params().NetworkIDString() != CBaseChainParams::REGTEST) {
         bool fConnected = false;
 
-        SOCKET hSocket = CreateSock(service);
-        if (hSocket != INVALID_SOCKET) {
+        std::unique_ptr<Sock> sock = CreateSock(service);
+        if (!sock) {
             LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::ManageStateInitial -- Socket created\n");
-            fConnected = ConnectSocketDirectly(service, hSocket, nConnectTimeout, true) && IsSelectableSocket(hSocket);
+            fConnected = ConnectSocketDirectly(service, sock, nConnectTimeout, true) && IsSelectableSocket(hSocket);
             LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::ManageStateInitial -- Connecttion: %d\n", fConnected);
-            CloseSocket(hSocket);
         }
 
         if (!fConnected) {
