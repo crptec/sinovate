@@ -123,7 +123,7 @@ AC_DEFUN([BITCOIN_QT_CONFIGURE],[
 
     if test "x$qt_plugin_path" != x; then
       if test -d "$qt_plugin_path/platforms"; then
-        QT_LIBS="$QT_LIBS -L$qt_plugin_path/platforms"
+        QT_LIBS="$QT_LIBS -L$qt_plugin_path/platforms -L$qt_plugin_path/imageformats -L$qt_plugin_path/iconengines"
       fi
       if test -d "$qt_plugin_path/styles"; then
         QT_LIBS="$QT_LIBS -L$qt_plugin_path/styles"
