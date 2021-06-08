@@ -558,6 +558,8 @@ bool CInfinityNodeLockReward::CheckMyPeerAndSendVerifyRequest(CNode* pfrom, cons
     connman.ReleaseNodeVector(vNodesCopy);
 
     if(!fconnected){
+        // TODO: Change logic here as upstream changed
+        /*
         CNode* pnode = connman.OpenNetworkConnection(add, false, nullptr, addr.ToStringIP().c_str(), ConnectionType::MANUAL);
         if(pnode == NULL) {
             //TODO: dont send commitment when we can not verify node
@@ -576,6 +578,7 @@ bool CInfinityNodeLockReward::CheckMyPeerAndSendVerifyRequest(CNode* pfrom, cons
         fconnected = true;
         pnodeCandidate = pnode;
         connectionType = "direct connection";
+        */
     }
 
     //step 1.2.5 send VerifyRequest.
@@ -2577,6 +2580,8 @@ void CInfinityNodeLockReward::TryConnectToMySigners(int rewardHeight, CConnman& 
             }
 
             if(!fconnected && !fBadSignerConnection){
+                // TODO: Change logic here as upstream changed
+                /*
                 CNode* pnode = connman.OpenNetworkConnection(add, false, nullptr, addr.ToStringIP().c_str(), ConnectionType::MANUAL);
                 if(pnode == NULL) {
                     fconnected = false;
@@ -2586,6 +2591,7 @@ void CInfinityNodeLockReward::TryConnectToMySigners(int rewardHeight, CConnman& 
                     fBadSignerConnection = false;
                     connectionType = strprintf("new connection(%s)", add.ToStringIP());
                 }
+                */
             }
 
             if(fconnected){
