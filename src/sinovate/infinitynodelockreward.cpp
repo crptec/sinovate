@@ -558,8 +558,6 @@ bool CInfinityNodeLockReward::CheckMyPeerAndSendVerifyRequest(CNode* pfrom, cons
     connman.ReleaseNodeVector(vNodesCopy);
 
     if(!fconnected){
-        // TODO: Change logic here as upstream changed
-        /*
         CNode* pnode = connman.OpenNetworkConnection(add, false, nullptr, addr.ToStringIP().c_str(), ConnectionType::MANUAL);
         if(pnode == NULL) {
             //TODO: dont send commitment when we can not verify node
@@ -578,7 +576,6 @@ bool CInfinityNodeLockReward::CheckMyPeerAndSendVerifyRequest(CNode* pfrom, cons
         fconnected = true;
         pnodeCandidate = pnode;
         connectionType = "direct connection";
-        */
     }
 
     //step 1.2.5 send VerifyRequest.
