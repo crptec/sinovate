@@ -168,8 +168,8 @@ public:
     /** Construct a new proof of work block template with coinbase to scriptPubKeyIn */
     std::unique_ptr<CBlockTemplate> CreateNewBlock(const CScript& scriptPubKeyIn);
 
-    inline static std::optional<int64_t> m_last_block_num_txs{};
-    inline static std::optional<int64_t> m_last_block_weight{};
+    inline static std::optional<int64_t> m_last_block_num_txs;
+    inline static std::optional<int64_t> m_last_block_weight;
 
 private:
     // utility functions

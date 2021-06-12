@@ -109,9 +109,6 @@ void BlockAssembler::resetBlock()
     nFees = 0;
 }
 
-Optional<int64_t> BlockAssembler::m_last_block_num_txs{boost::none};
-Optional<int64_t> BlockAssembler::m_last_block_weight{boost::none};
-
 bool SolveProofOfStake(CBlock* pblock, CBlockIndex* pindexPrev, CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins, CStakerStatus* pStakerStatus, CAmount nFees, CScript burnAddressScript)
 {
     pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, Params().GetConsensus(), true);
@@ -233,7 +230,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewPoSBlock(CWallet* pwall
     }
 
     BlockValidationState state;
-    if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+    if (!TestBlockValidity(state, chainparams, m_chainstate, *pblock, pindexPrev, false, false)) {
         LogPrintf("%s: Proof-of-Stake TestBlockValidity failed: %s", __func__, state.ToString());
         return nullptr;
     }
@@ -347,7 +344,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
     BlockValidationState state;
     assert(std::addressof(::ChainstateActive()) == std::addressof(m_chainstate));
-    if (!TestBlockValidity(state, chainparams, *pblock, pindexPrev, false, false)) {
+    if (!TestBlockValidity(state, chainparams, m_chainstate, *pblock, pindexPrev, false, false)) {
         throw std::runtime_error(strprintf("%s: Proof-of-Work TestBlockValidity failed: %s", __func__, state.ToString()));
     }
     int64_t nTime2 = GetTimeMicros();
