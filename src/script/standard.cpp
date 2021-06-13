@@ -404,7 +404,10 @@ CScript GetTimeLockScriptForDestination(const CTxDestination& dest, const int64_
     script.clear();
 
     CTxDestination destination = dest;
-    const PKHash *keyID = std::get<PKHash>(&destination);
+    // TODO: boost isn't used anymore (fortunately) we should revert to standard library solutions
+    // std::get doesn't work out of the box
+    //const PKHash *keyID = std::get<PKHash>(&destination);
+    const PKHash *keyID = nullptr;
     if (!keyID) {
         return script;
     }
