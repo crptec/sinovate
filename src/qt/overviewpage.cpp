@@ -120,7 +120,7 @@ public:
             }
             QRect watchonlyRect(typeRect.right() + MARGIN, mainRect.top() + topMargin, DECORATION_SIZE, DECORATION_SIZE);
             iconWatchonly.paint(painter, watchonlyRect);
-            address_rect_min_width += 5 + watchonlyRect.width();
+            //address_rect_min_width += 5 + watchonlyRect.width();
         }
 
         int addressMargin = watchOnly ? MARGIN + 20 : MARGIN;
@@ -177,6 +177,7 @@ public:
     }
 
     int unit;
+    const PlatformStyle *platformStyle;
 
 private:
     QColor background_color_selected;
@@ -436,8 +437,8 @@ void OverviewPage::setClientModel(ClientModel *model)
         connect(model, &ClientModel::alertsChanged, this, &OverviewPage::updateAlerts);
         updateAlerts(model->getStatusBarWarnings());
 
-        connect(model->getOptionsModel(), &OptionsModel::useEmbeddedMonospacedFontChanged, this, &OverviewPage::setMonospacedFont);
-        setMonospacedFont(model->getOptionsModel()->getUseEmbeddedMonospacedFont());
+        //connect(model->getOptionsModel(), &OptionsModel::useEmbeddedMonospacedFontChanged, this, &OverviewPage::setMonospacedFont);
+        //setMonospacedFont(model->getOptionsModel()->getUseEmbeddedMonospacedFont());
     }
 }
 

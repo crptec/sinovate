@@ -200,11 +200,11 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     }
 }
 
-TransactionView::~TransactionView()
+/*TransactionView::~TransactionView()
 {
     QSettings settings;
     settings.setValue("TransactionViewHeaderState", transactionView->horizontalHeader()->saveState());
-}
+}*/
 
 void TransactionView::setModel(WalletModel *_model)
 {
@@ -608,6 +608,15 @@ void TransactionView::focusTransaction(const uint256& txid)
         if (index == results[0]) transactionView->scrollTo(targetIndex);
     }
 }
+
+// We override the virtual resizeEvent of the QWidget to adjust tables column
+// sizes as the tables width is proportional to the dialogs width.
+void TransactionView::resizeEvent(QResizeEvent* event)
+{
+    QWidget::resizeEvent(event);
+    columnResizingFixer->stretchColumnWidth(TransactionTableModel::ToAddress);
+}
+
 
 // Need to override default Ctrl+C action for amount as default behaviour is just to copy DisplayRole text
 bool TransactionView::eventFilter(QObject *obj, QEvent *event)

@@ -74,10 +74,10 @@ private:
     // Format confirmation message
     bool PrepareSendText(QString& question_string, QString& informative_text, QString& detailed_text);
     // Update the passed in CCoinControl with state from the GUI
-    void updateCoinControlState(CCoinControl& ctrl);
+    void updateCoinControlState();
 
 private Q_SLOTS:
-    void on_sendButton_clicked();
+    void sendButtonClicked(bool checked);
     void removeEntry(SendCoinsEntry* entry);
     void useAvailableBalance(SendCoinsEntry* entry);
     void updateDisplayUnit();

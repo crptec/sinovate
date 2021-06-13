@@ -40,7 +40,6 @@
 #include "rpc/client.h"
 #include <rpc/request.h>
 #include "rpc/server.h"
-#include <util/ref.h>
 
 #include <QJsonDocument>
 #include <QJsonArray>

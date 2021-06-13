@@ -709,7 +709,7 @@ void SendCoinsDialog::updateFeeSectionControls()
     ui->stackedFeeTypes->setCurrentIndex(ui->radioSmartFee->isChecked() ? 0 : 1);
 }
 
-void SendCoinsDialog::updateCoinControlState(CCoinControl& ctrl)
+void SendCoinsDialog::updateCoinControlState()
 {
     if (ui->radioCustomFee->isChecked()) {
         m_coin_control->m_feerate = CFeeRate(ui->customFee->value());
