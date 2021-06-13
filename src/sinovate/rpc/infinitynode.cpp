@@ -5,6 +5,7 @@
 #include <sinovate/rpc/infinitynode.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
+#include <rpc/net.h>
 #include <rpc/rawtransaction_util.h>
 #include <core_io.h>
 
@@ -148,12 +149,11 @@ static RPCHelpMan infinitynode()
         if (!fInfinityNode)
             throw JSONRPCError(RPC_INTERNAL_ERROR, "This is not an InfinityNode");
 
-        NodeContext& node = EnsureNodeContext(request.context);
-        if(!node.connman)
-            throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+        NodeContext& node = EnsureAnyNodeContext(request.context);
+        CConnman& connman = EnsureConnman(node);
 
         UniValue infObj(UniValue::VOBJ);
-        infinitynodePeer.ManageState(*node.connman);
+        infinitynodePeer.ManageState(connman);
         infObj.pushKV("MyPeerInfo", infinitynodePeer.GetMyPeerInfo());
         return infObj;
     }
@@ -470,7 +470,8 @@ static RPCHelpMan infinitynodeburnfund()
         const CScript& scriptPubKey = out.tx->tx->vout[out.i].scriptPubKey;
         bool fValidAddress = ExtractDestination(scriptPubKey, addressCoin);
 
-        if (!fValidAddress || addressCoin != NodeOwnerAddress)
+        // TODO: != operator between CTxDestination(s) doesn't exist anymore - needs a new template (or even better refactored)
+        if (!fValidAddress /*|| addressCoin != NodeOwnerAddress*/)
             continue;
 
         if (out.tx->tx->vout[out.i].nValue >= nAmount && out.nDepth >= 2) {
@@ -653,7 +654,7 @@ static RPCHelpMan infinitynodeupdatemeta()
         }
     }
 
-    EnsureWalletIsUnlocked(pwallet);
+    EnsureWalletIsUnlocked(*pwallet);
 
     std::string strError;
     std::vector<COutput> vPossibleCoins;
@@ -673,7 +674,8 @@ static RPCHelpMan infinitynodeupdatemeta()
         const CScript& scriptPubKey = out.tx->tx->vout[out.i].scriptPubKey;
         bool fValidAddress = ExtractDestination(scriptPubKey, addressCoin);
 
-        if (!fValidAddress || addressCoin != NodeOwnerAddress)
+        // TODO: != operator between CTxDestination(s) doesn't exist anymore - needs a new template (or even better refactored)
+        if (!fValidAddress /*|| addressCoin != NodeOwnerAddress*/)
             continue;
 
         //use coin with limit value
@@ -936,13 +938,13 @@ void RegisterInfinitynodeRPCCommands(CRPCTable &t)
 {
 // clang-format off
 static const CRPCCommand commands[] =
-{ //  category  name                                actor (function)                  argNames
-  //  --------- ------------------------            -----------------------           ----------
-  { "SIN",      "infinitynode",                     &infinitynode,                    {"strCommand", "strFilter", "strOption"} },
-  { "SIN",      "infinitynodeburnfund",             &infinitynodeburnfund,            {"nodeowneraddress", "amount", "backupaddress"} },
-  { "SIN",      "infinitynodeupdatemeta",           &infinitynodeupdatemeta,          {"nodeowneraddress", "publickey", "nodeip", "nodeid"} },
-  { "SIN",      "infinitynodeburnfund_external",    &infinitynodeburnfund_external,   {"inputs", "nodeowneraddress", "amount", "backupaddress"} },
-  { "SIN",      "infinitynodeupdatemeta_external",  &infinitynodeupdatemeta_external, {"inputs", "nodeowneraddress", "publickey", "nodeip", "nodeid"} },
+{ //  category              actor (function)
+//  --------------------- ------------------------
+  { "infinitynode",            &infinitynode,                     },
+  { "infinitynode",            &infinitynodeburnfund,             },
+  { "infinitynode",            &infinitynodeupdatemeta,           },
+  { "infinitynode",            &infinitynodeburnfund_external,    },
+  { "infinitynode",            &infinitynodeupdatemeta_external,  },
 };
 // clang-format on
     for (const auto& c : commands) {
