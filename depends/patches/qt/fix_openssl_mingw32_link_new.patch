@@ -1,0 +1,12 @@
+--- /mnt/B0546E18546DE198/Github/newSIN/sinovate/depends/work/build/x86_64-w64-mingw32/qt/5.12.10-e480887fba2/qtbase/src/network/configure.json	2021-06-12 16:56:25.933177500 +0200
++++ /mnt/B0546E18546DE198/Github/newSIN/sinovate/depends/work/build/x86_64-w64-mingw32/qt/5.12.10-e480887fba2/qtbase/src/network/configure2.json	2021-06-12 17:20:30.008132600 +0200
+@@ -78,8 +78,7 @@
+         "openssl": {
+             "label": "OpenSSL",
+             "test": {
+-                "inherit": "openssl_headers",
+-                "main": "SSL_free(SSL_new(0));"
++                "inherit": "openssl_headers"
+             },
+             "sources": [
+                 { "type": "openssl" },
