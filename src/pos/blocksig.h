@@ -14,6 +14,7 @@
 #endif
 
 bool SignBlockWithKey(CBlock& block, const CKey& key);
+bool GetKeyIDFromUTXO(CKeyID& keyIDRet, const CTxOut& txout);
 bool SignBlock(CBlock& block, CWallet* pwallet);
 bool CheckBlockSignature(const CBlock& block);
 

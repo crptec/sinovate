@@ -17,13 +17,27 @@ bool SignBlockWithKey(CBlock& block, const CKey& key)
     return true;
 }
 
+bool GetKeyIDFromUTXO(CKeyID& keyIDRet, const CTxOut& txout)
+{
+    std::vector<std::vector<unsigned char>> vSolutions2D;
+    if (txout.scriptPubKey.empty()) {
+        return false;
+    }
+    TxoutType whichType = Solver(txout.scriptPubKey, vSolutions2D);
+    if (whichType == TxoutType::PUBKEYHASH) {
+        keyIDRet = CKeyID(uint160(vSolutions2D[0]));
+        return true;
+    }
+    return false;
+}
+
 bool SignBlock(CBlock& block, CWallet* pwallet)
 {
     CKeyID keyID;
     if (block.IsProofOfWork()) {
         bool fFoundID = false;
         for (const CTxOut& txout : block.vtx[0]->vout) {
-            if (!txout.GetKeyIDFromUTXO(keyID))
+            if (!GetKeyIDFromUTXO(keyID, txout))
                 continue;
             fFoundID = true;
             break;
@@ -31,7 +45,7 @@ bool SignBlock(CBlock& block, CWallet* pwallet)
         if (!fFoundID)
             return error("%s: failed to find key for PoW", __func__);
     } else {
-        if (!block.vtx[1]->vout[1].GetKeyIDFromUTXO(keyID))
+        if (!GetKeyIDFromUTXO(keyID, block.vtx[1]->vout[1]))
             return error("%s: failed to find key for PoS", __func__);
     }
 
