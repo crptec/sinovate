@@ -695,11 +695,6 @@ case $host in
          dnl It's safe to add these paths even if the functionality is disabled by
          dnl the user (--without-wallet or --without-gui for example).
 
-         openssl_prefix=`$BREW --prefix openssl 2>/dev/null`
-          if test x$openssl_prefix != x; then
-           PKG_CONFIG_PATH="$openssl_prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
-           export PKG_CONFIG_PATH
-         fi
          if test "x$use_bdb" != xno && $BREW list --versions berkeley-db4 >/dev/null && test "x$BDB_CFLAGS" = "x" && test "x$BDB_LIBS" = "x"; then
            bdb_prefix=$($BREW --prefix berkeley-db4 2>/dev/null)
            dnl This must precede the call to BITCOIN_FIND_BDB48 below.
@@ -1494,7 +1489,6 @@ fi
 dnl libevent check
 
 if test x$build_bitcoin_cli$build_bitcoind$bitcoin_enable_qt$use_tests$use_bench != xnonononono; then
-  PKG_CHECK_MODULES([SSL], [libssl],, [AC_MSG_ERROR(openssl not found.)])
   PKG_CHECK_MODULES([EVENT], [libevent >= 2.0.21], [use_libevent=yes], [AC_MSG_ERROR([libevent version 2.0.21 or greater not found.])])
   if test x$TARGET_OS != xwindows; then
     PKG_CHECK_MODULES([EVENT_PTHREADS], [libevent_pthreads >= 2.0.21],, [AC_MSG_ERROR([libevent_pthreads version 2.0.21 or greater not found.])])
@@ -1531,13 +1525,6 @@ if test "x$use_zmq" = xyes; then
     ;;
   esac
 fi
-
-save_CXXFLAGS="${CXXFLAGS}"
-CXXFLAGS="${CXXFLAGS} ${CRYPTO_CFLAGS} ${SSL_CFLAGS}"
-AC_CHECK_DECLS([EVP_MD_CTX_new],,,[AC_INCLUDES_DEFAULT
-#include <openssl/x509_vfy.h>
-])
-CXXFLAGS="${save_CXXFLAGS}"
 
 dnl univalue check
 
