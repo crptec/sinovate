@@ -34,7 +34,7 @@ StakePage::StakePage(const PlatformStyle *_platformStyle, QWidget *parent) :
 {
     ui->setupUi(this);
     ui->checkStake->setEnabled(gArgs.GetBoolArg("-staking", true));
-    transactionView = new TransactionView(platformStyle, this);
+    transactionView = new TransactionView(platformStyle, this, true);
     ui->frameStakeRecords->layout()->addWidget(transactionView);
 }
 

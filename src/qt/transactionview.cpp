@@ -38,7 +38,7 @@
 #include <QUrl>
 #include <QVBoxLayout>
 
-TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *parent)
+TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *parent, bool hideFilter)
     : QWidget(parent), m_platform_style{platformStyle}
 {
     // Build filter row
@@ -131,8 +131,15 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
 
     transactionView = new QTableView(this);
     transactionView->setObjectName("transactionView");
-    vlayout->addLayout(hlayout);
-    vlayout->addWidget(createDateRangeWidget());
+    if(hideFilter)
+    {
+        createDateRangeWidget();
+    }
+    else
+    {
+        vlayout->addLayout(hlayout);
+        vlayout->addWidget(createDateRangeWidget());
+    }
     vlayout->addWidget(transactionView);
     vlayout->setSpacing(0);
     int width = transactionView->verticalScrollBar()->sizeHint().width();
@@ -196,6 +203,16 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     connect(this, &TransactionView::bumpedFee, [this](const uint256& txid) {
       focusTransaction(txid);
     });
+        
+    if(hideFilter)
+    {
+        dateWidget->setVisible(false);
+        typeWidget->setVisible(false);
+        watchOnlyWidget->setVisible(false);
+        search_widget->setVisible(false);
+        amountWidget->setVisible(false);
+        dateRangeWidget->setVisible(false);
+    }
 }
 
 TransactionView::~TransactionView()
