@@ -16,6 +16,7 @@
 #include <qt/transactionrecord.h>
 #include <qt/transactiontablemodel.h>
 #include <qt/walletmodel.h>
+#include <qt/styleSheet.h>
 
 #include <node/ui_interface.h>
 
@@ -57,8 +58,8 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     watchOnlyWidget = new QComboBox(this);
     watchOnlyWidget->setFixedWidth(24);
     watchOnlyWidget->addItem("", TransactionFilterProxy::WatchOnlyFilter_All);
-    watchOnlyWidget->addItem(platformStyle->SingleColorIcon(":/icons/eye_plus"), "", TransactionFilterProxy::WatchOnlyFilter_Yes);
-    watchOnlyWidget->addItem(platformStyle->SingleColorIcon(":/icons/eye_minus"), "", TransactionFilterProxy::WatchOnlyFilter_No);
+    watchOnlyWidget->addItem(platformStyle->TableColorIcon(":/icons/eye_plus", PlatformStyle::Normal), "", TransactionFilterProxy::WatchOnlyFilter_Yes);
+    watchOnlyWidget->addItem(platformStyle->TableColorIcon(":/icons/eye_minus", PlatformStyle::Normal), "", TransactionFilterProxy::WatchOnlyFilter_No);
     hlayout->addWidget(watchOnlyWidget);
 
     dateWidget = new QComboBox(this);
@@ -90,6 +91,7 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
                                   TransactionFilterProxy::TYPE(TransactionRecord::SendToOther));
     typeWidget->addItem(tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf));
     typeWidget->addItem(tr("Mined"), TransactionFilterProxy::TYPE(TransactionRecord::Generated));
+    typeWidget->addItem(tr("Minted"), TransactionFilterProxy::TYPE(TransactionRecord::Minted));
     typeWidget->addItem(tr("Other"), TransactionFilterProxy::TYPE(TransactionRecord::Other));
 
     hlayout->addWidget(typeWidget);
