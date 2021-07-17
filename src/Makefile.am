@@ -518,7 +518,9 @@ crypto_libbitcoin_crypto_base_a_SOURCES = \
   crypto/SWIFFTX/SWIFFTX.c \
   crypto/panama.c \
   crypto/lane.c \
-  crypto/blake2s.c \
+  crypto/blake2s-ref.c \
+  crypto/blake2-impl.h \
+  crypto/blake2.h\
   crypto/sph_groestl.h \
   crypto/sph_types.h \
   crypto/sph_blake.h \
