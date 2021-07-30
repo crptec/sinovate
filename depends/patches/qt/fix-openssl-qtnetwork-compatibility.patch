@@ -1,0 +1,12 @@
+--- a/qtbase/src/network/configure.json
++++ b/qtbase/src/network/configure.json
+@@ -84,7 +84,7 @@
+             "sources": [
+                 { "type": "openssl" },
+                 {
+-                    "libs": "-lssleay32 -llibeay32 -lUser32 -lWs2_32 -lAdvapi32 -lGdi32",
++                    "libs": "-llibssl -llibcrypto",
+                     "condition": "config.win32"
+                 },
+                 {
+
