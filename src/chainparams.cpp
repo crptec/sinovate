@@ -249,9 +249,6 @@ public:
     CTestNetParams() {
         strNetworkID = CBaseChainParams::TESTNET;
 
-        // IN params
-        consensus.nInfinityNodeExpireTime=5040;//720*365 days = 1 year
-
         // legacy Dash, needs refac
         consensus.nMasternodeBurnSINNODE_1 = 100000;
         consensus.nMasternodeBurnSINNODE_5 = 500000;
@@ -268,9 +265,9 @@ public:
         consensus.nInfinityNodeUpdateMeta=5;
         consensus.nInfinityNodeVoteValue=100;
         consensus.nInfinityNodeNotificationValue=1;
-        consensus.nInfinityNodeCallLockRewardDeepth=12;
-        consensus.nInfinityNodeCallLockRewardLoop=5; //in number of blocks
-        consensus.nInfinityNodeLockRewardTop=20; //in number
+        consensus.nInfinityNodeCallLockRewardDeepth=7;
+        consensus.nInfinityNodeCallLockRewardLoop=3; //in number of blocks
+        consensus.nInfinityNodeLockRewardTop=10; //in number
         consensus.nInfinityNodeLockRewardSigners=3; //in number
         consensus.nInfinityNodeLockRewardSINType=10; //in number
         consensus.nSchnorrActivationHeight = 1350000; // wait for active
@@ -280,11 +277,11 @@ public:
         consensus.nINActivationHeight = 100; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
         consensus.nINEnforcementHeight = 120; // Enforcement of IN payments
         consensus.nDINActivationHeight = 2880; // Activation of DIN 1.0 payments, and new dev fee address.
-        consensus.nINMetaUpdateChangeHeight=24500;
-        consensus.nINMetaUpdateCachedNextBlock=30000;
+        consensus.nINMetaUpdateChangeHeight=3000;
+        consensus.nINMetaUpdateCachedNextBlock=3000;
 
         // height at which we fork to X25X
-        consensus.nX25XForkHeight = 170000;
+        consensus.nX25XForkHeight = 150;
 
         //LWMA diff algo params
         consensus.lwmaStartHeight = 150;
