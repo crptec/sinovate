@@ -249,9 +249,6 @@ define $(package)_config_cmds
   export PKG_CONFIG_SYSROOT_DIR=/ && \
   export PKG_CONFIG_LIBDIR=$(host_prefix)/lib/pkgconfig && \
   export PKG_CONFIG_PATH=$(host_prefix)/share/pkgconfig  && \
-  export OPENSSL_LIBS=$(host_prefix)/lib && \
-  export OPENSSL_INCDIR=$(host_prefix)/include/openssl && \
-  export OPENSSL_LIBS_RELEASE="-llibssl -llibcrypto" && \
   cd qtbase && \
   ./configure $($(package)_config_opts) && \
   cd .. && \
