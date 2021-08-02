@@ -130,6 +130,7 @@ public:
     }
     int getCacheHeightInf(){LOCK(cs); return nCachedBlockHeight;};
 
+    //call in infinitynodetip
     void setSyncStatus(bool flag){LOCK(cs); fReachedLastBlock=flag;}
     bool isReachedLastBlock(){LOCK(cs); return fReachedLastBlock;}
 
@@ -174,8 +175,11 @@ public:
     //this function update lastStm and size from UpdatedBlockTip and map
     void CheckAndRemove(CConnman& connman);
     /// This is dummy overload to be used for dumping/loading mncache.dat
-    void CheckAndRemove() {}
+    void CheckAndRemove() {};
     void UpdatedBlockTip(const CBlockIndex *pindex);
     void UpdateChainActiveHeight(int number);
+
+    // save the state of infinitynode and metadata to disk
+    void FlushStateToDisk();
 };
 #endif // SIN_INFINITYNODEMAN_H

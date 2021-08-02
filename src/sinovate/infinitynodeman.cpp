@@ -347,14 +347,6 @@ bool CInfinitynodeMan::buildNonMaturedListFromBlock(const CBlock& block, CBlockI
         }
     }
 
-    if(fReachedLastBlock){
-        CFlatDB<CInfinitynodeMan> flatdb5("infinitynode.dat", "magicInfinityNodeCache");
-        flatdb5.Dump(infnodeman);
-
-        CFlatDB<CInfinitynodeMeta> flatdb7("infinitynodemeta.dat", "magicInfinityMeta");
-        flatdb7.Dump(infnodemeta);
-    }
-
     return true;
 }
 
@@ -411,14 +403,6 @@ bool CInfinitynodeMan::removeNonMaturedList(CBlockIndex* pindex)
         } else {
             ++it;
         }
-    }
-
-    if(fReachedLastBlock){
-        CFlatDB<CInfinitynodeMan> flatdb5("infinitynode.dat", "magicInfinityNodeCache");
-        flatdb5.Dump(infnodeman);
-
-        CFlatDB<CInfinitynodeMeta> flatdb7("infinitynodemeta.dat", "magicInfinityMeta");
-        flatdb7.Dump(infnodemeta);
     }
 
     return true;
@@ -1244,4 +1228,17 @@ void CInfinitynodeMan::UpdatedBlockTip(const CBlockIndex *pindex)
 void CInfinitynodeMan::UpdateChainActiveHeight(int number)
 {
     nCachedBlockHeight = number;
+}
+
+void CInfinitynodeMan::FlushStateToDisk()
+{
+    if(fReachedLastBlock){
+        CFlatDB<CInfinitynodeMan> flatdb5("infinitynode.dat", "magicInfinityNodeCache");
+        flatdb5.Dump(infnodeman);
+
+        CFlatDB<CInfinitynodeMeta> flatdb7("infinitynodemeta.dat", "magicInfinityMeta");
+        flatdb7.Dump(infnodemeta);
+    } else {
+        LogPrint(BCLog::INFINITYLOCK,"CInfinitynodeMan::FlushStateToDisk -- nCachedBlockHeight: %d -- Syncing detected. Don't save do disk!\n", nCachedBlockHeight);
+    }
 }

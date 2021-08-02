@@ -2668,6 +2668,7 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         infnodeman.removeNonMaturedList(pindexDelete);
         infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
         infnodeman.updateFinalList(pindexDelete->pprev);
+        infnodeman.FlushStateToDisk();
 //<SIN
         bool flushed = view.Flush();
         assert(flushed);
@@ -2810,6 +2811,12 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
             //LR is not added, metadata is in cache, only NonMatured map need to be removed
             infnodeman.removeNonMaturedList(pindexNew);
         }
+        int64_t nTime3_6;
+        nTime3_6  = GetTimeMicros();
+        infnodeman.FlushStateToDisk();
+        int64_t nTime3_7;
+        nTime3_7  = GetTimeMicros();
+            LogPrint(BCLog::BENCH, "  - Sinovate FlushStateToDisk: %.2fms\n", (nTime3_7 - nTime3_6) * MILLI);
 //<SIN
         GetMainSignals().BlockChecked(blockConnecting, state);
         if (!rv) {
