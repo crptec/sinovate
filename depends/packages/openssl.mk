@@ -1,6 +1,6 @@
 package=openssl
 $(package)_version=1.1.1k
-$(package)_download_path=https://www.openssl.org/source/
+$(package)_download_path=https://www.openssl.org/source
 $(package)_file_name=$(package)-$($(package)_version).tar.gz
 $(package)_sha256_hash=892a0875b9872acd04a9fde79b1f943075d5ea162415de3047c327df33fbaee5
 
@@ -64,7 +64,7 @@ define $(package)_build_cmds
 endef
 
 define $(package)_stage_cmds
-  $(MAKE) DESTDIR=$($(package)_staging_dir) install_sw
+  $(MAKE) DESTDIR=$($(package)_staging_dir) -j1 install_sw
 endef
 
 define $(package)_postprocess_cmds

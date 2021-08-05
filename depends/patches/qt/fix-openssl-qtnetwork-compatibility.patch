@@ -14,7 +14,8 @@
                      "condition": "config.msvc"
                  },
                  {
-                     "libs": "-lssl -lcrypto",
+-                    "libs": "-lssl -lcrypto",
++                    "libs": "-lssl -lcrypto -lpthread",
 -                    "condition": "!config.msvc"
 +                    "condition": "!config.msvc && !config.win32"
                  }
