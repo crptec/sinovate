@@ -41,6 +41,8 @@ bool CInfWalletAccess::IsBalancePositive(const CWallet* pwallet)
 
 bool CInfWalletAccess::RegisterLROnchain()
 {
+    if(!fInfinityNode) return false;
+
     std::string sLRInfo;
     COutPoint infCheck;
     inflockreward.getRegisterInfo(sLRInfo, infCheck);
