@@ -23,6 +23,7 @@ class QFrame;
 class QLineEdit;
 class QMenu;
 class QModelIndex;
+class QSpacerItem;
 class QTableView;
 QT_END_NAMESPACE
 
@@ -35,7 +36,6 @@ class TransactionView : public QWidget
 
 public:
     explicit TransactionView(const PlatformStyle *platformStyle, QWidget *parent = nullptr, bool hideFilter = false);
-    ~TransactionView();
 
     void setModel(WalletModel *model);
 
@@ -54,14 +54,11 @@ public:
     enum ColumnWidths {
         STATUS_COLUMN_WIDTH = 30,
         WATCHONLY_COLUMN_WIDTH = 23,
-        DATE_COLUMN_WIDTH = 120,
-        TYPE_COLUMN_WIDTH = 113,
-        AMOUNT_MINIMUM_COLUMN_WIDTH = 120,
+        DATE_COLUMN_WIDTH = 130,
+        TYPE_COLUMN_WIDTH = 170,
+        AMOUNT_MINIMUM_COLUMN_WIDTH = 170,
         MINIMUM_COLUMN_WIDTH = 23
     };
-
-protected:
-    void changeEvent(QEvent* e) override;
 
 private:
     WalletModel *model{nullptr};
@@ -73,6 +70,7 @@ private:
     QComboBox *watchOnlyWidget;
     QLineEdit *search_widget;
     QLineEdit *amountWidget;
+    QSpacerItem *hSpacer;
 
     QMenu *contextMenu;
 
@@ -86,9 +84,11 @@ private:
 
     QWidget *createDateRangeWidget();
 
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    GUIUtil::TableViewLastColumnResizingFixer *columnResizingFixer;
 
-    const PlatformStyle* m_platform_style;
+    virtual void resizeEvent(QResizeEvent* event);
+
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 private Q_SLOTS:
     void contextualMenu(const QPoint &);
@@ -104,7 +104,7 @@ private Q_SLOTS:
     void openThirdPartyTxUrl(QString url);
     void updateWatchOnlyColumn(bool fHaveWatchOnly);
     void abandonTx();
-    void bumpFee(bool checked);
+    void bumpFee();
 
 Q_SIGNALS:
     void doubleClicked(const QModelIndex&);
