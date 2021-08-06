@@ -59,7 +59,7 @@ void StatsPage::getStatistics()
         m_ui->top50ValueLabel->setText(l.toString(top50) + " SIN");
 
         // Set BURNT COIN STATS strings
-        int supplyNumber = s.supply - s.burnFee;
+        int supplyNumber = s.supply;
         int feeNumber = s.burnFee - s.burnNode;
         int burntNumber = s.burnFee;
 
