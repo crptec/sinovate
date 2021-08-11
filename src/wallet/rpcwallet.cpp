@@ -4644,7 +4644,10 @@ static RPCHelpMan setstakingstatus()
                     {"status", RPCArg::Type::BOOL, RPCArg::Optional::NO, "The status for staking, either true or false."},
                 },
                 RPCResult{
-                    RPCResult::Type::BOOL, "status", "The applied status"
+                    RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::BOOL, "status", "The applied status"}
+                    },
                 },
                 RPCExamples{
                     HelpExampleCli("setstakingstatus", "true")
@@ -4662,6 +4665,10 @@ static RPCHelpMan setstakingstatus()
     CWallet* const pwallet = wallet.get();
 
     LOCK(pwallet->cs_wallet);
+
+    if (pwallet->m_enabled_staking == request.params[0].get_bool()) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Duplicate call, status already set to ") + (pwallet->m_enabled_staking ? "true" : "false"));
+    }
 
     pwallet->m_enabled_staking = request.params[0].get_bool();
 

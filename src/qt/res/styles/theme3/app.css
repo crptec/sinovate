@@ -1329,19 +1329,16 @@ QWidget#toolBoxWidget .QToolButton {
     background-image: url(':/icons/minilogo');
     background-repeat:none;
     background-position: right;
-    background-size: 32px 32px;
     }
     #radioMIDNode {
     background-image: url(':/icons/midlogo');
     background-repeat:none;
     background-position: right;
-    background-size: 32px 32px;
     }
     #radioBIGNode {
     background-image: url(':/icons/biglogo');
     background-repeat:none;
     background-position: right;
-    background-size: 32px 32px;
     }
 /*HelpMessage*/
 HelpMessageDialog #aboutLogo {

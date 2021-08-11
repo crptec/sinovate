@@ -1307,19 +1307,16 @@ InfinitynodeList .QLabel {
     background-image: url(':/icons/minilogo_dark');
     background-repeat:none;
     background-position: right;
-    background-size: 32px 32px;
     }
     #radioMIDNode {
     background-image: url(':/icons/midlogo_dark');
     background-repeat:none;
     background-position: right;
-    background-size: 32px 32px;
     }
     #radioBIGNode {
     background-image: url(':/icons/biglogo_dark');
     background-repeat:none;
     background-position: right;
-    background-size: 32px 32px;
     }
 /*HelpMessage*/
 HelpMessageDialog #aboutLogo {

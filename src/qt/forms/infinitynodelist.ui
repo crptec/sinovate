@@ -1675,7 +1675,7 @@ min-width: 270px;
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../../betelgeuse_win/src/qt/sin.qrc"/>
+  <include location="../bitcoin.qrc"/>
  </resources>
  <connections/>
 </ui>
