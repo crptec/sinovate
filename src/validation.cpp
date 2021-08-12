@@ -2667,7 +2667,7 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         }
         infnodeman.removeNonMaturedList(pindexDelete);
         infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
-        infnodeman.updateFinalList(pindexDelete->pprev);
+        infnodeman.updateFinalList(pindexDelete->pprev, view);
         infnodeman.FlushStateToDisk();
 //<SIN
         bool flushed = view.Flush();
@@ -2794,14 +2794,15 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
         LogPrint(BCLog::BENCH, "  - Sinovate ConnectBlock: %.2fms\n", (nTime3_3 - nTime3_2) * MILLI);
 //>SIN
         if (rv) {
+            //LR is added if ConnectBlock is OK
             for (auto& v : vecLockRewardRet) {
                 infnodelrinfo.Add(v);
             }
             int64_t nTime3_4;
             nTime3_4  = GetTimeMicros();
             LogPrint(BCLog::BENCH, "  - Sinovate AddLR: %.2fms\n", (nTime3_4 - nTime3_3) * MILLI);
-
-            infnodeman.updateFinalList(pindexNew);
+            //cache metadata and matured node will be added to final list
+            infnodeman.updateFinalList(pindexNew, view);
             inflockreward.CheckAndRemove(pindexNew->nHeight);
             infnodelrinfo.RemoveCache(pindexNew->nHeight);
             int64_t nTime3_5;

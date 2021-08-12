@@ -307,6 +307,7 @@ void CInfinityNodeLockReward::Clear()
     mapLockRewardGroupSigners.clear();
     mapSigners.clear();
     mapPartialSign.clear();
+    currentLockRequestHash = uint256();
 }
 
 bool CInfinityNodeLockReward::AlreadyHave(const uint256& hash)

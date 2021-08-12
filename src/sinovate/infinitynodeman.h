@@ -143,7 +143,7 @@ public:
     //build DIN map immediate when connect block
     bool buildNonMaturedListFromBlock(const CBlock& block, CBlockIndex* pindex,
                   CCoinsViewCache& view, const CChainParams& chainparams); //call in validation.cpp
-    bool updateFinalList(CBlockIndex* pindex); // call when block is valid
+    bool updateFinalList(CBlockIndex* pindex, CCoinsViewCache& view); // call when block is valid
     bool removeNonMaturedList(CBlockIndex* pindex); //call when block is invalid or disconnect
 
     void updateLastPaid();
