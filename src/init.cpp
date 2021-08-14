@@ -1175,10 +1175,9 @@ void ThreadCheckInfinityNode(CConnman& connman)
         }
         if (nTickDIN % (60 * 5) == 0) {
             if (infnodeman.isReachedLastBlock()){
-                ENTER_CRITICAL_SECTION(cs_main);
-                //call buildInfinitynodeList and deterministicRewardStatement(nSINtype)
-                infnodeman.CheckAndRemove(connman);
-                LEAVE_CRITICAL_SECTION(cs_main);
+                //ENTER_CRITICAL_SECTION(cs_main);
+                //infnodeman.CheckAndRemove(connman);
+                //LEAVE_CRITICAL_SECTION(cs_main);
             }
         }
     }

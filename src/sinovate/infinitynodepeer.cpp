@@ -146,7 +146,7 @@ bool CInfinitynodePeer::AutoCheck(CConnman& connman)
     {
         strNotCapableReason = "Cannot find the Peer's Key in Deterministic node list";
         nState = INFINITYNODE_PEER_NOT_CAPABLE;
-        LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::AutoCheck -- %s\n",  strNotCapableReason);
+        LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::AutoCheck -- %s, MyPeer's key:%s\n",  strNotCapableReason, EncodeBase64(sPubKey));
         return false;
     }
 

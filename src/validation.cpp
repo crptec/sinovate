@@ -636,7 +636,7 @@ bool CheckInputTimeLockInterest(const CTransaction &tx, const CCoinsViewCache& v
     {
         const COutPoint &prevout = txin.prevout;
         const Coin& coin = view.AccessCoin(prevout);
-
+        if (coin.IsSpent()) return false;
         std::vector<std::vector<unsigned char>> vSolutions;
         TxoutType whichType = Solver(coin.out.scriptPubKey, vSolutions);
 
@@ -2665,6 +2665,7 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         for (auto& v : vecLockRewardRet) {
             infnodelrinfo.Remove(v);
         }
+        LogPrintf("DisconnectTip: removeNonMaturedList...\n");
         infnodeman.removeNonMaturedList(pindexDelete);
         infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
         infnodeman.updateFinalList(pindexDelete->pprev, view);
@@ -2805,6 +2806,7 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
             infnodeman.updateFinalList(pindexNew, view);
             inflockreward.CheckAndRemove(pindexNew->nHeight);
             infnodelrinfo.RemoveCache(pindexNew->nHeight);
+            infnodeman.CheckAndRemove();
             int64_t nTime3_5;
             nTime3_5  = GetTimeMicros();
             LogPrint(BCLog::BENCH, "  - Sinovate updateFinalList: %.2fms\n", (nTime3_5 - nTime3_4) * MILLI);

@@ -74,6 +74,8 @@ static RPCHelpMan infinitynode()
                     + "\nShow informations about all infinitynodes of network.\n"
                     + HelpExampleCli("infinitynode", "show-infos")
                     + "\nShow metadata of all infinitynodes of network.\n"
+                    + HelpExampleCli("infinitynode", "show-nonmatured")
+                    + "\nShow metadata of all infinitynodes in non matured map, waiting to be listed in final list.\n"
                     + HelpExampleCli("infinitynode", "show-metadata")
                     + "\nShow lockreward of network.\n"
                     + HelpExampleCli("infinitynode", "show-lockreward")
@@ -263,6 +265,26 @@ static RPCHelpMan infinitynode()
         obj.pushKV("CandidateMID: ", infMID.getCollateralAddress());
         obj.pushKV("CandidateLIL: ", infLIL.getCollateralAddress());
 
+        return obj;
+    }
+
+    if (strCommand == "show-nonmatured")
+    {
+        std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeNonMaturedMap();
+        for (auto& infpair : mapInfinitynodes) {
+            std::string strOutpoint = infpair.first.ToStringFull();
+            CInfinitynode inf = infpair.second;
+            std::ostringstream streamInfo;
+            streamInfo << std::setw(8) <<
+                inf.getCollateralAddress() << " " <<
+                inf.getHeight() << " " <<
+                inf.getExpireHeight() << " " <<
+                inf.getRoundBurnValue() << " " <<
+                inf.getSINType() << " " <<
+                inf.getMetaID();
+            std::string strInfo = streamInfo.str();
+            obj.pushKV(strOutpoint, strInfo);
+        }
         return obj;
     }
 
