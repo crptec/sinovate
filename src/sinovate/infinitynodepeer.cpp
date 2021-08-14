@@ -218,12 +218,15 @@ void CInfinitynodePeer::ManageStateInitial(CConnman& connman)
 
     if (Params().NetworkIDString() != CBaseChainParams::REGTEST) {
         bool fConnected = false;
+        CAddress addr = CAddress(service, NODE_NONE);
 
         std::unique_ptr<Sock> sock = CreateSock(service);
-        if (!sock) {
+        if (sock) {
             LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::ManageStateInitial -- Socket created\n");
             fConnected = ConnectSocketDirectly(service, *sock, nConnectTimeout, true);
             LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::ManageStateInitial -- Connecttion: %d\n", fConnected);
+        } else {
+            LogPrint(BCLog::INFINITYPEER,"Couldn't open socket for incoming connections at address: %d\n", service.ToString());
         }
 
         if (!fConnected) {
