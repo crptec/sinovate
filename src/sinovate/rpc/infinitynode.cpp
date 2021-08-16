@@ -449,11 +449,13 @@ static RPCHelpMan infinitynodeburnfund()
     // Grab locks here as BlockUntilSyncedToCurrentChain() handles them on its own, but we need them for most other funcs
     LOCK2(pwallet->cs_wallet, cs_main);
 
+    // SIN default format is LEGACY, so DecodeDestination is PKHash
     const std::string address = request.params[0].get_str();
     CTxDestination NodeOwnerAddress = DecodeDestination(address);
     if (!IsValidDestination(NodeOwnerAddress)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Sinovate address: ") + address);
     }
+    CScript scriptPubKeyOwners = GetScriptForDestination(NodeOwnerAddress);
 
     CAmount nAmount = AmountFromValue(request.params[1]);
     if (nAmount != Params().GetConsensus().nMasternodeBurnSINNODE_1 * COIN &&
@@ -489,11 +491,10 @@ static RPCHelpMan infinitynodeburnfund()
     LOCK(pwallet->cs_wallet);
     for (COutput& out : vPossibleCoins) {
         CTxDestination addressCoin;
-        const CScript& scriptPubKey = out.tx->tx->vout[out.i].scriptPubKey;
-        bool fValidAddress = ExtractDestination(scriptPubKey, addressCoin);
+        const CScript& scriptPubKeyCoin = out.tx->tx->vout[out.i].scriptPubKey;
+        bool fValidAddress = ExtractDestination(scriptPubKeyCoin, addressCoin);
 
-        // TODO: != operator between CTxDestination(s) doesn't exist anymore - needs a new template (or even better refactored)
-        if (!fValidAddress /*|| addressCoin != NodeOwnerAddress*/)
+        if (!fValidAddress || scriptPubKeyCoin.ToString() != scriptPubKeyOwners.ToString())
             continue;
 
         if (out.tx->tx->vout[out.i].nValue >= nAmount && out.nDepth >= 2) {
@@ -593,6 +594,7 @@ static RPCHelpMan infinitynodeupdatemeta()
     if (!IsValidDestination(NodeOwnerAddress)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Sinovate address: ") + strOwnerAddress);
     }
+    CScript scriptPubKeyOwners = GetScriptForDestination(NodeOwnerAddress);
 
     //limit data carrier, so we accept only 66 char
     std::string nodePublickey = "";
@@ -693,11 +695,10 @@ static RPCHelpMan infinitynodeupdatemeta()
 
     for (COutput& out : vPossibleCoins) {
         CTxDestination addressCoin;
-        const CScript& scriptPubKey = out.tx->tx->vout[out.i].scriptPubKey;
-        bool fValidAddress = ExtractDestination(scriptPubKey, addressCoin);
+        const CScript& scriptPubKeyCoin = out.tx->tx->vout[out.i].scriptPubKey;
+        bool fValidAddress = ExtractDestination(scriptPubKeyCoin, addressCoin);
 
-        // TODO: != operator between CTxDestination(s) doesn't exist anymore - needs a new template (or even better refactored)
-        if (!fValidAddress /*|| addressCoin != NodeOwnerAddress*/)
+        if (!fValidAddress || scriptPubKeyCoin.ToString() != scriptPubKeyOwners.ToString())
             continue;
 
         //use coin with limit value
