@@ -54,7 +54,8 @@ public:
         Input,
         Inout,
         Output,
-        Error
+        Error,
+        Burn
     };
     QIcon TableColorIcon(const QString& resourcename, TableColorType type) const;
     QImage TableColorImage(const QString& resourcename, TableColorType type) const;
@@ -84,6 +85,7 @@ private:
     QColor tableColorInout;
     QColor tableColorOutput;
     QColor tableColorError;
+    QColor tableColorBurn;
     QColor multiStatesIconColor1;
     QColor multiStatesIconColor2;
     QColor multiStatesIconColor3;

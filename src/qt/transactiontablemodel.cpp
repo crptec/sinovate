@@ -416,7 +416,7 @@ QVariant TransactionTableModel::txAddressDecoration(const TransactionRecord *wtx
     case TransactionRecord::SendToOther:
         return platformStyle->TableColorIcon(":/icons/send_to", PlatformStyle::Output);
     case TransactionRecord::Burn:
-        return platformStyle->TableColorIcon(":/icons/burn", PlatformStyle::Output);
+        return platformStyle->TableColorIcon(":/icons/burn", PlatformStyle::Burn);
     default:
         return platformStyle->TableColorIcon(":/icons/tx_inout", PlatformStyle::Inout);
     }
