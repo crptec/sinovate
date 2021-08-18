@@ -2474,7 +2474,7 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins, uint64_t& nW
             bool spendable = ((mine & ISMINE_SPENDABLE) != ISMINE_NO) || (((mine & ISMINE_WATCH_ONLY) != ISMINE_NO));
 
             if (!pCoins) return true;
-            if (!pindex) pindex = LookupBlockIndex(wtx.m_confirm.hashBlock);
+            if (!pindex) pindex = g_chainman.m_blockman.LookupBlockIndex(wtx.m_confirm.hashBlock);
 
             if (fScale) {
                 nWeight += wtx.tx->vout[i].nValue;

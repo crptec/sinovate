@@ -636,7 +636,7 @@ bool CheckInputTimeLockInterest(const CTransaction &tx, const CCoinsViewCache& v
     {
         const COutPoint &prevout = txin.prevout;
         const Coin& coin = view.AccessCoin(prevout);
-
+        if (coin.IsSpent()) return false;
         std::vector<std::vector<unsigned char>> vSolutions;
         TxoutType whichType = Solver(coin.out.scriptPubKey, vSolutions);
 
@@ -2665,9 +2665,11 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         for (auto& v : vecLockRewardRet) {
             infnodelrinfo.Remove(v);
         }
+        LogPrintf("DisconnectTip: removeNonMaturedList...\n");
         infnodeman.removeNonMaturedList(pindexDelete);
         infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
-        infnodeman.updateFinalList(pindexDelete->pprev);
+        infnodeman.updateFinalList(pindexDelete->pprev, view);
+        infnodeman.FlushStateToDisk();
 //<SIN
         bool flushed = view.Flush();
         assert(flushed);
@@ -2793,16 +2795,18 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
         LogPrint(BCLog::BENCH, "  - Sinovate ConnectBlock: %.2fms\n", (nTime3_3 - nTime3_2) * MILLI);
 //>SIN
         if (rv) {
+            //LR is added if ConnectBlock is OK
             for (auto& v : vecLockRewardRet) {
                 infnodelrinfo.Add(v);
             }
             int64_t nTime3_4;
             nTime3_4  = GetTimeMicros();
             LogPrint(BCLog::BENCH, "  - Sinovate AddLR: %.2fms\n", (nTime3_4 - nTime3_3) * MILLI);
-
-            infnodeman.updateFinalList(pindexNew);
+            //cache metadata and matured node will be added to final list
+            infnodeman.updateFinalList(pindexNew, view);
             inflockreward.CheckAndRemove(pindexNew->nHeight);
             infnodelrinfo.RemoveCache(pindexNew->nHeight);
+            infnodeman.CheckAndRemove();
             int64_t nTime3_5;
             nTime3_5  = GetTimeMicros();
             LogPrint(BCLog::BENCH, "  - Sinovate updateFinalList: %.2fms\n", (nTime3_5 - nTime3_4) * MILLI);
@@ -2810,6 +2814,12 @@ bool CChainState::ConnectTip(BlockValidationState& state, const CChainParams& ch
             //LR is not added, metadata is in cache, only NonMatured map need to be removed
             infnodeman.removeNonMaturedList(pindexNew);
         }
+        int64_t nTime3_6;
+        nTime3_6  = GetTimeMicros();
+        infnodeman.FlushStateToDisk();
+        int64_t nTime3_7;
+        nTime3_7  = GetTimeMicros();
+            LogPrint(BCLog::BENCH, "  - Sinovate FlushStateToDisk: %.2fms\n", (nTime3_7 - nTime3_6) * MILLI);
 //<SIN
         GetMainSignals().BlockChecked(blockConnecting, state);
         if (!rv) {
@@ -4071,7 +4081,7 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
     }
 
     //run PoS checks after txes have been cached
-    if (((pindex->nHeight > 32000) && IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev))) {
+    if ((IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev))) {
         if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);

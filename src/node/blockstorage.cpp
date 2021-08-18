@@ -58,9 +58,11 @@ bool ReadBlockFromDisk(CBlock& block, const FlatFilePos& pos, const Consensus::P
         return error("%s: Deserialize or I/O error - %s at %s", __func__, e.what(), pos.ToString());
     }
 
-    // Check the header
-    if (!CheckProofOfWork(block.GetHash(), block.nBits, consensusParams)) {
-        return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
+    if (block.IsProofOfWork()) {
+        // Check the header only on PoW
+        if (!CheckProofOfWork(block.GetValidationHash(), block.nBits, consensusParams)) {
+            return error("ReadBlockFromDisk: Errors in block header at %s, block %s, nBits %d", pos.ToString(), block.GetHash().ToString(), block.nBits);
+        }
     }
 
     // Signet only: check block solution

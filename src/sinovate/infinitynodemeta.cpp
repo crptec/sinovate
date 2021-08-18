@@ -17,8 +17,8 @@ const std::string CInfinitynodeMeta::SERIALIZATION_VERSION_STRING = "CInfinityno
 
 void CMetadata::removeHisto(CMetahisto inHisTo)
 {
-    for(auto it = vHisto.begin(); it != vHisto.end(); ){
-        if( (*it).nHeightHisto == inHisTo.nHeightHisto && (*it).pubkeyHisto == inHisTo.pubkeyHisto && (*it).serviceHisto == inHisTo.serviceHisto ) {
+    for (auto it = vHisto.begin(); it != vHisto.end(); ) {
+        if ( (*it).nHeightHisto == inHisTo.nHeightHisto && (*it).pubkeyHisto == inHisTo.pubkeyHisto && (*it).serviceHisto == inHisTo.serviceHisto ) {
             it = vHisto.erase(it);
         } else {
             ++it;
@@ -30,8 +30,8 @@ CMetahisto CMetadata::getLastHisto()
 {
     int v_Height = 0;
     CMetahisto histo;
-    for(auto& v : vHisto){
-        if(v.nHeightHisto > v_Height){
+    for (auto& v : vHisto) {
+        if (v.nHeightHisto > v_Height) {
             v_Height = v.nHeightHisto;
             histo = v;
         }
@@ -56,13 +56,13 @@ bool CInfinitynodeMeta::Add(CMetadata &meta)
     LOCK(cs);
     LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::Add() New Metadata from %s at height: %d\n", meta.getMetaID(), meta.getMetadataHeight());
     auto it = mapNodeMetadata.find(meta.getMetaID());
-    if(it == mapNodeMetadata.end()){
+    if (it == mapNodeMetadata.end()) {
         LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::Add() 1st metadata from %s\n", meta.getMetaID());
         mapNodeMetadata[meta.getMetaID()] = meta;
         return true;
     } else {
         CMetadata m = it->second;
-        if(m.getMetaID() == meta.getMetaID() && meta.getMetadataHeight() >  m.getMetadataHeight()){
+        if (m.getMetaID() == meta.getMetaID() && meta.getMetadataHeight() >  m.getMetadataHeight()) {
             LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::Add() New metadata %s, at height: %d\n", meta.getMetaID(),  meta.getMetadataHeight());
             //we have a new metadata. we need check the distant between 2 update befor add it in histo
             int nHeight = meta.getMetadataHeight();
@@ -70,7 +70,7 @@ bool CInfinitynodeMeta::Add(CMetadata &meta)
             CService cService = meta.getService();
             CAddress addMeta = CAddress(cService, NODE_NETWORK);
 
-            if(nHeight < m.getMetadataHeight() + Params().MaxReorganizationDepth() * 2){
+            if (nHeight < m.getMetadataHeight() + Params().MaxReorganizationDepth() * 2) {
                 int nWait = m.getMetadataHeight() + Params().MaxReorganizationDepth() * 2 - nHeight;
                 LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::Add() Cannot update metadata now. Please update after %d blocks\n", nWait);
                 return false;
@@ -88,15 +88,15 @@ bool CInfinitynodeMeta::Add(CMetadata &meta)
                         if (mv.getMetaID() != meta.getMetaID() && (mv.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == addv.ToStringIP()))
                         {
                             //change consensus for update metadata at the same POS4 height
-                            if(meta.getMetadataHeight() < Params().GetConsensus().nINMetaUpdateChangeHeight){
+                            if (meta.getMetadataHeight() < Params().GetConsensus().nINMetaUpdateChangeHeight) {
                                 if (mv.getMetaID() != meta.getMetaID() && (mv.getMetaPublicKey() == sPublicKey || addMeta.ToStringIP() == addv.ToStringIP())) {
                                     fCheckExistant = true;
                                 }
                             } else {
-                                if(mv.getMetaPublicKey() == sPublicKey){
+                                if (mv.getMetaPublicKey() == sPublicKey) {
                                     fCheckExistant = true;
                                     LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::PubKey %s existant in network\n", sPublicKey);
-                                } else if(addMeta.ToStringIP() == addv.ToStringIP()){
+                                } else if (addMeta.ToStringIP() == addv.ToStringIP()) {
                                     std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeMap();
                                     for (auto& infnodepair : mapInfinitynodes) {
                                         if (infnodepair.second.getMetaID() == mv.getMetaID() && infnodepair.second.getExpireHeight() >= meta.getMetadataHeight())
@@ -111,7 +111,7 @@ bool CInfinitynodeMeta::Add(CMetadata &meta)
                     }
                 }
 
-                if(fCheckExistant) {
+                if (fCheckExistant) {
                     LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::Add() Cannot update metadata now. PubKey or IP existant in network\n");
                     return false;
                 } else {
@@ -123,7 +123,7 @@ bool CInfinitynodeMeta::Add(CMetadata &meta)
                     return true;
                 }
             }
-        }else{
+        } else {
             LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::meta nHeight(%d) is lower than current height %d\n", meta.getMetadataHeight(), m.getMetadataHeight());
             return false;
         }
@@ -136,17 +136,17 @@ bool CInfinitynodeMeta::Remove(CMetadata &meta)
     LOCK(cs);
     LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::remove Metadata %s %d\n", meta.getMetaID(), meta.getMetadataHeight());
     auto it = mapNodeMetadata.find(meta.getMetaID());
-    if(it == mapNodeMetadata.end()){
+    if (it == mapNodeMetadata.end()) {
         return true;
     } else {
         CMetadata m = it->second;
-        if(m.getMetaID() == meta.getMetaID() && m.getHistoSize() == 1 && meta.getMetadataHeight() == m.getMetadataHeight()){
+        if (m.getMetaID() == meta.getMetaID() && m.getHistoSize() == 1 && meta.getMetadataHeight() == m.getMetadataHeight()) {
             //we have only 1 entry => remove
             mapNodeMetadata.erase(meta.getMetaID());
             return true;
         } else if (m.getMetaID() == meta.getMetaID() && m.getHistoSize() > 1) {
             //check if input meta is the last
-            if(meta.getMetadataHeight() == m.getMetadataHeight() && meta.getMetaPublicKey() == m.getMetaPublicKey() && meta.getService() == m.getService())
+            if (meta.getMetadataHeight() == m.getMetadataHeight() && meta.getMetaPublicKey() == m.getMetaPublicKey() && meta.getService() == m.getService())
             {
                 int nHeight = meta.getMetadataHeight();
                 std::string sPublicKey = meta.getMetaPublicKey();
@@ -219,12 +219,12 @@ bool CInfinitynodeMeta::RemoveMetaFromBlock(const CBlock& block, CBlockIndex* pi
                                             burnTxID = s.substr(0, 16);
                                         }
                                         //Update node metadata if nHeight is bigger
-                                        if (check == 3){
+                                        if (check == 3) {
                                             //Address payee: we known that there is only 1 input
                                             const Coin& coin = view.AccessCoin(tx.vin[0].prevout);
 
                                             CTxDestination addressBurnFund;
-                                            if(!ExtractDestination(coin.out.scriptPubKey, addressBurnFund)){
+                                            if (!ExtractDestination(coin.out.scriptPubKey, addressBurnFund)) {
                                                 LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMeta::metaScan -- False when extract payee from BurnFund tx.\n");
                                                 return false;
                                             }
@@ -261,7 +261,7 @@ CMetadata CInfinitynodeMeta::Find(std::string  metaID)
     LOCK(cs);
     CMetadata meta;
     auto it = mapNodeMetadata.find(metaID);
-    if(it != mapNodeMetadata.end()){meta = it->second;}
+    if (it != mapNodeMetadata.end()) {meta = it->second;}
     return meta;
 }
 
@@ -271,7 +271,7 @@ bool CInfinitynodeMeta::Get(std::string  nodePublicKey, CMetadata& meta)
     LOCK(cs);
     for (auto& infpair : mapNodeMetadata) {
         CMetadata m = infpair.second;
-        if(m.getMetaPublicKey() == nodePublicKey){
+        if (m.getMetaPublicKey() == nodePublicKey) {
             meta = m;
             res = true;
         }
@@ -312,8 +312,8 @@ bool CInfinitynodeMeta::metaScan(int nBlockHeight)
                         {
                           //Amount for UpdateMeta
                             if ( (Params().GetConsensus().nInfinityNodeUpdateMeta - 1) * COIN <= out.nValue
-                                 && out.nValue <= (Params().GetConsensus().nInfinityNodeUpdateMeta) * COIN){
-                                if (vSolutions.size() == 2){
+                                 && out.nValue <= (Params().GetConsensus().nInfinityNodeUpdateMeta) * COIN) {
+                                if (vSolutions.size() == 2) {
                                     std::string metadata(vSolutions[1].begin(), vSolutions[1].end());
                                     string s;
                                     stringstream ss(metadata);
@@ -348,20 +348,20 @@ bool CInfinitynodeMeta::metaScan(int nBlockHeight)
                                             burnTxID = s.substr(0, 16);
                                         }
                                         //Update node metadata if nHeight is bigger
-                                        if (check == 3){
+                                        if (check == 3) {
                                             //prevBlockIndex->nHeight
                                             const CTxIn& txin = tx->vin[0];
                                             int index = txin.prevout.n;
 
                                             CTransactionRef prevtx;
                                             uint256 hashblock;
-                                            if(!GetTransaction(txin.prevout.hash, prevtx, hashblock)) {
+                                            if (!GetTransaction(txin.prevout.hash, prevtx, hashblock)) {
                                                 LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::metaScan -- PrevBurnFund tx is not in block.\n");
                                                 return false;
                                             }
 
                                             CTxDestination addressBurnFund;
-                                            if(!ExtractDestination(prevtx->vout[index].scriptPubKey, addressBurnFund)){
+                                            if (!ExtractDestination(prevtx->vout[index].scriptPubKey, addressBurnFund)) {
                                                 LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::metaScan -- False when extract payee from BurnFund tx.\n");
                                                 return false;
                                             }
@@ -402,7 +402,7 @@ bool CInfinitynodeMeta::setActiveBKAddress(std::string  metaID)
 {
     LOCK(cs);
     auto it = mapNodeMetadata.find(metaID);
-    if(it == mapNodeMetadata.end()){
+    if (it == mapNodeMetadata.end()) {
         return false;
     } else {
         int active = 1;

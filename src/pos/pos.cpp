@@ -161,7 +161,7 @@ bool CheckProofOfStake(const CBlock& block, BlockValidationState& state, const C
     const auto& tx = block.vtx[1];
     const CTxIn& txin = tx->vin[0];
     ScriptError serror;
-    PrecomputedTransactionData txdata(tx);
+    PrecomputedTransactionData txdata;
     if (!VerifyScript(txin.scriptSig, stakePrevout.scriptPubKey, nullptr, STANDARD_SCRIPT_VERIFY_FLAGS,
              TransactionSignatureChecker(tx.get(), 0, stakePrevout.nValue, txdata, MissingDataBehavior::FAIL), &serror)) {
         return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "bad-pos-sig", serror ? ScriptErrorString(serror) : "signature failing");

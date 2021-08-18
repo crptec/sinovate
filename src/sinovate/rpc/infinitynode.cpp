@@ -5,6 +5,7 @@
 #include <sinovate/rpc/infinitynode.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
+#include <rpc/net.h>
 #include <rpc/rawtransaction_util.h>
 #include <core_io.h>
 
@@ -73,6 +74,8 @@ static RPCHelpMan infinitynode()
                     + "\nShow informations about all infinitynodes of network.\n"
                     + HelpExampleCli("infinitynode", "show-infos")
                     + "\nShow metadata of all infinitynodes of network.\n"
+                    + HelpExampleCli("infinitynode", "show-nonmatured")
+                    + "\nShow metadata of all infinitynodes in non matured map, waiting to be listed in final list.\n"
                     + HelpExampleCli("infinitynode", "show-metadata")
                     + "\nShow lockreward of network.\n"
                     + HelpExampleCli("infinitynode", "show-lockreward")
@@ -148,12 +151,11 @@ static RPCHelpMan infinitynode()
         if (!fInfinityNode)
             throw JSONRPCError(RPC_INTERNAL_ERROR, "This is not an InfinityNode");
 
-        NodeContext& node = EnsureNodeContext(request.context);
-        if(!node.connman)
-            throw JSONRPCError(RPC_CLIENT_P2P_DISABLED, "Error: Peer-to-peer functionality missing or disabled");
+        NodeContext& node = EnsureAnyNodeContext(request.context);
+        CConnman& connman = EnsureConnman(node);
 
         UniValue infObj(UniValue::VOBJ);
-        infinitynodePeer.ManageState(*node.connman);
+        infinitynodePeer.ManageState(connman);
         infObj.pushKV("MyPeerInfo", infinitynodePeer.GetMyPeerInfo());
         return infObj;
     }
@@ -263,6 +265,26 @@ static RPCHelpMan infinitynode()
         obj.pushKV("CandidateMID: ", infMID.getCollateralAddress());
         obj.pushKV("CandidateLIL: ", infLIL.getCollateralAddress());
 
+        return obj;
+    }
+
+    if (strCommand == "show-nonmatured")
+    {
+        std::map<COutPoint, CInfinitynode> mapInfinitynodes = infnodeman.GetFullInfinitynodeNonMaturedMap();
+        for (auto& infpair : mapInfinitynodes) {
+            std::string strOutpoint = infpair.first.ToStringFull();
+            CInfinitynode inf = infpair.second;
+            std::ostringstream streamInfo;
+            streamInfo << std::setw(8) <<
+                inf.getCollateralAddress() << " " <<
+                inf.getHeight() << " " <<
+                inf.getExpireHeight() << " " <<
+                inf.getRoundBurnValue() << " " <<
+                inf.getSINType() << " " <<
+                inf.getMetaID();
+            std::string strInfo = streamInfo.str();
+            obj.pushKV(strOutpoint, strInfo);
+        }
         return obj;
     }
 
@@ -427,11 +449,13 @@ static RPCHelpMan infinitynodeburnfund()
     // Grab locks here as BlockUntilSyncedToCurrentChain() handles them on its own, but we need them for most other funcs
     LOCK2(pwallet->cs_wallet, cs_main);
 
+    // SIN default format is LEGACY, so DecodeDestination is PKHash
     const std::string address = request.params[0].get_str();
     CTxDestination NodeOwnerAddress = DecodeDestination(address);
     if (!IsValidDestination(NodeOwnerAddress)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Sinovate address: ") + address);
     }
+    CScript scriptPubKeyOwners = GetScriptForDestination(NodeOwnerAddress);
 
     CAmount nAmount = AmountFromValue(request.params[1]);
     if (nAmount != Params().GetConsensus().nMasternodeBurnSINNODE_1 * COIN &&
@@ -467,10 +491,10 @@ static RPCHelpMan infinitynodeburnfund()
     LOCK(pwallet->cs_wallet);
     for (COutput& out : vPossibleCoins) {
         CTxDestination addressCoin;
-        const CScript& scriptPubKey = out.tx->tx->vout[out.i].scriptPubKey;
-        bool fValidAddress = ExtractDestination(scriptPubKey, addressCoin);
+        const CScript& scriptPubKeyCoin = out.tx->tx->vout[out.i].scriptPubKey;
+        bool fValidAddress = ExtractDestination(scriptPubKeyCoin, addressCoin);
 
-        if (!fValidAddress || addressCoin != NodeOwnerAddress)
+        if (!fValidAddress || scriptPubKeyCoin.ToString() != scriptPubKeyOwners.ToString())
             continue;
 
         if (out.tx->tx->vout[out.i].nValue >= nAmount && out.nDepth >= 2) {
@@ -570,6 +594,7 @@ static RPCHelpMan infinitynodeupdatemeta()
     if (!IsValidDestination(NodeOwnerAddress)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, std::string("Invalid Sinovate address: ") + strOwnerAddress);
     }
+    CScript scriptPubKeyOwners = GetScriptForDestination(NodeOwnerAddress);
 
     //limit data carrier, so we accept only 66 char
     std::string nodePublickey = "";
@@ -653,7 +678,7 @@ static RPCHelpMan infinitynodeupdatemeta()
         }
     }
 
-    EnsureWalletIsUnlocked(pwallet);
+    EnsureWalletIsUnlocked(*pwallet);
 
     std::string strError;
     std::vector<COutput> vPossibleCoins;
@@ -670,10 +695,10 @@ static RPCHelpMan infinitynodeupdatemeta()
 
     for (COutput& out : vPossibleCoins) {
         CTxDestination addressCoin;
-        const CScript& scriptPubKey = out.tx->tx->vout[out.i].scriptPubKey;
-        bool fValidAddress = ExtractDestination(scriptPubKey, addressCoin);
+        const CScript& scriptPubKeyCoin = out.tx->tx->vout[out.i].scriptPubKey;
+        bool fValidAddress = ExtractDestination(scriptPubKeyCoin, addressCoin);
 
-        if (!fValidAddress || addressCoin != NodeOwnerAddress)
+        if (!fValidAddress || scriptPubKeyCoin.ToString() != scriptPubKeyOwners.ToString())
             continue;
 
         //use coin with limit value
@@ -936,13 +961,13 @@ void RegisterInfinitynodeRPCCommands(CRPCTable &t)
 {
 // clang-format off
 static const CRPCCommand commands[] =
-{ //  category  name                                actor (function)                  argNames
-  //  --------- ------------------------            -----------------------           ----------
-  { "SIN",      "infinitynode",                     &infinitynode,                    {"strCommand", "strFilter", "strOption"} },
-  { "SIN",      "infinitynodeburnfund",             &infinitynodeburnfund,            {"nodeowneraddress", "amount", "backupaddress"} },
-  { "SIN",      "infinitynodeupdatemeta",           &infinitynodeupdatemeta,          {"nodeowneraddress", "publickey", "nodeip", "nodeid"} },
-  { "SIN",      "infinitynodeburnfund_external",    &infinitynodeburnfund_external,   {"inputs", "nodeowneraddress", "amount", "backupaddress"} },
-  { "SIN",      "infinitynodeupdatemeta_external",  &infinitynodeupdatemeta_external, {"inputs", "nodeowneraddress", "publickey", "nodeip", "nodeid"} },
+{ //  category              actor (function)
+//  --------------------- ------------------------
+  { "infinitynode",            &infinitynode,                     },
+  { "infinitynode",            &infinitynodeburnfund,             },
+  { "infinitynode",            &infinitynodeupdatemeta,           },
+  { "infinitynode",            &infinitynodeburnfund_external,    },
+  { "infinitynode",            &infinitynodeupdatemeta_external,  },
 };
 // clang-format on
     for (const auto& c : commands) {

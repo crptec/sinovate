@@ -307,6 +307,7 @@ void CInfinityNodeLockReward::Clear()
     mapLockRewardGroupSigners.clear();
     mapSigners.clear();
     mapPartialSign.clear();
+    currentLockRequestHash = uint256();
 }
 
 bool CInfinityNodeLockReward::AlreadyHave(const uint256& hash)
@@ -2680,6 +2681,11 @@ void CInfinityNodeLockReward::ProcessDirectMessage(CNode* pfrom, const std::stri
 {
     //only infinitynode will do the direct message
     if(!fInfinityNode) return;
+
+    if(infnodeman.isReachedLastBlock() == false){
+        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessDirectMessage -- Downloading block! wait...\n");
+        return;
+    }
 
     if (strCommand == NetMsgType::INFVERIFY) {
         CVerifyRequest vrequest;

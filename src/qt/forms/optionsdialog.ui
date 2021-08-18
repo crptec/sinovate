@@ -706,12 +706,12 @@ width: 80px;
           </widget>
          </item>
          <item>
-          <widget class="QCheckBox" name="hideTrayIcon">
+          <widget class="QCheckBox" name="showTrayIcon">
            <property name="toolTip">
             <string>Hide the icon from the system tray.</string>
            </property>
            <property name="text">
-            <string>&amp;Hide tray icon</string>
+            <string>&amp;Show tray icon</string>
            </property>
           </widget>
          </item>

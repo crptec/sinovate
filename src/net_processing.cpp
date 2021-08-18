@@ -1876,7 +1876,7 @@ void PeerManagerImpl::ProcessGetData(CNode& pfrom, Peer& peer, const std::atomic
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss << lockRewardRequest;
-                        connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFLOCKREWARDINIT, ss));
+                        m_connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFLOCKREWARDINIT, ss));
                         pushed = true;
                     }
                 }
@@ -1886,7 +1886,7 @@ void PeerManagerImpl::ProcessGetData(CNode& pfrom, Peer& peer, const std::atomic
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss << commitment;
-                        connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFCOMMITMENT, ss));
+                        m_connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFCOMMITMENT, ss));
                         pushed = true;
                     }
                 }
@@ -1896,7 +1896,7 @@ void PeerManagerImpl::ProcessGetData(CNode& pfrom, Peer& peer, const std::atomic
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss << gSigners;
-                        connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFLRGROUP, ss));
+                        m_connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFLRGROUP, ss));
                         pushed = true;
                     }
                 }
@@ -1906,7 +1906,7 @@ void PeerManagerImpl::ProcessGetData(CNode& pfrom, Peer& peer, const std::atomic
                         CDataStream ss(SER_NETWORK, PROTOCOL_VERSION);
                         ss.reserve(1000);
                         ss << partialSign;
-                        connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFLRMUSIG, ss));
+                        m_connman.PushMessage(&pfrom, msgMaker.Make(NetMsgType::INFLRMUSIG, ss));
                         pushed = true;
                     }
                 }

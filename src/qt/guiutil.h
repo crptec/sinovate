@@ -213,26 +213,7 @@ namespace GUIUtil
             void on_geometriesChanged();
     };
 
-    /**
-     * Qt event filter that intercepts QEvent::FocusOut events for QLabel objects, and
-     * resets their `textInteractionFlags' property to get rid of the visible cursor.
-     *
-     * This is a temporary fix of QTBUG-59514.
-     */
-    class LabelOutOfFocusEventFilter : public QObject
-
-    
-
-    {
-        Q_OBJECT
-
-    public:
-        explicit LabelOutOfFocusEventFilter(QObject* parent);
-        bool eventFilter(QObject* watched, QEvent* event) override;
-    };
-
-
-    /**
+      /**
      * Qt event filter that intercepts QEvent::FocusOut events for QLabel objects, and
      * resets their `textInteractionFlags' property to get rid of the visible cursor.
      *

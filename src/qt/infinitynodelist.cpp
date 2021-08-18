@@ -40,7 +40,6 @@
 #include "rpc/client.h"
 #include <rpc/request.h>
 #include "rpc/server.h"
-#include <util/ref.h>
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -95,6 +94,10 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
 
     LogPrintf("infinitynodelist: setup UI\n");
     ui->setupUi(this);
+    // ++ Restore dinTable Header State
+    QSettings settings;
+    ui->dinTable->horizontalHeader()->restoreState(settings.value("DinTableHeaderState").toByteArray());
+    // --
 
     // ++ DIN ROI Stats
     m_timer = new QTimer(this);
@@ -155,8 +158,6 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     int columnID = 0;
     QTableWidgetItem *headerItem;
     QSignalMapper* signalMapper = new QSignalMapper (this) ;
-    QSettings settings;
-
     while ( (headerItem = ui->dinTable->horizontalHeaderItem(columnID)) != nullptr )   {
         QAction * actionCheckColumnVisible = new QAction(headerItem->text(), this);
         bool bCheck = settings.value("bShowDINColumn_"+QString::number(columnID), true).toBool();
@@ -243,6 +244,14 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
 
 InfinitynodeList::~InfinitynodeList()
 {
+    // ++ Save dinTable Header State
+    QSettings settings;
+    if (settings.value("fReset").toBool()) {
+    settings.remove("DinTableHeaderState");
+    }else{    
+    settings.setValue("DinTableHeaderState", ui->dinTable->horizontalHeader()->saveState());
+    }
+    // --
     delete ui;
     delete ConnectionManager;
     delete mCheckNodeAction;

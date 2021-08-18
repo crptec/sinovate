@@ -541,22 +541,20 @@ static RPCHelpMan sendwithlockedtoaddress()
                     {"address", RPCArg::Type::STR, RPCArg::Optional::NO, "The Sinovate address to send to."},
                     {"amount", RPCArg::Type::AMOUNT, RPCArg::Optional::NO, "The amount in " + CURRENCY_UNIT + " to send. eg 0.1"},
                     {"nblocklock", RPCArg::Type::NUM, RPCArg::Optional::NO, "The number of blocks (from current height) when the coins will be locked."},
-                    {"comment", RPCArg::Type::STR, RPCArg::Optional::OMITTED_NAMED_ARG, "A comment used to store what the transaction is for.\n"
-                                         "This is not part of the transaction, just kept in your wallet."},
                     {"comment_to", RPCArg::Type::STR, RPCArg::Optional::OMITTED_NAMED_ARG, "A comment to store the name of the person or organization\n"
                                          "to which you're sending the transaction. This is not part of the \n"
                                          "transaction, just kept in your wallet."},
-                    {"subtractfeefromamount", RPCArg::Type::BOOL, "false", "The fee will be deducted from the amount being sent.\n"
-                                         "The recipient will receive less sins than you enter in the amount field."},
+                    {"subtractfeefromamount", RPCArg::Type::BOOL, RPCArg::Default{false}, "The fee will be deducted from the amount being sent.\n"
+                                         "The recipient will receive less bitcoins than you enter in the amount field."},
                 },
                 {
-                    RPCResult{
+                    RPCResult{"if verbose is not set or set to false",
                         RPCResult::Type::STR_HEX, "txid", "The transaction id."
                     },
                 },
                 RPCExamples{
                     "\nSend 5 SIN with lock 720 blocks\n"
-                    + HelpExampleCli("sendwithlockedtoaddress", "\"SV74ZZ937YqRGQjYR5WaAYyyDXqjakFMfA\" 5 720")
+                    + HelpExampleCli("sendwithlockedtoaddress", "\"" + EXAMPLE_ADDRESS[0] + "\" 5 720")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
@@ -1164,15 +1162,12 @@ static UniValue ListReceived(const CWallet& wallet, const UniValue& params, bool
         has_filtered_address = true;
     }
 
-    std::shared_ptr<CWallet> const pwallet = GetWalletForJSONRPCRequest(request);
-    if (!pwallet) return NullUniValue;
-
     // Tally
     std::map<CTxDestination, tallyitem> mapTally;
     for (const std::pair<const uint256, CWalletTx>& pairWtx : wallet.mapWallet) {
         const CWalletTx& wtx = pairWtx.second;
 
-        if (wtx.IsCoinStake() || wtx.IsCoinBase() || !pwallet->chain().checkFinalTx(*wtx.tx)) {
+        if (wtx.IsCoinStake() || wtx.IsCoinBase() || !wallet.chain().checkFinalTx(*wtx.tx)) {
             continue;
         }
 
@@ -4649,7 +4644,10 @@ static RPCHelpMan setstakingstatus()
                     {"status", RPCArg::Type::BOOL, RPCArg::Optional::NO, "The status for staking, either true or false."},
                 },
                 RPCResult{
-                    RPCResult::Type::BOOL, "status", "The applied status"
+                    RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::BOOL, "status", "The applied status"}
+                    },
                 },
                 RPCExamples{
                     HelpExampleCli("setstakingstatus", "true")
@@ -4667,6 +4665,10 @@ static RPCHelpMan setstakingstatus()
     CWallet* const pwallet = wallet.get();
 
     LOCK(pwallet->cs_wallet);
+
+    if (pwallet->m_enabled_staking == request.params[0].get_bool()) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Duplicate call, status already set to ") + (pwallet->m_enabled_staking ? "true" : "false"));
+    }
 
     pwallet->m_enabled_staking = request.params[0].get_bool();
 

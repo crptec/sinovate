@@ -78,6 +78,7 @@ public:
         Generated,
         Minted,
         SendToAddress,
+        Burn,
         SendToOther,
         RecvWithAddress,
         RecvFromOther,

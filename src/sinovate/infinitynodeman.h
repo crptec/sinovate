@@ -130,24 +130,18 @@ public:
     }
     int getCacheHeightInf(){LOCK(cs); return nCachedBlockHeight;};
 
+    //call in infinitynodetip
     void setSyncStatus(bool flag){LOCK(cs); fReachedLastBlock=flag;}
     bool isReachedLastBlock(){LOCK(cs); return fReachedLastBlock;}
 
     std::map<CScript, int> GetFullLastPaidMap() { return mapLastPaid; }
     int64_t getLastScan(){return nLastScanHeight;}
     int64_t getLastScanWithLimit(){return nLastScanHeight/* + INF_MATURED_LIMIT*/;} // We'll need to move this to functions who actually use it and match it with our max reorg depth
-    //build DIN map by scan from nBlockHeight to nLowHeight
-    bool updateLastPaidList(int nBlockHeight, int nLowHeight = 0); /* init this to zero for better compat with regtest/testnet/devnets */
-
-    //build DIN map immediate when connect block
+    //build DIN map immediate when connect block, before validation of block. updateFinalList OR removeNonMaturedList will be called if block is valid
     bool buildNonMaturedListFromBlock(const CBlock& block, CBlockIndex* pindex,
                   CCoinsViewCache& view, const CChainParams& chainparams); //call in validation.cpp
-    bool updateFinalList(CBlockIndex* pindex); // call when block is valid
-    bool removeNonMaturedList(CBlockIndex* pindex); //call when block is invalid or disconnect
-
-    void updateLastPaid();
-    bool updateInfinitynodeList(int fromHeight);//call in init.cppp
-    bool initialInfinitynodeList(int fromHeight);//call in init.cpp
+    bool updateFinalList(CBlockIndex* pindex, CCoinsViewCache& view); // call when block is valid
+    bool removeNonMaturedList(CBlockIndex* pindex); //call when block is invalid or disconnecttip
 
     //LR read back
     bool ExtractLockReward(int nBlockHeight, int depth, std::vector<CLockRewardExtractInfo>& vecLRRet);
@@ -171,11 +165,11 @@ public:
 
     std::string getVectorNodeRankAtHeight(const std::vector<COutPoint>& vOutpoint, int nSinType, int nBlockHeight);
 
-    //this function update lastStm and size from UpdatedBlockTip and map
-    void CheckAndRemove(CConnman& connman);
-    /// This is dummy overload to be used for dumping/loading mncache.dat
-    void CheckAndRemove() {}
+    void CheckAndRemove();
     void UpdatedBlockTip(const CBlockIndex *pindex);
     void UpdateChainActiveHeight(int number);
+
+    // save the state of infinitynode and metadata to disk
+    void FlushStateToDisk();
 };
 #endif // SIN_INFINITYNODEMAN_H

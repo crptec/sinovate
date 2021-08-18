@@ -146,7 +146,7 @@ bool CInfinitynodePeer::AutoCheck(CConnman& connman)
     {
         strNotCapableReason = "Cannot find the Peer's Key in Deterministic node list";
         nState = INFINITYNODE_PEER_NOT_CAPABLE;
-        LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::AutoCheck -- %s\n",  strNotCapableReason);
+        LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::AutoCheck -- %s, MyPeer's key:%s\n",  strNotCapableReason, EncodeBase64(sPubKey));
         return false;
     }
 
@@ -218,12 +218,15 @@ void CInfinitynodePeer::ManageStateInitial(CConnman& connman)
 
     if (Params().NetworkIDString() != CBaseChainParams::REGTEST) {
         bool fConnected = false;
+        CAddress addr = CAddress(service, NODE_NONE);
 
         std::unique_ptr<Sock> sock = CreateSock(service);
-        if (!sock) {
+        if (sock) {
             LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::ManageStateInitial -- Socket created\n");
             fConnected = ConnectSocketDirectly(service, *sock, nConnectTimeout, true);
             LogPrint(BCLog::INFINITYPEER,"CInfinitynodePeer::ManageStateInitial -- Connecttion: %d\n", fConnected);
+        } else {
+            LogPrint(BCLog::INFINITYPEER,"Couldn't open socket for incoming connections at address: %d\n", service.ToString());
         }
 
         if (!fConnected) {

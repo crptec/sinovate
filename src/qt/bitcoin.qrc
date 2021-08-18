@@ -81,6 +81,7 @@
         <file alias="about_white">res/icons/about_white.png</file>
         <file alias="about_black">res/icons/about_black.png</file>
         <file alias="close">res/icons/close.png</file>
+        <file alias="burn">res/icons/burn.png</file>
     </qresource>
     <qresource prefix="/movies">
         <file alias="spinner-000">res/movies/spinner-000.png</file>

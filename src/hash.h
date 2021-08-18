@@ -39,7 +39,7 @@
 #include "crypto/SWIFFTX/SWIFFTX.h"
 #include "crypto/sph_panama.h"
 #include "crypto/lane.h"
-#include "crypto/blake2s.h"
+#include "crypto/blake2.h"
 
 #include <string>
 #include <vector>

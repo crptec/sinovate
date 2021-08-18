@@ -12,7 +12,6 @@ QTreeView{
     alternate-background-color: #1d2843;
     border: none;
     font: normal;
-    qproperty-showGrid: false;
     qproperty-alternatingRowColors: false;
     qproperty-selectionBehavior: SelectRows;
 }
@@ -21,7 +20,6 @@ QTreeView::item{
     padding: 4px;
 }
 QTreeView::item:selected{
-    qproperty-showGrid: false;
     background: #4f9fdd;
     color: #ffffff;
 }

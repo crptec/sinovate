@@ -1619,7 +1619,7 @@ void BitcoinGUI::updateStakingIcon()
     {
       labelStakingIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/staking_off").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
  
-        if (m_node.getNodeCount(CConnman::CONNECTIONS_ALL) == 0)
+        if (m_node.getNodeCount(ConnectionDirection::Both) == 0)
             labelStakingIcon->setToolTip(tr("Not staking because wallet is offline"));
         else if (m_node.isInitialBlockDownload())
             labelStakingIcon->setToolTip(tr("Not staking because wallet is syncing"));

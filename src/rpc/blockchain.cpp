@@ -2306,6 +2306,31 @@ bool FindScriptPubKey(std::atomic<int>& scan_progress, const std::atomic<bool>& 
     scan_progress = 100;
     return true;
 }
+
+//>SIN
+bool FindTimeLockScriptPubkey(CCoinsViewCursor* cursor, int64_t& count, CAmount& nTotalAmount, std::map<COutPoint, Coin>& out_results)
+{
+    count = 0;
+    nTotalAmount = 0;
+    while (cursor->Valid()) {
+        COutPoint key;
+        Coin coin;
+        if (!cursor->GetKey(key) || !cursor->GetValue(coin)) return false;
+        if (coin.nHeight <= Params().GetConsensus().nINActivationHeight) {
+            std::vector<std::vector<unsigned char>> vSolutions;
+            TxoutType whichType = Solver(coin.out.scriptPubKey, vSolutions);
+            if (whichType == TxoutType::TX_CHECKLOCKTIMEVERIFY) {
+                count++;
+                nTotalAmount += coin.out.nValue;
+                out_results.emplace(key, coin);
+            }
+        }
+
+        cursor->Next();
+    }
+    return true;
+}
+//<SIN
 } // namespace
 
 /** RAII object to prevent concurrency issue when scanning the txout set */
@@ -2494,7 +2519,58 @@ static RPCHelpMan scantxoutset()
 },
     };
 }
+//>SIN
+static RPCHelpMan scantxouttimelock()
+{
+    return RPCHelpMan{"scantxouttimelock",
+        "\nScans the unspent transaction output type TimeLock before block 170000 - with interest.\n"
+        "Examples:\n",
+                {},
+                RPCResult{
+                    RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::NUM, "nb_tx", "the hex-encoded filter data"},
+                        {RPCResult::Type::STR_AMOUNT, "amount", "The total amount in " + CURRENCY_UNIT + " of the unspent output type timelock"},
+                        {RPCResult::Type::STR_HEX, "txid", "The transaction id"},
+                        {RPCResult::Type::NUM, "vout", "The vout value"},
+                    }},
+                RPCExamples{
+                    HelpExampleCli("scantxouttimelock", "")
+                },
+        [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
+{
+    UniValue result(UniValue::VOBJ);
 
+    // Scan the unspent transaction output set for inputs
+    UniValue unspents(UniValue::VARR);
+    int64_t count = 0;
+    CAmount nTotalAmount = 0;
+    std::map<COutPoint, Coin> coins;
+    std::unique_ptr<CCoinsViewCursor> pcursor;
+    CBlockIndex* tip;
+    NodeContext& node = EnsureAnyNodeContext(request.context);
+    {
+            ChainstateManager& chainman = EnsureChainman(node);
+            LOCK(cs_main);
+            CChainState& active_chainstate = chainman.ActiveChainstate();
+            active_chainstate.ForceFlushStateToDisk();
+            pcursor = std::unique_ptr<CCoinsViewCursor>(active_chainstate.CoinsDB().Cursor());
+            CHECK_NONFATAL(pcursor);
+            tip = active_chainstate.m_chain.Tip();
+            CHECK_NONFATAL(tip);
+    }
+    bool res = FindTimeLockScriptPubkey(pcursor.get(), count, nTotalAmount, coins);
+    std::map<COutPoint, Coin>::iterator it = coins.begin();
+    const COutPoint& outpoint = it->first;
+    result.pushKV("nb_tx", count);
+    result.pushKV("amount", ValueFromAmount(nTotalAmount));
+    result.pushKV("txid(Example)", outpoint.hash.GetHex());
+    result.pushKV("vout(Example)", (int32_t)outpoint.n);
+    return result;
+},
+    };
+}
+//<SIN
 static RPCHelpMan getblockfilter()
 {
     return RPCHelpMan{"getblockfilter",
@@ -2719,6 +2795,9 @@ static const CRPCCommand commands[] =
 
     { "blockchain",         &preciousblock,                      },
     { "blockchain",         &scantxoutset,                       },
+//>SIN
+    { "blockchain",         &scantxouttimelock,                  },
+//<SIN
     { "blockchain",         &getblockfilter,                     },
 
     /* Not shown in help */

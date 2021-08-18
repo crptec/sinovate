@@ -61,20 +61,6 @@ CTxOut::CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn)
     scriptPubKey = scriptPubKeyIn;
 }
 
-bool CTxOut::GetKeyIDFromUTXO(CKeyID& keyIDRet) const
-{
-    std::vector<std::vector<unsigned char>> vSolutions2D;
-    if (scriptPubKey.empty()) {
-        return false;
-    }
-    TxoutType whichType = Solver(scriptPubKey, vSolutions2D);
-    if (whichType == TxoutType::PUBKEYHASH) {
-        keyIDRet = CKeyID(uint160(vSolutions2D[0]));
-        return true;
-    }
-    return false;
-}
-
 std::string CTxOut::ToString() const
 {
     return strprintf("CTxOut(nValue=%d.%08d, scriptPubKey=%s)", nValue / COIN, nValue % COIN, HexStr(scriptPubKey).substr(0, 30));

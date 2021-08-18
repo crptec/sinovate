@@ -1158,27 +1158,26 @@ bool AppInitInterfaces(NodeContext& node)
 void ThreadCheckInfinityNode(CConnman& connman)
 {
     unsigned int nTickDIN = 0;
-    if(fInfinityNode) {
+    if (fInfinityNode) {
         infinitynodePeer.ManageState(connman);
     }
     while (true)
     {
         std::this_thread::sleep_for(1000ms);
         nTickDIN++;
-        if(nTickDIN % 60 == 0) {
-            if(fInfinityNode && infinitynodePeer.nState != INFINITYNODE_PEER_STARTED)
+        if (nTickDIN % 60 == 0) {
+            if (fInfinityNode && infinitynodePeer.nState != INFINITYNODE_PEER_STARTED)
             {
                 infinitynodePeer.ManageState(connman);
             }
             //check RegisterInfo and sendTx
             bool checkRegister = infWalletAccess.RegisterLROnchain();
         }
-        if(nTickDIN % (60 * 5) == 0) {
-            if(infnodeman.isReachedLastBlock()){
-                ENTER_CRITICAL_SECTION(cs_main);
-                //call buildInfinitynodeList and deterministicRewardStatement(nSINtype)
-                infnodeman.CheckAndRemove(connman);
-                LEAVE_CRITICAL_SECTION(cs_main);
+        if (nTickDIN % (60 * 5) == 0) {
+            if (infnodeman.isReachedLastBlock()){
+                //ENTER_CRITICAL_SECTION(cs_main);
+                //infnodeman.CheckAndRemove(connman);
+                //LEAVE_CRITICAL_SECTION(cs_main);
             }
         }
     }
@@ -1423,42 +1422,53 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     }
 #endif
 
+    fReindex = args.GetBoolArg("-reindex", false);
+    bool fReindexChainState = args.GetBoolArg("-reindex-chainstate", false);
+
     // ********************************************************* Step 7: load block chain
 //>SIN: try load SIN cache memory before connectblock, because we need these informations for validation of block
     uiInterface.InitMessage(_("Loading on-chain Infinitynode data...").translated);
     boost::filesystem::path pathDB = GetDataDir();
     std::string strDBName;
 
-    strDBName = "infinitynode.dat";
-    CFlatDB<CInfinitynodeMan> flatdb1(strDBName, "magicInfinityNodeCache");
-    if(!flatdb1.Load(infnodeman)) {
-        LogPrintf("Failed to load Infinitynode list from %s.\n", (pathDB / strDBName).string());
-        InitError(strprintf(_("Failed to load Infinitynode list from %s."), (pathDB / strDBName).string()));
-        return false;
-    }
+    if (!fReindex) {
+        strDBName = "infinitynode.dat";
+        CFlatDB<CInfinitynodeMan> flatdb1(strDBName, "magicInfinityNodeCache");
+        if (!flatdb1.Load(infnodeman)) {
+            LogPrintf("Failed to load Infinitynode list from %s.\n", (pathDB / strDBName).string());
+            InitError(strprintf(_("Failed to load Infinitynode list from %s."), (pathDB / strDBName).string()));
+            return false;
+        }
 
-    strDBName = "infinitynodersv.dat";
-    CFlatDB<CInfinitynodersv> flatdb2(strDBName, "magicInfinityRSV");
-    if(!flatdb2.Load(infnodersv)) {
-        LogPrintf("Failed to load RSV vote cache from %s.\n", (pathDB / strDBName).string());
-        InitError(strprintf(_("Failed to load RSV vote cache from %s."), (pathDB / strDBName).string()));
-        return false; // non mandatory
-    }
+        strDBName = "infinitynodersv.dat";
+        CFlatDB<CInfinitynodersv> flatdb2(strDBName, "magicInfinityRSV");
+        if (!flatdb2.Load(infnodersv)) {
+            LogPrintf("Failed to load RSV vote cache from %s.\n", (pathDB / strDBName).string());
+            InitError(strprintf(_("Failed to load RSV vote cache from %s."), (pathDB / strDBName).string()));
+            return false; // non mandatory
+        }
 
-    strDBName = "infinitynodemeta.dat";
-    CFlatDB<CInfinitynodeMeta> flatdb3(strDBName, "magicInfinityMeta");
-    if(!flatdb3.Load(infnodemeta)) {
-        LogPrintf("Failed to load Infinitynode Metatdata cache from %s.\n", (pathDB / strDBName).string());
-        InitError(strprintf(_("Failed to load Infinitynode Metatdata cache from %s"), (pathDB / strDBName).string()));
-        return false;
-    }
+        strDBName = "infinitynodemeta.dat";
+        CFlatDB<CInfinitynodeMeta> flatdb3(strDBName, "magicInfinityMeta");
+        if (!flatdb3.Load(infnodemeta)) {
+            LogPrintf("Failed to load Infinitynode Metatdata cache from %s.\n", (pathDB / strDBName).string());
+            InitError(strprintf(_("Failed to load Infinitynode Metatdata cache from %s"), (pathDB / strDBName).string()));
+            return false;
+        }
 
-    strDBName = "infinitynodelockinfo.dat";
-    CFlatDB<CInfinitynodeLockInfo> flatdb4(strDBName, "magicInfinityLockInfo");
-    if(!flatdb4.Load(infnodelrinfo)) {
-        LogPrintf("Failed to load Infinitynode LockReward cache from %s.\n", (pathDB / strDBName).string());
-        InitError(strprintf(_("Failed to load Infinitynode LockReward cache from %s"), (pathDB / strDBName).string()));
-        return false;
+        strDBName = "infinitynodelockinfo.dat";
+        CFlatDB<CInfinitynodeLockInfo> flatdb4(strDBName, "magicInfinityLockInfo");
+        if (!flatdb4.Load(infnodelrinfo)) {
+            LogPrintf("Failed to load Infinitynode LockReward cache from %s.\n", (pathDB / strDBName).string());
+            InitError(strprintf(_("Failed to load Infinitynode LockReward cache from %s"), (pathDB / strDBName).string()));
+            return false;
+        }
+    } else {
+         LogPrintf("Arg -reindex detected. Clear all SINOVATE State!\n");
+         infnodeman.Clear();
+         infnodemeta.Clear();
+         infnodelrinfo.Clear();
+         infnodersv.Clear();
     }
 
     LogPrintf("INIT SINOVATE INFO:\n");
@@ -1472,8 +1482,6 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
         LogPrintf("false to Register Validation Interface for DIN system.\n");
     }
 //<SIN
-    fReindex = args.GetBoolArg("-reindex", false);
-    bool fReindexChainState = args.GetBoolArg("-reindex-chainstate", false);
 
     // cache size calculations
     int64_t nTotalCache = (args.GetArg("-dbcache", nDefaultDbCache) << 20);
