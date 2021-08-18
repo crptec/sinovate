@@ -16,6 +16,7 @@
 #include <uint256.h>
 #include <util/check.h>
 #include <util/system.h>
+#include <util/translation.h>
 #include <util/ui_change_type.h>
 #include <wallet/context.h>
 #include <wallet/feebumper.h>
@@ -130,7 +131,7 @@ public:
     bool getNewDestination(const OutputType type, const std::string label, CTxDestination& dest) override
     {
         LOCK(m_wallet->cs_wallet);
-        std::string error;
+        bilingual_str error;
         return m_wallet->GetNewDestination(type, label, dest, error);
     }
     bool getPubKey(const CScript& script, const CKeyID& address, CPubKey& pub_key) override
@@ -349,9 +350,9 @@ public:
     TransactionError fillPSBT(int sighash_type,
         bool sign,
         bool bip32derivs,
+        size_t* n_signed,
         PartiallySignedTransaction& psbtx,
-        bool& complete,
-        size_t* n_signed) override
+        bool& complete) override
     {
         return m_wallet->FillPSBT(psbtx, complete, sighash_type, sign, bip32derivs, n_signed);
     }
@@ -475,13 +476,13 @@ public:
     std::unique_ptr<Handler> handleAddressBookChanged(AddressBookChangedFn fn) override
     {
         return MakeHandler(m_wallet->NotifyAddressBookChanged.connect(
-            [fn](CWallet*, const CTxDestination& address, const std::string& label, bool is_mine,
-                const std::string& purpose, ChangeType status) { fn(address, label, is_mine, purpose, status); }));
+            [fn](const CTxDestination& address, const std::string& label, bool is_mine,
+                 const std::string& purpose, ChangeType status) { fn(address, label, is_mine, purpose, status); }));
     }
     std::unique_ptr<Handler> handleTransactionChanged(TransactionChangedFn fn) override
     {
         return MakeHandler(m_wallet->NotifyTransactionChanged.connect(
-            [fn](CWallet*, const uint256& txid, ChangeType status) { fn(txid, status); }));
+            [fn](const uint256& txid, ChangeType status) { fn(txid, status); }));
     }
     std::unique_ptr<Handler> handleWatchOnlyChanged(WatchOnlyChangedFn fn) override
     {

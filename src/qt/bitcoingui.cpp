@@ -110,6 +110,9 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
             connect(activity, &CreateWalletActivity::finished, activity, &QObject::deleteLater);
             activity->create();
         });
+        connect(walletFrame, &WalletFrame::message, [this](const QString& title, const QString& message, unsigned int style) {
+            this->message(title, message, style);
+        });
         setCentralWidget(walletFrame);
     } else
 #endif // ENABLE_WALLET
@@ -211,11 +214,6 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
 
     connect(labelBlocksIcon, &GUIUtil::ClickableLabel::clicked, this, &BitcoinGUI::showModalOverlay);
     connect(progressBar, &GUIUtil::ClickableProgressBar::clicked, this, &BitcoinGUI::showModalOverlay);
-#ifdef ENABLE_WALLET
-    if(enableWallet) {
-        connect(walletFrame, &WalletFrame::requestedSyncWarningInfo, this, &BitcoinGUI::showModalOverlay);
-    }
-#endif
 
 #ifdef Q_OS_MAC
     m_app_nap_inhibitor = new CAppNapInhibitor;
@@ -687,10 +685,8 @@ void BitcoinGUI::addWallet(WalletModel* walletModel)
         m_wallet_selector_label_action->setVisible(true);
         m_wallet_selector_action->setVisible(true);
     }
-    const QString display_name = walletModel->getDisplayName();
-    m_wallet_selector->addItem(display_name, QVariant::fromValue(walletModel));
 
-    connect(wallet_view, &WalletView::outOfSyncWarningClicked, walletFrame, &WalletFrame::outOfSyncWarningClicked);
+    connect(wallet_view, &WalletView::outOfSyncWarningClicked, this, &BitcoinGUI::showModalOverlay);
     connect(wallet_view, &WalletView::transactionClicked, this, &BitcoinGUI::gotoHistoryPage);
     connect(wallet_view, &WalletView::coinsSent, this, &BitcoinGUI::gotoHistoryPage);
     connect(wallet_view, &WalletView::message, [this](const QString& title, const QString& message, unsigned int style) {
@@ -701,6 +697,8 @@ void BitcoinGUI::addWallet(WalletModel* walletModel)
     connect(wallet_view, &WalletView::hdEnabledStatusChanged, this, &BitcoinGUI::updateWalletStatus);
     connect(this, &BitcoinGUI::setPrivacy, wallet_view, &WalletView::setPrivacy);
     wallet_view->setPrivacy(isPrivacyModeActivated());
+    const QString display_name = walletModel->getDisplayName();
+    m_wallet_selector->addItem(display_name, QVariant::fromValue(walletModel));
 }
 
 void BitcoinGUI::removeWallet(WalletModel* walletModel)
@@ -1178,14 +1176,12 @@ void BitcoinGUI::message(const QString& title, QString message, unsigned int sty
 
 void BitcoinGUI::changeEvent(QEvent *e)
 {
-#ifdef Q_OS_MACOS
     if (e->type() == QEvent::PaletteChange) {
         overviewAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/overview")));
         sendCoinsAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/send")));
         receiveCoinsAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/receiving_addresses")));
         historyAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/history")));
     }
-#endif
 
     QMainWindow::changeEvent(e);
 
@@ -1516,14 +1512,14 @@ void UnitDisplayStatusBarControl::mousePressEvent(QMouseEvent *event)
 
 void UnitDisplayStatusBarControl::changeEvent(QEvent* e)
 {
-#ifdef Q_OS_MACOS
     if (e->type() == QEvent::PaletteChange) {
         QString style = QString("QLabel { color : %1 }").arg(m_platform_style->SingleColor().name());
         if (style != styleSheet()) {
             setStyleSheet(style);
         }
     }
-#endif
+
+    QLabel::changeEvent(e);
 }
 
 /** Creates context menu, its actions, and wires up all the relevant signals for mouse events. */

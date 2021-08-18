@@ -47,10 +47,8 @@ public:
     QSize sizeHint() const override { return m_size_hint; }
 
 Q_SIGNALS:
-    /** Notify that the user has requested more information about the out-of-sync warning */
-    void requestedSyncWarningInfo();
-
     void createWalletButtonClicked();
+    void message(const QString& title, const QString& message, unsigned int style);
 
 private:
     QStackedWidget *walletStack;
@@ -98,8 +96,6 @@ public Q_SLOTS:
     void usedSendingAddresses();
     /** Show used receiving addresses */
     void usedReceivingAddresses();
-    /** Pass on signal over requested out-of-sync-warning information */
-    void outOfSyncWarningClicked();
 };
 
 #endif // BITCOIN_QT_WALLETFRAME_H

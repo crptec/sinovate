@@ -39,8 +39,7 @@ enum
  *  All flags are intended to be soft forks: the set of acceptable scripts under
  *  flags (A | B) is a subset of the acceptable scripts under flag (A).
  */
-enum
-{
+enum : uint32_t {
     SCRIPT_VERIFY_NONE      = 0,
 
     // Evaluate P2SH subscripts (BIP16).
@@ -140,6 +139,10 @@ enum
 
     // Making unknown public key versions (in BIP 342 scripts) non-standard
     SCRIPT_VERIFY_DISCOURAGE_UPGRADABLE_PUBKEYTYPE = (1U << 20),
+
+    // Constants to point to the highest flag in use. Add new flags above this line.
+    //
+    SCRIPT_VERIFY_END_MARKER
 };
 
 bool CheckSignatureEncoding(const std::vector<unsigned char> &vchSig, unsigned int flags, ScriptError* serror);
@@ -168,7 +171,7 @@ struct PrecomputedTransactionData
     PrecomputedTransactionData() = default;
 
     template <class T>
-    void Init(const T& tx, std::vector<CTxOut>&& spent_outputs);
+    void Init(const T& tx, std::vector<CTxOut>&& spent_outputs, bool force = false);
 
     template <class T>
     explicit PrecomputedTransactionData(const T& tx);
@@ -260,6 +263,9 @@ enum class MissingDataBehavior
     FAIL,         //!< Just act as if the signature was invalid
 };
 
+template<typename T>
+bool SignatureHashSchnorr(uint256& hash_out, const ScriptExecutionData& execdata, const T& tx_to, uint32_t in_pos, uint8_t hash_type, SigVersion sigversion, const PrecomputedTransactionData& cache, MissingDataBehavior mdb);
+
 template <class T>
 class GenericTransactionSignatureChecker : public BaseSignatureChecker
 {
@@ -313,6 +319,12 @@ public:
         return m_checker.CheckSequence(nSequence);
     }
 };
+
+/** Compute the BIP341 tapleaf hash from leaf version & script. */
+uint256 ComputeTapleafHash(uint8_t leaf_version, const CScript& script);
+/** Compute the BIP341 taproot script tree Merkle root from control block and leaf hash.
+ *  Requires control block to have valid length (33 + k*32, with k in {0,1,..,128}). */
+uint256 ComputeTaprootMerkleRoot(Span<const unsigned char> control, const uint256& tapleaf_hash);
 
 bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& script, unsigned int flags, const BaseSignatureChecker& checker, SigVersion sigversion, ScriptExecutionData& execdata, ScriptError* error = nullptr);
 bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& script, unsigned int flags, const BaseSignatureChecker& checker, SigVersion sigversion, ScriptError* error = nullptr);

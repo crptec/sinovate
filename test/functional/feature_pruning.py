@@ -11,8 +11,12 @@ This test takes 30 mins or more (up to 2 hours)
 import os
 
 from test_framework.blocktools import create_coinbase
-from test_framework.messages import CBlock, ToHex
-from test_framework.script import CScript, OP_RETURN, OP_NOP
+from test_framework.messages import CBlock
+from test_framework.script import (
+    CScript,
+    OP_NOP,
+    OP_RETURN,
+)
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.util import (
     assert_equal,
@@ -62,7 +66,7 @@ def mine_large_blocks(node, n):
         block.solve()
 
         # Submit to the node
-        node.submitblock(ToHex(block))
+        node.submitblock(block.serialize().hex())
 
         previousblockhash = block.sha256
         height += 1
@@ -122,6 +126,24 @@ class PruneTest(BitcoinTestFramework):
         mine_large_blocks(self.nodes[0], 645)
 
         self.sync_blocks(self.nodes[0:5])
+
+    def test_invalid_command_line_options(self):
+        self.nodes[0].assert_start_raises_init_error(
+            expected_msg='Error: Prune cannot be configured with a negative value.',
+            extra_args=['-prune=-1'],
+        )
+        self.nodes[0].assert_start_raises_init_error(
+            expected_msg='Error: Prune configured below the minimum of 550 MiB.  Please use a higher number.',
+            extra_args=['-prune=549'],
+        )
+        self.nodes[0].assert_start_raises_init_error(
+            expected_msg='Error: Prune mode is incompatible with -txindex.',
+            extra_args=['-prune=550', '-txindex'],
+        )
+        self.nodes[0].assert_start_raises_init_error(
+            expected_msg='Error: Prune mode is incompatible with -coinstatsindex.',
+            extra_args=['-prune=550', '-coinstatsindex'],
+        )
 
     def test_height_min(self):
         assert os.path.isfile(os.path.join(self.prunedir, "blk00000.dat")), "blk00000.dat is missing, pruning too early"
@@ -448,6 +470,9 @@ class PruneTest(BitcoinTestFramework):
 
         self.log.info("Test wallet re-scan")
         self.wallet_test()
+
+        self.log.info("Test invalid pruning command line options")
+        self.test_invalid_command_line_options()
 
         self.log.info("Done")
 
