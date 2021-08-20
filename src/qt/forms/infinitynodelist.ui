@@ -58,7 +58,7 @@ width: 200px;
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
-         <string>Infinity Nodes</string>
+         <string>InfinityNodes</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
