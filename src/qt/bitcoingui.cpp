@@ -332,7 +332,7 @@ void BitcoinGUI::createActions()
     // SIN
     QSettings settings;
     if (settings.value("fShowInfinitynodeTab").toBool()) {
-        infinitynodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::NavBar), tr(" &Infinity Nodes"), this);
+        infinitynodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::NavBar), tr(" &InfinityNodes"), this);
         infinitynodeAction->setStatusTip(tr("Browse Infinitynodes"));
         infinitynodeAction->setToolTip(infinitynodeAction->statusTip());
         infinitynodeAction->setCheckable(true);
