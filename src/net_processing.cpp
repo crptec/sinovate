@@ -2402,6 +2402,34 @@ void PeerManagerImpl::ProcessBlock(CNode& pfrom, const std::shared_ptr<const CBl
     m_chainman.ProcessNewBlock(m_chainparams, pblock, fForceProcessing, &fNewBlock);
     if (fNewBlock) {
         pfrom.nLastBlockTime = GetTime();
+
+        const uint256 hash(pblock->GetHash());
+
+        std::deque<uint256> queue;
+        queue.push_back(hash);
+        while (!queue.empty()) {
+            uint256 head = queue.front();
+            queue.pop_front();
+            auto it = mapBlocksUnknownParent.find(head);
+            if (it != std::end(mapBlocksUnknownParent))
+            {
+                std::shared_ptr<CBlock> pblockrecursive = std::make_shared<CBlock>();
+                if (ReadBlockFromDisk(*pblockrecursive, it->second, m_chainparams.GetConsensus()))
+                {
+                    LogPrint(BCLog::NET, "%s: Processing out of order child %s of %s\n", __func__, pblockrecursive->GetHash().ToString(),
+                            head.ToString());
+                    auto recursiveHash = pblockrecursive->GetHash();
+                    bool forceProcessing = false;
+                    {
+                        LOCK(cs_main);
+                        mapBlocksUnknownParent.erase(it);
+                        forceProcessing = MarkBlockAsReceived(recursiveHash);
+                    }
+                    m_chainman.ProcessNewBlock(m_chainparams, pblockrecursive, forceProcessing, &fNewBlock);
+                    queue.push_back(recursiveHash);
+                }
+            }
+        }
     } else {
         LOCK(cs_main);
         mapBlockSource.erase(pblock->GetHash());
