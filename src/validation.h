@@ -107,6 +107,9 @@ static const unsigned int DEFAULT_CHECKLEVEL = 3;
 // Setting the target to >= 550 MiB will make it likely we can respect the target.
 static const uint64_t MIN_DISK_SPACE_FOR_BLOCK_FILES = 550 * 1024 * 1024;
 
+// Map of disk positions for blocks with unknown parent (only used for reindex)
+static std::multimap<uint256, FlatFilePos> mapBlocksUnknownParent;
+
 /** Current sync state passed to tip changed callbacks. */
 enum class SynchronizationState {
     INIT_REINDEX,

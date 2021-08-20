@@ -332,7 +332,7 @@ void BitcoinGUI::createActions()
     // SIN
     QSettings settings;
     if (settings.value("fShowInfinitynodeTab").toBool()) {
-        infinitynodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::NavBar), tr(" &Infinity Nodes"), this);
+        infinitynodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::NavBar), tr(" &InfinityNodes"), this);
         infinitynodeAction->setStatusTip(tr("Browse Infinitynodes"));
         infinitynodeAction->setToolTip(infinitynodeAction->statusTip());
         infinitynodeAction->setCheckable(true);
@@ -688,7 +688,7 @@ void BitcoinGUI::createToolBars()
 #endif
                     
 		QLabel* labelVersion = new QLabel();
-        labelVersion->setText(QString(tr("CONSTELLATION\nv%1\n")).arg(QString::fromStdString(FormatVersionFriendly())));
+        labelVersion->setText(QString(tr("BETELGEUSE\nv%1\n")).arg(QString::fromStdString(FormatVersionFriendly())));
         labelVersion->setStyleSheet("color:" + colcode + "; margin-bottom: 2px; font-weight : bold;");
         labelVersion->setAlignment(Qt::AlignCenter);
         

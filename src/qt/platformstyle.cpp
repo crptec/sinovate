@@ -106,6 +106,8 @@ PlatformStyle::PlatformStyle(const QString &_name, bool _imagesOnButtons, bool _
     tableColorInout = GetStringStyleValue("platformstyle/table-color-inout", "#40bb00");
     tableColorOutput = GetStringStyleValue("platformstyle/table-color-output", "#40bb00");
     tableColorError = GetStringStyleValue("platformstyle/table-color-error", "#d02e49");
+    tableColorBurn = GetStringStyleValue("platformstyle/table-color-burn", "#e25822");
+    
 
     // Determine multi states icon colors
     multiStatesIconColor1 = GetStringStyleValue("platformstyle/multi-states-icon-color1", "#ffffff");
@@ -227,6 +229,10 @@ void PlatformStyle::TableColor(PlatformStyle::TableColorType type, QColor &color
     case Error:
         opacity = 0.8;
         color = tableColorError;
+        break;
+    case Burn:
+        opacity = 0.8;
+        color = tableColorBurn;
         break;
     default:
         opacity = 1;
