@@ -854,7 +854,7 @@ font-size: 20px;
 </string>
               </property>
               <property name="text">
-               <string>INFINITY NODES STATS</string>
+               <string>INFINITYNODES STATS</string>
               </property>
              </widget>
             </item>
