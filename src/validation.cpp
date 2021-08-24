@@ -2053,6 +2053,11 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-tooearly");
     }
 
+    if (block.IsProofOfStake() && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev)) {
+        LogPrintf("ERROR: ConnectBlock(): PoS isn't valid\n");
+        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-proof");
+    }
+
     bool fScriptChecks = true;
     if (!hashAssumeValid.IsNull()) {
         // We've been configured with the hash of a block which has been externally verified to have a valid history.
@@ -3813,22 +3818,24 @@ static bool ContextualCheckBlock(const CBlock& block, BlockValidationState& stat
     bool fTestNet = Params().NetworkIDString() == CBaseChainParams::TESTNET;
     bool IsPoS = block.IsProofOfStake();
 
-    if (IsPoS && !fRegTest) {
-        // Check for PoS timestamp against prev
-        if (!(fTestNet && nHeight < 2000)) {
-            if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
-                return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
+    if (pindexPrev) {
+        if (IsPoS && !fRegTest) {
+            // Check for PoS timestamp against prev
+            if (!(fTestNet && nHeight < 2000)) {
+                if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
+                    return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
+                }
             }
+            // Check for PoS timestamp
+            if (block.GetBlockTime() > pindexPrev->MaxFutureBlockTime()) {
+                return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new-pos", "proof-of-stake block timestamp too far in the future");
+            }
+        } else {
+           // Check proof of work
+           if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams, false)) {
+               return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pow", "block pow doesn't meet target");
+           } 
         }
-        // Check for PoS timestamp
-        if (block.GetBlockTime() > pindexPrev->MaxFutureBlockTime()) {
-            return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new-pos", "proof-of-stake block timestamp too far in the future");
-        }
-    } else {
-       // Check proof of work
-       if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams, false)) {
-           return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-block-pow", "block pow doesn't meet target");
-       } 
     }
 
     // Start enforcing BIP113 (Median Time Past).
@@ -4104,16 +4111,6 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
         ReceivedBlockTransactions(block, pindex, blockPos, chainparams.GetConsensus());
     } catch (const std::runtime_error& e) {
         return AbortNode(state, std::string("System error: ") + e.what());
-    }
-
-    //run PoS checks after txes have been cached
-    if ((IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev))) {
-        if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
-            pindex->nStatus |= BLOCK_FAILED_VALID;
-            setDirtyBlockIndex.insert(pindex);
-        }
-        return error("%s: %s", __func__, state.ToString());
-
     }
 
     FlushStateToDisk(chainparams, state, FlushStateMode::NONE);
