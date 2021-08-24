@@ -3739,7 +3739,6 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     const Consensus::Params& consensusParams = params.GetConsensus();
     bool IsPoS = false;
     bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
-    bool fTestNet = Params().NetworkIDString() == CBaseChainParams::TESTNET;
 
 //>SIN
     // Check reorg bounds
@@ -3780,11 +3779,9 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
         return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new", "block timestamp too far in the future");
 
     if (IsPoS && !fRegTest) {
-        // Check for PoS timestamp against prev
-        if (!(fTestNet && nHeight < 2000)) {
-            if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
-                return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
-            }
+    // Check for PoS timestamp against prev
+        if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
+            return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
         }
         // Check for PoS timestamp
         if (block.GetBlockTime() > pindexPrev->MaxFutureBlockTime()) {
@@ -3815,16 +3812,13 @@ static bool ContextualCheckBlock(const CBlock& block, BlockValidationState& stat
 
     // Double check timestamps
     bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
-    bool fTestNet = Params().NetworkIDString() == CBaseChainParams::TESTNET;
     bool IsPoS = block.IsProofOfStake();
 
     if (pindexPrev) {
         if (IsPoS && !fRegTest) {
             // Check for PoS timestamp against prev
-            if (!(fTestNet && nHeight < 2000)) {
-                if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
-                    return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
-                }
+            if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
+                return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
             }
             // Check for PoS timestamp
             if (block.GetBlockTime() > pindexPrev->MaxFutureBlockTime()) {
