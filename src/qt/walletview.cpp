@@ -73,15 +73,10 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     addWidget(overviewPage);
     addWidget(transactionsPage);
+
+    infinitynodeListPage = new InfinitynodeList(platformStyle);
+    addWidget(infinitynodeListPage);
    
-    // SIN
-
-    QSettings settings;
-    if (settings.value("fShowInfinitynodeTab").toBool()) {
-        infinitynodeListPage = new InfinitynodeList(platformStyle);
-        addWidget(infinitynodeListPage);
-    }
-
      //StatsPage
     statsWindow = new StatsPage(platformStyle);
     addWidget(statsWindow);
@@ -233,10 +228,7 @@ void WalletView::gotoHistoryPage()
 // SIN
 void WalletView::gotoInfinitynodePage()
 {
-    QSettings settings;
-    if (settings.value("fShowInfinitynodeTab").toBool()) {
-        setCurrentWidget(infinitynodeListPage);
-    }
+    setCurrentWidget(infinitynodeListPage);
 }
 
 // StatsPage
