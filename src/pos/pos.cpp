@@ -76,7 +76,6 @@ bool CStakeKernel::CheckKernelHash() const
 bool LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::unique_ptr<CStakeInput>& stake)
 {
     // If previous index is not provided, look for it in the blockmap
-    LOCK(cs_main);
     if (!pindexPrev) {
         pindexPrev = g_chainman.m_blockman.LookupBlockIndex(block.hashPrevBlock);
         if (!pindexPrev) {

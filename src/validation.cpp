@@ -2053,6 +2053,11 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-tooearly");
     }
 
+    if (block.IsProofOfStake() && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev)) {
+        LogPrintf("ERROR: ConnectBlock(): PoS isn't valid\n");
+        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-proof");
+    }
+
     bool fScriptChecks = true;
     if (!hashAssumeValid.IsNull()) {
         // We've been configured with the hash of a block which has been externally verified to have a valid history.
@@ -3412,6 +3417,14 @@ void CChainState::ReceivedBlockTransactions(const CBlock& block, CBlockIndex* pi
     if (IsWitnessEnabled(pindexNew->pprev, consensusParams)) {
         pindexNew->nStatus |= BLOCK_OPT_WITNESS;
     }
+    // proof-of-stake: set modifier and set flags
+    if (block.IsProofOfStake() && pindexNew->nHeight > consensusParams.nStartPoSHeight) {
+        LogPrintf("Setting stake modifier %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
+        pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash); 
+    }
+    if (block.IsProofOfStake()) {
+        pindexNew->SetProofOfStake();
+    }
     pindexNew->RaiseValidity(BLOCK_VALID_TRANSACTIONS);
     setDirtyBlockIndex.insert(pindexNew);
 
@@ -3776,26 +3789,6 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     return true;
 }
 
-/**
- * SIN: Fills pindex of block with stakemod and PoS flags
- */
-static bool FillPoS(const CBlock& block, const Consensus::Params& consensusParams, const CBlockIndex* pindexNew)
-{
-    // proof-of-stake: set modifier and set flags
-    CBlockIndex* ref = const_cast <CBlockIndex*>(pindexNew);
-    if (block.IsProofOfStake() && pindexNew->nHeight > consensusParams.nStartPoSHeight) {
-        LogPrintf("Setting stake modifier from tx %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
-        ref->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash);
-        LogPrintf("Stake modifier %s for block %s\n", ref->GetStakeModifier().GetHex(), block.GetHash().ToString());
-        LogPrintf("Stake modifier prev %s for block %s\n", ref->pprev->GetStakeModifier().GetHex(), block.GetHash().ToString());
-    }
-    if (block.IsProofOfStake()) {
-        ref->SetProofOfStake();
-    }
-
-    return true;
-}
-
 /** NOTE: This function is not currently invoked by ConnectBlock(), so we
  *  should consider upgrade issues if we change which consensus rules are
  *  enforced in this function (eg by adding a new consensus rule). See comment
@@ -4064,6 +4057,9 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
         if (pindex->nChainWork < nMinimumChainWork) return true;
     }
 
+    const bool IsProofOfStake = block.IsProofOfStake();
+
+    // only run PoS checks if we never saw this block
     if (!CheckBlock(block, state, chainparams.GetConsensus()) ||
         !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev)) {
         if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
@@ -4104,9 +4100,8 @@ bool ChainstateManager::ProcessNewBlock(const CChainParams& chainparams, const s
     AssertLockNotHeld(cs_main);
     assert(std::addressof(::ChainstateActive()) == std::addressof(ActiveChainstate()));
 
-    CBlockIndex *pindex = nullptr;
-
     {
+        CBlockIndex *pindex = nullptr;
         if (fNewBlock) *fNewBlock = false;
         BlockValidationState state;
 
@@ -4136,15 +4131,6 @@ bool ChainstateManager::ProcessNewBlock(const CChainParams& chainparams, const s
     BlockValidationState state; // Only used to report errors, not invalidity - ignore it
     if (!ActiveChainstate().ActivateBestChain(state, chainparams, pblock))
         return error("%s: ActivateBestChain failed (%s)", __func__, state.ToString());
-
-    if (pblock->IsProofOfStake()) {
-        LOCK(cs_main);
-        const CBlock& refblock = *pblock;
-        if (!FillPoS(refblock, chainparams.GetConsensus(), pindex) || !CheckProofOfStake(refblock, state, chainparams.GetConsensus(), pindex->pprev)) {
-            LogPrintf("ERROR: ConnectBlock(): PoS isn't valid\n");
-            return error("%s: PoS failed (%s)", __func__, state.ToString());
-        }
-    }
 
     return true;
 }
