@@ -134,7 +134,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                     // Sent to Bitcoin Address
                     sub.type = TransactionRecord::SendToAddress;
                     sub.address = EncodeDestination(wtx.txout_address[nOut]);
-                    if (sub.address == Params().GetConsensus().cBurnAddress || sub.address == Params().GetConsensus().cMetadataAddress)
+                    if (sub.address == Params().GetConsensus().cBurnAddress || sub.address == Params().GetConsensus().cMetadataAddress
+                        || sub.address == Params().GetConsensus().cNotifyAddress || sub.address == Params().GetConsensus().cLockRewardAddress
+                        || sub.address == Params().GetConsensus().cGovernanceAddress
+                    )
                     {
                         sub.type = TransactionRecord::Burn;
                     }
