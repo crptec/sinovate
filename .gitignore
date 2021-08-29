@@ -153,3 +153,5 @@ dist/
 /guix-build-*
 
 src/bitcoin-util
+
+configure~

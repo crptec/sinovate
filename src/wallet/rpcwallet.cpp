@@ -13,6 +13,7 @@
 #include <policy/fees.h>
 #include <policy/policy.h>
 #include <policy/rbf.h>
+#include <pos/posminer.h>
 #include <rpc/rawtransaction_util.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
@@ -4639,40 +4640,82 @@ static RPCHelpMan upgradewallet()
 static RPCHelpMan setstakingstatus()
 {
     return RPCHelpMan{"setstakingstatus",
-                "\nSets staking status to either true or false\n",
+                "\nSets staking status to either true or false. If no wallet is specified, staking is enabled for the wallet which executed the RPC call.\n"
+                "If a wallet is specified, staking is enabled for that wallet and that wallet only. Automatically disables staking for the other wallet(s).",
                 {
                     {"status", RPCArg::Type::BOOL, RPCArg::Optional::NO, "The status for staking, either true or false."},
+                    {"wallet", RPCArg::Type::STR, RPCArg::Optional::OMITTED_NAMED_ARG, "The name of the wallet to enable staking for."},
                 },
-                RPCResult{
-                    RPCResult::Type::OBJ, "", "",
-                    {
-                        {RPCResult::Type::BOOL, "status", "The applied status"}
-                    },
-                },
-                RPCExamples{
-                    HelpExampleCli("setstakingstatus", "true")
+        RPCResult{
+            RPCResult::Type::OBJ, "", "",
+            {
+                {RPCResult::Type::STR, "wallet", "Wallet chosen"},
+                {RPCResult::Type::BOOL, "status", "Applied status"}
+            },
+        },
+        RPCExamples{
+            HelpExampleCli("setstakingstatus", "true")
+            + HelpExampleCli("setstakingstatus", "true \"mywallet\"")
             + HelpExampleRpc("setstakingstatus", "true")
-                },
+        },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
-    RPCTypeCheck(request.params, {
-        UniValue::VBOOL
-        }, true
-    );
+    std::shared_ptr<CWallet> wallet;
 
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    if (!wallet) return NullUniValue;
-    CWallet* const pwallet = wallet.get();
+    std::string strWallet;
+    if (!request.params[1].isNull()) {
+        strWallet = request.params[1].get_str();
+
+        // Load specified wallet
+        wallet = GetWallet(strWallet);
+
+    } else {
+        wallet = GetWalletForJSONRPCRequest(request);
+    }
+
+    if (!wallet) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Cannot load/use wallet ") + strWallet);
+    }
+
+    CWallet* pwallet = wallet.get();
 
     LOCK(pwallet->cs_wallet);
 
-    if (pwallet->m_enabled_staking == request.params[0].get_bool()) {
-        throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Duplicate call, status already set to ") + (pwallet->m_enabled_staking ? "true" : "false"));
+    if (pwallet->m_enabled_staking != request.params[0].get_bool()) {
+        pwallet->m_enabled_staking = request.params[0].get_bool();
+    } else {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, std::string("Duplicate call, status already set to ") + (pwallet->m_enabled_staking ? "true" : "false") + " for wallet " + pwallet->GetName());
     }
 
-    pwallet->m_enabled_staking = request.params[0].get_bool();
+    if (!pStakerStatus) {
+        InitStakerStatus();
+    }
+
+    if (pStakerStatus) {
+
+        // Disable staking on the wallet we were previously using (if any was specified)
+        if (!pStakerStatus->GetStakeWallet().empty()) {
+            std::shared_ptr<CWallet> walletPrev = GetWallet(pStakerStatus->GetStakeWallet());
+            CWallet* pwalletPrev = walletPrev.get();
+            if (pwalletPrev) {
+                pwalletPrev->m_enabled_staking = false;
+            }
+        } else {
+        // (or on wallet 0, default)
+            std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
+            CWallet * pwalletDefault = (wallets.size() > 0) ? wallets[0].get() : nullptr;
+            if (pwalletDefault) {
+                pwalletDefault->m_enabled_staking = false;
+            }
+        }
+
+        // Set new wallet for staking
+        pStakerStatus->SetStakeWallet(pwallet->GetName());
+    }
 
     UniValue obj(UniValue::VOBJ);
+
+    obj.pushKV("wallet", pwallet->GetName());
     obj.pushKV("status", pwallet->m_enabled_staking);
 
     return obj;
