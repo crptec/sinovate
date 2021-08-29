@@ -564,6 +564,8 @@ static RPCHelpMan getstakinginfo()
                         {RPCResult::Type::NUM, "time_since_last_try", "The UNIX timestamp of when we last tried staking"},
                         {RPCResult::Type::NUM, "available_at_last_try", "The amount of SIN we had available the last time we tried staking"},
                         {RPCResult::Type::NUM, "number_attempts_last_try", "The number of attempts we did the last time we tried staking"},
+                        {RPCResult::Type::NUM, "staking_nethash", "Global stake weight"},
+                        {RPCResult::Type::STR, "wallet", "Wallet being used for staking"},
                     }},
                 RPCExamples{
                     HelpExampleCli("getmininginfo", "")
@@ -600,7 +602,7 @@ static RPCHelpMan getstakinginfo()
     obj.pushKV("warnings",         GetWarnings(false).original);
     obj.pushKV("staking",          pStakerStatus.get()->IsActive());
     std::vector<CStakeableOutput> availableCoins;
-    if (!pwallet->StakeableCoins(&availableCoins, nWeight)) {
+    if (pwallet && !pwallet->StakeableCoins(&availableCoins, nWeight)) {
         obj.pushKV("staking_available", 0);
     } else {
         obj.pushKV("staking_available", (int)availableCoins.size());
@@ -615,6 +617,9 @@ static RPCHelpMan getstakinginfo()
         obj.pushKV("number_attempts_last_try", ptrStakerStatus->GetLastTries());
     }
     obj.pushKV("staking_nethash",   GetPoSKernelPS());
+    if (pwallet) {
+        obj.pushKV("wallet",   pwallet->GetName());
+    }
     return obj;
 },
     };
