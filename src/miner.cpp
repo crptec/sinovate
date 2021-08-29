@@ -208,14 +208,9 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewPoSBlock(CWallet* pwall
 
     // Generate commitment(s)
 
-    LogPrintf("CreateNewPoSBlock(): block: %s\n", pblock->ToString());
-
     pblocktemplate->vchCoinbaseCommitment = GenerateCoinbaseCommitment(*pblock, pindexPrev, chainparams.GetConsensus(), true);
 
-    LogPrintf("CreateNewPoSBlock(): block: %s\n", pblock->ToString());
-
-
-    LogPrintf("CreateNewPoSBlock(): block weight: %u txs: %u fees: %ld sigops %d\n", GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
+    LogPrintf("CreateNewPoSBlock(): created block: %s\n created block weight: %u txs: %u fees: %ld sigops %d \n", pblock->ToString(), GetBlockWeight(*pblock), nBlockTx, nFees, nBlockSigOpsCost);
 
     // Fill in header
     pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
