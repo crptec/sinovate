@@ -564,8 +564,8 @@ static RPCHelpMan getstakinginfo()
                         {RPCResult::Type::NUM, "time_since_last_try", "The UNIX timestamp of when we last tried staking"},
                         {RPCResult::Type::NUM, "available_at_last_try", "The amount of SIN we had available the last time we tried staking"},
                         {RPCResult::Type::NUM, "number_attempts_last_try", "The number of attempts we did the last time we tried staking"},
-                        {RPCResult::Type::NUM, "staking_nethash", "Global stake weight"},
                         {RPCResult::Type::STR, "wallet", "Wallet being used for staking"},
+                        {RPCResult::Type::NUM, "staking_nethash", "Global stake weight"},
                     }},
                 RPCExamples{
                     HelpExampleCli("getmininginfo", "")
@@ -615,11 +615,9 @@ static RPCHelpMan getstakinginfo()
         obj.pushKV("time_last_try", (int)ptrStakerStatus->GetLastTime());
         obj.pushKV("available_at_last_try", ptrStakerStatus->GetLastCoins());
         obj.pushKV("number_attempts_last_try", ptrStakerStatus->GetLastTries());
+        obj.pushKV("wallet",   ptrStakerStatus->GetStakeWallet());
     }
     obj.pushKV("staking_nethash",   GetPoSKernelPS());
-    if (pwallet) {
-        obj.pushKV("wallet",   pwallet->GetName());
-    }
     return obj;
 },
     };
