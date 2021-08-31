@@ -48,9 +48,8 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
             std::vector<std::vector<unsigned char>> vSolutions;
             TxoutType whichType = Solver(wtx.tx->vout[i].scriptPubKey, vSolutions);
             if (whichType == TxoutType::TX_BURN_DATA && vSolutions.size() == 2 ){
-                    std::string dataTemp(vSolutions[1].begin(), vSolutions[1].end());
-                    //data = dataTemp;
-                    data = "BurnTx Message";
+                std::string dataTemp(vSolutions[1].begin(), vSolutions[1].end());
+                data = dataTemp;
             }
             //
             const CTxOut& txout = wtx.tx->vout[i];

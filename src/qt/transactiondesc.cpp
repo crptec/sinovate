@@ -160,6 +160,7 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     CAmount nCredit = wtx.credit;
     CAmount nDebit = wtx.debit;
     CAmount nNet = nCredit - nDebit;
+    std::string nodeMessage = "";
 
     strHTML += TransactionFormater::ItemNameColor(tr("Status")) + FormatTxStatus(wtx, status, inMempool, numBlocks);
     strHTML += "<br>";
@@ -303,6 +304,15 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
             auto mine = wtx.txout_is_mine.begin();
             for (const CTxOut& txout : wtx.tx->vout)
             {
+                // SIN
+                std::vector<std::vector<unsigned char>> vSolutions;
+                TxoutType whichType = Solver(txout.scriptPubKey, vSolutions);
+                if (whichType == TxoutType::TX_BURN_DATA && vSolutions.size() == 2 ){
+                    std::string dataTemp(vSolutions[1].begin(), vSolutions[1].end());
+                    nodeMessage = dataTemp;
+                }
+                //
+
                 // Ignore change
                 isminetype toSelf = *(mine++);
                 if ((toSelf == ISMINE_SPENDABLE) && (fAllFromMe == ISMINE_SPENDABLE))
@@ -375,6 +385,9 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
         strHTML += "<br>" + TransactionFormater::ItemNameColor(tr("Message"), false) + "<br>" + GUIUtil::HtmlEscape(wtx.value_map["message"], true) + "<br>";
     if (wtx.value_map.count("comment") && !wtx.value_map["comment"].empty())
         strHTML += "<br>" + TransactionFormater::ItemNameColor(tr("Comment"), false) + "<br>" + GUIUtil::HtmlEscape(wtx.value_map["comment"], true) + "<br>";
+
+    if (nodeMessage!="")
+        strHTML += TransactionFormater::ItemNameColor(tr("Node Message"), true) + GUIUtil::HtmlEscape( nodeMessage, true) + "<br>";
 
     strHTML += TransactionFormater::ItemNameColor(tr("Transaction ID")) + TransactionFormater::TxIdLink(rec->getTxHash()) + "<br>";
     strHTML += TransactionFormater::ItemNameColor(tr("Transaction total size")) + QString::number(wtx.tx->GetTotalSize()) + " bytes<br>";
