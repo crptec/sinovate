@@ -400,7 +400,15 @@ void InfinitynodeList::updateDINList()
                 nodeSetupUsedBurnTxs.insert( { burnfundTxId, 1  } );
                 nExpired++;
             } else {
-                QString nodeTxId = QString::fromStdString(infoInf.collateralAddress);
+                QString nodeTxId;
+                CTxDestination address = DecodeDestination(infoInf.collateralAddress);
+                std::string name;
+                isminetype ismine;
+                bool bAddressFound = walletModel->wallet().getAddress(address, &name, &ismine, /* purpose= */ nullptr);
+                if ( bAddressFound && name!="" )
+                        nodeTxId = QString::fromStdString(name);
+                else    nodeTxId = QString::fromStdString(infoInf.collateralAddress);
+
                 QString strPeerAddress = QString::fromStdString(sPeerAddress);
                 ui->dinTable->insertRow(k);
                 ui->dinTable->setItem(k, 0, new QTableWidgetItem(QString(nodeTxId)));

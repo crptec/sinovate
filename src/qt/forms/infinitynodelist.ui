@@ -175,7 +175,7 @@ width: 200px;
            </attribute>
            <column>
             <property name="text">
-             <string>Owner address</string>
+             <string>Owner address/Label</string>
             </property>
             <property name="textAlignment">
              <set>AlignLeading|AlignVCenter</set>
@@ -1674,8 +1674,6 @@ min-width: 270px;
    <header>qt/sinpushbutton.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../bitcoin.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
