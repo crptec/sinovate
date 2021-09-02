@@ -4697,14 +4697,14 @@ static RPCHelpMan setstakingstatus()
         if (!pStakerStatus->GetStakeWallet().empty()) {
             std::shared_ptr<CWallet> walletPrev = GetWallet(pStakerStatus->GetStakeWallet());
             CWallet* pwalletPrev = walletPrev.get();
-            if (pwalletPrev) {
+            if (pwalletPrev && (pwallet->GetName() != pwalletPrev->GetName())) {
                 pwalletPrev->m_enabled_staking = false;
             }
         } else {
         // (or on wallet 0, default)
             std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
             CWallet * pwalletDefault = (wallets.size() > 0) ? wallets[0].get() : nullptr;
-            if (pwalletDefault) {
+            if (pwalletDefault && (pwallet->GetName() != pwalletDefault->GetName())) {
                 pwalletDefault->m_enabled_staking = false;
             }
         }
