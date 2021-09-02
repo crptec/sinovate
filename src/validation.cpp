@@ -2053,7 +2053,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-tooearly");
     }
 
-    if (block.IsProofOfStake() && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev)) {
+    if (block.IsProofOfStake() && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev) && pindex->nHeight >= 11000) {
         LogPrintf("ERROR: ConnectBlock(): PoS isn't valid\n");
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-proof");
     }
