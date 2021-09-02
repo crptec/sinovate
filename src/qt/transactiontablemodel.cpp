@@ -543,6 +543,8 @@ QString TransactionTableModel::formatTooltip(const TransactionRecord *rec) const
     {
         tooltip += QString(" ") + formatTxToAddress(rec, true);
     }
+    if(rec->message != "") tooltip.append(QString("\nMessage: ")).append(QString::fromStdString(rec->message));
+
     return tooltip;
 }
 

@@ -175,7 +175,7 @@ width: 200px;
            </attribute>
            <column>
             <property name="text">
-             <string>Owner address</string>
+             <string>Owner address/Label</string>
             </property>
             <property name="textAlignment">
              <set>AlignLeading|AlignVCenter</set>
@@ -892,7 +892,8 @@ selection-background-color: #BC8F3A;;</string>
            <item row="8" column="1" colspan="4">
             <widget class="QLabel" name="labelMotd">
              <property name="styleSheet">
-              <string notr="true">font-size:14px;</string>
+              <string notr="true">font-size:14px;
+color: red;</string>
              </property>
              <property name="text">
               <string/>
@@ -1674,8 +1675,31 @@ min-width: 270px;
    <header>qt/sinpushbutton.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../bitcoin.qrc"/>
- </resources>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>searchOwnerAddr</tabstop>
+  <tabstop>comboStatus</tabstop>
+  <tabstop>searchIP</tabstop>
+  <tabstop>searchPeerAddr</tabstop>
+  <tabstop>searchBurnTx</tabstop>
+  <tabstop>comboTier</tabstop>
+  <tabstop>searchBackupAddr</tabstop>
+  <tabstop>dinTable</tabstop>
+  <tabstop>txtEmail</tabstop>
+  <tabstop>txtPassword</tabstop>
+  <tabstop>btnLogin</tabstop>
+  <tabstop>btnRestore</tabstop>
+  <tabstop>radioLILNode</tabstop>
+  <tabstop>radioMIDNode</tabstop>
+  <tabstop>radioBIGNode</tabstop>
+  <tabstop>comboBurnTx</tabstop>
+  <tabstop>btnSetup</tabstop>
+  <tabstop>comboBilling</tabstop>
+  <tabstop>btnSetupReset</tabstop>
+  <tabstop>comboInvoice</tabstop>
+  <tabstop>payButton</tabstop>
+  <tabstop>setupSinovateButton</tabstop>
+ </tabstops>
+ <resources/>
  <connections/>
 </ui>

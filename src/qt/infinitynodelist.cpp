@@ -211,7 +211,7 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     connect(ui->comboTier, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(updateDINList()));
 
     // node setup
-    std::string baseURL = ( Params().NetworkIDString() == CBaseChainParams::TESTNET ) ? "https://setup2dev.sinovate.io" : "https://setup.sinovate.io";
+    std::string baseURL = ( Params().NetworkIDString() == CBaseChainParams::TESTNET ) ? "https://setup.sinovate.io" : "https://setup.sinovate.io";
     NODESETUP_ENDPOINT_NODE = QString::fromStdString(gArgs.GetArg("-nodesetupurl", baseURL + "/includes/api/nodecp.php"));
     NODESETUP_ENDPOINT_BASIC = QString::fromStdString(gArgs.GetArg("-nodesetupurlbasic", baseURL + "/includes/api/basic.php"));
     NODESETUP_RESTORE_URL = QString::fromStdString(gArgs.GetArg("-nodesetupurlrestore", baseURL + "/index.php?rp=/password/reset/begin"));
@@ -400,7 +400,15 @@ void InfinitynodeList::updateDINList()
                 nodeSetupUsedBurnTxs.insert( { burnfundTxId, 1  } );
                 nExpired++;
             } else {
-                QString nodeTxId = QString::fromStdString(infoInf.collateralAddress);
+                QString nodeTxId;
+                CTxDestination address = DecodeDestination(infoInf.collateralAddress);
+                std::string name;
+                isminetype ismine;
+                bool bAddressFound = walletModel->wallet().getAddress(address, &name, &ismine, /* purpose= */ nullptr);
+                if ( bAddressFound && name!="" )
+                        nodeTxId = QString::fromStdString(name);
+                else    nodeTxId = QString::fromStdString(infoInf.collateralAddress);
+
                 QString strPeerAddress = QString::fromStdString(sPeerAddress);
                 ui->dinTable->insertRow(k);
                 ui->dinTable->setItem(k, 0, new QTableWidgetItem(QString(nodeTxId)));
@@ -958,6 +966,7 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
 
         if ( mBurnTx!="" )   {   // skip to check burn tx
             mBurnAddress = nodeSetupGetOwnerAddressFromBurnTx(mBurnTx);
+
             if ( !burnSendTimer->isActive() )  {
                 burnSendTimer->start(20000);    // check every 20 secs
             }
@@ -1000,9 +1009,10 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
             UniValue vinArray = find_value(jsonVal.get_obj(), "vin").get_array();
             UniValue vin0 = vinArray[0].get_obj();
             QString txid = QString::fromStdString(find_value(vin0, "txid").get_str());
-//LogPrintf("nodeSetupGetOwnerAddressFromBurnTx txid %s \n", txid.toStdString());
+
             if ( txid!="" ) {
                 int vOutN = find_value(vin0, "vout").get_int();
+//LogPrintf("nodeSetupGetOwnerAddressFromBurnTx txid %s-%d \n", txid.toStdString(), vOutN);
                 cmd.str("");
                 cmd << "getrawtransaction " << txid.toUtf8().constData() << " 1";
                 jsonVal = nodeSetupCallRPC( cmd.str() );
@@ -1013,8 +1023,7 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
                 CAmount value = find_value(vout, "value").get_real();
 
                 UniValue obj = find_value(vout, "scriptPubKey").get_obj();
-                UniValue addressesArray = find_value(obj, "addresses").get_array();
-                address = QString::fromStdString(addressesArray[0].get_str());
+                address = QString::fromStdString(find_value(obj, "address").get_str());
 //LogPrintf("nodeSetupGetOwnerAddressFromBurnTx vout=%d, address %s \n", vOutN, address.toStdString());
             }
         }
@@ -1025,9 +1034,9 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
     } catch (UniValue& objError ) {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( "Error RPC obtaining owner address");
-        //int code = find_value(objError, "code").get_int();
-        //std::string message = find_value(objError, "message").get_str();
-        //LogPrintf("nodeSetupGetOwnerAddressFromBurnTx error@2 code=%d, message=%s \n", code, message);
+        int code = find_value(objError, "code").get_int();
+        std::string message = find_value(objError, "message").get_str();
+        LogPrintf("nodeSetupGetOwnerAddressFromBurnTx error@2 code=%d, message=%s \n", code, message);
     }
     catch ( std::runtime_error e)
     {
@@ -1158,6 +1167,9 @@ QString InfinitynodeList::nodeSetupRPCBurnFund( QString collateralAddress, CAmou
                 UniValue jsonObj = jsonArr[0].get_obj();
                 burnTx = QString::fromStdString(find_value(jsonObj, "BURNTX").get_str());
             }
+        }
+        else if ( jsonVal.isObject()) {
+            burnTx = QString::fromStdString(find_value(jsonVal, "BURNTX").get_str());
         }
         else {
             ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
