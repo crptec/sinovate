@@ -1675,6 +1675,31 @@ min-width: 270px;
    <header>qt/sinpushbutton.h</header>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>searchOwnerAddr</tabstop>
+  <tabstop>comboStatus</tabstop>
+  <tabstop>searchIP</tabstop>
+  <tabstop>searchPeerAddr</tabstop>
+  <tabstop>searchBurnTx</tabstop>
+  <tabstop>comboTier</tabstop>
+  <tabstop>searchBackupAddr</tabstop>
+  <tabstop>dinTable</tabstop>
+  <tabstop>txtEmail</tabstop>
+  <tabstop>txtPassword</tabstop>
+  <tabstop>btnLogin</tabstop>
+  <tabstop>btnRestore</tabstop>
+  <tabstop>radioLILNode</tabstop>
+  <tabstop>radioMIDNode</tabstop>
+  <tabstop>radioBIGNode</tabstop>
+  <tabstop>comboBurnTx</tabstop>
+  <tabstop>btnSetup</tabstop>
+  <tabstop>comboBilling</tabstop>
+  <tabstop>btnSetupReset</tabstop>
+  <tabstop>comboInvoice</tabstop>
+  <tabstop>payButton</tabstop>
+  <tabstop>setupSinovateButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
