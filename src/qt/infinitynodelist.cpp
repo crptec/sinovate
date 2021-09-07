@@ -2079,9 +2079,9 @@ void InfinitynodeList::getStatistics()
         QString midROIString = QString::number(midRoiDays, 'f', 0);
         QString lilROIString = QString::number(lilRoiDays, 'f', 0);
 
-        ui->bigRoiLabel->setText("ROI " + bigROIString + "%");
-        ui->midRoiLabel->setText("ROI " + midROIString + "%");
-        ui->miniRoiLabel->setText("ROI " + lilROIString + "%");
+        ui->bigRoiLabel->setText("APY " + bigROIString + "%");
+        ui->midRoiLabel->setText("APY " + midROIString + "%");
+        ui->miniRoiLabel->setText("APY " + lilROIString + "%");
     }
     else
     {

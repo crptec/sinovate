@@ -467,7 +467,7 @@ width: 200px;
 </string>
              </property>
              <property name="text">
-              <string>miniRoi</string>
+              <string>mini APY % NaN</string>
              </property>
             </widget>
            </item>
@@ -531,7 +531,7 @@ width: 200px;
 </string>
              </property>
              <property name="text">
-              <string>bigRoi</string>
+              <string>big APY % NaN</string>
              </property>
             </widget>
            </item>
@@ -616,7 +616,7 @@ selection-background-color: #BC8F3A;;</string>
 </string>
              </property>
              <property name="text">
-              <string>midRoi</string>
+              <string>mid APY % NaN</string>
              </property>
             </widget>
            </item>
