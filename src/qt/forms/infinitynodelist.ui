@@ -885,7 +885,7 @@ selection-background-color: #BC8F3A;;</string>
 </string>
              </property>
              <property name="text">
-              <string>Enter your client data and create a new user or login an existing one.</string>
+              <string>Enter email/pass to create a new user or login with existing one.</string>
              </property>
             </widget>
            </item>
