@@ -767,6 +767,24 @@ static RPCHelpMan getblocktemplate()
                 {RPCResult::Type::NUM_TIME, "curtime", "current timestamp in " + UNIX_EPOCH_TIME},
                 {RPCResult::Type::STR, "bits", "compressed target of next block"},
                 {RPCResult::Type::NUM, "height", "The height of the next block"},
+                {RPCResult::Type::ARR, "devfee", "devfee should be paid in the next block",
+                {
+                    {RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::STR, "DevAddress", "development address"},
+                        {RPCResult::Type::STR_HEX, "script", "scriptPubKey"},
+                        {RPCResult::Type::NUM, "value", "The value in " + CURRENCY_UNIT},
+                    }},
+                }},
+                {RPCResult::Type::ARR, "infinitynodes", "contents of candidates that should be paid in the next block",
+                {
+                    {RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::STR, "address", "infinitynode candidate"},
+                        {RPCResult::Type::STR_HEX, "script", "candidate scriptPubKey"},
+                        {RPCResult::Type::NUM, "value", "The value in " + CURRENCY_UNIT},
+                    }},
+                }},
                 {RPCResult::Type::STR, "default_witness_commitment", /* optional */ true, "a valid witness commitment for the unmodified block template"},
             }},
         },
@@ -1094,6 +1112,30 @@ static RPCHelpMan getblocktemplate()
     result.pushKV("curtime", pblock->GetBlockTime());
     result.pushKV("bits", strprintf("%08x", pblock->nBits));
     result.pushKV("height", (int64_t)(pindexPrev->nHeight+1));
+    //>SIN
+    UniValue infinitynodes(UniValue::VARR);
+    UniValue devfee(UniValue::VARR);
+    /*
+     * 0: miner payment
+     * 1: dev fee
+     * size() - 1: burn tx fee
+    */
+    for (unsigned int i = 1; i < pblock->vtx[0]->vout.size() - 1; i++) {
+        UniValue entry(UniValue::VOBJ);
+        CTxDestination address1;
+        ExtractDestination(pblock->vtx[0]->vout[i].scriptPubKey, address1);
+        std::string address2 = EncodeDestination(address1);
+        entry.pushKV("address",address2.c_str());
+        UniValue o(UniValue::VOBJ);
+        ScriptToUniv(pblock->vtx[0]->vout[i].scriptPubKey, o, true);
+        entry.pushKV("script",o);
+        entry.pushKV("value",ValueFromAmount(pblock->vtx[0]->vout[i].nValue));
+        if (i==1) devfee.push_back(entry);
+        else infinitynodes.push_back(entry);
+    }
+    result.pushKV("devfee", devfee);
+    result.pushKV("infinitynodes", infinitynodes);
+    //<SIN
 
     if (consensusParams.signet_blocks) {
         result.pushKV("signet_challenge", HexStr(consensusParams.signet_challenge));
