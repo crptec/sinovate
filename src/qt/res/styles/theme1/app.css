@@ -1318,7 +1318,17 @@ InfinitynodeList .QLabel {
     background-repeat:none;
     background-position: right;
     }
-/*HelpMessage*/
+    #nodesCount {
+    background-color: #004FFF;
+    }
+    #nodesCount .QLabel {
+    color: #FFFFFF;
+        }
+    #bulbFrame {
+    border-image : url(:/styles/theme1/app-icons/bulb) 0 0 0 0 stretch stretch;
+    border-width: 0px;
+        }
+    /*HelpMessage*/
 HelpMessageDialog #aboutLogo {
     background-image:  url(":/icons/about_white");
     background-repeat: no-repeat;

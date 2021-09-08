@@ -1340,6 +1340,13 @@ QWidget#toolBoxWidget .QToolButton {
     background-repeat:none;
     background-position: right;
     }
+    #nodesCount {
+    background-color: #E4EBF5;
+        }
+    #bulbFrame {
+    border-image : url(:/styles/theme3/app-icons/bulb) 0 0 0 0 stretch stretch;
+    border-width: 0px;
+        }
 /*HelpMessage*/
 HelpMessageDialog #aboutLogo {
     background-image:  url(":/icons/about_black");
