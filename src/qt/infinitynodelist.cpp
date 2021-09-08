@@ -1331,7 +1331,7 @@ void InfinitynodeList::nodeSetupResetClientId( )  {
     ui->btnSetup->setEnabled(false);
     mClientid = 0;
     nodeSetupResetOrderId();
-    ui->labelMessage->setText("Enter your client data and create a new user or login an existing one.");
+    ui->labelMessage->setText("Enter email/pass to create a new user or login with existing one.");
 }
 
 void InfinitynodeList::nodeSetupResetOrderId( )   {
