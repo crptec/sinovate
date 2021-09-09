@@ -1008,6 +1008,9 @@ Stake Page Widget CSS
 #StakePage QLabel{
     color: #b5bfd7;
 }
+#StakePage #infoLabel {
+color: #6b80af;
+}
 #frameStakeInfo {
     background-color: #ffffff;
     border: 1px dotted #b5bfd7;
