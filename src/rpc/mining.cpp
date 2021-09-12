@@ -568,8 +568,8 @@ static RPCHelpMan getstakinginfo()
                         {RPCResult::Type::NUM, "staking_nethash", "Global stake weight"},
                     }},
                 RPCExamples{
-                    HelpExampleCli("getmininginfo", "")
-            + HelpExampleRpc("getmininginfo", "")
+                    HelpExampleCli("getstakinginfo", "")
+            + HelpExampleRpc("getstakinginfo", "")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
