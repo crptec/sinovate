@@ -176,11 +176,6 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(nodeSetupDINColumnToggle( int )));
 
     // timers
-    timerSingleShot = new QTimer(this);
-    connect(timerSingleShot, SIGNAL(timeout()), this, SLOT(updateDINList()));
-    timerSingleShot->setSingleShot(true);
-    timerSingleShot->start(1000);
-
     fFilterUpdated = false;
     nTimeFilterUpdated = GetTime();
     timer = new QTimer(this);

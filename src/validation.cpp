@@ -2673,6 +2673,7 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         LogPrintf("DisconnectTip: removeNonMaturedList...\n");
         infnodeman.removeNonMaturedList(pindexDelete);
         infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
+        infnodelrinfo.Remove(pindexDelete->nHeight);
         infnodeman.updateFinalList(pindexDelete->pprev, view);
         infnodeman.FlushStateToDisk();
 //<SIN
@@ -4107,6 +4108,11 @@ bool ChainstateManager::ProcessNewBlock(const CChainParams& chainparams, const s
 
         if (!CheckBlockSignature(*pblock)) {
             return error("%s : CheckBlockSignature() FAILED: bad proof-of-stake block signature", __func__);
+        }
+
+        int nLastHeight = ActiveChainstate().m_chain.Height();
+        if (nLastHeight%11 == 0) {
+            std::this_thread::sleep_for(400ms);
         }
 
         // CheckBlock() does not support multi-threaded block validation because CBlock::fChecked can cause data race.

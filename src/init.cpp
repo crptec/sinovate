@@ -1169,12 +1169,12 @@ void ThreadCheckInfinityNode(CConnman& connman)
             if (fInfinityNode && infinitynodePeer.nState != INFINITYNODE_PEER_STARTED)
             {
                 infinitynodePeer.ManageState(connman);
+
+                //check RegisterInfo and sendTx
+                if (infnodeman.isReachedLastBlock()) {
+                    bool checkRegister = infWalletAccess.RegisterLROnchain();
+                }
             }
-            //check RegisterInfo and sendTx
-            bool checkRegister = infWalletAccess.RegisterLROnchain();
-            ENTER_CRITICAL_SECTION(cs_main);
-                //infnodeman.CheckAndRemove(connman);
-            LEAVE_CRITICAL_SECTION(cs_main);
         }
     }
 }
@@ -1973,7 +1973,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     // ********************************************************* Step 13: finished
 
     SetRPCWarmupFinished();
-    uiInterface.InitMessage(_("Done loading block index. Synchronizing with network...").translated);
+    uiInterface.InitMessage(_("Synchronizing with network...").translated);
 
     for (const auto& client : node.chain_clients) {
         client->start(*node.scheduler);
