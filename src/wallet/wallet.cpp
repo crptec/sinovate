@@ -1815,7 +1815,7 @@ std::map<COutPoint, std::string> CWallet::GetOnchainDataInfo()
             return ret;
         }
 
-        LOCK2(cs_wallet, cs_main);
+        LOCK(cs_wallet);
         for (std::map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
         {
             const CWalletTx* pcoin = &(*it).second;
@@ -2384,7 +2384,7 @@ CAmount CWallet::GetAvailableBalance(const CCoinControl* coinControl) const
 
 bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins, uint64_t& nWeight, bool fScale)
 {
-    LOCK2(cs_wallet, cs_main);
+    LOCK(cs_wallet);
 
     if (pCoins) pCoins->clear();
     CAmount nTotal = 0;
@@ -2474,7 +2474,12 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins, uint64_t& nW
             bool spendable = ((mine & ISMINE_SPENDABLE) != ISMINE_NO) || (((mine & ISMINE_WATCH_ONLY) != ISMINE_NO));
 
             if (!pCoins) return true;
-            if (!pindex) pindex = g_chainman.m_blockman.LookupBlockIndex(wtx.m_confirm.hashBlock);
+            if (!pindex) {
+                {
+                    LOCK(cs_main);
+                    pindex = g_chainman.m_blockman.LookupBlockIndex(wtx.m_confirm.hashBlock);
+                }
+            }
 
             if (fScale) {
                 nWeight += wtx.tx->vout[i].nValue;
