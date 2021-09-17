@@ -47,6 +47,18 @@ bool CInfinitynodeLockInfo::Remove(CLockRewardExtractInfo &lrinfo){
     return false;
 }
 
+bool CInfinitynodeLockInfo::Remove(int nHeight){
+    LOCK(cs);
+    for (auto it = vecLRInfo.begin(); it != vecLRInfo.end(); ) {
+        if ((*it).nBlockHeight == nHeight) {
+            it = vecLRInfo.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    return true;
+}
+
 bool CInfinitynodeLockInfo::getLRInfo(int nRewardHeight, std::vector<CLockRewardExtractInfo>& vecLRRet)
 {
     vecLRRet.clear();
