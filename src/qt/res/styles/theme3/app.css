@@ -3,6 +3,7 @@ Widget CSS
 --------------------------------------------*/
 QWidget{
     outline: none;
+    font-family:MADE TOMMY;
 }
 /*--------------------------------------------
 Main Window CSS
@@ -61,6 +62,7 @@ WalletFrame{
 }
 QDialog{
     background-color: #f2f7fd;
+    font-family:MADE TOMMY;
 }
 QLabel{
     color: #6b80af;

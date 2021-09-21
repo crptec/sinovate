@@ -283,6 +283,6 @@
         <file alias="bulb">res/styles/theme3/app-icons/bulb.png</file>
     </qresource>
     <qresource prefix="/fonts">
-        <file alias="monospace">res/fonts/RobotoMono-Bold.ttf</file>
+        <file alias="made-tommy-regular">res/fonts/Made-Tommy-Regular.otf</file>
     </qresource>
 </RCC>

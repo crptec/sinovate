@@ -3,6 +3,7 @@ Widget CSS
 --------------------------------------------*/
 QWidget{
     outline: none;
+    font-family:MADE TOMMY;
 }
 /*--------------------------------------------
 Main Window CSS
@@ -60,6 +61,7 @@ WalletFrame{
 }
 QDialog{
     background-color: #000000;
+    font-family:MADE TOMMY;
 }
 QLabel{
     color: #cccccc;
@@ -1026,7 +1028,7 @@ Stake Page Widget CSS
     margin-top: 20px;
 }
 #frameStakeInfo #labelAssets{
-    color: #049ee8;
+    color: white;
     font: 17pt;
 }
 #frameStakeInfo #labelHeight,
