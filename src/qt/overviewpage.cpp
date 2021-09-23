@@ -243,7 +243,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     ui->toolButtonWebTool->setStatusTip(tr("Visit Sinovate WebTool"));
 
     ui->toolButtonWallet->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    ui->toolButtonWallet->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/download_white",PlatformStyle::NavBar));
+    ui->toolButtonWallet->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/mywallet",PlatformStyle::NavBar));
     ui->toolButtonWallet->setIconSize(QSize(64, 64));
     ui->toolButtonWallet->setStatusTip(tr("Download Latest Sinovate Wallets"));
 
