@@ -307,7 +307,7 @@ void BitcoinGUI::createActions()
     receiveCoinsMenuAction->setStatusTip(receiveCoinsAction->statusTip());
     receiveCoinsMenuAction->setToolTip(receiveCoinsMenuAction->statusTip());
 
-    stakePageAction = new QAction(platformStyle->MultiStatesIcon(":/icons/tx_mined", PlatformStyle::NavBar), tr(" Staki&ng"), this);
+    stakePageAction = new QAction(platformStyle->MultiStatesIcon(":/icons/pos", PlatformStyle::NavBar), tr(" Staki&ng"), this);
     stakePageAction->setStatusTip(tr("Staking"));
     stakePageAction->setToolTip(stakePageAction->statusTip());
     stakePageAction->setCheckable(true);
