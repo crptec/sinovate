@@ -17,6 +17,7 @@
 #include <init.h>
 #include <key_io.h>
 #include <core_io.h>
+#include <validation.h>
 
 //SIN
 #include <sinovate/infinitynode.h>
@@ -81,9 +82,7 @@ bool DINColumnsEventHandler::eventFilter(QObject *pQObj, QEvent *pQEvent)
 
 InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *parent) :
     QWidget(parent),
-    // ++ DIN ROI Stats
     m_timer(nullptr),
-    // --
     ui(new Ui::InfinitynodeList),
     clientModel(nullptr),
     walletModel(nullptr)
@@ -94,44 +93,27 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
 
     LogPrintf("infinitynodelist: setup UI\n");
     ui->setupUi(this);
-    // ++ Restore dinTable Header State
+
     QSettings settings;
     ui->dinTable->horizontalHeader()->restoreState(settings.value("DinTableHeaderState").toByteArray());
-    // --
 
-    // ++ DIN ROI Stats
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
     m_timer->start(30000);
-    getStatistics();
-    // --
 
-
- ////// +++++++++ motd
-  // Load Motd
-       
-
-        // Network request code 
-        QObject::connect(motd_networkManager, &QNetworkAccessManager::finished,
-                         this, [=](QNetworkReply *reply) {  
-                         
-                    if (reply->error()) {
+    QObject::connect(motd_networkManager, &QNetworkAccessManager::finished,
+                         this, [=](QNetworkReply *reply) {
+        if (reply->error()) {
                         ui->labelMotd->setText("NaN");
                         return;
-                    }
-                    // Get the data from the network request
-                    QString answer = reply->readAll();
+        }
 
-                    ui->labelMotd->setText(answer);
-          }
-        );
+        QString answer = reply->readAll();
+        ui->labelMotd->setText(answer);
+    });
 
-         connect(motdTimer, SIGNAL(timeout()), this, SLOT(loadMotd()));
-        motdTimer->start(300000);
-        loadMotd();
-
- 
- ///// ---------- motd
+    connect(motdTimer, SIGNAL(timeout()), this, SLOT(loadMotd()));
+    motdTimer->start(300000);
 
     ui->dinTable->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -145,7 +127,6 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     contextDINMenu->addAction(mCheckAllNodesAction);
     connect(mCheckAllNodesAction, SIGNAL(triggered()), this, SLOT(nodeSetupCheckAllDINNodes()));
 
-    // select columns context menu
     QHeaderView *horizontalHeader;
     horizontalHeader = ui->dinTable->horizontalHeader();
     horizontalHeader->setContextMenuPolicy(Qt::CustomContextMenu);     //set contextmenu
@@ -175,16 +156,13 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     }
     connect (signalMapper, SIGNAL(mapped(int)), this, SLOT(nodeSetupDINColumnToggle( int )));
 
-    // timers
+
     fFilterUpdated = false;
     nTimeFilterUpdated = GetTime();
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateDINList()));
     timer->start(60000);
-    updateDINList();
 
-    // DIN list filtering
-    // Delay before filtering transactions in ms
     static const int input_filter_delay = 500;
 
     QTimer* prefix_typing_delay = new QTimer(this);
@@ -205,7 +183,7 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     connect(ui->comboStatus, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(updateDINList()));
     connect(ui->comboTier, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(updateDINList()));
 
-    // node setup
+
     std::string baseURL = ( Params().NetworkIDString() == CBaseChainParams::TESTNET ) ? "https://setup.sinovate.io" : "https://setup.sinovate.io";
     NODESETUP_ENDPOINT_NODE = QString::fromStdString(gArgs.GetArg("-nodesetupurl", baseURL + "/includes/api/nodecp.php"));
     NODESETUP_ENDPOINT_BASIC = QString::fromStdString(gArgs.GetArg("-nodesetupurlbasic", baseURL + "/includes/api/basic.php"));
@@ -217,22 +195,27 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     NODESETUP_REFRESHCOMBOS = 6;
     nodeSetup_RefreshCounter = NODESETUP_REFRESHCOMBOS;
 
-    // define timers
+/*
     invoiceTimer = new QTimer(this);
     connect(invoiceTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckInvoiceStatus()));
+    invoiceTimer->start(60000);
 
     burnPrepareTimer = new QTimer(this);
     connect(burnPrepareTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckBurnPrepareConfirmations()));
+    burnPrepareTimer->start(60000);
 
     burnSendTimer = new QTimer(this);
     connect(burnSendTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckBurnSendConfirmations()));
+    burnSendTimer->start(60000);
 
     pendingPaymentsTimer = new QTimer(this);
     connect(pendingPaymentsTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckPendingPayments()));
+    pendingPaymentsTimer->start(60000);
 
     checkAllNodesTimer = new QTimer(this);
     connect(checkAllNodesTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckDINNodeTimer()));
-
+    checkAllNodesTimer->start(60000);
+*/
     nodeSetupInitialize();
 
 }
@@ -286,6 +269,8 @@ void InfinitynodeList::updateDINList()
 {
     if(walletModel && walletModel->getOptionsModel())
     {
+        if(!infnodeman.isReachedLastBlock()) return;
+
         std::map<COutPoint, std::string> mOnchainDataInfo = walletModel->wallet().GetOnchainDataInfo();
         std::map<COutPoint, std::string> mapMynode;
         std::map<std::string, int> mapLockRewardHeight;
@@ -360,9 +345,9 @@ void InfinitynodeList::updateDINList()
                     int serviceValue = (bDINNodeAPIUpdate) ? -1 : 0;
                     serviceId = nodeSetupGetServiceForNodeAddress( QString::fromStdString(sPeerAddress) );
 
-                    if (serviceId==0 || serviceValue==0)   {   // 0 = not checked
+                    if (serviceId==0 || serviceValue==0)   {
                         bNeedToQueryAPIServiceId = true;
-                        nodeSetupSetServiceForNodeAddress( QString::fromStdString(sPeerAddress), serviceValue );  // -1 = reset to checked, not queried
+                        nodeSetupSetServiceForNodeAddress( QString::fromStdString(sPeerAddress), serviceValue );
                     }
                 }
             }
@@ -375,6 +360,7 @@ void InfinitynodeList::updateDINList()
             QString strNodeType = "";
             CTransactionRef txr;
             uint256 hashblock;
+
             if(!GetTransaction(infoInf.vinBurnFund.prevout.hash, txr, hashblock)) {
                 LogPrintf("nodeSetUp: updateDINNode GetTransaction -- BurnFund tx is not in block\n");
             }
@@ -534,6 +520,8 @@ void InfinitynodeList::on_checkDINNode()
 }
 
 void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )    {
+
+    if(!infnodeman.isReachedLastBlock()) return;
 
     QString strAddress = ui->dinTable->item(nSelectedRow, 5)->text();
     QString strError;
@@ -764,6 +752,9 @@ void InfinitynodeList::on_payButton_clicked()
 }
 
 void InfinitynodeList::nodeSetupCheckPendingPayments()    {
+
+    if(!infnodeman.isReachedLastBlock()) return;
+
     int invoiceToPay;
     QString strAmount, strStatus, paymentAddress;
     QString email, pass, strError;
@@ -876,6 +867,8 @@ UniValue InfinitynodeList::nodeSetupGetTxInfo( QString txHash, std::string attri
 }
 
 QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
+    if(!infnodeman.isReachedLastBlock()) return "";
+
     QString strAmount, strStatus, paymentAddress;
     QString email, pass, strError;
 
@@ -1042,6 +1035,7 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
 }
 
 void InfinitynodeList::nodeSetupCheckBurnPrepareConfirmations()   {
+    if(!infnodeman.isReachedLastBlock()) return;
 
     UniValue objConfirms = nodeSetupGetTxInfo( mBurnPrepareTx, "confirmations" );
     int numConfirms = objConfirms.get_int();
@@ -1070,6 +1064,7 @@ void InfinitynodeList::nodeSetupCheckBurnPrepareConfirmations()   {
 
 void InfinitynodeList::nodeSetupCheckBurnSendConfirmations()   {
 
+    if(!infnodeman.isReachedLastBlock()) return;
     // recover data
     QString email, pass, strError;
     int clientId = nodeSetupGetClientId( email, pass );

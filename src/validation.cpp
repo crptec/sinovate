@@ -2054,7 +2054,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     }
 
     if (block.IsProofOfStake() && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev) && pindex->nHeight >= 11000) {
-        LogPrintf("ERROR: ConnectBlock(): PoS isn't valid\n");
+        LogPrintf("ERROR: ConnectBlock(): PoS isn't valid, state: %s\n", state.ToString());
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-proof");
     }
 
@@ -4108,11 +4108,6 @@ bool ChainstateManager::ProcessNewBlock(const CChainParams& chainparams, const s
 
         if (!CheckBlockSignature(*pblock)) {
             return error("%s : CheckBlockSignature() FAILED: bad proof-of-stake block signature", __func__);
-        }
-
-        int nLastHeight = ActiveChainstate().m_chain.Height();
-        if (nLastHeight%11 == 0) {
-            std::this_thread::sleep_for(400ms);
         }
 
         // CheckBlock() does not support multi-threaded block validation because CBlock::fChecked can cause data race.

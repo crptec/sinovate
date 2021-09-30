@@ -18,6 +18,9 @@
 #include <util/system.h>
 #include <util/threadnames.h>
 #include <validation.h>
+//SIN
+#include <sinovate/infinitynodeman.h>
+//
 
 #include <stdint.h>
 #include <functional>
@@ -75,7 +78,7 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
     m_timer->start(300000); // 5 mins
     connect(m_networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
-    getStatistics();
+    //getStatistics();
     // --
 }
 
@@ -302,6 +305,10 @@ static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_
     const int64_t now = throttle ? GetTimeMillis() : 0;
     int64_t& nLastUpdateNotification = fHeader ? nLastHeaderTipUpdateNotification : nLastBlockTipUpdateNotification;
     if (throttle && now < nLastUpdateNotification + MODEL_UPDATE_DELAY) {
+        return;
+    }
+
+    if(sync_state == SynchronizationState::POST_INIT && !infnodeman.isReachedLastBlock() && GetTimeMillis() < nLastUpdateNotification + MODEL_UPDATE_DELAY){
         return;
     }
 

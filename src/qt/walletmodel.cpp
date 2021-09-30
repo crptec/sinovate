@@ -27,7 +27,9 @@
 #include <util/translation.h>
 #include <wallet/coincontrol.h>
 #include <wallet/wallet.h> // for CRecipient
-
+//SIN
+#include <sinovate/infinitynodeman.h>
+//
 #include <stdint.h>
 #include <functional>
 
@@ -97,11 +99,14 @@ void WalletModel::pollBalanceChanged()
     // avoids the GUI from getting stuck on periodical polls if the core is
     // holding the locks for a longer time - for example, during a wallet
     // rescan.
+    
     interfaces::WalletBalances new_balances;
     uint256 block_hash;
     if (!m_wallet->tryGetBalances(new_balances, block_hash)) {
         return;
     }
+
+    if(!infnodeman.isReachedLastBlock()) return;
 
     if (fForceCheckBalanceChanged || block_hash != m_cached_last_update_tip) {
         fForceCheckBalanceChanged = false;
