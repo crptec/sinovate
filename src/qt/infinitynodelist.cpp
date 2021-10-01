@@ -99,6 +99,7 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
 
     m_timer = new QTimer(this);
     connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
+    getStatistics();
     m_timer->start(30000);
 
     QObject::connect(motd_networkManager, &QNetworkAccessManager::finished,
@@ -195,7 +196,7 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     NODESETUP_REFRESHCOMBOS = 6;
     nodeSetup_RefreshCounter = NODESETUP_REFRESHCOMBOS;
 
-/*
+
     invoiceTimer = new QTimer(this);
     connect(invoiceTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckInvoiceStatus()));
     invoiceTimer->start(60000);
@@ -215,7 +216,7 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     checkAllNodesTimer = new QTimer(this);
     connect(checkAllNodesTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckDINNodeTimer()));
     checkAllNodesTimer->start(60000);
-*/
+
     nodeSetupInitialize();
 
 }
@@ -633,7 +634,7 @@ void InfinitynodeList::nodeSetupCheckDINNodeTimer()    {
         if ( checkAllNodesTimer !=NULL && checkAllNodesTimer->isActive() )  {
             checkAllNodesTimer->stop();
         }
-//LogPrintf("nodeSetupCheckDINNode stop timer %d, %d \n", nCheckAllNodesCurrentRow, rows);
+
         mCheckAllNodesAction->setEnabled(true);
         mCheckNodeAction->setEnabled(true);
     }
@@ -1067,7 +1068,7 @@ void InfinitynodeList::nodeSetupCheckBurnSendConfirmations()   {
     if(!infnodeman.isReachedLastBlock()) return;
     // recover data
     QString email, pass, strError;
-    int clientId = nodeSetupGetClientId( email, pass );
+    int clientId = nodeSetupGetClientId( email, pass, true);
 
     UniValue objConfirms = nodeSetupGetTxInfo( mBurnTx, "confirmations" );
     UniValue objConfirmsMeta = nodeSetupGetTxInfo( mMetaTx, "confirmations" );
@@ -1256,8 +1257,6 @@ void InfinitynodeList::nodeSetupInitialize()   {
     int clientId = nodeSetupGetClientId( email, pass, true );
     ui->txtEmail->setText(email);
     if ( clientId == 0 || pass=="" )    {
-        //ui->widgetLogin->show();
-        //ui->widgetCurrent->hide();
         ui->setupButtons->hide();
         ui->labelClientId->setText("");
         ui->labelClientIdValue->hide();
