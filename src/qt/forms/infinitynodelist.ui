@@ -267,8 +267,7 @@ width: 200px;
          <item>
           <widget class="QWidget" name="nodesCount" native="true">
            <property name="styleSheet">
-            <string notr="true">
-</string>
+            <string notr="true"/>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <property name="spacing">
@@ -393,8 +392,7 @@ width: 200px;
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">
-</string>
+              <string notr="true"/>
              </property>
              <property name="frameShape">
               <enum>QFrame::StyledPanel</enum>
@@ -1149,7 +1147,7 @@ min-width: 270px;
                  <string notr="true"/>
                 </property>
                 <property name="text">
-                 <string>Select D.I.N. hosting billing cycle (optional)</string>
+                 <string>Select DIN hosting billing cycle (optional)</string>
                 </property>
                </widget>
               </item>
