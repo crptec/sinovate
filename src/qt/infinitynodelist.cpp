@@ -1328,7 +1328,7 @@ void InfinitynodeList::nodeSetupResetOrderId( )   {
     nodeSetupSetOrderId( 0, 0, "");
     ui->btnSetupReset->setEnabled(false);
     ui->btnSetup->setEnabled(true);
-    ui->btnSetup->setText(QString::fromStdString("1-click setUP"));
+    ui->btnSetup->setText(QString::fromStdString("Start setUP"));
     ui->labelMessage->setText("Select a node Tier and then follow below steps for setup.");
     mOrderid = mInvoiceid = mServiceId = 0;
     mPaymentTx = "";
@@ -1343,7 +1343,7 @@ void InfinitynodeList::nodeSetupEnableClientId( int clientId )  {
     ui->setupButtons->show();
     ui->labelClientIdValue->show();
     ui->labelClientId->setText("#"+QString::number(clientId));
-    ui->labelMessage->setText("Select a node Tier and press '1-Click setUP' to verify if you meet the prerequisites");
+    ui->labelMessage->setText("Select a node Tier and press 'Start setUP' to verify if you meet the prerequisites");
     mClientid = clientId;
     ui->btnRestore->setText("Support");
 }

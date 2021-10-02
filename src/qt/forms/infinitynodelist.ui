@@ -1298,7 +1298,7 @@ min-width: 270px;
                  <string notr="true"/>
                 </property>
                 <property name="text">
-                 <string>1-click setUP</string>
+                 <string>Start setUP</string>
                 </property>
                </widget>
               </item>
