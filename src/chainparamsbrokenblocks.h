@@ -9,6 +9,7 @@
  */
 static CBrokenFeeBlocksData brokenfeeblocksDataMain = {
             {
+                {uint256S("0x475ca717747eb2131acd7d83ee15d5417e3de2ab8114b265591921754cf01085")},
                 {uint256S("0x46208568e8730bb86232e796136d02023f44b265b112c939e19b723aaa133879")},
                 {uint256S("0xb236ea43bc0f9439fc46b688a7a13c6a6dee88c91a902843ec9e1ecc151b5d12")},
                 {uint256S("0x9c643db7a6c3a9de213ecde001a6b8e9419d44f5505eeb12450507ff2a7032c1")},
