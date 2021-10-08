@@ -351,7 +351,7 @@ public:
 
     // proof-of-stake; Modifier related functions
     void SetStakeModifier(const uint256& nStakeModifier);
-    void SetNewStakeModifier(const uint256& prevoutId);     // generates and sets new v2 modifier
+    void SetNewStakeModifier(const uint256& prevoutId, int& nPrevHeight, std::string& sPrevStakeModifier, std::string& sStakeModifier);     // generates and sets new v2 modifier
     uint256 GetStakeModifier() const;
 };
 

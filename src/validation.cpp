@@ -3420,8 +3420,13 @@ void CChainState::ReceivedBlockTransactions(const CBlock& block, CBlockIndex* pi
     }
     // proof-of-stake: set modifier and set flags
     if (block.IsProofOfStake() && pindexNew->nHeight > consensusParams.nStartPoSHeight) {
-        LogPrintf("Setting stake modifier %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
-        pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash); 
+        LogPrintf("Setting stake modifier: input %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
+        int nPrevHeight;
+        std::string sPrevStakeModifier;
+        std::string sStakeModifier;
+        pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash, nPrevHeight, sPrevStakeModifier, sStakeModifier);
+        LogPrintf("Setting stake modifier Prev info: nHeight=%d, PrevStakeModifier=%s\n", nPrevHeight, sPrevStakeModifier);
+        LogPrintf("Setting stake modifier: StakeModifier=%s, block %s\n", sStakeModifier, block.GetHash().ToString());
     }
     if (block.IsProofOfStake()) {
         pindexNew->SetProofOfStake();
