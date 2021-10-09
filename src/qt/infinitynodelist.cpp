@@ -162,6 +162,7 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     nTimeFilterUpdated = GetTime();
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateDINList()));
+    updateDINList();
     timer->start(60000);
 
     static const int input_filter_delay = 500;
@@ -199,23 +200,18 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
 
     invoiceTimer = new QTimer(this);
     connect(invoiceTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckInvoiceStatus()));
-    invoiceTimer->start(60000);
 
     burnPrepareTimer = new QTimer(this);
     connect(burnPrepareTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckBurnPrepareConfirmations()));
-    burnPrepareTimer->start(60000);
 
     burnSendTimer = new QTimer(this);
     connect(burnSendTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckBurnSendConfirmations()));
-    burnSendTimer->start(60000);
 
     pendingPaymentsTimer = new QTimer(this);
     connect(pendingPaymentsTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckPendingPayments()));
-    pendingPaymentsTimer->start(60000);
 
     checkAllNodesTimer = new QTimer(this);
     connect(checkAllNodesTimer, SIGNAL(timeout()), this, SLOT(nodeSetupCheckDINNodeTimer()));
-    checkAllNodesTimer->start(60000);
 
     nodeSetupInitialize();
 
@@ -278,8 +274,7 @@ void InfinitynodeList::updateDINList()
 
         ui->dinTable->setSortingEnabled(false);
 
-        interfaces::Node& node = clientModel->node();
-        int nCurrentHeight = node.getNumBlocks();
+        int nCurrentHeight = clientModel->getNumBlocks();
         ui->currentHeightLabel->setText(QString::number(nCurrentHeight));
 
         int countNode = 0;
@@ -359,22 +354,7 @@ void InfinitynodeList::updateDINList()
 
             // get node type info
             QString strNodeType = "";
-            CTransactionRef txr;
-            uint256 hashblock;
-
-            if(!GetTransaction(infoInf.vinBurnFund.prevout.hash, txr, hashblock)) {
-                LogPrintf("nodeSetUp: updateDINNode GetTransaction -- BurnFund tx is not in block\n");
-            }
-            else    {
-                CTransaction tx = *txr;
-                for (unsigned int i = 0; i < tx.vout.size(); i++) {
-                    const CTxOut& txout = tx.vout[i];
-
-                    CAmount roundAmount = ((int)(txout.nValue / COIN)+1);
-                    strNodeType = nodeSetupGetNodeType(roundAmount);
-                    if (strNodeType!="")    break;  // found, leave
-                }
-            }
+            if (infoInf.nSINType == 1) strNodeType="MINI"; if (infoInf.nSINType == 5) strNodeType="MID"; if (infoInf.nSINType == 10) strNodeType="BIG";
 
             if(infoInf.nExpireHeight < nCurrentHeight){
                 status="Expired";
@@ -649,13 +629,6 @@ void InfinitynodeList::on_btnSetup_clicked()
 {
     QString email, pass, strError;
 
-    // check for chain synced...
-    if ( false /* TODO  !masternodeSync.IsBlockchainSynced() */)    {
-        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText("Chain is out-of-sync. Please wait until it's fully synced.");
-        return;
-    }
-
     // check again in case they changed the tier...
     nodeSetupCleanProgress();
     if ( !nodeSetupCheckFunds() )   {
@@ -669,7 +642,6 @@ void InfinitynodeList::on_btnSetup_clicked()
     int orderid, invoiceid, productid;
     QString strBillingCycle = QString::fromStdString(billingOptions[ui->comboBilling->currentData().toInt()]);
 
-//LogPrintf("place order %d, %s ", mClientid, strBillingCycle);
     if ( ! (mOrderid > 0 && mInvoiceid > 0) ) {     // place new order if there is none already
         mOrderid = nodeSetupAPIAddOrder( mClientid, strBillingCycle, mProductIds, mInvoiceid, email, pass, strError );
     }
