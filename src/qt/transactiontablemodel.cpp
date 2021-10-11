@@ -394,6 +394,8 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
         return tr("Payment to yourself");
     case TransactionRecord::Generated:
         return tr("Mined");
+    case TransactionRecord::DINReward:
+        return tr("DIN reward");
     case TransactionRecord::Minted:
         return tr("Minted");
     default:
@@ -408,6 +410,8 @@ QVariant TransactionTableModel::txAddressDecoration(const TransactionRecord *wtx
     case TransactionRecord::Minted:
         return platformStyle->TableColorIcon(":/icons/pos", PlatformStyle::Input);
     case TransactionRecord::Generated:
+        return platformStyle->TableColorIcon(":/icons/tx_mined", PlatformStyle::Input);
+    case TransactionRecord::DINReward:
         return platformStyle->TableColorIcon(":/icons/tx_mined", PlatformStyle::Input);
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::RecvFromOther:
@@ -437,6 +441,7 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord *wtx, b
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::Generated:
+    case TransactionRecord::DINReward:
     case TransactionRecord::Burn:
         return lookupAddress(wtx->address, tooltip) + watchAddress;
     case TransactionRecord::Minted:
@@ -458,6 +463,7 @@ QVariant TransactionTableModel::addressColor(const TransactionRecord *wtx) const
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::Generated:
+    case TransactionRecord::DINReward:
     case TransactionRecord::Burn:
         {
         QString label = walletModel->getAddressTableModel()->labelForAddress(QString::fromStdString(wtx->address));
