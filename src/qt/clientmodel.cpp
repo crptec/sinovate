@@ -78,7 +78,7 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
     m_timer->start(300000); // 5 mins
     connect(m_networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
-    //getStatistics();
+    getStatistics();
     // --
 }
 
