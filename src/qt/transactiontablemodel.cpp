@@ -412,7 +412,7 @@ QVariant TransactionTableModel::txAddressDecoration(const TransactionRecord *wtx
     case TransactionRecord::Generated:
         return platformStyle->TableColorIcon(":/icons/tx_mined", PlatformStyle::Input);
     case TransactionRecord::DINReward:
-        return platformStyle->TableColorIcon(":/icons/tx_mined", PlatformStyle::Input);
+        return platformStyle->TableColorIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::Input);
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::RecvFromOther:
         return platformStyle->TableColorIcon(":/icons/receive_from", PlatformStyle::Input);
