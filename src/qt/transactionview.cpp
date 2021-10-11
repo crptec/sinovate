@@ -79,6 +79,7 @@ TransactionView::TransactionView(const PlatformStyle *platformStyle, QWidget *pa
     typeWidget->addItem(tr("To yourself"), TransactionFilterProxy::TYPE(TransactionRecord::SendToSelf));
     typeWidget->addItem(tr("Mined"), TransactionFilterProxy::TYPE(TransactionRecord::Generated));
     typeWidget->addItem(tr("Minted"), TransactionFilterProxy::TYPE(TransactionRecord::Minted));
+    typeWidget->addItem(tr("DIN Reward"), TransactionFilterProxy::TYPE(TransactionRecord::DINReward));
     typeWidget->addItem(tr("Burn for service"), TransactionFilterProxy::TYPE(TransactionRecord::Burn));
     typeWidget->addItem(tr("Other"), TransactionFilterProxy::TYPE(TransactionRecord::Other));
 
