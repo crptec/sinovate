@@ -17,7 +17,7 @@ COIN_DAEMON="/home/$NODEUSER/sind"
 COIN_CLI="/home/$NODEUSER/sin-cli"
 ##
 CONFIG_FILE='sin.conf'
-
+echo "SIN script v8 used" >> $CONFIGFOLDER/debug.log
 # need to change
 COIN_REPO='https://github.com/SINOVATEblockchain/SIN-core/releases/latest/download/daemon.tar.gz'
 #
