@@ -33,6 +33,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
     CAmount nDebit = wtx.debit;
     CAmount nNet = nCredit - nDebit;
     uint256 hash = wtx.tx->GetHash();
+    std::string message = "";
     std::map<std::string, std::string> mapValue = wtx.value_map;
 
     if (nNet > 0 || wtx.is_coinbase || wtx.is_coinstake)
@@ -42,6 +43,15 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
         //
         for(unsigned int i = 0; i < wtx.tx->vout.size(); i++)
         {
+            // SIN
+            std::string data = "";
+            std::vector<std::vector<unsigned char>> vSolutions;
+            TxoutType whichType = Solver(wtx.tx->vout[i].scriptPubKey, vSolutions);
+            if (whichType == TxoutType::TX_BURN_DATA && vSolutions.size() == 2 ){
+                std::string dataTemp(vSolutions[1].begin(), vSolutions[1].end());
+                data = dataTemp;
+            }
+            //
             const CTxOut& txout = wtx.tx->vout[i];
             isminetype mine = wtx.txout_is_mine[i];
             if(mine)
@@ -50,6 +60,9 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                 sub.idx = i; // vout index
                 sub.credit = txout.nValue;
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
+                //SIN
+                sub.message = data;
+                //
                 if (wtx.txout_address_is_mine[i])
                 {
                     // Received by Bitcoin Address
@@ -66,6 +79,9 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                 {
                     // Generated
                     sub.type = TransactionRecord::Generated;
+                    if (i == 2 || i == 3 || i == 4) {
+                        sub.type = TransactionRecord::DINReward;
+                    }
                 }
                 if (wtx.is_coinstake)
                 {
@@ -117,11 +133,22 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
 
             for (unsigned int nOut = 0; nOut < wtx.tx->vout.size(); nOut++)
             {
+                // SIN
+                std::string data = "";
+                std::vector<std::vector<unsigned char>> vSolutions;
+                TxoutType whichType = Solver(wtx.tx->vout[nOut].scriptPubKey, vSolutions);
+                if (whichType == TxoutType::TX_BURN_DATA && vSolutions.size() == 2 ){
+                    std::string dataTemp(vSolutions[1].begin(), vSolutions[1].end());
+                    data = dataTemp;
+                }
+                //
                 const CTxOut& txout = wtx.tx->vout[nOut];
                 TransactionRecord sub(hash, nTime);
                 sub.idx = nOut;
                 sub.involvesWatchAddress = involvesWatchAddress;
-
+                //SIN
+                sub.message = data;
+                //
                 if(wtx.txout_is_mine[nOut])
                 {
                     // Ignore parts sent to self, as this is usually the change
@@ -134,7 +161,10 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                     // Sent to Bitcoin Address
                     sub.type = TransactionRecord::SendToAddress;
                     sub.address = EncodeDestination(wtx.txout_address[nOut]);
-                    if (sub.address == Params().GetConsensus().cBurnAddress || sub.address == Params().GetConsensus().cMetadataAddress)
+                    if (sub.address == Params().GetConsensus().cBurnAddress || sub.address == Params().GetConsensus().cMetadataAddress
+                        || sub.address == Params().GetConsensus().cNotifyAddress || sub.address == Params().GetConsensus().cLockRewardAddress
+                        || sub.address == Params().GetConsensus().cGovernanceAddress
+                    )
                     {
                         sub.type = TransactionRecord::Burn;
                     }

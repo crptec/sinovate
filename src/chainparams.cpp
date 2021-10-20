@@ -299,7 +299,7 @@ public:
         consensus.nPoS_EMATargetTimespan = 30 * 60;
         consensus.nTimeSlotLength = 15;
         consensus.nPoSMinStakeValue = 1;
-        consensus.nPoSModSwitch = 24500;
+        consensus.nPoSModSwitch = 5500;
 
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();

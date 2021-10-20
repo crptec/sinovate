@@ -163,7 +163,7 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     labelProxyIcon = new GUIUtil::ClickableLabel();
     connectionsControl = new GUIUtil::ClickableLabel();
     connectionsCount = new GUIUtil::ClickableLabel();
-    connectionsCount->setStyleSheet("QLabel {color : #008AC8; }");
+    connectionsCount->setStyleSheet("QLabel {font-family:MADE TOMMY; color : #008AC8; }");
     labelBlocksIcon = new GUIUtil::ClickableLabel();
     labelStakingIcon = new QLabel();
     frameBlocksLayout->addStretch();
@@ -210,7 +210,7 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     QString curStyle = QApplication::style()->metaObject()->className();
     if(curStyle == "QWindowsStyle" || curStyle == "QWindowsXPStyle")
     {
-        progressBar->setStyleSheet("QProgressBar { background-color: #e8e8e8; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FF8000, stop: 1 orange); border-radius: 7px; margin: 0px; }");
+        progressBar->setStyleSheet("QProgressBar { font-family:MADE TOMMY; background-color: #e8e8e8; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FF8000, stop: 1 orange); border-radius: 7px; margin: 0px; }");
     }
 
     statusBar()->addWidget(progressBarLabel);
@@ -307,7 +307,7 @@ void BitcoinGUI::createActions()
     receiveCoinsMenuAction->setStatusTip(receiveCoinsAction->statusTip());
     receiveCoinsMenuAction->setToolTip(receiveCoinsMenuAction->statusTip());
 
-    stakePageAction = new QAction(platformStyle->MultiStatesIcon(":/icons/tx_mined", PlatformStyle::NavBar), tr(" Staki&ng"), this);
+    stakePageAction = new QAction(platformStyle->MultiStatesIcon(":/icons/pos", PlatformStyle::NavBar), tr(" Staki&ng"), this);
     stakePageAction->setStatusTip(tr("Staking"));
     stakePageAction->setToolTip(stakePageAction->statusTip());
     stakePageAction->setCheckable(true);
@@ -329,10 +329,8 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(historyAction);
 
 #ifdef ENABLE_WALLET
-    // SIN
-    QSettings settings;
-    if (settings.value("fShowInfinitynodeTab").toBool()) {
-        infinitynodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::NavBar), tr(" &Infinity Nodes"), this);
+    
+        infinitynodeAction = new QAction(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/masternodes", PlatformStyle::NavBar), tr(" &InfinityNodes"), this);
         infinitynodeAction->setStatusTip(tr("Browse Infinitynodes"));
         infinitynodeAction->setToolTip(infinitynodeAction->statusTip());
         infinitynodeAction->setCheckable(true);
@@ -340,7 +338,6 @@ void BitcoinGUI::createActions()
         tabGroup->addAction(infinitynodeAction);
         connect(infinitynodeAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
         connect(infinitynodeAction, SIGNAL(triggered()), this, SLOT(gotoInfinitynodePage()));
-    }
 
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
     // can be triggered from the tray menu, and need to show the GUI to be useful.
@@ -639,25 +636,18 @@ void BitcoinGUI::createToolBars()
     	mainBrand->setText("SINOVATE");
     	mainBrand->setAlignment(Qt::AlignCenter);
     	mainBrand->show();
-    	mainBrand->setStyleSheet("QLabel { color:#F2F2F2; font-size:16px; font-weight:normal; margin-bottom: 30px;}");
+    	mainBrand->setStyleSheet("QLabel { color:#F2F2F2; font-family:MADE TOMMY; font-size:18px; font-weight:normal; margin-bottom: 30px;}");
     	
         toolbar->addWidget(mainIcon);  
         toolbar->addWidget(mainBrand); 
-
         toolbar->addAction(homeAction);
         toolbar->addAction(overviewAction);
         toolbar->addAction(stakePageAction);
-
-        // SIN
-        QSettings settings;
-        if (settings.value("fShowInfinitynodeTab").toBool())
-        {
-            toolbar->addAction(infinitynodeAction); 
-        }
-
+        toolbar->addAction(infinitynodeAction); 
         toolbar->addAction(statsPageAction);
         toolbar->addAction(statsPageAction);
         toolbar->addAction(historyAction);
+
         homeAction->setChecked(true);
 
         QWidget* empty = new QWidget();
@@ -671,13 +661,13 @@ void BitcoinGUI::createToolBars()
 
         m_wallet_selector = new QComboBox();
         m_wallet_selector->setFixedWidth(165);
-        m_wallet_selector->setStyleSheet("margin-left: 30px");
+        m_wallet_selector->setStyleSheet("font-family:MADE TOMMY; margin-left: 30px");
         m_wallet_selector->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         connect(m_wallet_selector, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &BitcoinGUI::setCurrentWalletBySelectorIndex);
 
         m_wallet_selector_label = new QLabel();
         m_wallet_selector_label->setText(tr("Wallet:") + " ");
-        m_wallet_selector_label->setStyleSheet("color:" + colcode + "; margin-left: 30px;");
+        m_wallet_selector_label->setStyleSheet("color:" + colcode + "; font-family:MADE TOMMY; margin-left: 30px;");
         m_wallet_selector_label->setBuddy(m_wallet_selector);
 
         m_wallet_selector_label_action = appToolBar->addWidget(m_wallet_selector_label);
@@ -689,7 +679,7 @@ void BitcoinGUI::createToolBars()
                     
 		QLabel* labelVersion = new QLabel();
         labelVersion->setText(QString(tr("BETELGEUSE\nv%1\n")).arg(QString::fromStdString(FormatVersionFriendly())));
-        labelVersion->setStyleSheet("color:" + colcode + "; margin-bottom: 2px; font-weight : bold;");
+        labelVersion->setStyleSheet("color:" + colcode + "; margin-bottom: 2px; font-family:MADE TOMMY; font-weight : bold;");
         labelVersion->setAlignment(Qt::AlignCenter);
         
          //// Set widget bottomBar on the bottom toolbar ////
@@ -702,10 +692,8 @@ void BitcoinGUI::createToolBars()
                 
         QHBoxLayout *bottomBarLayout = new QHBoxLayout;
 
-         bottomBarLayout->addWidget(bottomOptionButton);
-        if (settings.value("fShowInfinitynodeTab").toBool()) {
+        bottomBarLayout->addWidget(bottomOptionButton);
         bottomBarLayout->addWidget(bottomSetupButton);
-        }
         bottomBarLayout->addWidget(bottomConsoleButton);
                 
         bottomOptionButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/options",PlatformStyle::NavBar));
@@ -897,11 +885,7 @@ void BitcoinGUI::setWalletActionsEnabled(bool enabled)
 {
     overviewAction->setEnabled(enabled);
     homeAction->setEnabled(enabled);
-    QSettings settings;
-        if (settings.value("fShowInfinitynodeTab").toBool())
-        {
-            infinitynodeAction->setEnabled(enabled);
-        }
+    infinitynodeAction->setEnabled(enabled);
     sendCoinsAction->setEnabled(enabled);
     sendCoinsMenuAction->setEnabled(enabled);
     receiveCoinsAction->setEnabled(enabled);
@@ -1065,12 +1049,10 @@ void BitcoinGUI::gotoHistoryPage()
 // SIN
 void BitcoinGUI::gotoInfinitynodePage()
 {
-    QSettings settings;
-    if (settings.value("fShowInfinitynodeTab").toBool()) {
-        infinitynodeAction->setChecked(true);
-        if (walletFrame) walletFrame->gotoInfinitynodePage();
-    }
+    infinitynodeAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoInfinitynodePage();
 }
+
 void BitcoinGUI::gotoReceiveCoinsPage()
 {
     if (walletFrame) walletFrame->gotoReceiveCoinsPage();
@@ -1723,7 +1705,7 @@ UnitDisplayStatusBarControl::UnitDisplayStatusBarControl(const PlatformStyle *pl
     }
     setMinimumSize(max_width, 0);
     setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    setStyleSheet(QString("QLabel { color : %1 }").arg(platformStyle->SingleColor().name()));
+    setStyleSheet(QString("QLabel { font-family:MADE TOMMY; color : %1 ; }").arg(platformStyle->SingleColor().name()));
 }
 
 /** So that it responds to button clicks */

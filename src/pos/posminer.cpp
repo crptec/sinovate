@@ -254,29 +254,52 @@ void StakerCtx::StakerPipe()
     // Available outputs
     std::vector<CStakeableOutput> availableCoins;
 
-    // Available wallet(s), always use no 0.
+    // Available wallet(s), always start by using number 0
     std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
-    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
+    CWallet * pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
 
     if (!pStakerStatus) {
         InitStakerStatus();
     }
 
     while (!g_posminer_interrupt) {
+
+        // Get tip froim index
         CBlockIndex* pindexPrev = ::ChainActive().Tip();
 
-        // Check for node sync
-        if (::ChainstateActive().IsInitialBlockDownload()) {
-            LogPrintf("%s : node not synced yet, checking again in %d seconds...\n", __func__, nAverageSpacing);
+        // Check our wallet actually exists
+        if (!pwallet) {
+            LogPrintf("%s : no wallet found, checking again in %d seconds...\n", __func__, nAverageSpacing);
             if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
                 return;
             }
             continue;
         }
 
-        // Check for a wallet
-        if (!pwallet) {
-            LogPrintf("%s : no wallet found, checking again in %d seconds...\n", __func__, nAverageSpacing);
+        // Start wallet management
+        if (pStakerStatus && !pStakerStatus->GetStakeWallet().empty()) {
+
+            // User has chosen a staking wallet, lets check if we already loaded it
+            if (pStakerStatus->GetStakeWallet() != pwallet->GetName()) {
+
+                // Change wallet
+                pwallet = GetWallet(pStakerStatus->GetStakeWallet()).get();
+
+                // Check we actually loaded it
+                if (!pwallet) {
+                    LogPrintf("%s : user specified wallet %s not found, checking again in %d seconds...\n", __func__, pStakerStatus->GetStakeWallet(), nAverageSpacing);
+                    if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
+                        return;
+                    }
+                    continue;
+                }
+            }
+        }
+
+
+        // Check for node sync
+        if (::ChainstateActive().IsInitialBlockDownload()) {
+            LogPrintf("%s : node not synced yet, checking again in %d seconds...\n", __func__, nAverageSpacing);
             if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
                 return;
             }
@@ -304,17 +327,30 @@ void StakerCtx::StakerPipe()
         // Check if we have any coins
         CheckForCoins(pwallet, &availableCoins);
 
-        while ((Params().NetworkIDString() != CBaseChainParams::REGTEST && (m_connman.GetNodeCount(ConnectionDirection::Both) == 0))
-                || pwallet->IsLocked() || !pwallet->m_enabled_staking || availableCoins.size() == 0) {
-            LogPrintf("%s : wallet needs atleast one connection and some stakeable coins to stake, checking again in %d seconds...\n", __func__, nAverageSpacing);
+        while ((Params().NetworkIDString() != CBaseChainParams::REGTEST && (m_connman.GetNodeCount(ConnectionDirection::Both) == 0)) || pwallet->IsLocked() || !pwallet->m_enabled_staking || availableCoins.size() == 0) {
+            
+            // Change wallets if the user specified a different wallet
+            if (pStakerStatus && !pStakerStatus->GetStakeWallet().empty()) {
+                if (pStakerStatus->GetStakeWallet() != pwallet->GetName()) {
+                    break;
+                }
+            }
+
+            LogPrintf("%s : wallet %s needs atleast one connection and some stakeable coins to stake, checking again in %d seconds...\n", __func__, pwallet->GetName(), nAverageSpacing);
             if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
                 return;
             }
+            
             // Do another check here to ensure fStakeableCoins is updated
             if (availableCoins.size() == 0) CheckForCoins(pwallet, &availableCoins);
         }
+
+        // Make sure availableCoins is populated
+        if (availableCoins.size() == 0) {
+            continue;
+        }
         
-        //search our map of hashed blocks, see if bestblock has been hashed yet
+        // Search our map of hashed blocks, see if bestblock has been hashed yet
         if (pStakerStatus &&
                 pStakerStatus->GetLastHash() == pindexPrev->GetBlockHash() &&
                 pStakerStatus->GetLastTime() >= GetCurrentTimeSlot()) {

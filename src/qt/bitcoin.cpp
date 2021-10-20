@@ -393,7 +393,6 @@ void BitcoinApplication::initializeResult(bool success, interfaces::BlockAndHead
             window->showMinimized();
         }
         Q_EMIT splashFinished();
-        Q_EMIT windowShown(window);
 
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
@@ -408,6 +407,11 @@ void BitcoinApplication::initializeResult(bool success, interfaces::BlockAndHead
         }
 #endif
         pollShutdownTimer->start(200);
+        processEvents();
+    }
+
+    if(success) {
+        Q_EMIT windowShown(window);
     } else {
         Q_EMIT splashFinished(); // Make sure splash screen doesn't stick around during shutdown
         quit(); // Exit first main loop invocation
@@ -490,7 +494,7 @@ int GuiMain(int argc, char* argv[])
 #endif
 
     BitcoinApplication app;
-    QFontDatabase::addApplicationFont(":/fonts/monospace");
+    QFontDatabase::addApplicationFont(":/fonts/made-tommy-regular");
 
     /// 2. Parse command-line options. We do this after qt in order to show an error if there are problems parsing these
     // Command-line options take precedence:

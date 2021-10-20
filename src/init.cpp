@@ -619,9 +619,9 @@ void SetupServerArgs(NodeContext& node)
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/bitcoin/bitcoin>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/SINOVATEblockchain/sinovate>";
 
-    return CopyrightHolders(strprintf(_("Copyright (C) %i-%i").translated, 2009, COPYRIGHT_YEAR) + " ") + "\n" +
+    return CopyrightHolders(strprintf(_("Copyright (C) %i-%i").translated, 2018, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +
            strprintf(_("Please contribute if you find %s useful. "
                        "Visit %s for further information about the software.").translated,
@@ -1169,15 +1169,11 @@ void ThreadCheckInfinityNode(CConnman& connman)
             if (fInfinityNode && infinitynodePeer.nState != INFINITYNODE_PEER_STARTED)
             {
                 infinitynodePeer.ManageState(connman);
-            }
-            //check RegisterInfo and sendTx
-            bool checkRegister = infWalletAccess.RegisterLROnchain();
-        }
-        if (nTickDIN % (60 * 5) == 0) {
-            if (infnodeman.isReachedLastBlock()){
-                //ENTER_CRITICAL_SECTION(cs_main);
-                //infnodeman.CheckAndRemove(connman);
-                //LEAVE_CRITICAL_SECTION(cs_main);
+
+                //check RegisterInfo and sendTx
+                if (infnodeman.isReachedLastBlock()) {
+                    bool checkRegister = infWalletAccess.RegisterLROnchain();
+                }
             }
         }
     }
@@ -1977,7 +1973,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     // ********************************************************* Step 13: finished
 
     SetRPCWarmupFinished();
-    uiInterface.InitMessage(_("Done loading").translated);
+    uiInterface.InitMessage(_("Synchronizing with network...").translated);
 
     for (const auto& client : node.chain_clients) {
         client->start(*node.scheduler);

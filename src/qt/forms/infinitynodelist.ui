@@ -58,7 +58,7 @@ width: 200px;
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
-         <string>Infinity Nodes</string>
+         <string>InfinityNodes</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
@@ -175,7 +175,7 @@ width: 200px;
            </attribute>
            <column>
             <property name="text">
-             <string>Owner address</string>
+             <string>Owner address/Label</string>
             </property>
             <property name="textAlignment">
              <set>AlignLeading|AlignVCenter</set>
@@ -265,87 +265,140 @@ width: 200px;
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,0,0,0,0,0,0,0,10">
+          <widget class="QWidget" name="nodesCount" native="true">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <property name="rightMargin">
+             <number>1</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="ReadyNodes_label">
+              <property name="text">
+               <string>Nodes Ready:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="ReadyNodesLabel">
+              <property name="text">
+               <string>0</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="ExpiredNodes_label">
+              <property name="text">
+               <string>Nodes Expired:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="ExpiredNodesLabel">
+              <property name="text">
+               <string>0</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="IncompleteNodes_label">
+              <property name="text">
+               <string>Nodes Incomplete:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="IncompleteNodesLabel">
+              <property name="text">
+               <string>0</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="currentheight_label">
+              <property name="text">
+               <string>Current height:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="currentHeightLabel">
+              <property name="text">
+               <string>0</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,10">
            <property name="bottomMargin">
             <number>0</number>
            </property>
            <item>
-            <widget class="QLabel" name="ReadyNodes_label">
-             <property name="text">
-              <string>Nodes Ready:</string>
+            <widget class="QFrame" name="bulbFrame">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+             <property name="minimumSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="ReadyNodesLabel">
-             <property name="text">
-              <string>0</string>
+             <property name="styleSheet">
+              <string notr="true"/>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="ExpiredNodes_label">
-             <property name="text">
-              <string>Nodes Expired:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="ExpiredNodesLabel">
-             <property name="text">
-              <string>0</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="IncompleteNodes_label">
-             <property name="text">
-              <string>Nodes Incomplete:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="IncompleteNodesLabel">
-             <property name="text">
-              <string>0</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="currentheight_label">
-             <property name="text">
-              <string>Current height:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="currentHeightLabel">
-             <property name="text">
-              <string>0</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
              </property>
             </widget>
            </item>
@@ -467,7 +520,7 @@ width: 200px;
 </string>
              </property>
              <property name="text">
-              <string>miniRoi</string>
+              <string>mini APY % NaN</string>
              </property>
             </widget>
            </item>
@@ -531,7 +584,7 @@ width: 200px;
 </string>
              </property>
              <property name="text">
-              <string>bigRoi</string>
+              <string>big APY % NaN</string>
              </property>
             </widget>
            </item>
@@ -616,7 +669,7 @@ selection-background-color: #BC8F3A;;</string>
 </string>
              </property>
              <property name="text">
-              <string>midRoi</string>
+              <string>mid APY % NaN</string>
              </property>
             </widget>
            </item>
@@ -885,14 +938,15 @@ selection-background-color: #BC8F3A;;</string>
 </string>
              </property>
              <property name="text">
-              <string>Enter your client data and create a new user or login an existing one.</string>
+              <string>Enter email/pass to create a new user or login with existing one.</string>
              </property>
             </widget>
            </item>
            <item row="8" column="1" colspan="4">
             <widget class="QLabel" name="labelMotd">
              <property name="styleSheet">
-              <string notr="true">font-size:14px;</string>
+              <string notr="true">font-size:14px;
+color: red;</string>
              </property>
              <property name="text">
               <string/>
@@ -1093,7 +1147,7 @@ min-width: 270px;
                  <string notr="true"/>
                 </property>
                 <property name="text">
-                 <string>Select D.I.N. hosting billing cycle (optional)</string>
+                 <string>Select DIN hosting billing cycle (optional)</string>
                 </property>
                </widget>
               </item>
@@ -1244,7 +1298,7 @@ min-width: 270px;
                  <string notr="true"/>
                 </property>
                 <property name="text">
-                 <string>1-click setUP</string>
+                 <string>Start setUP</string>
                 </property>
                </widget>
               </item>
@@ -1674,8 +1728,31 @@ min-width: 270px;
    <header>qt/sinpushbutton.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../bitcoin.qrc"/>
- </resources>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>searchOwnerAddr</tabstop>
+  <tabstop>comboStatus</tabstop>
+  <tabstop>searchIP</tabstop>
+  <tabstop>searchPeerAddr</tabstop>
+  <tabstop>searchBurnTx</tabstop>
+  <tabstop>comboTier</tabstop>
+  <tabstop>searchBackupAddr</tabstop>
+  <tabstop>dinTable</tabstop>
+  <tabstop>txtEmail</tabstop>
+  <tabstop>txtPassword</tabstop>
+  <tabstop>btnLogin</tabstop>
+  <tabstop>btnRestore</tabstop>
+  <tabstop>radioLILNode</tabstop>
+  <tabstop>radioMIDNode</tabstop>
+  <tabstop>radioBIGNode</tabstop>
+  <tabstop>comboBurnTx</tabstop>
+  <tabstop>btnSetup</tabstop>
+  <tabstop>comboBilling</tabstop>
+  <tabstop>btnSetupReset</tabstop>
+  <tabstop>comboInvoice</tabstop>
+  <tabstop>payButton</tabstop>
+  <tabstop>setupSinovateButton</tabstop>
+ </tabstops>
+ <resources/>
  <connections/>
 </ui>

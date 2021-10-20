@@ -3,6 +3,7 @@ Widget CSS
 --------------------------------------------*/
 QWidget{
     outline: none;
+    font-family:MADE TOMMY;
 }
 /*--------------------------------------------
 Main Window CSS
@@ -65,6 +66,7 @@ WalletFrame{
 }
 QDialog{
     background-color: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 1, stop: 0 #0C2448, stop: 1 #000D20);
+    font-family:MADE TOMMY;
 }
 QLabel{
     color: #6f80ab;
@@ -1376,6 +1378,14 @@ color: #6f80ab;
     background-repeat:none;
     background-position: right;
     }
+    #nodesCount {
+    background-color: #252F49;
+        }
+    #bulbFrame {
+    border-image : url(:/styles/theme2/app-icons/bulb) 0 0 0 0 stretch stretch;
+    border-width: 0px;
+        }
+   
 /*HelpMessage*/
 HelpMessageDialog #aboutLogo {
     background-image:  url(":/icons/about_white");

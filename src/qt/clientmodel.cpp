@@ -18,6 +18,9 @@
 #include <util/system.h>
 #include <util/threadnames.h>
 #include <validation.h>
+//SIN
+#include <sinovate/infinitynodeman.h>
+//
 
 #include <stdint.h>
 #include <functional>
@@ -302,6 +305,10 @@ static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_
     const int64_t now = throttle ? GetTimeMillis() : 0;
     int64_t& nLastUpdateNotification = fHeader ? nLastHeaderTipUpdateNotification : nLastBlockTipUpdateNotification;
     if (throttle && now < nLastUpdateNotification + MODEL_UPDATE_DELAY) {
+        return;
+    }
+
+    if(sync_state == SynchronizationState::POST_INIT && !infnodeman.isReachedLastBlock() && GetTimeMillis() < nLastUpdateNotification + MODEL_UPDATE_DELAY){
         return;
     }
 

@@ -479,6 +479,20 @@ public:
         }
         return pStakerStatus->GetLastTime();
     }
+    std::string getStakeWallet() override 
+    {
+        if (!pStakerStatus) {
+            InitStakerStatus();
+        }
+        return pStakerStatus->GetStakeWallet();
+    }
+    void setStakeWallet(std::string strNewStakeWallet) override 
+    {
+        if (!pStakerStatus) {
+            InitStakerStatus();
+        }
+        pStakerStatus->SetStakeWallet(strNewStakeWallet);
+    }
     void remove() override
     {
         RemoveWallet(m_wallet, false /* load_on_start */);

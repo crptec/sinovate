@@ -96,6 +96,24 @@ void StakePage::on_checkStake_clicked(bool checked)
     if(!walletModel)
         return;
 
+    if (checked) {
+        for (std::unique_ptr<interfaces::Wallet>& wallet : this->clientModel->node().walletClient().getWallets()) {
+            if (!this->walletModel->wallet().getStakeWallet().empty()) {
+                if (wallet.get()->getWalletName() == this->walletModel->wallet().getStakeWallet()) {
+                    if (checked) {
+                        wallet.get()->setEnabledStaking(false);
+                    }
+                }
+            } else {
+                if (checked) {
+                    wallet.get()->setEnabledStaking(false);
+                }
+                break;
+            }
+        }
+        this->walletModel->wallet().setStakeWallet(this->walletModel->wallet().getWalletName());
+    }
+
     this->walletModel->wallet().setEnabledStaking(checked);
 
     if(checked && WalletModel::Locked == walletModel->getEncryptionStatus())
@@ -165,11 +183,8 @@ void StakePage::updateEncryptionStatus()
         }
         break;
     case WalletModel::Locked:
-        //if(!walletModel->getWalletUnlockStakingOnly())
-        //{
         bool checked = ui->checkStake->isChecked();
         if(checked) ui->checkStake->onStatusChanged();
-        //}
         break;
     }
 }

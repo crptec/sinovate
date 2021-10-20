@@ -545,7 +545,7 @@ font-size: 20px;
 </string>
               </property>
               <property name="text">
-               <string>ROI</string>
+               <string>APY</string>
               </property>
               <property name="indent">
                <number>4</number>
@@ -654,7 +654,7 @@ margin-bottom: 20px;</string>
 </string>
               </property>
               <property name="text">
-               <string>ROI</string>
+               <string>APY</string>
               </property>
               <property name="indent">
                <number>4</number>
@@ -674,7 +674,7 @@ margin-bottom: 20px;</string>
 </string>
               </property>
               <property name="text">
-               <string>ROI</string>
+               <string>APY</string>
               </property>
               <property name="indent">
                <number>4</number>
@@ -854,7 +854,7 @@ font-size: 20px;
 </string>
               </property>
               <property name="text">
-               <string>INFINITY NODES STATS</string>
+               <string>INFINITYNODE STATS</string>
               </property>
              </widget>
             </item>
@@ -1410,7 +1410,7 @@ font-size: 20px;
 </string>
               </property>
               <property name="text">
-               <string>ADDRESSES STATS</string>
+               <string>ADDRESS STATS</string>
               </property>
              </widget>
             </item>

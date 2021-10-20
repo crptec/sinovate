@@ -243,14 +243,14 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     ui->toolButtonWebTool->setStatusTip(tr("Visit Sinovate WebTool"));
 
     ui->toolButtonWallet->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    ui->toolButtonWallet->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/download_white",PlatformStyle::NavBar));
+    ui->toolButtonWallet->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/mywallet",PlatformStyle::NavBar));
     ui->toolButtonWallet->setIconSize(QSize(64, 64));
     ui->toolButtonWallet->setStatusTip(tr("Download Latest Sinovate Wallets"));
 
     ui->toolButtonWhitePaper->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonWhitePaper->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/whitepaper_white",PlatformStyle::NavBar));
     ui->toolButtonWhitePaper->setIconSize(QSize(64, 64));
-    ui->toolButtonWhitePaper->setStatusTip(tr("Sinovate WhitePaper"));
+    ui->toolButtonWhitePaper->setStatusTip(tr("Sinovate LitePaper"));
 
     ui->toolButtonFaq->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonFaq->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/faq_white",PlatformStyle::NavBar));
@@ -593,7 +593,7 @@ void OverviewPage::on_toolButtonWebTool_clicked() {
 }
 
 void OverviewPage::on_toolButtonWhitePaper_clicked() {
-    QDesktopServices::openUrl(QUrl("https://sinovate.io/sin-whitepaper/", QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl("https://sinovate.io/SINOVATE_litepaper.pdf", QUrl::TolerantMode));
 }
 
 void OverviewPage::on_toolButtonFaq_clicked() {

@@ -84,9 +84,9 @@ void StatsPage::getStatistics()
         QString lilROIStringPercent = QString::number(lilRoiDaysPercent, 'f', 0);
         //--
 
-        QString bigROIString = "ROI: " + QString::number(bigRoiDays) + " days" ;
-        QString midROIString = "ROI: " + QString::number(midRoiDays) + " days";
-        QString lilROIString = "ROI: " + QString::number(lilRoiDays) + " days";
+        QString bigROIString = "APY: " + QString::number(bigRoiDays) + " days" ;
+        QString midROIString = "APY: " + QString::number(midRoiDays) + " days";
+        QString lilROIString = "APY: " + QString::number(lilRoiDays) + " days";
         QString totalNodesString = QString::number(s.inf_online_big + s.inf_online_mid + s.inf_online_lil);
 
         QString bigString = QString::number(s.inf_online_big);

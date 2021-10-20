@@ -564,10 +564,12 @@ static RPCHelpMan getstakinginfo()
                         {RPCResult::Type::NUM, "time_since_last_try", "The UNIX timestamp of when we last tried staking"},
                         {RPCResult::Type::NUM, "available_at_last_try", "The amount of SIN we had available the last time we tried staking"},
                         {RPCResult::Type::NUM, "number_attempts_last_try", "The number of attempts we did the last time we tried staking"},
+                        {RPCResult::Type::STR, "wallet", "Wallet being used for staking"},
+                        {RPCResult::Type::NUM, "staking_nethash", "Global stake weight"},
                     }},
                 RPCExamples{
-                    HelpExampleCli("getmininginfo", "")
-            + HelpExampleRpc("getmininginfo", "")
+                    HelpExampleCli("getstakinginfo", "")
+            + HelpExampleRpc("getstakinginfo", "")
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
@@ -600,7 +602,7 @@ static RPCHelpMan getstakinginfo()
     obj.pushKV("warnings",         GetWarnings(false).original);
     obj.pushKV("staking",          pStakerStatus.get()->IsActive());
     std::vector<CStakeableOutput> availableCoins;
-    if (!pwallet->StakeableCoins(&availableCoins, nWeight)) {
+    if (pwallet && !pwallet->StakeableCoins(&availableCoins, nWeight)) {
         obj.pushKV("staking_available", 0);
     } else {
         obj.pushKV("staking_available", (int)availableCoins.size());
@@ -613,6 +615,7 @@ static RPCHelpMan getstakinginfo()
         obj.pushKV("time_last_try", (int)ptrStakerStatus->GetLastTime());
         obj.pushKV("available_at_last_try", ptrStakerStatus->GetLastCoins());
         obj.pushKV("number_attempts_last_try", ptrStakerStatus->GetLastTries());
+        obj.pushKV("wallet",   ptrStakerStatus->GetStakeWallet());
     }
     obj.pushKV("staking_nethash",   GetPoSKernelPS());
     return obj;
@@ -764,6 +767,24 @@ static RPCHelpMan getblocktemplate()
                 {RPCResult::Type::NUM_TIME, "curtime", "current timestamp in " + UNIX_EPOCH_TIME},
                 {RPCResult::Type::STR, "bits", "compressed target of next block"},
                 {RPCResult::Type::NUM, "height", "The height of the next block"},
+                {RPCResult::Type::ARR, "devfee", "devfee should be paid in the next block",
+                {
+                    {RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::STR, "DevAddress", "development address"},
+                        {RPCResult::Type::STR_HEX, "script", "scriptPubKey"},
+                        {RPCResult::Type::NUM, "value", "The value in " + CURRENCY_UNIT},
+                    }},
+                }},
+                {RPCResult::Type::ARR, "infinitynodes", "contents of candidates that should be paid in the next block",
+                {
+                    {RPCResult::Type::OBJ, "", "",
+                    {
+                        {RPCResult::Type::STR, "address", "infinitynode candidate"},
+                        {RPCResult::Type::STR_HEX, "script", "candidate scriptPubKey"},
+                        {RPCResult::Type::NUM, "value", "The value in " + CURRENCY_UNIT},
+                    }},
+                }},
                 {RPCResult::Type::STR, "default_witness_commitment", /* optional */ true, "a valid witness commitment for the unmodified block template"},
             }},
         },
@@ -1069,7 +1090,7 @@ static RPCHelpMan getblocktemplate()
     result.pushKV("previousblockhash", pblock->hashPrevBlock.GetHex());
     result.pushKV("transactions", transactions);
     result.pushKV("coinbaseaux", aux);
-    result.pushKV("coinbasevalue", (int64_t)pblock->vtx[0]->vout[0].nValue);
+    result.pushKV("coinbasevalue", (int64_t)pblock->vtx[0]->GetValueOut());
     result.pushKV("longpollid", active_chain.Tip()->GetBlockHash().GetHex() + ToString(nTransactionsUpdatedLast));
     result.pushKV("target", hashTarget.GetHex());
     result.pushKV("mintime", (int64_t)pindexPrev->GetMedianTimePast()+1);
@@ -1091,6 +1112,30 @@ static RPCHelpMan getblocktemplate()
     result.pushKV("curtime", pblock->GetBlockTime());
     result.pushKV("bits", strprintf("%08x", pblock->nBits));
     result.pushKV("height", (int64_t)(pindexPrev->nHeight+1));
+    //>SIN
+    UniValue infinitynodes(UniValue::VARR);
+    UniValue devfee(UniValue::VARR);
+    /*
+     * 0: miner payment
+     * 1: dev fee
+     * size() - 1: burn tx fee
+    */
+    for (unsigned int i = 1; i < pblock->vtx[0]->vout.size() - 1; i++) {
+        UniValue entry(UniValue::VOBJ);
+        CTxDestination address1;
+        ExtractDestination(pblock->vtx[0]->vout[i].scriptPubKey, address1);
+        std::string address2 = EncodeDestination(address1);
+        entry.pushKV("address",address2.c_str());
+        UniValue o(UniValue::VOBJ);
+        ScriptToUniv(pblock->vtx[0]->vout[i].scriptPubKey, o, true);
+        entry.pushKV("script",o);
+        entry.pushKV("value",(int64_t)pblock->vtx[0]->vout[i].nValue);
+        if (i==1) devfee.push_back(entry);
+        else infinitynodes.push_back(entry);
+    }
+    result.pushKV("devfee", devfee);
+    result.pushKV("infinitynodes", infinitynodes);
+    //<SIN
 
     if (consensusParams.signet_blocks) {
         result.pushKV("signet_challenge", HexStr(consensusParams.signet_challenge));

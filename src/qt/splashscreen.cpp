@@ -88,7 +88,7 @@ SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
 
     pixPaint.setPen(foreground_color);
 
-    pixPaint.setFont(QFont(font, 22 * fontFactor, QFont::Bold));
+    pixPaint.setFont(QFont("MADE TOMMY", 22 * fontFactor, QFont::Bold));
     QRect rectTitle(QPoint(0, logoRect.bottom() + 10), QSize(splashSize.width() - 20, packageTextHeight));
     pixPaint.drawText(rectTitle, Qt::AlignRight | Qt::AlignBottom, titleText);
 
@@ -98,22 +98,22 @@ SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
     {
         QRect titleAddRect(rectTitle.bottomLeft(), QSize(rectTitle.width(), titleAddTextHeight));
         versionPoint = titleAddRect.bottomLeft();
-        pixPaint.setFont(QFont("HiraginoSansGB", 8 * fontFactor, QFont::Bold));
+        pixPaint.setFont(QFont("MADE TOMMY", 8 * fontFactor, QFont::Bold));
         pixPaint.drawText(titleAddRect, Qt::AlignRight | Qt::AlignBottom, titleAddText);
     }
 
-    pixPaint.setFont(QFont("HiraginoSansGB", 8 * fontFactor));
+    pixPaint.setFont(QFont("MADE TOMMY", 8 * fontFactor));
     QRect versionRect(versionPoint, QSize(rectTitle.width(), versionTextHeight));
     pixPaint.drawText(versionRect, Qt::AlignRight | Qt::AlignVCenter, versionText);
 
     QRect welcomeRect(0, splashSize.height() - statusHeight - welcomeTextHeight - 40, splashSize.width() -20, welcomeTextHeight);
-    pixPaint.setFont(QFont(font, 10 * fontFactor, QFont::Bold));
+    pixPaint.setFont(QFont("MADE TOMMY", 10 * fontFactor, QFont::Bold));
     pixPaint.drawText(welcomeRect, Qt::AlignRight | Qt::AlignTop, "Sinovate-Qt Wallet");
 
     // draw copyright stuff
     QFont statusFont = QApplication::font();
     statusFont.setPointSizeF(statusFont.pointSizeF() * 0.9);
-    pixPaint.setFont(statusFont);
+    pixPaint.setFont(QFont("MADE TOMMY"));
     pixPaint.setPen(foreground_color_statusbar);
     QRect statusRect(mainRect.left(), mainRect.height() - statusHeight, mainRect.width(), statusHeight);
     QColor statusColor(255, 255, 255);
@@ -240,8 +240,9 @@ void SplashScreen::paintEvent(QPaintEvent *event)
     QRect r = rect().adjusted(10, 10, -10, -10);
     painter.setPen(curColor);
     QFont font = QApplication::font();
+    painter.setFont(QFont("MADE TOMMY"));
     font.setPointSizeF(font.pointSizeF() * 0.9);
-    painter.setFont(font);
+    painter.setFont(QFont("MADE TOMMY"));
     painter.drawText(r, curAlignment, curMessage);
 }
 

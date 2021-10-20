@@ -279,6 +279,12 @@ public:
     //! Get last coin stake search interval
     virtual int64_t getLastStakeTime() = 0;
 
+    //! Get name of current stake wallet
+    virtual std::string getStakeWallet() = 0;
+
+    //! Set name of new stake wallet
+    virtual void setStakeWallet(std::string strNewStakeWallet) = 0;
+
     // Remove wallet.
     virtual void remove() = 0;
 

@@ -189,6 +189,9 @@ BITCOIN_QT_H = \
   qt/walletview.h \
   qt/winshutdownmonitor.h
 
+RES_FONTS = \
+  qt/res/fonts/Made-Tommy-Regular.otf
+
 # Sinovate
 BITCOIN_QT_H += \
   qt/infinitynodelist.h

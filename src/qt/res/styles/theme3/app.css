@@ -3,6 +3,7 @@ Widget CSS
 --------------------------------------------*/
 QWidget{
     outline: none;
+    font-family:MADE TOMMY;
 }
 /*--------------------------------------------
 Main Window CSS
@@ -61,6 +62,7 @@ WalletFrame{
 }
 QDialog{
     background-color: #f2f7fd;
+    font-family:MADE TOMMY;
 }
 QLabel{
     color: #6b80af;
@@ -1008,6 +1010,9 @@ Stake Page Widget CSS
 #StakePage QLabel{
     color: #b5bfd7;
 }
+#StakePage #infoLabel {
+color: #6b80af;
+}
 #frameStakeInfo {
     background-color: #ffffff;
     border: 1px dotted #b5bfd7;
@@ -1340,6 +1345,13 @@ QWidget#toolBoxWidget .QToolButton {
     background-repeat:none;
     background-position: right;
     }
+    #nodesCount {
+    background-color: #E4EBF5;
+        }
+    #bulbFrame {
+    border-image : url(:/styles/theme3/app-icons/bulb) 0 0 0 0 stretch stretch;
+    border-width: 0px;
+        }
 /*HelpMessage*/
 HelpMessageDialog #aboutLogo {
     background-image:  url(":/icons/about_black");

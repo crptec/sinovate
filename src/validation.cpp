@@ -2053,6 +2053,11 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-tooearly");
     }
 
+    if (block.IsProofOfStake() && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev) && pindex->nHeight >= 11000) {
+        LogPrintf("ERROR: ConnectBlock(): PoS isn't valid, state: %s\n", state.ToString());
+        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-proof");
+    }
+
     bool fScriptChecks = true;
     if (!hashAssumeValid.IsNull()) {
         // We've been configured with the hash of a block which has been externally verified to have a valid history.
@@ -2668,6 +2673,7 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         LogPrintf("DisconnectTip: removeNonMaturedList...\n");
         infnodeman.removeNonMaturedList(pindexDelete);
         infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
+        infnodelrinfo.Remove(pindexDelete->nHeight);
         infnodeman.updateFinalList(pindexDelete->pprev, view);
         infnodeman.FlushStateToDisk();
 //<SIN
@@ -3414,8 +3420,13 @@ void CChainState::ReceivedBlockTransactions(const CBlock& block, CBlockIndex* pi
     }
     // proof-of-stake: set modifier and set flags
     if (block.IsProofOfStake() && pindexNew->nHeight > consensusParams.nStartPoSHeight) {
-        LogPrintf("Setting stake modifier %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
-        pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash); 
+        LogPrintf("Setting stake modifier: input %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
+        int nPrevHeight;
+        std::string sPrevStakeModifier;
+        std::string sStakeModifier;
+        pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash, nPrevHeight, sPrevStakeModifier, sStakeModifier);
+        LogPrintf("Setting stake modifier Prev info: nHeight=%d, PrevStakeModifier=%s\n", nPrevHeight, sPrevStakeModifier);
+        LogPrintf("Setting stake modifier: StakeModifier=%s, block %s\n", sStakeModifier, block.GetHash().ToString());
     }
     if (block.IsProofOfStake()) {
         pindexNew->SetProofOfStake();
@@ -3773,17 +3784,6 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     if (!IsPoS && !fRegTest && block.GetBlockTime() > nAdjustedTime + MAX_FUTURE_BLOCK_TIME)
         return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new", "block timestamp too far in the future");
 
-    if (IsPoS && !fRegTest) {
-        // Check for PoS timestamp against prev
-        if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
-            return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
-        }
-        // Check for PoS timestamp
-        if (block.GetBlockTime() > pindexPrev->MaxFutureBlockTime()) {
-            return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new-pos", "proof-of-stake block timestamp too far in the future");
-        }
-    }
-
     // Reject outdated version blocks when 95% (75% on testnet) of the network has upgraded:
     // check for version 2, 3 and 4 upgrades
     if((block.nVersion < 2 && nHeight >= consensusParams.BIP34Height) ||
@@ -3804,6 +3804,20 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
 static bool ContextualCheckBlock(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev)
 {
     const int nHeight = pindexPrev == nullptr ? 0 : pindexPrev->nHeight + 1;
+
+    bool IsPoS = block.IsProofOfStake();
+    bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
+
+    if (IsPoS && !fRegTest) {
+    // Check for PoS timestamp against prev
+        if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
+            return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
+        }
+        // Check for PoS timestamp
+        if (block.GetBlockTime() > pindexPrev->MaxFutureBlockTime()) {
+            return state.Invalid(BlockValidationResult::BLOCK_TIME_FUTURE, "time-too-new-pos", "proof-of-stake block timestamp too far in the future");
+        }
+    }
 
     // Start enforcing BIP113 (Median Time Past).
     int nLockTimeFlags = 0;
@@ -4078,16 +4092,6 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
         ReceivedBlockTransactions(block, pindex, blockPos, chainparams.GetConsensus());
     } catch (const std::runtime_error& e) {
         return AbortNode(state, std::string("System error: ") + e.what());
-    }
-
-    //run PoS checks after txes have been cached
-    if ((IsProofOfStake && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev))) {
-        if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
-            pindex->nStatus |= BLOCK_FAILED_VALID;
-            setDirtyBlockIndex.insert(pindex);
-        }
-        return error("%s: %s", __func__, state.ToString());
-
     }
 
     FlushStateToDisk(chainparams, state, FlushStateMode::NONE);
@@ -4836,8 +4840,6 @@ bool CChainState::LoadGenesisBlock(const CChainParams& chainparams)
 
 void CChainState::LoadExternalBlockFile(const CChainParams& chainparams, FILE* fileIn, FlatFilePos* dbp)
 {
-    // Map of disk positions for blocks with unknown parent (only used for reindex)
-    static std::multimap<uint256, FlatFilePos> mapBlocksUnknownParent;
     int64_t nStart = GetTimeMillis();
 
     int nLoaded = 0;

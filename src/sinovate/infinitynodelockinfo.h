@@ -75,6 +75,7 @@ public:
     void Clear();
     bool Add(CLockRewardExtractInfo &lrinfo);
     bool Remove(CLockRewardExtractInfo &lrinfo);
+    bool Remove(int nHeight);
     bool Has(std::string  lrinfo);
     std::vector<CLockRewardExtractInfo> getFullLRInfo(){LOCK(cs); return vecLRInfo; }
     bool getLRInfo(int nRewardHeight, std::vector<CLockRewardExtractInfo>& vecLRRet);
