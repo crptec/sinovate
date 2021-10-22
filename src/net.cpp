@@ -1067,8 +1067,87 @@ void CConnman::AcceptConnection(const ListenSocket& hListenSocket) {
 
     NetPermissionFlags permissionFlags = NetPermissionFlags::PF_NONE;
     hListenSocket.AddSocketPermissionFlags(permissionFlags);
+//>SIN
+    if (addr_bind.GetPort() == Params().GetBFTPPort()) {
+        LogPrintf("Warning: try to connect to BFPT default port.\n");
+        CreateBFTPNodeFromAcceptedSocket(hSocket, permissionFlags, addr_bind, addr);
+    } else {
+        CreateNodeFromAcceptedSocket(hSocket, permissionFlags, addr_bind, addr);
+    }
+//<SIN
+}
 
-    CreateNodeFromAcceptedSocket(hSocket, permissionFlags, addr_bind, addr);
+void CConnman::CreateBFTPNodeFromAcceptedSocket(SOCKET hSocket,
+                                            NetPermissionFlags permissionFlags,
+                                            const CAddress& addr_bind,
+                                            const CAddress& addr)
+{
+    int nInbound = 0;
+    int nMaxInbound = DEFAULT_MAX_PEER_CONNECTIONS;
+    AddWhitelistPermissionFlags(permissionFlags, addr);
+
+    {
+        LOCK(cs_vBFTPNodes);
+        for (const CNode* pnode : vBFTPNodes) {
+            if (pnode->IsInboundConn()) nInbound++;
+        }
+    }
+
+    if (!fNetworkActive) {
+        LogPrint(BCLog::NET, "connection from %s dropped: not accepting new connections\n", addr.ToString());
+        CloseSocket(hSocket);
+        return;
+    }
+
+    if (!IsSelectableSocket(hSocket))
+    {
+        LogPrintf("connection from %s dropped: non-selectable socket\n", addr.ToString());
+        CloseSocket(hSocket);
+        return;
+    }
+
+    // According to the internet TCP_NODELAY is not carried into accepted sockets
+    // on all platforms.  Set it again here just to be sure.
+    SetSocketNoDelay(hSocket);
+
+    // Don't accept connections from banned peers.
+    bool banned = m_banman && m_banman->IsBanned(addr);
+    if (banned)
+    {
+        LogPrint(BCLog::NET, "connection from %s dropped (banned)\n", addr.ToString());
+        CloseSocket(hSocket);
+        return;
+    }
+
+    // take discouraged peers's info.
+    bool discouraged = m_banman && m_banman->IsDiscouraged(addr);
+
+    if (nInbound >= nMaxInbound)
+    {
+        // No connection to evict, disconnect the new connection
+        LogPrint(BCLog::NET, "failed to find an eviction candidate - connection dropped (full)\n");
+        CloseSocket(hSocket);
+        return;
+    }
+
+    NodeId id = GetNewNodeId();
+    uint64_t nonce = GetDeterministicRandomizer(RANDOMIZER_ID_LOCALHOSTNONCE).Write(id).Finalize();
+    ServiceFlags nodeServices = nLocalServices;
+    const bool inbound_onion = false;
+    CNode* pnode = new CNode(id, nodeServices, hSocket, addr, CalculateKeyedNetGroup(addr), nonce, addr_bind, "", ConnectionType::INBOUND, inbound_onion);
+    pnode->AddRef();
+    pnode->m_permissionFlags = permissionFlags;
+    pnode->m_prefer_evict = discouraged;
+    m_msgproc->InitializeBFTPNode(pnode);
+
+    LogPrint(BCLog::NET, "connection from %s accepted for BFTP protocol.\n", addr.ToString());
+    {
+        LOCK(cs_vBFTPNodes);
+        vBFTPNodes.push_back(pnode);
+    }
+
+    // We received a new connection, harvest entropy from the time (and our peer count)
+    RandAddEvent((uint32_t)id);
 }
 
 void CConnman::CreateNodeFromAcceptedSocket(SOCKET hSocket,
@@ -1480,15 +1559,10 @@ void CConnman::SocketHandler()
     }
 
     //
-    // Service each socket
+    // Service each socket of all NodeVector (bFTP node include)
     //
-    std::vector<CNode*> vNodesCopy;
-    {
-        LOCK(cs_vNodes);
-        vNodesCopy = vNodes;
-        for (CNode* pnode : vNodesCopy)
-            pnode->AddRef();
-    }
+    std::vector<CNode*> vNodesCopy = CopyAllNodeVector();
+
     for (CNode* pnode : vNodesCopy)
     {
         if (interruptNet)
@@ -1572,11 +1646,7 @@ void CConnman::SocketHandler()
 
         if (InactivityCheck(*pnode)) pnode->fDisconnect = true;
     }
-    {
-        LOCK(cs_vNodes);
-        for (CNode* pnode : vNodesCopy)
-            pnode->Release();
-    }
+    ReleaseAllNodeVector(vNodesCopy);
 }
 
 void CConnman::ThreadSocketHandler()
@@ -2176,13 +2246,76 @@ CNode* CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountF
     if (grantOutbound)
         grantOutbound->MoveTo(pnode->grantOutbound);
 
-    m_msgproc->InitializeNode(pnode);
-    {
-        LOCK(cs_vNodes);
-        vNodes.push_back(pnode);
+//>SIN
+    if (addrConnect.GetPort() == Params().GetBFTPPort()) {
+        //bFTP connection
+        m_msgproc->InitializeBFTPNode(pnode);
+        LogPrint(BCLog::NET, "connection to %s with BFTP protocol.\n", addrConnect.ToString());
+        {
+            LOCK(cs_vBFTPNodes);
+            vBFTPNodes.push_back(pnode);
+        }
+    } else {
+        //default
+        m_msgproc->InitializeNode(pnode);
+        {
+            LOCK(cs_vNodes);
+            vNodes.push_back(pnode);
+        }
     }
+//<SIN
 
     return pnode;
+}
+
+void CConnman::ThreadBFTPMessageHandler()
+{
+    while (!flagInterruptMsgProc)
+    {
+        std::vector<CNode*> vNodesCopy;
+        {
+            LOCK(cs_vBFTPNodes);
+            vNodesCopy = vBFTPNodes;
+            for (CNode* pnode : vNodesCopy) {
+                pnode->AddRef();
+            }
+        }
+
+        bool fMoreWork = false;
+
+        for (CNode* pnode : vNodesCopy)
+        {
+            if (pnode->fDisconnect)
+                continue;
+
+            // Receive messages
+            bool fMoreNodeWork = m_msgproc->ProcessBFTPMessages(pnode, flagInterruptMsgProc);
+            fMoreWork |= (fMoreNodeWork && !pnode->fPauseSend);
+            if (flagInterruptMsgProc)
+                return;
+
+            // Send messages
+            {
+                LOCK(pnode->cs_sendProcessing);
+                m_msgproc->SendBFTPMessages(pnode);
+            }
+
+            if (flagInterruptMsgProc)
+                return;
+        }
+
+        {
+            LOCK(cs_vBFTPNodes);
+            for (CNode* pnode : vNodesCopy)
+                pnode->Release();
+        }
+
+        WAIT_LOCK(mutexMsgProc, lock);
+        if (!fMoreWork) {
+            condMsgProc.wait_until(lock, std::chrono::steady_clock::now() + std::chrono::milliseconds(100), [this]() EXCLUSIVE_LOCKS_REQUIRED(mutexMsgProc) { return fMsgProcWake; });
+        }
+        fMsgProcWake = false;
+    }
 }
 //<SIN
 
@@ -2693,7 +2826,7 @@ std::vector<CNode*> CConnman::CopyNodeVector()
 {
     std::vector<CNode*> vecNodesCopy;
     LOCK(cs_vNodes);
-    for(size_t i = 0; i < vNodes.size(); ++i) {
+    for (size_t i = 0; i < vNodes.size(); ++i) {
         CNode* pnode = vNodes[i];
         pnode->AddRef();
         vecNodesCopy.push_back(pnode);
@@ -2704,7 +2837,39 @@ std::vector<CNode*> CConnman::CopyNodeVector()
 void CConnman::ReleaseNodeVector(const std::vector<CNode*>& vecNodes)
 {
     LOCK(cs_vNodes);
-    for(size_t i = 0; i < vecNodes.size(); ++i) {
+    for (size_t i = 0; i < vecNodes.size(); ++i) {
+        CNode* pnode = vecNodes[i];
+        pnode->Release();
+    }
+}
+
+std::vector<CNode*> CConnman::CopyAllNodeVector()
+{
+    std::vector<CNode*> vecNodesCopy;
+    {
+        LOCK(cs_vNodes);
+        for (size_t i = 0; i < vNodes.size(); ++i) {
+            CNode* pnode = vNodes[i];
+            pnode->AddRef();
+            vecNodesCopy.push_back(pnode);
+        }
+    }
+
+    {
+        LOCK(cs_vBFTPNodes);
+        for (size_t i = 0; i < vBFTPNodes.size(); ++i) {
+            CNode* pnode = vBFTPNodes[i];
+            pnode->AddRef();
+            vecNodesCopy.push_back(pnode);
+        }
+    }
+    return vecNodesCopy;
+}
+
+void CConnman::ReleaseAllNodeVector(const std::vector<CNode*>& vecNodes)
+{
+    LOCK2(cs_vNodes, cs_vBFTPNodes);
+    for (size_t i = 0; i < vecNodes.size(); ++i) {
         CNode* pnode = vecNodes[i];
         pnode->Release();
     }

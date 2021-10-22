@@ -823,6 +823,27 @@ public:
     */
     virtual bool SendMessages(CNode* pnode) EXCLUSIVE_LOCKS_REQUIRED(pnode->cs_sendProcessing) = 0;
 
+//>SIN
+    /** Initialize a bFTP peer (setup state, queue any initial messages) */
+    virtual void InitializeBFTPNode(CNode* pnode) = 0;
+
+    /**
+    * Process bFTP protocol messages received from a given node
+    *
+    * @param[in]   pnode           The node which we have received messages from.
+    * @param[in]   interrupt       Interrupt condition for processing threads
+    * @return                      True if there is more work to be done
+    */
+    virtual bool ProcessBFTPMessages(CNode* pnode, std::atomic<bool>& interrupt) = 0;
+
+    /**
+    * Send queued bFTP protocol messages to a given node.
+    *
+    * @param[in]   pnode           The node which we are sending messages to.
+    * @return                      True if there is more work to be done
+    */
+    virtual bool SendBFTPMessages(CNode* pnode) EXCLUSIVE_LOCKS_REQUIRED(pnode->cs_sendProcessing) = 0;
+//<SIN
 
 protected:
     /**
@@ -909,8 +930,12 @@ public:
     CNode* OpenNetworkConnection(const CAddress& addrConnect, bool fCountFailure, CSemaphoreGrant* grantOutbound, const char* strDest, ConnectionType conn_type);
     //>SIN
     void RelayInv(CInv &inv);
+    //copy all legacy nodes
     std::vector<CNode*> CopyNodeVector();
     void ReleaseNodeVector(const std::vector<CNode*>& vecNodes);
+    //copy all nodes: blockchain, bFTP, S3
+    std::vector<CNode*> CopyAllNodeVector();
+    void ReleaseAllNodeVector(const std::vector<CNode*>& vecNodes);
     //<SIN
     bool CheckIncomingNonce(uint64_t nonce);
 
@@ -1176,7 +1201,27 @@ private:
     mutable RecursiveMutex cs_vNodes;
     std::atomic<NodeId> nLastNodeId{0};
     unsigned int nPrevNodeCount{0};
-
+//>SIN
+    void ThreadBFTPMessageHandler();
+    /**
+     * this vector contain all BFTP nodes. The management is different with vNodes which is use for
+     * coins service
+     */
+    std::vector<CNode*> vBFTPNodes GUARDED_BY(cs_vBFTPNodes);
+    mutable RecursiveMutex cs_vBFTPNodes;
+    /**
+     * Create a `CBFTPNode` object from a socket that has just been accepted and add the bftpnode to
+     * the `vBFTPNodes` member.
+     * @param[in] hSocket Connected socket to communicate with the peer.
+     * @param[in] permissionFlags The peer's permissions.
+     * @param[in] addr_bind The address and port at our side of the connection.
+     * @param[in] addr The address and port at the peer's side of the connection.
+     */
+    void CreateBFTPNodeFromAcceptedSocket(SOCKET hSocket,
+                                      NetPermissionFlags permissionFlags,
+                                      const CAddress& addr_bind,
+                                      const CAddress& addr);
+//<SIN
     /**
      * Cache responses to addr requests to minimize privacy leak.
      * Attack example: scraping addrs in real-time may allow an attacker

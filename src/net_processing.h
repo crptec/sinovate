@@ -74,6 +74,10 @@ public:
     /** Process a single message from a peer. Public for fuzz testing */
     virtual void ProcessMessage(CNode& pfrom, const std::string& msg_type, CDataStream& vRecv,
                                 const std::chrono::microseconds time_received, const std::atomic<bool>& interruptMsgProc) = 0;
+
+    /** Process a single bFTP message from a peer. Public for fuzz testing */
+    virtual void ProcessBFTPMessage(CNode& pfrom, const std::string& msg_type, CDataStream& vRecv,
+                                const std::chrono::microseconds time_received, const std::atomic<bool>& interruptMsgProc) = 0;
 };
 
 #endif // BITCOIN_NET_PROCESSING_H

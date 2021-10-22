@@ -50,6 +50,7 @@ const char *INFVERIFY="infverify";
 const char *INFCOMMITMENT="infcommit";
 const char *INFLRMUSIG="inflrmusig";
 const char *INFLRGROUP="inflrgroup";
+const char *BFTPINIT="bftpinit";
 //<SIN
 } // namespace NetMsgType
 
