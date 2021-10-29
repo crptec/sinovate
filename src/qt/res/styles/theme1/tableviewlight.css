@@ -2,14 +2,15 @@
 Table View light CSS
 --------------------------------------------*/
 QHeaderView{
-    color: #696869;
-    background-color: transparent;
+    color: white;
+    background-color: rgba(0, 79, 255, .5);
     border: none;
 }
 QHeaderView:section{
     padding: 6px 20px 6px 6px;
     border: none;
-    background-color: #c2c2c2;
+    color: white;
+    background-color: rgba(0, 79, 255, .5);
 }
 QHeaderView::down-arrow {
     image: url(":/styles/theme1/app-icons/down_arrow");
@@ -40,7 +41,7 @@ QTableView::item{
 }
 QTableView::item:selected{
     qproperty-showGrid: false;
-    background: #004FFF;
+    background: rgba(0, 79, 255, .5);
     color: white;
 }
 

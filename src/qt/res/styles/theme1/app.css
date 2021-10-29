@@ -77,6 +77,9 @@ QLabel#labelTotal,
 #labelMempoolTitle{
     color: #049ee8;
 }
+.QWidget#widget_header{
+    background-color: rgba(0, 79, 255, .5);
+}
 QLabel#overriddenByCommandLineLabel{
     color: #bdbdbd;
 }
@@ -101,7 +104,7 @@ QLineEdit{
     padding: 4px;
 }
 QLineEdit::hover:!read-only{
-    border: 1px solid #004FFF;
+    border: 1px solid rgba(0, 79, 255, .5);
 }
 QLineEdit::focus:!read-only{
     border: 1px solid #7e7e7e;
@@ -149,7 +152,7 @@ QComboBox {
     combobox-popup: 0;
 }
 QComboBox:hover {
-    border: 1px solid #004FFF;
+    border: 1px solid rgba(0, 79, 255, .5);
 }
 QComboBox:drop-down {
     border: 0px;
@@ -279,7 +282,7 @@ QAbstractSpinBox {
     padding-left: 12px;
 }
 QAbstractSpinBox:hover {
-    border: 1px solid #004FFF;
+    border: 1px solid rgba(0, 79, 255, .5);
 }
 QAbstractSpinBox::up-button {
     border: none;
@@ -476,7 +479,7 @@ QHeaderView{
 QHeaderView:section{
     padding: 6px 20px 6px 6px;
     border: none;
-    background-color: #004FFF;
+    background-color: rgba(0, 79, 255, .5);
 }
 TransactionView QHeaderView:section{
     margin-top: 10px;
@@ -651,7 +654,7 @@ QTabBar::tab {
 }
 QTabBar::tab:selected {
     color: white;
-    border-bottom: 5px solid #004FFF;
+    border-bottom: 5px solid rgba(0, 79, 255, .5);
 }
 QTabBar::tab:hover:!selected {
     color: rgba(255, 255, 255, 85%);
@@ -843,7 +846,7 @@ Push Button CSS
 --------------------------------------------*/
 QPushButton {
     color: white; 
-    background:  #004FFF;
+    background:  rgba(0, 79, 255, .5);
     border: none;
     border-radius: 12px;
     min-width: 5em;
@@ -1206,7 +1209,7 @@ QToolBar {
     background-position: bottom left;
     background-repeat: no-repeat;
     background-color: #000000;
-    border-right: 1px solid #004FFF;
+    border-right: 1px solid rgba(0, 79, 255, .5);
     height:100%;
     padding-top:20px
     }
@@ -1230,7 +1233,7 @@ QToolBar {
     
     QToolBar > QToolButton:pressed, QToolBar > QToolButton:hover:pressed, QToolBar > QToolButton:checked {
       color: #ffffff;
-      background: #004FFF;
+      background: rgba(0, 79, 255, .5);
     }
     QToolBar > QToolButton:hover:!checked {
       color: #ffffff;
@@ -1244,12 +1247,12 @@ QToolBar {
 QverviewPage -> QToolButton START
 ----------------------------------------------*/
 QWidget#toolBoxWidget .QToolButton {
-    border:  1px solid  #004FFF;
+    border:  1px solid  rgba(0, 79, 255, .5);
     background-color: transparent;
     font-size:12px;
     font-weight: bold;
     padding:4px 6px;
-    color: #004FFF;
+    color: rgba(0, 79, 255, .5);
     border-radius: 12px;
     }
   
@@ -1321,7 +1324,7 @@ InfinitynodeList .QLabel {
     background-position: right;
     }
     #nodesCount {
-    background-color: #004FFF;
+    background-color: rgba(0, 79, 255, .5);
     }
     #nodesCount .QLabel {
     color: #FFFFFF;
@@ -1363,12 +1366,12 @@ StatsPage #label,
 #top10Label,
 #top50Label,
 #activeLabel{
-    color: #004FFF;
+    color: rgba(0, 79, 255, .5);
 }
 
 StatsPage #hline1Stats,
 #hline2Stats,
 #hline3Stats,
 #hline4Stats {
-    background-color: #004FFF;
+    background-color: rgba(0, 79, 255, .5);
 }
