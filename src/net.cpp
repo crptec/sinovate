@@ -2247,16 +2247,17 @@ CNode* CConnman::OpenNetworkConnection(const CAddress& addrConnect, bool fCountF
         grantOutbound->MoveTo(pnode->grantOutbound);
 
 //>SIN
-    if (addrConnect.GetPort() == Params().GetBFTPPort()) {
+    if (pnode->addr.GetPort() == Params().GetBFTPPort()) {
         //bFTP connection
+        LogPrint(BCLog::NET, "connection to %s with BFTP protocol.\n", pnode->addr.ToString());
         m_msgproc->InitializeBFTPNode(pnode);
-        LogPrint(BCLog::NET, "connection to %s with BFTP protocol.\n", addrConnect.ToString());
         {
             LOCK(cs_vBFTPNodes);
             vBFTPNodes.push_back(pnode);
         }
     } else {
         //default
+        LogPrint(BCLog::NET, "connection to %s with SIN protocol.\n", pnode->addr.ToString());
         m_msgproc->InitializeNode(pnode);
         {
             LOCK(cs_vNodes);
