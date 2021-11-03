@@ -1318,6 +1318,9 @@ private:
     std::thread threadOpenAddedConnections;
     std::thread threadOpenConnections;
     std::thread threadMessageHandler;
+//>SIN
+    std::thread threadBFTPMessageHandler;
+//<SIN
     std::thread threadI2PAcceptIncoming;
 
     /** flag for deciding to connect to an extra outbound peer,

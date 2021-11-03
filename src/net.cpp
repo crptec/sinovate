@@ -2693,6 +2693,11 @@ bool CConnman::Start(CScheduler& scheduler, const Options& connOptions)
     // Process messages
     threadMessageHandler = std::thread(&TraceThread<std::function<void()> >, "msghand", std::function<void()>(std::bind(&CConnman::ThreadMessageHandler, this)));
 
+//>SIN
+    // Process BFTP messages
+    threadBFTPMessageHandler = std::thread(&TraceThread<std::function<void()> >, "bftpmh", std::function<void()>(std::bind(&CConnman::ThreadBFTPMessageHandler, this)));
+//<SIN
+
     if (connOptions.m_i2p_accept_incoming && m_i2p_sam_session.get() != nullptr) {
         threadI2PAcceptIncoming =
             std::thread(&TraceThread<std::function<void()>>, "i2paccept",
@@ -2751,6 +2756,10 @@ void CConnman::StopThreads()
     }
     if (threadMessageHandler.joinable())
         threadMessageHandler.join();
+//>SIN
+    if (threadBFTPMessageHandler.joinable())
+        threadBFTPMessageHandler.join();
+//<SIN
     if (threadOpenConnections.joinable())
         threadOpenConnections.join();
     if (threadOpenAddedConnections.joinable())
