@@ -1302,6 +1302,42 @@ void CConnman::DisconnectNodes()
             }
         }
     }
+//>SIN
+    {
+        LOCK(cs_vBFTPNodes);
+
+        if (!fNetworkActive) {
+            // Disconnect any connected nodes
+            for (CNode* pnode : vBFTPNodes) {
+                if (!pnode->fDisconnect) {
+                    LogPrint(BCLog::NET, "Network not active, dropping peer=%d\n", pnode->GetId());
+                    pnode->fDisconnect = true;
+                }
+            }
+        }
+
+        // Disconnect unused BFTP nodes
+        std::vector<CNode*> vNodesCopy = vBFTPNodes;
+        for (CNode* pnode : vNodesCopy)
+        {
+            if (pnode->fDisconnect)
+            {
+                // remove from vBFTPNodes
+                vBFTPNodes.erase(remove(vBFTPNodes.begin(), vBFTPNodes.end(), pnode), vBFTPNodes.end());
+
+                // release outbound grant (if any)
+                pnode->grantOutbound.Release();
+
+                // close socket and cleanup
+                pnode->CloseSocketDisconnect();
+
+                // hold in disconnected pool until all refs are released
+                pnode->Release();
+                vNodesDisconnected.push_back(pnode);
+            }
+        }
+    }
+//<SIN
     {
         // Delete disconnected nodes
         std::list<CNode*> vNodesDisconnectedCopy = vNodesDisconnected;
