@@ -1894,6 +1894,19 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     connOptions.nMaxOutboundLimit = 1024 * 1024 * args.GetArg("-maxuploadtarget", DEFAULT_MAX_UPLOAD_TARGET);
     connOptions.m_peer_connect_timeout = peer_connect_timeout;
 
+//>SIN
+    /*add BFTP bind port if node is Infinitynode*/
+    if (fInfinityNode) {
+        struct in_addr inaddr_any;
+        inaddr_any.s_addr = htonl(INADDR_ANY);
+        struct in6_addr inaddr6_any = IN6ADDR_ANY_INIT;
+        CService bind_bftp_addr = CService(inaddr_any, chainparams.GetBFTPPort());
+        CService bind_bftp_addr6 = CService(inaddr6_any, chainparams.GetBFTPPort());
+        connOptions.vBinds.push_back(bind_bftp_addr);
+        connOptions.vBinds.push_back(bind_bftp_addr6);
+    }
+//<SIN
+
     for (const std::string& bind_arg : args.GetArgs("-bind")) {
         CService bind_addr;
         const size_t index = bind_arg.rfind('=');
