@@ -1048,7 +1048,7 @@ void PeerManagerImpl::InitializeBFTPNode(CNode *pnode)
         int64_t nTime = GetTime();
         m_connman.PushMessage(pnode, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::BFTPINIT, PROTOCOL_VERSION, (uint64_t)nLocalNodeServices, nTime, addrYou, addrMe,
             nonce, strSubVersion, nNodeStartingHeight));
-        LogPrint(BCLog::NET, "send bftp version message: version %d, blocks=%d, us=%s, peer=%d\n", PROTOCOL_VERSION, nNodeStartingHeight, addrMe.ToString(), nodeid);
+        LogPrint(BCLog::NET, "sent bftp version message: version %d, blocks=%d, us=%s, peer=%d, nonce: %d\n", PROTOCOL_VERSION, nNodeStartingHeight, addrMe.ToString(), nodeid, nonce);
     }
 }
 //<SIN
@@ -2491,8 +2491,6 @@ void PeerManagerImpl::ProcessBFTPMessage(CNode& pfrom, const std::string& msg_ty
                                      const std::chrono::microseconds time_received,
                                      const std::atomic<bool>& interruptMsgProc)
 {
-    LogPrint(BCLog::NET, "received BFTP message: %s (%u bytes) peer=%d\n", SanitizeString(msg_type), vRecv.size(), pfrom.GetId());
-
     PeerRef peer = GetPeerRef(pfrom.GetId());
     if (peer == nullptr) return;
 
@@ -2552,6 +2550,7 @@ void PeerManagerImpl::ProcessBFTPMessage(CNode& pfrom, const std::string& msg_ty
         }
         peer->m_starting_height = starting_height;
 
+        LogPrint(BCLog::NET, "bFTP server peer=%d init message: nonce: %d\n", pfrom.GetId(), nNonce);
         return;
     }
 
@@ -4167,7 +4166,6 @@ bool PeerManagerImpl::ProcessBFTPMessages(CNode* pfrom, std::atomic<bool>& inter
 
     // Message size
     unsigned int nMessageSize = msg.m_message_size;
-
     try {
         ProcessBFTPMessage(*pfrom, msg_type, msg.m_recv, msg.m_time, interruptMsgProc);
         if (interruptMsgProc) return false;

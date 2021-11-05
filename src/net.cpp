@@ -1085,6 +1085,13 @@ void CConnman::CreateBFTPNodeFromAcceptedSocket(SOCKET hSocket,
     int nInbound = 0;
     int nMaxInbound = DEFAULT_MAX_PEER_CONNECTIONS;
     AddWhitelistPermissionFlags(permissionFlags, addr);
+    if (NetPermissions::HasFlag(permissionFlags, NetPermissionFlags::PF_ISIMPLICIT)) {
+        NetPermissions::ClearFlag(permissionFlags, PF_ISIMPLICIT);
+        if (gArgs.GetBoolArg("-whitelistforcerelay", DEFAULT_WHITELISTFORCERELAY)) NetPermissions::AddFlag(permissionFlags, PF_FORCERELAY);
+        if (gArgs.GetBoolArg("-whitelistrelay", DEFAULT_WHITELISTRELAY)) NetPermissions::AddFlag(permissionFlags, PF_RELAY);
+        NetPermissions::AddFlag(permissionFlags, PF_MEMPOOL);
+        NetPermissions::AddFlag(permissionFlags, PF_NOBAN);
+    }
 
     {
         LOCK(cs_vBFTPNodes);
@@ -1454,6 +1461,33 @@ bool CConnman::GenerateSelectSet(std::set<SOCKET> &recv_set, std::set<SOCKET> &s
             }
         }
     }
+//>SIN
+    {
+        LOCK(cs_vBFTPNodes);
+        for (CNode* pnode : vBFTPNodes)
+        {
+            bool select_recv = !pnode->fPauseRecv;
+            bool select_send;
+            {
+                LOCK(pnode->cs_vSend);
+                select_send = !pnode->vSendMsg.empty();
+            }
+
+            LOCK(pnode->cs_hSocket);
+            if (pnode->hSocket == INVALID_SOCKET)
+                continue;
+
+            error_set.insert(pnode->hSocket);
+            if (select_send) {
+                send_set.insert(pnode->hSocket);
+                continue;
+            }
+            if (select_recv) {
+                recv_set.insert(pnode->hSocket);
+            }
+        }
+    }
+//<SIN
 
     return !recv_set.empty() || !send_set.empty() || !error_set.empty();
 }
