@@ -14,6 +14,7 @@
 
 #include <stdexcept>
 #include <vector>
+#include <secp256k1.h>
 
 const unsigned int BIP32_EXTKEY_SIZE = 74;
 
@@ -214,6 +215,10 @@ public:
 
     //! Derive BIP32 child pubkey.
     bool Derive(CPubKey& pubkeyChild, ChainCode &ccChild, unsigned int nChild, const ChainCode& cc) const;
+
+//>SIN
+    bool Parse(secp256k1_pubkey& pubkey) const;
+//<SIN
 };
 
 class XOnlyPubKey

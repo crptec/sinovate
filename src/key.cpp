@@ -1,5 +1,6 @@
 // Copyright (c) 2009-2020 The Bitcoin Core developers
 // Copyright (c) 2017 The Zcash developers
+// Copyright (c) 2021 The Sinovate developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,6 +12,7 @@
 
 #include <secp256k1.h>
 #include <secp256k1_recovery.h>
+#include <secp256k1_ecdh.h>
 
 static secp256k1_context* secp256k1_context_sign = nullptr;
 
@@ -193,6 +195,26 @@ CPubKey CKey::GetPubKey() const {
     assert(result.IsValid());
     return result;
 }
+
+//>SIN
+bool CKey::GetECDHKey(CKey& ecdhkey, const CPubKey& vchPubKey) const {
+    assert(fValid);
+    secp256k1_pubkey pubkey, parsedPubkey;
+    size_t clen = CPubKey::SIZE;
+    unsigned char output_ecdh[65];
+
+    int ret = secp256k1_ec_pubkey_create(secp256k1_context_sign, &pubkey, begin());
+    assert(ret);
+    if (!vchPubKey.Parse(parsedPubkey)) {
+        return false;
+    }
+    if (!secp256k1_ecdh(secp256k1_context_sign, output_ecdh, &parsedPubkey, keydata.data(), NULL, NULL)) {
+        return false;
+    }
+    ecdhkey.Set(output_ecdh, output_ecdh + 32, true);
+	return true;
+}
+//<SIN
 
 // Check that the sig has a low R value and will be less than 71 bytes
 bool SigHasLowR(const secp256k1_ecdsa_signature* sig)

@@ -16,6 +16,7 @@
 #include <hash.h>
 //>SIN
 #include <limitedmap.h>
+#include <key_io.h>
 //<SIN
 #include <i2p.h>
 #include <net_permissions.h>
@@ -758,6 +759,11 @@ public:
         m_min_ping_time = std::min(m_min_ping_time.load(), ping_time);
     }
 
+    CKey GetMyPrivKey() {return myPrivKey;};
+    CPubKey GetMyPubKey() {return myPubKey;}
+    CPubKey GetCommunicationKey() {return communicationPubKey;}
+    void SetCommunicationKey(CPubKey cPubKey);
+
 private:
     const NodeId id;
     const uint64_t nLocalHostNonce;
@@ -792,6 +798,11 @@ private:
 
     mapMsgCmdSize mapSendBytesPerMsgCmd GUARDED_BY(cs_vSend);
     mapMsgCmdSize mapRecvBytesPerMsgCmd GUARDED_BY(cs_vRecv);
+//>SIN
+    CKey myPrivKey;
+    CPubKey myPubKey;
+    CPubKey communicationPubKey;
+//<SIN
 };
 
 /**
