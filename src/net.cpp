@@ -559,6 +559,13 @@ void CNode::SetAddrLocal(const CService& addrLocalIn) {
     }
 }
 
+//>SIN
+void CNode::SetCommunicationKey(CPubKey cPubKey)
+{
+    communicationPubKey = cPubKey;
+}
+//<SIN
+
 Network CNode::ConnectedThroughNetwork() const
 {
     return m_inbound_onion ? NET_ONION : addr.GetNetClass();
@@ -3231,6 +3238,11 @@ CNode::CNode(NodeId idIn, ServiceFlags nLocalServicesIn, SOCKET hSocketIn, const
 
     m_deserializer = std::make_unique<V1TransportDeserializer>(V1TransportDeserializer(Params(), GetId(), SER_NETWORK, INIT_PROTO_VERSION));
     m_serializer = std::make_unique<V1TransportSerializer>(V1TransportSerializer());
+//>SIN
+    myPrivKey.MakeNewKey(true);
+    myPubKey = myPrivKey.GetPubKey();
+    assert(myPrivKey.VerifyPubKey(myPubKey));
+//<SIN
 }
 
 CNode::~CNode()

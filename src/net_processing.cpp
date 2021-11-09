@@ -1040,6 +1040,7 @@ void PeerManagerImpl::InitializeBFTPNode(CNode *pnode)
         const int nNodeStartingHeight{m_best_height};
         NodeId nodeid = pnode->GetId();
         CAddress addr = pnode->addr;
+        CPubKey pubkey = pnode->GetMyPubKey();
 
         CAddress addrYou = addr.IsRoutable() && !IsProxy(addr) && addr.IsAddrV1Compatible() ?
                            addr :
@@ -1047,8 +1048,9 @@ void PeerManagerImpl::InitializeBFTPNode(CNode *pnode)
         CAddress addrMe = CAddress(CService(), nLocalNodeServices);
         int64_t nTime = GetTime();
         m_connman.PushMessage(pnode, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::BFTPINIT, PROTOCOL_VERSION, (uint64_t)nLocalNodeServices, nTime, addrYou, addrMe,
-            nonce, strSubVersion, nNodeStartingHeight));
-        LogPrint(BCLog::NET, "sent bftp version message: version %d, blocks=%d, us=%s, peer=%d, nonce: %d\n", PROTOCOL_VERSION, nNodeStartingHeight, addrMe.ToString(), nodeid, nonce);
+            nonce, strSubVersion, nNodeStartingHeight, pubkey));
+        LogPrint(BCLog::NET, "sent bftp version message: version %d, blocks=%d, us=%s, peer=%d, nonce: %d, pubkey:%s\n", 
+	        PROTOCOL_VERSION, nNodeStartingHeight, addrMe.ToString(), nodeid, nonce, EncodeBase64(pubkey));
     }
 }
 //<SIN
@@ -2509,6 +2511,7 @@ void PeerManagerImpl::ProcessBFTPMessage(CNode& pfrom, const std::string& msg_ty
         int nVersion;
         std::string cleanSubVer;
         int starting_height = -1;
+	    CPubKey cPubKey;
 
         vRecv >> nVersion >> nServiceInt >> nTime >> addrMe;
         if (nTime < 0) {
@@ -2533,7 +2536,7 @@ void PeerManagerImpl::ProcessBFTPMessage(CNode& pfrom, const std::string& msg_ty
             cleanSubVer = SanitizeString(strSubVer);
         }
         if (!vRecv.empty()) {
-            vRecv >> starting_height;
+            vRecv >> starting_height >> cPubKey;
         }
         // Disconnect if we connected to ourself
         if (pfrom.IsInboundConn() && !m_connman.CheckIncomingNonce(nNonce))
@@ -2549,8 +2552,9 @@ void PeerManagerImpl::ProcessBFTPMessage(CNode& pfrom, const std::string& msg_ty
             pfrom.cleanSubVer = cleanSubVer;
         }
         peer->m_starting_height = starting_height;
+        pfrom.SetCommunicationKey(cPubKey);
 
-        LogPrint(BCLog::NET, "bFTP server peer=%d init message: nonce: %d\n", pfrom.GetId(), nNonce);
+        LogPrint(BCLog::NET, "bFTP server peer=%d init message: nonce: %d, client PubKey: %s\n", pfrom.GetId(), nNonce, EncodeBase64(pfrom.GetCommunicationKey()));
         return;
     }
 
