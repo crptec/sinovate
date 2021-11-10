@@ -192,7 +192,7 @@ public:
         pchMessageStart[3] = 0xb8;
         nDefaultPort = 20970;
 //>SIN
-        nBFTPPort=20972;
+        nBFTPPort=20973;
 //<SIN
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 2;
@@ -353,7 +353,7 @@ public:
         pchMessageStart[3] = 0xd8;
         nDefaultPort = 20980;
 //>SIN
-        nBFTPPort=20982;
+        nBFTPPort=20983;
 //<SIN
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 0;
@@ -486,9 +486,9 @@ public:
         uint256 hash = h.GetHash();
         memcpy(pchMessageStart, hash.begin(), 4);
 
-        nDefaultPort = 38333;
+        nDefaultPort = 20990;
 //>SIN
-        nBFTPPort=38335;
+        nBFTPPort=20993;
 //<SIN
         nPruneAfterHeight = 1000;
 
@@ -626,9 +626,9 @@ public:
         pchMessageStart[1] = 0xbf;
         pchMessageStart[2] = 0xb5;
         pchMessageStart[3] = 0xda;
-        nDefaultPort = 18444;
+        nDefaultPort = 20990;
 //>SIN
-        nBFTPPort=18446;
+        nBFTPPort=20993;
 //<SIN
         nPruneAfterHeight = gArgs.GetBoolArg("-fastprune", false) ? 100 : 1000;
         m_assumed_blockchain_size = 0;
