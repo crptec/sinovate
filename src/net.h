@@ -762,7 +762,8 @@ public:
     CKey GetMyPrivKey() {return myPrivKey;};
     CPubKey GetMyPubKey() {return myPubKey;}
     CPubKey GetCommunicationKey() {return communicationPubKey;}
-    void SetCommunicationKey(CPubKey cPubKey);
+    bool SetCommunicationKey(CPubKey cPubKey);
+    CKey GetEncryptionKey() {return encryptionKey;};
 
 private:
     const NodeId id;
@@ -802,6 +803,7 @@ private:
     CKey myPrivKey;
     CPubKey myPubKey;
     CPubKey communicationPubKey;
+	CKey encryptionKey;
 //<SIN
 };
 
@@ -893,6 +895,7 @@ public:
         std::vector<std::string> m_added_nodes;
         std::vector<bool> m_asmap;
         bool m_i2p_accept_incoming;
+        bool bftp = false;
     };
 
     void Init(const Options& connOptions) {
@@ -920,6 +923,7 @@ public:
             vAddedNodes = connOptions.m_added_nodes;
         }
         m_onion_binds = connOptions.onion_binds;
+        bftp = connOptions.bftp;
     }
 
     CConnman(uint64_t seed0, uint64_t seed1, CAddrMan& addrman, bool network_active = true);
@@ -1109,7 +1113,8 @@ private:
     bool InitBinds(
         const std::vector<CService>& binds,
         const std::vector<NetWhitebindPermissions>& whiteBinds,
-        const std::vector<CService>& onion_binds);
+        const std::vector<CService>& onion_binds,
+        const bool bftp);
 
     void ThreadOpenAddedConnections();
     void AddAddrFetch(const std::string& strDest);
@@ -1352,6 +1357,7 @@ private:
      * an address and port that are designated for incoming Tor connections.
      */
     std::vector<CService> m_onion_binds;
+    bool bftp;
 
     friend struct CConnmanTest;
     friend struct ConnmanTestMsg;

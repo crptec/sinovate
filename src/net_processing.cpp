@@ -2552,9 +2552,11 @@ void PeerManagerImpl::ProcessBFTPMessage(CNode& pfrom, const std::string& msg_ty
             pfrom.cleanSubVer = cleanSubVer;
         }
         peer->m_starting_height = starting_height;
+        /*TODO: if can not set communication key, nDos = 30*/
         pfrom.SetCommunicationKey(cPubKey);
 
-        LogPrint(BCLog::NET, "bFTP server peer=%d init message: nonce: %d, client PubKey: %s\n", pfrom.GetId(), nNonce, EncodeBase64(pfrom.GetCommunicationKey()));
+        LogPrint(BCLog::NET, "bFTP server peer=%d init message: nonce: %d, client PubKey: %s, common Key: %s\n", pfrom.GetId(),
+            nNonce, EncodeBase64(pfrom.GetCommunicationKey()), EncodeSecret(pfrom.GetEncryptionKey()));
         return;
     }
 
