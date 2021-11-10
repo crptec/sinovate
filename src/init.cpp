@@ -1897,13 +1897,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 //>SIN
     /*add BFTP bind port if node is Infinitynode*/
     if (fInfinityNode) {
-        struct in_addr inaddr_any;
-        inaddr_any.s_addr = htonl(INADDR_ANY);
-        struct in6_addr inaddr6_any = IN6ADDR_ANY_INIT;
-        CService bind_bftp_addr = CService(inaddr_any, chainparams.GetBFTPPort());
-        CService bind_bftp_addr6 = CService(inaddr6_any, chainparams.GetBFTPPort());
-        connOptions.vBinds.push_back(bind_bftp_addr);
-        connOptions.vBinds.push_back(bind_bftp_addr6);
+        connOptions.bftp = true;
     }
 //<SIN
 

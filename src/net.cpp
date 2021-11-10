@@ -560,9 +560,12 @@ void CNode::SetAddrLocal(const CService& addrLocalIn) {
 }
 
 //>SIN
-void CNode::SetCommunicationKey(CPubKey cPubKey)
+bool CNode::SetCommunicationKey(CPubKey cPubKey)
 {
+    if (!cPubKey.IsFullyValid()) return false;
     communicationPubKey = cPubKey;
+    if (!myPrivKey.GetECDHKey(encryptionKey, cPubKey)) return false;
+    return true;
 }
 //<SIN
 
@@ -2647,7 +2650,8 @@ bool CConnman::Bind(const CService &addr, unsigned int flags, NetPermissionFlags
 bool CConnman::InitBinds(
     const std::vector<CService>& binds,
     const std::vector<NetWhitebindPermissions>& whiteBinds,
-    const std::vector<CService>& onion_binds)
+    const std::vector<CService>& onion_binds,
+    const bool bftp)
 {
     bool fBound = false;
     for (const auto& addrBind : binds) {
@@ -2662,6 +2666,10 @@ bool CConnman::InitBinds(
         struct in6_addr inaddr6_any = IN6ADDR_ANY_INIT;
         fBound |= Bind(CService(inaddr6_any, GetListenPort()), BF_NONE, NetPermissionFlags::PF_NONE);
         fBound |= Bind(CService(inaddr_any, GetListenPort()), !fBound ? BF_REPORT_ERROR : BF_NONE, NetPermissionFlags::PF_NONE);
+        if (bftp) {
+            fBound |= Bind(CService(inaddr6_any, Params().GetBFTPPort()), BF_NONE, NetPermissionFlags::PF_NONE);
+            fBound |= Bind(CService(inaddr_any, Params().GetBFTPPort()), BF_NONE, NetPermissionFlags::PF_NONE);
+        }
     }
 
     for (const auto& addr_bind : onion_binds) {
@@ -2675,7 +2683,7 @@ bool CConnman::Start(CScheduler& scheduler, const Options& connOptions)
 {
     Init(connOptions);
 
-    if (fListen && !InitBinds(connOptions.vBinds, connOptions.vWhiteBinds, connOptions.onion_binds)) {
+    if (fListen && !InitBinds(connOptions.vBinds, connOptions.vWhiteBinds, connOptions.onion_binds, connOptions.bftp)) {
         if (clientInterface) {
             clientInterface->ThreadSafeMessageBox(
                 _("Failed to listen on any port. Use -listen=0 if you want this."),
