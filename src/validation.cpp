@@ -2054,7 +2054,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     }
 
     if (block.IsProofOfStake() && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev) && pindex->nHeight >= 11000) {
-        LogPrintf("ERROR: ConnectBlock(): PoS isn't valid\n");
+        LogPrintf("ERROR: ConnectBlock(): PoS isn't valid, state: %s\n", state.ToString());
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-proof");
     }
 
@@ -2673,6 +2673,7 @@ bool CChainState::DisconnectTip(BlockValidationState& state, const CChainParams&
         LogPrintf("DisconnectTip: removeNonMaturedList...\n");
         infnodeman.removeNonMaturedList(pindexDelete);
         infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
+        infnodelrinfo.Remove(pindexDelete->nHeight);
         infnodeman.updateFinalList(pindexDelete->pprev, view);
         infnodeman.FlushStateToDisk();
 //<SIN
@@ -3419,8 +3420,13 @@ void CChainState::ReceivedBlockTransactions(const CBlock& block, CBlockIndex* pi
     }
     // proof-of-stake: set modifier and set flags
     if (block.IsProofOfStake() && pindexNew->nHeight > consensusParams.nStartPoSHeight) {
-        LogPrintf("Setting stake modifier %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
-        pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash); 
+        LogPrintf("Setting stake modifier: input %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
+        int nPrevHeight;
+        std::string sPrevStakeModifier;
+        std::string sStakeModifier;
+        pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash, nPrevHeight, sPrevStakeModifier, sStakeModifier);
+        LogPrintf("Setting stake modifier Prev info: nHeight=%d, PrevStakeModifier=%s\n", nPrevHeight, sPrevStakeModifier);
+        LogPrintf("Setting stake modifier: StakeModifier=%s, block %s\n", sStakeModifier, block.GetHash().ToString());
     }
     if (block.IsProofOfStake()) {
         pindexNew->SetProofOfStake();

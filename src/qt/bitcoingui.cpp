@@ -163,7 +163,7 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     labelProxyIcon = new GUIUtil::ClickableLabel();
     connectionsControl = new GUIUtil::ClickableLabel();
     connectionsCount = new GUIUtil::ClickableLabel();
-    connectionsCount->setStyleSheet("QLabel {color : #008AC8; }");
+    connectionsCount->setStyleSheet("QLabel {font-family:MADE TOMMY; color : #008AC8; }");
     labelBlocksIcon = new GUIUtil::ClickableLabel();
     labelStakingIcon = new QLabel();
     frameBlocksLayout->addStretch();
@@ -210,7 +210,7 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
     QString curStyle = QApplication::style()->metaObject()->className();
     if(curStyle == "QWindowsStyle" || curStyle == "QWindowsXPStyle")
     {
-        progressBar->setStyleSheet("QProgressBar { background-color: #e8e8e8; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FF8000, stop: 1 orange); border-radius: 7px; margin: 0px; }");
+        progressBar->setStyleSheet("QProgressBar { font-family:MADE TOMMY; background-color: #e8e8e8; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FF8000, stop: 1 orange); border-radius: 7px; margin: 0px; }");
     }
 
     statusBar()->addWidget(progressBarLabel);
@@ -307,7 +307,7 @@ void BitcoinGUI::createActions()
     receiveCoinsMenuAction->setStatusTip(receiveCoinsAction->statusTip());
     receiveCoinsMenuAction->setToolTip(receiveCoinsMenuAction->statusTip());
 
-    stakePageAction = new QAction(platformStyle->MultiStatesIcon(":/icons/tx_mined", PlatformStyle::NavBar), tr(" Staki&ng"), this);
+    stakePageAction = new QAction(platformStyle->MultiStatesIcon(":/icons/pos", PlatformStyle::NavBar), tr(" Staki&ng"), this);
     stakePageAction->setStatusTip(tr("Staking"));
     stakePageAction->setToolTip(stakePageAction->statusTip());
     stakePageAction->setCheckable(true);
@@ -636,7 +636,7 @@ void BitcoinGUI::createToolBars()
     	mainBrand->setText("SINOVATE");
     	mainBrand->setAlignment(Qt::AlignCenter);
     	mainBrand->show();
-    	mainBrand->setStyleSheet("QLabel { color:#F2F2F2; font-size:16px; font-weight:normal; margin-bottom: 30px;}");
+    	mainBrand->setStyleSheet("QLabel { color:#F2F2F2; font-family:MADE TOMMY; font-size:18px; font-weight:normal; margin-bottom: 30px;}");
     	
         toolbar->addWidget(mainIcon);  
         toolbar->addWidget(mainBrand); 
@@ -661,13 +661,13 @@ void BitcoinGUI::createToolBars()
 
         m_wallet_selector = new QComboBox();
         m_wallet_selector->setFixedWidth(165);
-        m_wallet_selector->setStyleSheet("margin-left: 30px");
+        m_wallet_selector->setStyleSheet("font-family:MADE TOMMY; margin-left: 30px");
         m_wallet_selector->setSizeAdjustPolicy(QComboBox::AdjustToContents);
         connect(m_wallet_selector, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &BitcoinGUI::setCurrentWalletBySelectorIndex);
 
         m_wallet_selector_label = new QLabel();
         m_wallet_selector_label->setText(tr("Wallet:") + " ");
-        m_wallet_selector_label->setStyleSheet("color:" + colcode + "; margin-left: 30px;");
+        m_wallet_selector_label->setStyleSheet("color:" + colcode + "; font-family:MADE TOMMY; margin-left: 30px;");
         m_wallet_selector_label->setBuddy(m_wallet_selector);
 
         m_wallet_selector_label_action = appToolBar->addWidget(m_wallet_selector_label);
@@ -679,7 +679,7 @@ void BitcoinGUI::createToolBars()
                     
 		QLabel* labelVersion = new QLabel();
         labelVersion->setText(QString(tr("BETELGEUSE\nv%1\n")).arg(QString::fromStdString(FormatVersionFriendly())));
-        labelVersion->setStyleSheet("color:" + colcode + "; margin-bottom: 2px; font-weight : bold;");
+        labelVersion->setStyleSheet("color:" + colcode + "; margin-bottom: 2px; font-family:MADE TOMMY; font-weight : bold;");
         labelVersion->setAlignment(Qt::AlignCenter);
         
          //// Set widget bottomBar on the bottom toolbar ////
@@ -1705,7 +1705,7 @@ UnitDisplayStatusBarControl::UnitDisplayStatusBarControl(const PlatformStyle *pl
     }
     setMinimumSize(max_width, 0);
     setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    setStyleSheet(QString("QLabel { color : %1 }").arg(platformStyle->SingleColor().name()));
+    setStyleSheet(QString("QLabel { font-family:MADE TOMMY; color : %1 ; }").arg(platformStyle->SingleColor().name()));
 }
 
 /** So that it responds to button clicks */

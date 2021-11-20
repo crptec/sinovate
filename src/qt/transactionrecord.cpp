@@ -79,6 +79,9 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                 {
                     // Generated
                     sub.type = TransactionRecord::Generated;
+                    if (i == 2 || i == 3 || i == 4) {
+                        sub.type = TransactionRecord::DINReward;
+                    }
                 }
                 if (wtx.is_coinstake)
                 {

@@ -77,6 +77,7 @@ public:
         Other,
         Generated,
         Minted,
+        DINReward,
         SendToAddress,
         Burn,
         SendToOther,

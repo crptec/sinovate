@@ -3,7 +3,7 @@ Tree view CSS
 --------------------------------------------*/
 QTreeWidget {
 	background-color:rgba(0,0,0,0);
-	selection-background-color: #004FFF;
+	selection-background-color: rgba(0, 79, 255, .5);
 	show-decoration-selected:0;
 }
 QTreeView{
@@ -19,7 +19,7 @@ QTreeView::item{
     padding: 4px;
 }
 QTreeView::item:selected{
-    background: #004FFF;
+    background: #1E2B47;
     color: white;
 }
 QTreeView::disabled{

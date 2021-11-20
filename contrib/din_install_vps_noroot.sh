@@ -3,7 +3,9 @@
 clear
 
 #read user
-echo -e "Enter the username of the D.I.N. user (default: sinovate)"
+echo -e "Please enter username for the new D.I.N. user (default: sinovate)"
+echo -e "root login will be disabled for security reasons"
+
 read NODEUSER
 if [ -z "$NODEUSER" ]; then
   NODEUSER="sinovate"
@@ -15,7 +17,7 @@ COIN_DAEMON="/home/$NODEUSER/sind"
 COIN_CLI="/home/$NODEUSER/sin-cli"
 ##
 CONFIG_FILE='sin.conf'
-
+echo "SIN script v8 used" >> $CONFIGFOLDER/debug.log
 # need to change
 COIN_REPO='https://github.com/SINOVATEblockchain/SIN-core/releases/latest/download/daemon.tar.gz'
 #
@@ -36,7 +38,7 @@ function create_user() {
     adduser $NODEUSER sudo
 #    sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
     sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin prohibit-password/g; }' /etc/ssh/sshd_config
-    systemctl restart ssh || systemctl restart sshd
+    systemctl reload ssh || systemctl reload sshd
   fi
   echo -e "${NC}"
   clear
@@ -157,7 +159,7 @@ rpcport=20961
   ADDRESS=$(echo "$KEYPAIR" | awk '/Address/{print $2}')
 
   $CLITMP createwallet wallet >/dev/null 2>&1 &&\
-    $CLITMP importprivkey $NODE_PRIVATEKEY >/dev/null 2>&1
+    $CLITMP importprivkey $COINKEY >/dev/null 2>&1
 
   $CLITMP stop >/dev/null 2>&1
   while [ "$(pgrep -f $NODE_TMPDIR)" ]; do sleep 0.2; done
@@ -274,6 +276,9 @@ function important_information() {
  echo "5. wait for 6 confirmations"
  echo -e "6. ${GREEN}infinitynodeupdatemeta OwnerAddress $PUBLICKEY $NODEIP first_16_char_BurnFundTx${NC}"
  echo "7. wait 55 confirmations to activate infinity node"
+ echo
+ echo -e "${RED}For security, the root user has been disabled for login via ssh password${NC}"
+ echo -e "To work with the node, please log in as a user ${GREEN}$NODEUSER${NC}"
  echo
 }
 

@@ -1014,6 +1014,11 @@
          </item>
          <item>
           <widget class="SinPushButton" name="buttonSend">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Send</string>
            </property>
@@ -1021,6 +1026,11 @@
          </item>
          <item>
           <widget class="SinPushButton" name="buttonReceive">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Receive</string>
            </property>
