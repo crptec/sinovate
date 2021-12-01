@@ -111,6 +111,7 @@ public:
         consensus.nDINActivationHeight = 550000; // Activation of DIN 1.0 payments, and new dev fee address.
         consensus.nINMetaUpdateChangeHeight=9999999; // Activation newmethod updatemetadata. Sinovate mainnet The same as POS4
         consensus.nINMetaUpdateCachedNextBlock=9999999; // Activation new method with cached next block. Sinovate mainnet The same as POS4
+        consensus.nTxFeeHeight=9999999; // check burn tx fee and amount. Sinovate mainnet The same as POS4
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 170000;
@@ -191,6 +192,7 @@ public:
         pchMessageStart[2] = 0xd4;
         pchMessageStart[3] = 0xb8;
         nDefaultPort = 20970;
+
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 2;
         m_assumed_chain_state_size = 0.2;
@@ -279,6 +281,7 @@ public:
         consensus.nDINActivationHeight = 2880; // Activation of DIN 1.0 payments, and new dev fee address.
         consensus.nINMetaUpdateChangeHeight=3000;
         consensus.nINMetaUpdateCachedNextBlock=3000;
+        consensus.nTxFeeHeight=36270;
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 150;
@@ -349,6 +352,7 @@ public:
         pchMessageStart[2] = 0xf4;
         pchMessageStart[3] = 0xd8;
         nDefaultPort = 20980;
+
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
@@ -467,6 +471,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].min_activation_height = 0; // No activation delay
 
         consensus.nINMetaUpdateChangeHeight=0;
+        consensus.nTxFeeHeight=36270;
 
         // Activation of Taproot (BIPs 340-342)
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
@@ -546,6 +551,7 @@ public:
         consensus.nDINActivationHeight = 800; // Activation of DIN 1.0 payments, and new dev fee address.
         consensus.nINMetaUpdateChangeHeight=0; // can use last method on regnet
         consensus.nINMetaUpdateCachedNextBlock=0; // can use last method on regnet
+        consensus.nTxFeeHeight=1000;
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 500;
@@ -618,6 +624,7 @@ public:
         pchMessageStart[2] = 0xb5;
         pchMessageStart[3] = 0xda;
         nDefaultPort = 18444;
+
         nPruneAfterHeight = gArgs.GetBoolArg("-fastprune", false) ? 100 : 1000;
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
