@@ -2339,11 +2339,11 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                 std::string sErrorCheck = "";
 
                 LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- index: %d, SinType: %d\n", txIndex, SINType);
+                CAmount InfPaymentOwner = 0;
+                InfPaymentOwner = GetInfinitynodePayment(nBlockHeight, SINType);
+
                 LOCK(infnodeman.cs);
                 if (infnodeman.deterministicRewardAtHeightOnValidation(nBlockHeight, SINType, infOwner)){
-
-                    CAmount InfPaymentOwner = 0;
-                    InfPaymentOwner = GetInfinitynodePayment(nBlockHeight, SINType);
 
                     bool fCandidateValid = false;
                     CTxDestination addressTxDIN;
