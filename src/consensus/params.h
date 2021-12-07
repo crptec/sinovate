@@ -79,8 +79,9 @@ struct Params {
     int nINActivationHeight; // block height (int)
     int nINEnforcementHeight; // block height (int)
     int nDINActivationHeight; // block height (int) - DIN switch height
-    int nINMetaUpdateChangeHeight; // block height (int) - new method of updatemetadata
-    int nINMetaUpdateCachedNextBlock; // block height (int) - fork to use cached metadata of next block
+    int nINMetaUpdateChangeHeight; // block height (int) - new method of updatemetadata  -active the same time as POS
+    int nINMetaUpdateCachedNextBlock; // block height (int) - fork to use cached metadata of next block -active the same time as POS
+    int nTxFeeHeight; // block height (int) - check burn tx fee in consensus -active the same time as POS
 
     // different constant addresses we use 
     const char *devAddressPubKey;

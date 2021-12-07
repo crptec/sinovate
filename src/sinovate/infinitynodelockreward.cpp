@@ -2339,11 +2339,11 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                 std::string sErrorCheck = "";
 
                 LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- index: %d, SinType: %d\n", txIndex, SINType);
+                CAmount InfPaymentOwner = 0;
+                InfPaymentOwner = GetInfinitynodePayment(nBlockHeight, SINType);
+
                 LOCK(infnodeman.cs);
                 if (infnodeman.deterministicRewardAtHeightOnValidation(nBlockHeight, SINType, infOwner)){
-
-                    CAmount InfPaymentOwner = 0;
-                    InfPaymentOwner = GetInfinitynodePayment(nBlockHeight, SINType);
 
                     bool fCandidateValid = false;
                     CTxDestination addressTxDIN;
@@ -2396,17 +2396,17 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- INVALID tx out: %d, Payment for SINtype: %d, payment address: %s, colateral address: %s\n", txIndex, SINType, addressTxDIN2, infOwner.getCollateralAddress());
                         }
                     }
-                    //No LR found for candidate => payment is correct if reward is burnt
+                    //No LR found for candidate => payment is correct if reward is burnt and amount is correct
                     else {
-                        if (txout.scriptPubKey == burnfundScript){
+                        if (txout.scriptPubKey == burnfundScript && txout.nValue == InfPaymentOwner){
                             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, No LR for SINtype: %d, burnd it: %d.\n", txIndex, SINType, addressTxDIN2);
                             counterNodePayment ++;
                         }
                     }
                 }
-                //Not found candidate, payment is correct if reward is burnt
+                //Not found candidate, payment is correct if reward is burnt and amount is correct
                 else {
-                    if (txout.scriptPubKey == burnfundScript){
+                    if (txout.scriptPubKey == burnfundScript && txout.nValue == InfPaymentOwner){
                         LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, No Candiate found for SINtype: %d.\n", txIndex, SINType);
                         counterNodePayment ++;
                     }
@@ -2478,7 +2478,7 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                     LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, Payment for SINtype: %d, address: %s\n", txIndex, SINType, addressTxDIN2);
                     counterNodePayment ++;
                 } else if (fNodeAddressValid == false && fBurnRewardNode == true) {
-                    if (txout.scriptPubKey == burnfundScript){
+                    if (txout.scriptPubKey == burnfundScript && txout.nValue == InfPayment){
                         LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, No Candiate found for SINtype: %d.\n", txIndex, SINType);
                         counterNodePayment ++;
                     } else {

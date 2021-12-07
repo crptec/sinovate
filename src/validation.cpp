@@ -40,6 +40,7 @@
 #include <script/sigcache.h>
 //>SIN
 #include <script/standard.h>
+#include <core_io.h>
 //<SIN
 #include <shutdown.h>
 #include <signet.h>
@@ -75,6 +76,7 @@
 //Sinovate dev-fee consensus
 CScript devScript;
 CScript devScript2;
+CScript txfeeScript;
 bool fInfinityNode = false;
 bool fInfinitynodeRelay = false;
 std::atomic<int> nRawBlockCount(0);
@@ -2345,6 +2347,18 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
 
     if (block.vtx[i]->vout[j].nValue < GetDevCoin(pindex->nHeight, blockReward)) {
         return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-dev-fee-missing");
+    }
+
+    //Sinovte burnfee consensus - active the same time with POS
+    int nFeePosition = j + 7;
+    if (pindex->nHeight >= Params().GetConsensus().nTxFeeHeight) {
+        if (block.vtx[i]->vout[nFeePosition].scriptPubKey != txfeeScript) {
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-tx-fee-address");
+        }
+
+        if (block.vtx[i]->vout[nFeePosition].nValue != nFees) {
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-tx-fee-amount");
+        }
     }
 
     // Sinovate: add DIN consensus
@@ -4793,6 +4807,8 @@ bool ChainstateManager::LoadBlockIndex(const CChainParams& chainparams)
     // Sinovate, load dev-fee related scripts on startup
     devScript << OP_DUP << OP_HASH160 << ParseHex(chainparams.GetConsensus().devAddressPubKey) << OP_EQUALVERIFY << OP_CHECKSIG;
     devScript2 << OP_DUP << OP_HASH160 << ParseHex(chainparams.GetConsensus().devAddress2PubKey) << OP_EQUALVERIFY << OP_CHECKSIG;
+    // burnfee = 6275726e666565
+    txfeeScript << ParseHex(chainparams.GetConsensus().cBurnAddressPubKey) << OP_RETURN << ParseHex("6275726e666565");
 
     AssertLockHeld(cs_main);
     // Load block index from databases
