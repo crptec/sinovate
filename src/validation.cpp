@@ -2042,20 +2042,36 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
         return true;
     }
 
-    bool IsPoSPeriod = false;
-
-    if (pindex->nHeight > chainparams.GetConsensus().nStartPoSHeight) {
-        IsPoSPeriod = true;
+    bool fTestNet = false;
+    if (Params().NetworkIDString() == CBaseChainParams::TESTNET) {
+        fTestNet = true;
     }
 
-    if (block.IsProofOfStake() && !IsPoSPeriod) {
-        LogPrintf("ERROR: ConnectBlock(): PoS period hasn't started yet\n");
-        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-tooearly");
-    }
 
-    if (block.IsProofOfStake() && !CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev) && pindex->nHeight >= 11000) {
-        LogPrintf("ERROR: ConnectBlock(): PoS isn't valid, state: %s\n", state.ToString());
-        return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-proof");
+    if (block.IsProofOfStake()) {
+        if (pindex->nHeight <= chainparams.GetConsensus().nStartPoSHeight) { // Check for PoS start
+            LogPrint(BCLog::STAKING, "ERROR: ConnectBlock(): PoS period hasn't started yet\n");
+            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-tooearly");
+        } else {
+            pindex->SetProofOfStake();
+            LogPrint(BCLog::STAKING, "Setting stake modifier: input %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
+            int nPrevHeight;
+            std::string sPrevStakeModifier;
+            std::string sStakeModifier;
+            pindex->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash, nPrevHeight, sPrevStakeModifier, sStakeModifier);
+            LogPrint(BCLog::STAKING, "Setting stake modifier Prev info: nHeight=%d, PrevStakeModifier=%s\n", nPrevHeight, sPrevStakeModifier);
+            LogPrint(BCLog::STAKING, "Setting stake modifier: StakeModifier=%s, block %s\n", sStakeModifier, block.GetHash().ToString());
+        }
+        // proof-of-stake: set modifier and set flags
+        if (!CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev)) {
+            // Adjust for testnet fork(s)
+            if (fTestNet && pindex->nHeight <= 11000) {
+                LogPrintf("ERROR: ConnectBlock(): (pre-fork testnet) PoS isn't valid but accepting anyways, state: %s\n", state.ToString());
+            } else {
+                LogPrintf("ERROR: ConnectBlock(): PoS isn't valid, state: %s\n", state.ToString());
+                return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-proof");
+            }
+        }
     }
 
     bool fScriptChecks = true;
@@ -3418,19 +3434,6 @@ void CChainState::ReceivedBlockTransactions(const CBlock& block, CBlockIndex* pi
     if (IsWitnessEnabled(pindexNew->pprev, consensusParams)) {
         pindexNew->nStatus |= BLOCK_OPT_WITNESS;
     }
-    // proof-of-stake: set modifier and set flags
-    if (block.IsProofOfStake() && pindexNew->nHeight > consensusParams.nStartPoSHeight) {
-        LogPrintf("Setting stake modifier: input %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
-        int nPrevHeight;
-        std::string sPrevStakeModifier;
-        std::string sStakeModifier;
-        pindexNew->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash, nPrevHeight, sPrevStakeModifier, sStakeModifier);
-        LogPrintf("Setting stake modifier Prev info: nHeight=%d, PrevStakeModifier=%s\n", nPrevHeight, sPrevStakeModifier);
-        LogPrintf("Setting stake modifier: StakeModifier=%s, block %s\n", sStakeModifier, block.GetHash().ToString());
-    }
-    if (block.IsProofOfStake()) {
-        pindexNew->SetProofOfStake();
-    }
     pindexNew->RaiseValidity(BLOCK_VALID_TRANSACTIONS);
     setDirtyBlockIndex.insert(pindexNew);
 
@@ -3809,7 +3812,7 @@ static bool ContextualCheckBlock(const CBlock& block, BlockValidationState& stat
     bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
 
     if (IsPoS && !fRegTest) {
-    // Check for PoS timestamp against prev
+        // Check for PoS timestamp against prev
         if (block.GetBlockTime() <= pindexPrev->MinPastBlockTime()) {
             return state.Invalid(BlockValidationResult::BLOCK_INVALID_HEADER, "time-too-old-pos", "proof-of-stake block's timestamp is too early");
         }
