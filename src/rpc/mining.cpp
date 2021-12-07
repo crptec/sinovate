@@ -196,6 +196,10 @@ static UniValue generateBlocksPoS(ChainstateManager& chainman, const CTxMemPool&
     std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
     CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
 
+    if (!pwallet) {
+        throw JSONRPCError(RPC_WALLET_INSUFFICIENT_FUNDS, "No wallet loaded");
+    }
+
     // Wallet must be unlocked.
     EnsureWalletIsUnlocked(*pwallet);
 
