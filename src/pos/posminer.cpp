@@ -269,9 +269,13 @@ void StakerCtx::StakerPipe()
 
         // Check our wallet actually exists
         if (!pwallet) {
-            LogPrintf("%s : no wallet found, checking again in %d seconds...\n", __func__, nAverageSpacing);
-            if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
-                return;
+            wallets = GetWallets();
+            pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
+            if (!pwallet) {
+                LogPrintf("%s : no wallet found, checking again in %d seconds...\n", __func__, nAverageSpacing);
+                if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
+                    return;
+                }
             }
             continue;
         }
