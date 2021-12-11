@@ -4,9 +4,8 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 """Backwards compatibility functional test
 
-Test various backwards compatibility scenarios. Download the previous node binaries:
-
-test/get_previous_releases.py -b v0.19.1 v0.18.1 v0.17.2 v0.16.3 v0.15.2
+Test various backwards compatibility scenarios. Requires previous releases binaries,
+see test/README.md.
 
 v0.15.2 is not required by this test, but it is used in wallet_upgradewallet.py.
 Due to a hardfork in regtest, it can't be used to sync nodes.
@@ -22,6 +21,7 @@ needs an older patch version.
 import os
 import shutil
 
+from test_framework.blocktools import COINBASE_MATURITY
 from test_framework.test_framework import BitcoinTestFramework
 from test_framework.descriptors import descsum_create
 
@@ -64,13 +64,13 @@ class BackwardsCompatibilityTest(BitcoinTestFramework):
         self.import_deterministic_coinbase_privkeys()
 
     def run_test(self):
-        self.nodes[0].generatetoaddress(101, self.nodes[0].getnewaddress())
+        self.nodes[0].generatetoaddress(COINBASE_MATURITY + 1, self.nodes[0].getnewaddress())
 
         self.sync_blocks()
 
         # Sanity check the test framework:
         res = self.nodes[self.num_nodes - 1].getblockchaininfo()
-        assert_equal(res['blocks'], 101)
+        assert_equal(res['blocks'], COINBASE_MATURITY + 1)
 
         node_master = self.nodes[self.num_nodes - 5]
         node_v19 = self.nodes[self.num_nodes - 4]

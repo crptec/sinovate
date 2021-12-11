@@ -92,7 +92,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     addWidget(stakePage);
     //
 
-    connect(overviewPage, &OverviewPage::outOfSyncWarningClicked, this, &WalletView::requestedSyncWarningInfo);
+    connect(overviewPage, &OverviewPage::outOfSyncWarningClicked, this, &WalletView::outOfSyncWarningClicked);
 
     // Clicking on a transaction on the overview page simply sends you to transaction history page
     connect(overviewPage, &OverviewPage::showMoreClicked, this, &WalletView::showMore);
@@ -110,7 +110,7 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     connect(sendCoinsPage, &SendCoinsDialog::coinsSent, this, &WalletView::coinsSent);
     // Highlight transaction after send
-    connect(sendCoinsPage, &SendCoinsDialog::coinsSent, transactionView, static_cast<void (TransactionView::*)(const uint256&)>(&TransactionView::focusTransaction));
+    connect(sendCoinsPage, &SendCoinsDialog::coinsSent, transactionView, qOverload<const uint256&>(&TransactionView::focusTransaction));
 
     // Clicking on "Export" allows to export the transaction list
     connect(exportButton, &QPushButton::clicked, transactionView, &TransactionView::exportClicked);
@@ -371,7 +371,8 @@ void WalletView::backupWallet()
 {
     QString filename = GUIUtil::getSaveFileName(this,
         tr("Backup Wallet"), QString(),
-        tr("Wallet Data", "Name of wallet data file format") + QLatin1String(" (*.dat)"), nullptr);
+        //: Name of the wallet data file format.
+        tr("Wallet Data") + QLatin1String(" (*.dat)"), nullptr);
 
     if (filename.isEmpty())
         return;
@@ -437,7 +438,6 @@ void WalletView::showProgress(const QString &title, int nProgress)
         progressDialog = new QProgressDialog(title, tr("Cancel"), 0, 100);
         GUIUtil::PolishProgressDialog(progressDialog);
         progressDialog->setWindowModality(Qt::ApplicationModal);
-        progressDialog->setMinimumDuration(0);
         progressDialog->setAutoClose(false);
         progressDialog->setValue(0);
     } else if (nProgress == 100) {
@@ -453,9 +453,4 @@ void WalletView::showProgress(const QString &title, int nProgress)
             progressDialog->setValue(nProgress);
         }
     }
-}
-
-void WalletView::requestedSyncWarningInfo()
-{
-    Q_EMIT outOfSyncWarningClicked();
 }

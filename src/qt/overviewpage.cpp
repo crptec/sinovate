@@ -97,8 +97,6 @@ public:
         {
             foreground = foreground_color_selected;
         }
-        painter->setPen(foreground);
-
         QRect dateRect(mainRect.left() + MARGIN, mainRect.top(), DATE_WIDTH, TX_SIZE);
         painter->drawText(dateRect, Qt::AlignLeft|Qt::AlignVCenter, GUIUtil::dateTimeStr(date));
 
@@ -112,7 +110,6 @@ public:
         bool watchOnly = index.data(TransactionTableModel::WatchonlyRole).toBool();
 
         if (watchOnly)
-        {
             QIcon iconWatchonly = qvariant_cast<QIcon>(index.data(TransactionTableModel::WatchonlyDecorationRole));
             if(selected)
             {
@@ -120,7 +117,7 @@ public:
             }
             QRect watchonlyRect(typeRect.right() + MARGIN, mainRect.top() + topMargin, DECORATION_SIZE, DECORATION_SIZE);
             iconWatchonly.paint(painter, watchonlyRect);
-            //address_rect_min_width += 5 + watchonlyRect.width();
+            addressRect.setLeft(addressRect.left() + watchonlyRect.width() + 5);
         }
 
         int addressMargin = watchOnly ? MARGIN + 20 : MARGIN;
@@ -167,6 +164,8 @@ public:
 
         QRect amountRect(addressRect.right() + MARGIN, addressRect.top(), AMOUNT_WIDTH, TX_SIZE);
         painter->drawText(amountRect, Qt::AlignRight|Qt::AlignVCenter, amountText);
+        // 0.4*date_bounding_rect.width() is used to visually distinguish a date from an amount.
+        const int minimum_width = 1.4 * date_bounding_rect.width() + amount_bounding_rect.width();
 
         painter->restore();
     }
@@ -200,6 +199,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     ui(new Ui::OverviewPage),
     clientModel(nullptr),
     walletModel(nullptr),
+    m_platform_style{platformStyle},
     txdelegate(new TxViewDelegate(platformStyle, this))
 {
     ui->setupUi(this);
@@ -292,8 +292,8 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
-    connect(ui->labelWalletStatus, &QPushButton::clicked, this, &OverviewPage::handleOutOfSyncWarningClicks);
-    connect(ui->labelTransactionsStatus, &QPushButton::clicked, this, &OverviewPage::handleOutOfSyncWarningClicks);
+    connect(ui->labelWalletStatus, &QPushButton::clicked, this, &OverviewPage::outOfSyncWarningClicked);
+    connect(ui->labelTransactionsStatus, &QPushButton::clicked, this, &OverviewPage::outOfSyncWarningClicked);
 
     // Price Stats
     m_timer = new QTimer(this);
@@ -301,11 +301,6 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     m_timer->start(30000);
     getStatistics();
     // --
-}
-
-void OverviewPage::handleOutOfSyncWarningClicks()
-{
-    Q_EMIT outOfSyncWarningClicked();
 }
 
 void OverviewPage::setPrivacy(bool privacy)
@@ -475,6 +470,17 @@ void OverviewPage::setWalletModel(WalletModel *model)
 
     // update the display unit, to not use the default ("BTC")
     updateDisplayUnit();
+}
+
+void OverviewPage::changeEvent(QEvent* e)
+{
+    if (e->type() == QEvent::PaletteChange) {
+        QIcon icon = m_platform_style->SingleColorIcon(QStringLiteral(":/icons/warning"));
+        ui->labelTransactionsStatus->setIcon(icon);
+        ui->labelWalletStatus->setIcon(icon);
+    }
+
+    QWidget::changeEvent(e);
 }
 
 void OverviewPage::updateDisplayUnit()

@@ -84,15 +84,20 @@ PlatformStyle::PlatformStyle(const QString &_name, bool _imagesOnButtons, bool _
     version(1),
     imagesOnButtons(_imagesOnButtons),
     colorizeIcons(_colorizeIcons),
-    useExtraSpacing(_useExtraSpacing),
-    singleColor(0,0,0),
+    useExtraSpacing(_useExtraSpacing)
+{
     textColor(0,0,0),
     menuColor(0,0,0)
+QColor PlatformStyle::TextColor() const
+{
+    return QApplication::palette().color(QPalette::WindowText);
+}
+
+QColor PlatformStyle::SingleColor() const
 {
     // Get version
     version = GetIntStyleValue("platformstyle/version", version);
 
-    // Determine icon highlighting color
     if (colorizeIcons) {
         singleColor = GetStringStyleValue("platformstyle/single-color", "#008ac8");
     }

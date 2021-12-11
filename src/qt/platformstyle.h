@@ -21,8 +21,8 @@ public:
     bool getImagesOnButtons() const { return imagesOnButtons; }
     bool getUseExtraSpacing() const { return useExtraSpacing; }
 
-    QColor TextColor() const { return textColor; }
-    QColor SingleColor() const { return singleColor; }
+    QColor TextColor() const;
+    QColor SingleColor() const;
     QColor MenuColor() const { return menuColor; }
 
     /** Colorize an image (given filename) with the icon color */
@@ -77,8 +77,6 @@ private:
     bool imagesOnButtons;
     bool colorizeIcons;
     bool useExtraSpacing;
-    QColor singleColor;
-    QColor textColor;
     QColor menuColor;
     QColor tableColorNormal;
     QColor tableColorInput;
@@ -89,7 +87,6 @@ private:
     QColor multiStatesIconColor1;
     QColor multiStatesIconColor2;
     QColor multiStatesIconColor3;
-    /* ... more to come later */
 };
 
 #endif // BITCOIN_QT_PLATFORMSTYLE_H
