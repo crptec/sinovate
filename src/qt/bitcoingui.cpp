@@ -1352,10 +1352,10 @@ void BitcoinGUI::message(const QString& title, QString message, unsigned int sty
 void BitcoinGUI::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::PaletteChange) {
-        overviewAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/overview")));
+        overviewAction->setIcon(platformStyle->MultiStatesIcon(QStringLiteral(":/icons/overview")));
         sendCoinsAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/send")));
         receiveCoinsAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/receiving_addresses")));
-        historyAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/history")));
+        historyAction->setIcon(platformStyle->MultiStatesIcon(QStringLiteral(":/icons/history")));
     }
 
     QMainWindow::changeEvent(e);
