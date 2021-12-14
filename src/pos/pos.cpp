@@ -53,9 +53,7 @@ bool CStakeKernel::CheckKernelHash() const
     // Check PoS kernel hash
     const arith_uint256& hashProofOfStake = UintToArith256(GetHash());
     const bool res = hashProofOfStake < bnTarget;
-    LogPrint(BCLog::STAKING, "%s : Proof Of Stake: stakeModifier=%s nTimeBlockFrom=%d ssUniqueID=%s nTimeTx=%d\n\n",__func__, HexStr(stakeModifier), nTimeBlockFrom, HexStr(stakeUniqueness), nTime);
-    LogPrint(BCLog::STAKING, "%s : Proof Of Stake: hashProofOfStake=%s nBits=%d weight=%d bnTarget=%s (res: %d)\n\n",
-        __func__, hashProofOfStake.GetHex(), nBits, stakeValue, bnTarget.GetHex(), res);
+    LogPrint(BCLog::STAKING, "%s : Proof Of Stake: stakeModifier=%s nTimeBlockFrom=%d ssUniqueID=%s nTimeTx=%d hashProofOfStake=%s nBits=%d weight=%d bnTarget=%s (res: %d)\n\n",__func__, HexStr(stakeModifier), nTimeBlockFrom, HexStr(stakeUniqueness), nTime, hashProofOfStake.GetHex(), nBits, stakeValue, bnTarget.GetHex(), res);
 
     return res;
 }
@@ -93,6 +91,7 @@ bool Stake(const CBlockIndex* pindexPrev, CStakeInput* stakeInput, unsigned int 
  * @param[out]  strError        string error (if any, else empty)
  * @param[in]   pindexPrev      index of the parent block
  *                              (if nullptr, it will be searched in mapBlockIndex)
+ * @param[in]   stakeInput      input for the coinstake of the block
  * @return      bool            true if the block has a valid proof of stake
  */
 bool CheckProofOfStake(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev, CStakeInput* stakeInput)

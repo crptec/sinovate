@@ -17,35 +17,6 @@
 #include <chrono>
 #include <thread>
 
-CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
-{
-/*
-    // Find the previous transaction in database
-    uint256 hash_block;
-    if (!g_txindex) {
-        error("%s : FATAL: No txindex enabled, PoS validation failed", __func__);
-        return nullptr;
-    }
-
-    CTransactionRef txPrev = GetTransaction(nullptr, nullptr, txin.prevout.hash, Params().GetConsensus(), hash_block);
-
-    if (txPrev == nullptr) {
-        error("%s : INFO: read txPrev failed, tx id prev: %s", __func__, txin.prevout.hash.GetHex());
-        return nullptr;
-    }
-
-    // Check that the input is in the active chain
-    if (!pindexFrom) {
-        error("%s : Failed to find the block index for stake origin", __func__);
-        return nullptr;
-    }
-
-    return new CSinStake(txPrev->vout[txin.prevout.n],
-                         txin.prevout,
-                         pindexFrom);
-*/                        
-}
-
 bool CSinStake::GetTxOutFrom(CTxOut& out) const
 {
     out = outputFrom;
