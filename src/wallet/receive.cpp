@@ -122,7 +122,7 @@ CAmount CWalletTx::GetCachableAmount(AmountType type, const isminefilter& filter
 CAmount CWalletTx::GetCredit(const isminefilter& filter) const
 {
     // Must wait until coinbase is safely deep enough in the chain before valuing it
-    if (IsImmatureCoinBase())
+    if (IsImmatureCoinBase() && !IsCoinStake())
         return 0;
 
     CAmount credit = 0;
