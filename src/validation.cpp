@@ -2334,7 +2334,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
             //DIN mode: validation LR
             LogPrintf("Validation -- POW + Infinitynode\n");
             int64_t nTime3_1 = GetTimeMicros(); 
-            if (!LockRewardValidation(pindex->nHeight, block.vtx[0], false)) {
+            if (!LockRewardValidation(pindex->nHeight, block.vtx[0], false, *this)) {
                 LogPrintf("LockRewardValidation -- disconnect block!\n");
                 return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-bad-infinity-node-reward");
             }
@@ -2342,7 +2342,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
             LogPrint(BCLog::BENCH, "    - Sinovate LockRewardValidation: %.2fms\n", (nTime3_2 - nTime3_1) * MILLI);
         } else {
             LogPrintf("Validation -- PoS + Infinitynode\n");
-            if (!LockRewardValidation(pindex->nHeight, block.vtx[1], true)) {
+            if (!LockRewardValidation(pindex->nHeight, block.vtx[1], true, *this)) {
                 LogPrintf("LockRewardValidation -- disconnect block!\n");
                 return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cs-bad-infinity-node-reward");
             }

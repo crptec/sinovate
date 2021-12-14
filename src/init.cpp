@@ -1437,7 +1437,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     LogPrintf("INIT SINOVATE INFO:\n");
     LogPrintf("Statement at height: %s\n", infnodeman.getLastStatementString());
 
-    g_inf_validation_interface = new InfValidationInterface(*node.connman);
+    g_inf_validation_interface = new InfValidationInterface(*node.connman, chainman);
     RegisterValidationInterface(g_inf_validation_interface);
     if(g_inf_validation_interface->registerStatus()){
         LogPrintf("Registered Validation Interface for DIN system.\n");

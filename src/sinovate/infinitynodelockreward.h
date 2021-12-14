@@ -267,37 +267,37 @@ public:
 
     //process consensus request message
     bool CheckLockRewardRequest(CNode* pfrom, const CLockRewardRequest& lockRewardRequestRet, CConnman& connman, int nBlockHeight, int& nDos);
-    bool CheckMyPeerAndSendVerifyRequest(CNode* pfrom, const CLockRewardRequest& lockRewardRequestRet, CConnman& connman, int& nDos);
+    bool CheckMyPeerAndSendVerifyRequest(CNode* pfrom, const CLockRewardRequest& lockRewardRequestRet, CConnman& connman, int& nDos, ChainstateManager& chainman);
 
     //Verify node at IP
-    bool SendVerifyReply(CNode* pnode, CVerifyRequest& vrequest, CConnman& connman, int& nDos);
+    bool SendVerifyReply(CNode* pnode, CVerifyRequest& vrequest, CConnman& connman, int& nDos, ChainstateManager& chainman);
     bool CheckVerifyReply(CNode* pnode, CVerifyRequest& vrequest, CConnman& connman, int& nDos);
 
     //commitment
     bool AddCommitment(const CLockRewardCommitment& commitment);
     bool SendCommitment(const uint256& reqHash, int nRewardHeight, CConnman& connman);
-    bool CheckCommitment(CNode* pnode, const CLockRewardCommitment& commitment, int& nDos);
+    bool CheckCommitment(CNode* pnode, const CLockRewardCommitment& commitment, int& nDos, ChainstateManager& chainman);
     bool GetLockRewardCommitment(const uint256& reqHash, CLockRewardCommitment& commitment);
 
     //group signer
     void AddMySignersMap(const CLockRewardCommitment& commitment);
     bool AddGroupSigners(const CGroupSigners& gs);
     bool GetGroupSigners(const uint256& reqHash, CGroupSigners& gsigners);
-    bool FindAndSendSignersGroup(CConnman& connman);
+    bool FindAndSendSignersGroup(CConnman& connman, ChainstateManager& chainman);
     bool CheckGroupSigner(CNode* pnode, const CGroupSigners& gsigners, int& nDos);
 
     //Schnorr Musig
-    bool MusigPartialSign(CNode* pnode, const CGroupSigners& gsigners, CConnman& connman);
+    bool MusigPartialSign(CNode* pnode, const CGroupSigners& gsigners, CConnman& connman, ChainstateManager& chainman);
     bool AddMusigPartialSignLR(const CMusigPartialSignLR& ps);
     bool GetMusigPartialSignLR(const uint256& psHash, CMusigPartialSignLR& ps);
-    bool CheckMusigPartialSignLR(CNode* pnode, const CMusigPartialSignLR& ps, int& nDos);
+    bool CheckMusigPartialSignLR(CNode* pnode, const CMusigPartialSignLR& ps, int& nDos, ChainstateManager& chainman);
     void AddMyPartialSignsMap(const CMusigPartialSignLR& ps);
-    bool FindAndBuildMusigLockReward();
+    bool FindAndBuildMusigLockReward(ChainstateManager& chainman);
     bool setRegisterInfo(std::string sLR, COutPoint& infcheck);
     void getRegisterInfo(std::string& strLRInfo, COutPoint& infcheck);
 
     //Check CheckLockRewardRegisterInfo for candidate is OK or KO
-    bool CheckLockRewardRegisterInfo(std::string sLR, std::string& strErrorRet, const CTxIn& infCheck, const std::map<int, CInfinitynode>& mapInfinityNodeRank);
+    bool CheckLockRewardRegisterInfo(std::string sLR, std::string& strErrorRet, const CTxIn& infCheck, const std::map<int, CInfinitynode>& mapInfinityNodeRank, CChainState& chainstate);
 
     //register LockReward by send tx if i am node of candidate. wallet acces is necessary
     bool AutoResigterLockReward(std::string sLR, std::string& strErrorRet, const COutPoint& infCheck);
@@ -309,19 +309,19 @@ public:
     std::string GetMemorySize();
 
     //Connection
-    void TryConnectToMySigners(int rewardHeight, CConnman& connman);
+    void TryConnectToMySigners(int rewardHeight, CConnman& connman, ChainstateManager& chainman);
     //call in UpdatedBlockTip
-    bool ProcessBlock(int nBlockHeight, CConnman& connman);
+    bool ProcessBlock(int nBlockHeight, CConnman& connman, ChainstateManager& chainman);
     //call in net_processing.cpp (PeerManager) when node receive INV
-    void ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos);
-    void ProcessDirectMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos);
+    void ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos, ChainstateManager& chainman);
+    void ProcessDirectMessage(CNode* pfrom, const std::string& strCommand, CDataStream& vRecv, CConnman& connman, int& nDos, ChainstateManager& chainman);
     //call in infvalidationinterface.cpp when node connect a new block
-    void UpdatedBlockTip(const CBlockIndex *pindex, CConnman& connman);
+    void UpdatedBlockTip(const CBlockIndex *pindex, CConnman& connman, ChainstateManager& chainman);
 };
 // validation
-bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, bool fProofOfStake = false);
+bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, bool fProofOfStake, CChainState& chainstate);
 // miner
-void FillBlock(CMutableTransaction& txNew, int nBlockHeight, bool IsProofOfStake = false);
+void FillBlock(CMutableTransaction& txNew, int nBlockHeight, CChainState& chainstate, bool IsProofOfStake = false);
 
 class ECCMusigHandle
 {

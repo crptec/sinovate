@@ -53,7 +53,8 @@ bool CreateCoinStake(CWallet* pwallet,
         std::vector<CStakeableOutput>* availableCoins,
         CStakerStatus* pStakerStatus,
         CAmount nFees, 
-        CScript burnAddressScript) 
+        CScript burnAddressScript,
+        CChainState& chainstate) 
 {
 
     int nHeight = pindexPrev->nHeight + 1;
@@ -154,7 +155,7 @@ bool CreateCoinStake(CWallet* pwallet,
         }
 
         // InfinityNode payment
-        FillBlock(txNew, nHeight, true);
+        FillBlock(txNew, nHeight, chainstate, true);
 
         txNew.vout.push_back(CTxOut(nFees, burnAddressScript));
 

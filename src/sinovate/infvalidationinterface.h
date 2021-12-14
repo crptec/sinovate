@@ -5,11 +5,12 @@
 #ifndef SIN_INFVALIDATIONINTERFACE_H
 #define SIN_INFVALIDATIONINTERFACE_H
 #include <validationinterface.h>
+#include <validation.h>
 
 class InfValidationInterface : public CValidationInterface
 {
 public:
-    InfValidationInterface(CConnman& connmanIn);
+    InfValidationInterface(CConnman& connmanIn, ChainstateManager& chainmanIn);
     virtual ~InfValidationInterface();
 
     bool registerStatus(){return fRegister;}
@@ -20,6 +21,7 @@ protected:
 private:
     bool fRegister = false;
     CConnman& connman;
+    ChainstateManager& chainman;
 };
 
 extern InfValidationInterface* g_inf_validation_interface;

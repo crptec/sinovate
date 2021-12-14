@@ -110,13 +110,13 @@ void BlockAssembler::resetBlock()
     nFees = 0;
 }
 
-bool SolveProofOfStake(CBlock* pblock, CBlockIndex* pindexPrev, CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins, CStakerStatus* pStakerStatus, CAmount nFees, CScript burnAddressScript)
+bool SolveProofOfStake(CBlock* pblock, CBlockIndex* pindexPrev, CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins, CStakerStatus* pStakerStatus, CAmount nFees, CScript burnAddressScript, CChainState& chainstate)
 {
     pblock->nBits = GetNextWorkRequired(pindexPrev, pblock, Params().GetConsensus(), true);
 
     CMutableTransaction txCoinStake;
     int64_t nTxNewTime = 0;
-    if (!CreateCoinStake(pwallet, pindexPrev, pblock->nBits, txCoinStake, nTxNewTime, availableCoins, pStakerStatus, nFees, burnAddressScript)) {
+    if (!CreateCoinStake(pwallet, pindexPrev, pblock->nBits, txCoinStake, nTxNewTime, availableCoins, pStakerStatus, nFees, burnAddressScript, chainstate)) {
         LogPrint(BCLog::STAKING, "%s : stake not found\n", __func__);
         return false;
     }
@@ -196,7 +196,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewPoSBlock(CWallet* pwall
     addPackageTxs(nPackagesSelected, nDescendantsUpdated);
 
     // Try to find a coinstake who solves the block.
-    if (!SolveProofOfStake(pblock, pindexPrev, pwallet, availableCoins, pStakerStatus, nFees, burnAddressScript)) {
+    if (!SolveProofOfStake(pblock, pindexPrev, pwallet, availableCoins, pStakerStatus, nFees, burnAddressScript, m_chainstate)) {
         return nullptr;
     }
 
@@ -309,7 +309,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
         coinbaseTx.vout.push_back(CTxOut(GetDevCoin(nHeight, blockReward), devScript2));
     }
     if (nHeight > chainparams.GetConsensus().nDINActivationHeight) {
-        FillBlock(coinbaseTx, nHeight);
+        FillBlock(coinbaseTx, nHeight, m_chainstate);
     }
     // Burn Tx Fee
     coinbaseTx.vout[0].nValue -= nFees;

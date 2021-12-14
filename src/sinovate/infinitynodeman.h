@@ -144,8 +144,8 @@ public:
     bool removeNonMaturedList(CBlockIndex* pindex); //call when block is invalid or disconnecttip
 
     //LR read back
-    bool ExtractLockReward(int nBlockHeight, int depth, std::vector<CLockRewardExtractInfo>& vecLRRet);
-    bool getLRForHeight(int height, std::vector<CLockRewardExtractInfo>& vecLockRewardRet);
+    bool ExtractLockReward(int nBlockHeight, int depth, std::vector<CLockRewardExtractInfo>& vecLRRet, CChainState& chainstate);
+    bool getLRForHeight(int height, std::vector<CLockRewardExtractInfo>& vecLockRewardRet, CChainState& chainstate);
 
     //this function build the map of STM from genesis
     bool calculStatementOnValidation(int nHeight);
@@ -159,9 +159,9 @@ public:
 
     int isPossibleForLockReward(COutPoint burntx);
     bool getScoreVector(const uint256& nBlockHash, int nSinType, int nBlockHeight, CInfinitynodeMan::score_pair_vec_t& vecScoresRet);
-    bool getNodeScoreAtHeight(const COutPoint& outpoint, int nSinType, int nBlockHeight, int& nRankRet);
-    bool getTopNodeScoreAtHeight(int nSinType, int nBlockHeight, int nTop, std::vector<CInfinitynode>& vecInfRet);
-    bool isValidTopNode(const std::vector<COutPoint>  &vOutpoint, int nSinType, int nBlockHeight, int nTop);
+    bool getNodeScoreAtHeight(const COutPoint& outpoint, int nSinType, int nBlockHeight, int& nRankRet, ChainstateManager& chainman);
+    bool getTopNodeScoreAtHeight(int nSinType, int nBlockHeight, int nTop, std::vector<CInfinitynode>& vecInfRet, ChainstateManager& chainman);
+    bool isValidTopNode(const std::vector<COutPoint>  &vOutpoint, int nSinType, int nBlockHeight, int nTop, CChainState& chainstate);
 
     std::string getVectorNodeRankAtHeight(const std::vector<COutPoint>& vOutpoint, int nSinType, int nBlockHeight);
 
