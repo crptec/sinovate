@@ -824,11 +824,10 @@ width: 80px;
          <item row="1" column="0">
           <widget class="QLabel" name="unitLabel">
            <property name="text">
-                 <string notr="true">111.11111111 SIN</string>
+            <string>&amp;Unit to show amounts in:</string>
            </property>
            <property name="textFormat">
             <enum>Qt::PlainText</enum>
-                 <string notr="true">909.09090909 SIN</string>
            </property>
            <property name="buddy">
             <cstring>unit</cstring>
@@ -836,17 +835,15 @@ width: 80px;
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLabel" name="themeLabel">
+          <widget class="QLabel" name="langLabel">
            <property name="text">
-            <string>User Interface &amp;style:</string>
+            <string>User Interface &amp;language:</string>
            </property>
            <property name="textFormat">
             <enum>Qt::PlainText</enum>
-                 <string notr="true">111.11111111 SIN</string>
            </property>
            <property name="buddy">
             <cstring>lang</cstring>
-                 <string notr="true">909.09090909 SIN</string>
            </property>
           </widget>
          </item>

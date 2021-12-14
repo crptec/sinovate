@@ -13,7 +13,6 @@
 
 #include <chainparams.h>
 #include <miner.h>
-#include <node/context.h>
 #include <pos/pos.h>
 #include <pos/stakeinput.h>
 #include <pos/threadutils.h>
@@ -26,6 +25,7 @@
 #include <sinovate/infinitynodelockreward.h>
 #include <validation.h>
 #include <util/moneystr.h>
+#include <util/thread.h>
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -51,7 +51,9 @@ bool CreateCoinStake(CWallet* pwallet,
         CMutableTransaction& txNew,
         int64_t& nTxNewTime,
         std::vector<CStakeableOutput>* availableCoins,
-        CStakerStatus* pStakerStatus, CAmount nFees, CScript burnAddressScript) 
+        CStakerStatus* pStakerStatus,
+        CAmount nFees, 
+        CScript burnAddressScript) 
 {
 
     int nHeight = pindexPrev->nHeight + 1;
@@ -265,7 +267,7 @@ void StakerCtx::StakerPipe()
     while (!g_posminer_interrupt) {
 
         // Get tip froim index
-        CBlockIndex* pindexPrev = ::ChainActive().Tip();
+        CBlockIndex* pindexPrev = m_chainman.ActiveChainstate().m_chain.Tip();
 
         // Check our wallet actually exists
         if (!pwallet) {
@@ -302,7 +304,7 @@ void StakerCtx::StakerPipe()
 
 
         // Check for node sync
-        if (::ChainstateActive().IsInitialBlockDownload()) {
+        if (m_chainman.ActiveChainstate().IsInitialBlockDownload()) {
             LogPrintf("%s : node not synced yet, checking again in %d seconds...\n", __func__, nAverageSpacing);
             if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
                 return;
@@ -390,7 +392,7 @@ void StakerCtx::StartStaker()
 {
     if (!g_posminer_thread.joinable()) {
         assert(!g_posminer_interrupt);
-        g_posminer_thread = std::thread(&TraceThread<std::function<void()> >, "staker", std::function<void()>(std::bind(&StakerCtx::StakerPipe, this)));
+        g_posminer_thread = std::thread(&util::TraceThread, "staker", std::function<void()>(std::bind(&StakerCtx::StakerPipe, this)));
     }
 }
 

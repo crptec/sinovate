@@ -21,6 +21,7 @@
 #include <node/utxo_snapshot.h>
 #include <policy/feerate.h>
 #include <policy/packages.h>
+#include <pos/stakeinput.h>
 #include <protocol.h> // For CMessageHeader::MessageStartChars
 #include <script/script_error.h>
 #include <sync.h>
@@ -104,9 +105,6 @@ static const unsigned int DEFAULT_CHECKLEVEL = 3;
 // one 128MB block file + added 15% undo data = 147MB greater for a total of 545MB
 // Setting the target to >= 550 MiB will make it likely we can respect the target.
 static const uint64_t MIN_DISK_SPACE_FOR_BLOCK_FILES = 550 * 1024 * 1024;
-
-// Map of disk positions for blocks with unknown parent (only used for reindex)
-static std::multimap<uint256, FlatFilePos> mapBlocksUnknownParent;
 
 /** Current sync state passed to tip changed callbacks. */
 enum class SynchronizationState {
@@ -792,6 +790,9 @@ public:
 
     /** Update the chain tip based on database information, i.e. CoinsTip()'s best block. */
     bool LoadChainTip() EXCLUSIVE_LOCKS_REQUIRED(cs_main);
+
+    /** Load a stake input from a block and its previous index */
+    bool LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::unique_ptr<CSinStake>& stake);
 
     //! Dictates whether we need to flush the cache to disk or not.
     //!

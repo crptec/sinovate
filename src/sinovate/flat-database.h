@@ -11,6 +11,7 @@
 #include <clientversion.h>
 #include <hash.h>
 #include <streams.h>
+#include <util/system.h>
 
 #include <boost/filesystem.hpp>
 
@@ -167,7 +168,7 @@ private:
 public:
     CFlatDB(std::string strFilenameIn, std::string strMagicMessageIn)
     {
-        pathDB = GetDataDir() / strFilenameIn;
+        pathDB = gArgs.GetDataDirNet() / strFilenameIn;
         strFilename = strFilenameIn;
         strMagicMessage = strMagicMessageIn;
     }

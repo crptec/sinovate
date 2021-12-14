@@ -97,6 +97,8 @@ public:
         {
             foreground = foreground_color_selected;
         }
+        painter->setPen(foreground);
+
         QRect dateRect(mainRect.left() + MARGIN, mainRect.top(), DATE_WIDTH, TX_SIZE);
         painter->drawText(dateRect, Qt::AlignLeft|Qt::AlignVCenter, GUIUtil::dateTimeStr(date));
 
@@ -110,6 +112,7 @@ public:
         bool watchOnly = index.data(TransactionTableModel::WatchonlyRole).toBool();
 
         if (watchOnly)
+        {
             QIcon iconWatchonly = qvariant_cast<QIcon>(index.data(TransactionTableModel::WatchonlyDecorationRole));
             if(selected)
             {
@@ -117,7 +120,7 @@ public:
             }
             QRect watchonlyRect(typeRect.right() + MARGIN, mainRect.top() + topMargin, DECORATION_SIZE, DECORATION_SIZE);
             iconWatchonly.paint(painter, watchonlyRect);
-            addressRect.setLeft(addressRect.left() + watchonlyRect.width() + 5);
+            //addressRect.setLeft(addressRect.left() + watchonlyRect.width() + 5);
         }
 
         int addressMargin = watchOnly ? MARGIN + 20 : MARGIN;
@@ -165,7 +168,7 @@ public:
         QRect amountRect(addressRect.right() + MARGIN, addressRect.top(), AMOUNT_WIDTH, TX_SIZE);
         painter->drawText(amountRect, Qt::AlignRight|Qt::AlignVCenter, amountText);
         // 0.4*date_bounding_rect.width() is used to visually distinguish a date from an amount.
-        const int minimum_width = 1.4 * date_bounding_rect.width() + amount_bounding_rect.width();
+        //const int minimum_width = 1.4 * date_bounding_rect.width() + amount_bounding_rect.width();
 
         painter->restore();
     }

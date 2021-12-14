@@ -181,7 +181,7 @@ public:
     virtual uint64_t getNetworkStakeWeight() = 0;
 
     //! Get the estimated annual roi
-    virtual double getEstimatedAnnualROI() = 0;
+    virtual double getEstimatedAnnualROINode() = 0;
 
     //! Get wallet client.
     virtual WalletClient& walletClient() = 0;

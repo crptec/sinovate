@@ -286,11 +286,17 @@ bool CInfinitynodeMeta::metaScan(int nBlockHeight)
     LOCK(cs_main);
 
     LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::metaScan -- Cleared map. Size is %d at height: %d\n", (int)mapNodeMetadata.size(), nBlockHeight);
+    /* TODO:
     int lastHeight = ::ChainActive().Height();
+    */
+    int lastHeight = 0;
     if (nBlockHeight <= Params().GetConsensus().nInfinityNodeGenesisStatement) return false;
     if (nBlockHeight > lastHeight) nBlockHeight = lastHeight;
 
+    /* TODO:
     CBlockIndex* pindex  = ::ChainActive()[nBlockHeight];
+    */
+    CBlockIndex* pindex = nullptr;
     CBlockIndex* prevBlockIndex = pindex;
 
     while (prevBlockIndex->nHeight >= Params().GetConsensus().nInfinityNodeGenesisStatement)

@@ -271,10 +271,11 @@ public:
         LOCK(::cs_main);
         return GetPoSKernelPS();
     }
-    double getEstimatedAnnualROI() override
+    double getEstimatedAnnualROINode() override
     {
         LOCK(::cs_main);
-        return GetEstimatedAnnualROI();
+        //return GetEstimatedAnnualROI(chainman().ActiveChain().Tip());
+        return 0;
     }
     WalletClient& walletClient() override
     {
@@ -496,6 +497,12 @@ public:
         WAIT_LOCK(cs_main, lock);
         const CChain& active = Assert(m_node.chainman)->ActiveChain();
         return FillBlock(m_node.chainman->m_blockman.LookupBlockIndex(hash), block, lock, active);
+    }
+    bool findIndex(const uint256& hash, const CBlockIndex* pindex) override
+    {
+        WAIT_LOCK(cs_main, lock);
+        const CChain& active = Assert(m_node.chainman)->ActiveChain();
+        return m_node.chainman->m_blockman.LookupBlockIndex(hash);
     }
     bool findFirstBlockWithTimeAndHeight(int64_t min_time, int min_height, const FoundBlock& block) override
     {

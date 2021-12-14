@@ -78,9 +78,9 @@ bool WalletFrame::addWallet(WalletModel* walletModel, WalletView* walletView)
     walletStack->addWidget(walletView);
     mapWalletViews[walletModel] = walletView;
 
-    connect(walletView, &WalletView::showMore, gui, &BitcoinGUI::gotoHistoryPage);
-    connect(walletView, &WalletView::sendCoins, gui, &BitcoinGUI::gotoSendCoinsPage);
-    connect(walletView, &WalletView::receiveCoins, gui, &BitcoinGUI::gotoReceiveCoinsPage);
+    //connect(walletView, &WalletView::showMore, gui, &BitcoinGUI::gotoHistoryPage);
+    //connect(walletView, &WalletView::sendCoins, gui, &BitcoinGUI::gotoSendCoinsPage);
+    //connect(walletView, &WalletView::receiveCoins, gui, &BitcoinGUI::gotoReceiveCoinsPage);
     return true;
 }
 

@@ -405,7 +405,10 @@ bool CInfinitynodeMan::ExtractLockReward(int nBlockHeight, int depth, std::vecto
 
     AssertLockHeld(cs_main);
 
-    CBlockIndex* pindex  = ::ChainActive()[nBlockHeight];
+    /* TODO 
+    CBlockIndex* pindex  = ::ChainActive()[nBlockHeight]; 
+    */
+    CBlockIndex* pindex = nullptr;
     CBlockIndex* prevBlockIndex = pindex;
 
     //read back 55 blocks and find lockreward for height
@@ -957,7 +960,10 @@ bool CInfinitynodeMan::getNodeScoreAtHeight(const COutPoint& outpoint, int nSinT
     LOCK(cs);
 
     uint256 nBlockHash = uint256();
+    /* TODO 
     CBlockIndex* pindex  = ::ChainActive()[nBlockHeight];
+    */
+    CBlockIndex* pindex = nullptr;
     nBlockHash = pindex->GetBlockHash();
 
     score_pair_vec_t vecScores;
@@ -984,7 +990,10 @@ bool CInfinitynodeMan::getTopNodeScoreAtHeight(int nSinType, int nBlockHeight, i
     LOCK(cs);
 
     uint256 nBlockHash = uint256();
+    /* TODO
     CBlockIndex* pindex  = ::ChainActive()[nBlockHeight];
+    */
+    CBlockIndex* pindex = nullptr;
     nBlockHash = pindex->GetBlockHash();
 
     score_pair_vec_t vecScores;
@@ -1008,7 +1017,10 @@ bool CInfinitynodeMan::isValidTopNode(const std::vector<COutPoint>& vOutpoint, i
     LOCK(cs);
 
     uint256 nBlockHash = uint256();
+    /* TODO
     CBlockIndex* pindex  = ::ChainActive()[nRewardHeight];
+    */
+    CBlockIndex* pindex = nullptr;
     nBlockHash = pindex->GetBlockHash();
     score_pair_vec_t vecScores;
 

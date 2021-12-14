@@ -1391,7 +1391,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
     // ********************************************************* Step 7: load block chain
 //>SIN: try load SIN cache memory before connectblock, because we need these informations for validation of block
     uiInterface.InitMessage(_("Loading on-chain Infinitynode data...").translated);
-    boost::filesystem::path pathDB = GetDataDir();
+    boost::filesystem::path pathDB = gArgs.GetDataDirNet();
     std::string strDBName;
 
     if (!fReindex) {

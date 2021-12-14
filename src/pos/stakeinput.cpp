@@ -19,7 +19,7 @@
 
 CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
 {
-
+/*
     // Find the previous transaction in database
     uint256 hash_block;
     if (!g_txindex) {
@@ -34,14 +34,6 @@ CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
         return nullptr;
     }
 
-    const CBlockIndex* pindexFrom = nullptr;
-    // Find the index of the block of the previous transaction
-    CBlockIndex* pindex = g_chainman.m_blockman.LookupBlockIndex(hash_block);
-    if (pindex) {
-        if (::ChainActive().Contains(pindex)) {
-            pindexFrom = pindex;
-        }
-    }
     // Check that the input is in the active chain
     if (!pindexFrom) {
         error("%s : Failed to find the block index for stake origin", __func__);
@@ -51,6 +43,7 @@ CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
     return new CSinStake(txPrev->vout[txin.prevout.n],
                          txin.prevout,
                          pindexFrom);
+*/                        
 }
 
 bool CSinStake::GetTxOutFrom(CTxOut& out) const

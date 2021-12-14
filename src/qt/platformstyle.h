@@ -21,8 +21,8 @@ public:
     bool getImagesOnButtons() const { return imagesOnButtons; }
     bool getUseExtraSpacing() const { return useExtraSpacing; }
 
-    QColor TextColor() const;
-    QColor SingleColor() const;
+    QColor TextColor() const{ return textColor; }
+    QColor SingleColor() const{ return singleColor; }
     QColor MenuColor() const { return menuColor; }
 
     /** Colorize an image (given filename) with the icon color */
@@ -77,6 +77,8 @@ private:
     bool imagesOnButtons;
     bool colorizeIcons;
     bool useExtraSpacing;
+    QColor singleColor;
+    QColor textColor;
     QColor menuColor;
     QColor tableColorNormal;
     QColor tableColorInput;

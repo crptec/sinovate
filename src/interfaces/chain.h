@@ -7,6 +7,7 @@
 
 #include <primitives/transaction.h> // For CTransactionRef
 #include <util/settings.h>          // For util::SettingsValue
+#include <chain.h>                  // For CBlockIndex
 
 #include <functional>
 #include <memory>
@@ -117,6 +118,9 @@ public:
     //! Return whether node has the block and optionally return block metadata
     //! or contents.
     virtual bool findBlock(const uint256& hash, const FoundBlock& block={}) = 0;
+
+    //! Return pindex if node has the block
+    virtual bool findIndex(const uint256& hash, const CBlockIndex* pindex) = 0;
 
     //! Find first block in the chain with timestamp >= the given time
     //! and height >= than the given height, return false if there is no block

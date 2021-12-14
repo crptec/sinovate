@@ -611,7 +611,7 @@
         <source>Processing blocks on disk…</source>
         <translation type="unfinished">Обработка блоков на диске...</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <source>%n active connection(s) to Sinovate network</source>
         <translation><numerusform>%n активное подключение к сети Sinovate</numerusform><numerusform>%n активных подключения к сети Sinovate</numerusform><numerusform>%n активных подключений к сети Sinovate</numerusform><numerusform>%n активных подключений к сети Sinovate</numerusform></translation>
     </message>

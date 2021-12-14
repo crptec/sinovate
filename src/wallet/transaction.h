@@ -275,6 +275,10 @@ public:
     CAmount GetAvailableCredit(bool fUseCache = true, const isminefilter& filter = ISMINE_SPENDABLE) const NO_THREAD_SAFETY_ANALYSIS;
     CAmount GetImmatureWatchOnlyCredit(const bool fUseCache = true) const;
     CAmount GetChange() const;
+    
+    /* proof-of-stake funcs */
+    CAmount GetStakeCredit(const bool fUseCache = true) const;
+    bool IsCoinStake() const { return tx->IsCoinStake(); }
 
     /** Get the marginal bytes if spending the specified output from this transaction */
     int GetSpendSize(unsigned int out, bool use_max_sig = false) const

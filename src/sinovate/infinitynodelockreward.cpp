@@ -1871,8 +1871,11 @@ bool CInfinityNodeLockReward::AutoResigterLockReward(std::string sLockReward, st
     bilingual_str strError;
     mapValue_t mapValue;
 
+
     std::vector<COutput> vPossibleCoins;
+/* TODO
     pwallet->AvailableCoins(vPossibleCoins, true, NULL);
+*/
 
     CTransactionRef tx_New;
     CCoinControl coin_control;
@@ -2524,7 +2527,10 @@ void CInfinityNodeLockReward::TryConnectToMySigners(int rewardHeight, CConnman& 
     int nSINtypeCanLockReward = Params().GetConsensus().nInfinityNodeLockRewardSINType;
 
     uint256 nBlockHash = uint256();
+    /* TODO 
     CBlockIndex* pindex  = ::ChainActive()[rewardHeight - 101];
+    */
+    CBlockIndex* pindex = nullptr;
     nBlockHash = pindex->GetBlockHash();
 
     std::vector<CInfinitynode> vecScoreInf;

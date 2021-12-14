@@ -95,8 +95,9 @@ bool CInfWalletAccess::RegisterLROnchain()
     mapValue_t mapValue;
 
     std::vector<COutput> vPossibleCoins;
+/* TODO:
     pwallet->AvailableCoins(vPossibleCoins, true, NULL);
-
+*/
     CTransactionRef tx_New;
     CCoinControl coin_control;
 

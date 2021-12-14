@@ -228,8 +228,6 @@ struct CRecipient
     bool fSubtractFeeFromAmount;
 };
 
-    CAmount GetStakeCredit(const bool fUseCache = true) const;
-    bool IsCoinStake() const { return tx->IsCoinStake(); }
 // proof-of-stake class for staking outputs
 class CStakeableOutput : public COutput
 {

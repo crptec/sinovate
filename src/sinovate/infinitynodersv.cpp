@@ -110,8 +110,10 @@ bool CInfinitynodersv::rsvScan(int nBlockHeight)
     Clear();
     LogPrint(BCLog::INFINITYRSV,"CInfinitynodersv::rsvScan -- Cleared map. Size is %d\n", (int)mapProposalVotes.size());
     if (nBlockHeight <= Params().GetConsensus().nInfinityNodeGenesisStatement) return false;
-
+    /*TODO:
     CBlockIndex* pindex  = ::ChainActive()[nBlockHeight];
+    */
+    CBlockIndex* pindex = nullptr;
     CBlockIndex* prevBlockIndex = pindex;
 
     while (prevBlockIndex->nHeight >= Params().GetConsensus().nInfinityNodeGenesisStatement)

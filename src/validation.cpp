@@ -721,7 +721,7 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
 
     const CCoinsViewCache& coins_cache = m_active_chainstate.CoinsTip();
 //>SIN
-    if (CheckInputTimeLockInterest(tx, coins_cache, 170000) && ::ChainActive().Height() >= 600000) {
+    if (CheckInputTimeLockInterest(tx, coins_cache, 170000) && m_active_chainstate.m_chain.Height() >= 600000) {
         return state.Invalid(TxValidationResult::TX_CONSENSUS, "bad-txns-spends-timelock-interest-tx",
                     strprintf("%s spends with timelock and interest", hash.ToString()));
     }
@@ -1885,6 +1885,68 @@ static unsigned int GetBlockScriptFlags(const CBlockIndex* pindex, const Consens
 }
 
 
+/*
+ * PoS Validation
+ */
+
+// helper function for CheckProofOfStake and GetStakeKernelHash
+bool CChainState::LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::unique_ptr<CSinStake>& stake)
+{
+    // Reality check
+    assert(block.IsProofOfStake());
+
+    const CTxIn& txin = block.vtx[1]->vin[0];
+
+    // If previous index is not provided, look for it in the blockmap
+    if (!pindexPrev) {
+        pindexPrev = m_blockman.LookupBlockIndex(block.hashPrevBlock);
+        if (!pindexPrev) {
+            LogPrintf("%s : couldn't find previous block", __func__);
+            return false;
+        }
+    } else {
+        // check that is the actual parent block
+        if (block.hashPrevBlock != pindexPrev->GetBlockHash())
+            LogPrintf("%s : previous block mismatch", __func__);
+            return false;
+    }
+
+    // Find the previous transaction in database
+    uint256 hash_block;
+    if (!g_txindex) {
+        LogPrintf("%s : FATAL: No txindex enabled, PoS validation failed", __func__);
+        return false;
+    }
+
+    CTransactionRef txPrev = GetTransaction(nullptr, nullptr, txin.prevout.hash, Params().GetConsensus(), hash_block);
+
+    if (txPrev == nullptr) {
+        LogPrintf("%s : INFO: read txPrev failed, tx id prev: %s", __func__, txin.prevout.hash.GetHex());
+        return false;
+    }
+
+    // Check its not an orphan and fill pindex
+    const CBlockIndex* pindexFrom = nullptr;
+    // Find the index of the block of the previous transaction
+    CBlockIndex* pindex = m_blockman.LookupBlockIndex(hash_block);
+    if (pindex) {
+        if (m_chain.Contains(pindex)) {
+            pindexFrom = pindex;
+        }
+    }
+
+    // Check that the input is in the active chain
+    if (!pindexFrom) {
+        LogPrintf("%s : Failed to find the block index for stake origin", __func__);
+        return false;
+    }
+
+    // Construct the stakeinput object
+    stake = std::unique_ptr<CSinStake>(new CSinStake(txPrev->vout[txin.prevout.n], txin.prevout, pindexFrom));
+
+    return stake && stake->InitFromTxIn(txin);
+}
+
 
 static int64_t nTimeCheck = 0;
 static int64_t nTimeForks = 0;
@@ -1950,27 +2012,30 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
 
 
     if (block.IsProofOfStake()) {
-        if (pindex->nHeight <= chainparams.GetConsensus().nStartPoSHeight) { // Check for PoS start
+        if (pindex->nHeight <=  m_params.GetConsensus().nStartPoSHeight) { // Check for PoS start
             LogPrint(BCLog::STAKING, "ERROR: ConnectBlock(): PoS period hasn't started yet\n");
-            return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-tooearly");
+            return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "bad-pos-tooearly");
         } else {
             pindex->SetProofOfStake();
-            LogPrint(BCLog::STAKING, "Setting stake modifier: input %s block %s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString());
             int nPrevHeight;
             std::string sPrevStakeModifier;
             std::string sStakeModifier;
             pindex->SetNewStakeModifier(block.vtx[1]->vin[0].prevout.hash, nPrevHeight, sPrevStakeModifier, sStakeModifier);
-            LogPrint(BCLog::STAKING, "Setting stake modifier Prev info: nHeight=%d, PrevStakeModifier=%s\n", nPrevHeight, sPrevStakeModifier);
-            LogPrint(BCLog::STAKING, "Setting stake modifier: StakeModifier=%s, block %s\n", sStakeModifier, block.GetHash().ToString());
+            LogPrint(BCLog::STAKING, "Setting stake modifier : input %s block %s modifierPrev info: nHeight=%d, PrevStakeModifier=%s StakeModifier=%s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString(), nPrevHeight, sPrevStakeModifier, sStakeModifier);
+        }
+        // proof-of-stake: initialize stake input
+        std::unique_ptr<CSinStake> stakeInput;
+        if (!LoadStakeInput(block, pindex->pprev, stakeInput)) {
+            return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "bad-pos-stakeinput", "cannot init stakeinput");
         }
         // proof-of-stake: set modifier and set flags
-        if (!CheckProofOfStake(block, state, chainparams.GetConsensus(), pindex->pprev)) {
+        if (!CheckProofOfStake(block, state, m_params.GetConsensus(), pindex->pprev, stakeInput.get())) {
             // Adjust for testnet fork(s)
             if (fTestNet && pindex->nHeight <= 11000) {
                 LogPrintf("ERROR: ConnectBlock(): (pre-fork testnet) PoS isn't valid but accepting anyways, state: %s\n", state.ToString());
             } else {
                 LogPrintf("ERROR: ConnectBlock(): PoS isn't valid, state: %s\n", state.ToString());
-                return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-pos-proof");
+                return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "bad-pos-proof");
             }
         }
     }
@@ -2009,7 +2074,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     int64_t nTime1 = GetTimeMicros(); nTimeCheck += nTime1 - nTimeStart;
     LogPrint(BCLog::BENCH, "    - Sanity checks: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime1 - nTimeStart), nTimeCheck * MICRO, nTimeCheck * MILLI / nBlocksTotal);
 
-    bool IsBrokenBlock = IsBlockBroken(pindex->GetBlockHash(), chainparams.BrokenBlocks());
+    bool IsBrokenBlock = IsBlockBroken(pindex->GetBlockHash(), m_params.BrokenBlocks());
 
     // Do not allow blocks that contain transactions which 'overwrite' older transactions,
     // unless those are already completely spent.
@@ -2212,7 +2277,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     int64_t nTime3 = GetTimeMicros(); nTimeConnect += nTime3 - nTime2;
     LogPrint(BCLog::BENCH, "      - Connect %u transactions: %.2fms (%.3fms/tx, %.3fms/txin) [%.2fs (%.2fms/blk)]\n", (unsigned)block.vtx.size(), MILLI * (nTime3 - nTime2), MILLI * (nTime3 - nTime2) / block.vtx.size(), nInputs <= 1 ? 0 : MILLI * (nTime3 - nTime2) / (nInputs-1), nTimeConnect * MICRO, nTimeConnect * MILLI / nBlocksTotal);
 
-    CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, chainparams.GetConsensus(), block.IsProofOfStake());
+    CAmount blockReward = nFees + GetBlockSubsidy(pindex->nHeight, m_params.GetConsensus(), block.IsProofOfStake());
     if (block.IsProofOfWork() && !IsBrokenBlock) {
         if (block.vtx[0]->GetValueOut() > blockReward + GetDevCoin(pindex->nHeight, blockReward)) {
             LogPrintf("ERROR: ConnectBlock(): coinbase pays too much (actual=%d vs limit=%d)\n", block.vtx[0]->GetValueOut(), blockReward);
@@ -2234,7 +2299,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     }
 
     // verify devfund addr and amount are correct
-    if (pindex->nHeight <= chainparams.GetConsensus().nDINActivationHeight) {
+    if (pindex->nHeight <= m_params.GetConsensus().nDINActivationHeight) {
         if (block.vtx[i]->vout[j].scriptPubKey != devScript) {
             return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cb-old-dev-fee-oldaddr");
         }
@@ -2261,7 +2326,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     }
 
     // Sinovate: add DIN consensus
-    if (pindex->nHeight <= chainparams.GetConsensus().nDINActivationHeight) {
+    if (pindex->nHeight <= m_params.GetConsensus().nDINActivationHeight) {
         //POW mode: do nothing
     } else {
         if (block.IsProofOfWork()) {
@@ -2591,13 +2656,13 @@ bool CChainState::DisconnectTip(BlockValidationState& state, DisconnectedBlockTr
             return error("DisconnectTip(): DisconnectBlock %s failed", pindexDelete->GetBlockHash().ToString());
 //>SIN
         std::vector<CLockRewardExtractInfo> vecLockRewardRet;
-        infnodelrinfo.ExtractLRFromBlock(block, pindexDelete, view, chainparams, vecLockRewardRet);
+        infnodelrinfo.ExtractLRFromBlock(block, pindexDelete, view, m_params, vecLockRewardRet);
         for (auto& v : vecLockRewardRet) {
             infnodelrinfo.Remove(v);
         }
         LogPrintf("DisconnectTip: removeNonMaturedList...\n");
         infnodeman.removeNonMaturedList(pindexDelete);
-        infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, chainparams);
+        infnodemeta.RemoveMetaFromBlock(block, pindexDelete, view, m_params);
         infnodelrinfo.Remove(pindexDelete->nHeight);
         infnodeman.updateFinalList(pindexDelete->pprev, view);
         infnodeman.FlushStateToDisk();
@@ -2712,16 +2777,17 @@ bool CChainState::ConnectTip(BlockValidationState& state, CBlockIndex* pindexNew
         CCoinsViewCache view(&CoinsTip());
 //>SIN
         std::vector<CLockRewardExtractInfo> vecLockRewardRet;
-        infnodelrinfo.ExtractLRFromBlock(blockConnecting, pindexNew, view, chainparams, vecLockRewardRet);
+        infnodelrinfo.ExtractLRFromBlock(blockConnecting, pindexNew, view, m_params, vecLockRewardRet);
         int64_t nTime3_1;
         nTime3_1  = GetTimeMicros();
         LogPrint(BCLog::BENCH, "  - Sinovate ExtractLR: %.2fms\n", (nTime3_1 - nTime2) * MILLI);
 
-        infnodeman.buildNonMaturedListFromBlock(blockConnecting, pindexNew, view, chainparams);
+        infnodeman.buildNonMaturedListFromBlock(blockConnecting, pindexNew, view, m_params);
         int64_t nTime3_2;
         nTime3_2  = GetTimeMicros();
         LogPrint(BCLog::BENCH, "  - Sinovate BuildNonMatured: %.2fms\n", (nTime3_2 - nTime3_1) * MILLI);
 //<SIN
+        bool rv = ConnectBlock(blockConnecting, state, pindexNew, view);
         int64_t nTime3_3;
         nTime3_3  = GetTimeMicros();
         LogPrint(BCLog::BENCH, "  - Sinovate ConnectBlock: %.2fms\n", (nTime3_3 - nTime3_2) * MILLI);
@@ -2753,7 +2819,6 @@ bool CChainState::ConnectTip(BlockValidationState& state, CBlockIndex* pindexNew
         nTime3_7  = GetTimeMicros();
             LogPrint(BCLog::BENCH, "  - Sinovate FlushStateToDisk: %.2fms\n", (nTime3_7 - nTime3_6) * MILLI);
 //<SIN
-        GetMainSignals().BlockChecked(blockConnecting, state);
         if (!rv) {
             if (state.IsInvalid())
                 InvalidBlockFound(pindexNew, state);
@@ -3579,13 +3644,15 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
 
 //>SIN
+    /* TODO:
     // Check reorg bounds
     int nMaxReorgDepth = gArgs.GetArg("-maxreorg", Params().MaxReorganizationDepth());
-    bool fGreaterThanMaxReorg = ::ChainActive().Height() - (nHeight - 1) >= nMaxReorgDepth;
+    bool fGreaterThanMaxReorg = m_chainman.ActiveChainstate().Height() - (nHeight - 1) >= nMaxReorgDepth;
     if (fGreaterThanMaxReorg && !::ChainstateActive().IsInitialBlockDownload()) {
         LogPrintf("ERROR: %s: forked chain older than max reorganization depth (height %d)\n", __func__, nHeight);
         return state.Invalid(BlockValidationResult::BLOCK_MAXREORGDEPTH, "bad-fork-prior-to-maxreorgdepth");
     }
+    */
 //<SIN
 
     // Check proof of work/proof-of-stake diff
@@ -3893,10 +3960,8 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, Block
     }
 
     const bool IsProofOfStake = block.IsProofOfStake();
-
-    // only run PoS checks if we never saw this block
-    if (!CheckBlock(block, state, chainparams.GetConsensus()) ||
-        !ContextualCheckBlock(block, state, chainparams.GetConsensus(), pindex->pprev)) {
+    if (!CheckBlock(block, state, m_params.GetConsensus()) ||
+        !ContextualCheckBlock(block, state, m_params.GetConsensus(), pindex->pprev)) {
         if (state.IsInvalid() && state.GetResult() != BlockValidationResult::BLOCK_MUTATED) {
             pindex->nStatus |= BLOCK_FAILED_VALID;
             setDirtyBlockIndex.insert(pindex);
@@ -3938,7 +4003,7 @@ bool ChainstateManager::ProcessNewBlock(const CChainParams& chainparams, const s
         if (new_block) *new_block = false;
         BlockValidationState state;
 
-        if (!CheckBlockSignature(*pblock)) {
+        if (!CheckBlockSignature(*block)) {
             return error("%s : CheckBlockSignature() FAILED: bad proof-of-stake block signature", __func__);
         }
 
@@ -4567,10 +4632,10 @@ void UnloadBlockIndex(CTxMemPool* mempool, ChainstateManager& chainman)
 bool ChainstateManager::LoadBlockIndex()
 {
     // Sinovate, load dev-fee related scripts on startup
-    devScript << OP_DUP << OP_HASH160 << ParseHex(chainparams.GetConsensus().devAddressPubKey) << OP_EQUALVERIFY << OP_CHECKSIG;
-    devScript2 << OP_DUP << OP_HASH160 << ParseHex(chainparams.GetConsensus().devAddress2PubKey) << OP_EQUALVERIFY << OP_CHECKSIG;
+    devScript << OP_DUP << OP_HASH160 << ParseHex(Params().GetConsensus().devAddressPubKey) << OP_EQUALVERIFY << OP_CHECKSIG;
+    devScript2 << OP_DUP << OP_HASH160 << ParseHex(Params().GetConsensus().devAddress2PubKey) << OP_EQUALVERIFY << OP_CHECKSIG;
     // burnfee = 6275726e666565
-    txfeeScript << ParseHex(chainparams.GetConsensus().cBurnAddressPubKey) << OP_RETURN << ParseHex("6275726e666565");
+    txfeeScript << ParseHex(Params().GetConsensus().cBurnAddressPubKey) << OP_RETURN << ParseHex("6275726e666565");
 
     AssertLockHeld(cs_main);
     // Load block index from databases
@@ -4620,6 +4685,8 @@ bool CChainState::LoadGenesisBlock()
 
 void CChainState::LoadExternalBlockFile(FILE* fileIn, FlatFilePos* dbp)
 {
+    // Map of disk positions for blocks with unknown parent (only used for reindex)
+    static std::multimap<uint256, FlatFilePos> mapBlocksUnknownParent;
     int64_t nStart = GetTimeMillis();
 
     int nLoaded = 0;

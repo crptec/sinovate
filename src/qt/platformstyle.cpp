@@ -84,16 +84,10 @@ PlatformStyle::PlatformStyle(const QString &_name, bool _imagesOnButtons, bool _
     version(1),
     imagesOnButtons(_imagesOnButtons),
     colorizeIcons(_colorizeIcons),
-    useExtraSpacing(_useExtraSpacing)
-{
+    useExtraSpacing(_useExtraSpacing),
+    singleColor(0,0,0),
     textColor(0,0,0),
     menuColor(0,0,0)
-QColor PlatformStyle::TextColor() const
-{
-    return QApplication::palette().color(QPalette::WindowText);
-}
-
-QColor PlatformStyle::SingleColor() const
 {
     // Get version
     version = GetIntStyleValue("platformstyle/version", version);

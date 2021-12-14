@@ -204,7 +204,7 @@ static UniValue generateBlocksPoS(ChainstateManager& chainman, const CTxMemPool&
 
     {   // Don't keep cs_main locked
         LOCK(cs_main);
-        nHeight = ::ChainActive().Height();
+        nHeight = chainman.ActiveChain().Height();
         nHeightEnd = nHeight+nGenerate;
     }
     UniValue blockHashes(UniValue::VARR);
@@ -578,13 +578,14 @@ static RPCHelpMan getstakinginfo()
     int nHeight = 0;
     uint64_t nWeight;
     double dDiff;
-    {   // Don't keep cs_main locked
-        LOCK(cs_main);
-        nHeight = ::ChainActive().Height();
-        dDiff = GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), true));
-    }
     NodeContext& node = EnsureAnyNodeContext(request.context);
     const CTxMemPool& mempool = EnsureMemPool(node);
+    ChainstateManager& chainman = EnsureChainman(node);
+    {   // Don't keep cs_main locked
+        LOCK(cs_main);
+        nHeight = chainman.ActiveChain().Height();
+        dDiff = GetDifficulty(GetLastBlockIndex(chainman.ActiveChain().Tip(), true));
+    }
     // Available wallet(s), always use no 0.
     std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
     CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;

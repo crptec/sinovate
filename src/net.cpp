@@ -2739,7 +2739,7 @@ CConnman::~CConnman()
     Stop();
 }
 
-std::vector<CAddress> CConnman::GetAddresses(size_t max_addresses, size_t max_pct, std::optional<Network> network) const
+//>SIN
 void CConnman::RelayInv(CInv &inv) {
     LOCK(cs_vNodes);
     for (auto& pnode : vNodes)
@@ -2768,6 +2768,7 @@ void CConnman::ReleaseNodeVector(const std::vector<CNode*>& vecNodes)
 }
 //<SIN
 
+std::vector<CAddress> CConnman::GetAddresses(size_t max_addresses, size_t max_pct, std::optional<Network> network) const
 {
     std::vector<CAddress> addresses = addrman.GetAddr(max_addresses, max_pct, network);
     if (m_banman) {

@@ -366,10 +366,12 @@ static RPCHelpMan infinitynode()
 
     if (strCommand == "show-lockreward")
     {
+        NodeContext& node = EnsureAnyNodeContext(request.context);
+        ChainstateManager& chainman = EnsureAnyChainman(request.context);
         CBlockIndex* pindex = NULL;
         {
             LOCK(cs_main);
-            pindex = ::ChainActive().Tip();
+            pindex = chainman.ActiveChain().Tip();
         }
 
         int nBlockNumber = pindex->nHeight - 55 * 10;
@@ -472,7 +474,9 @@ static RPCHelpMan infinitynodeburnfund()
 
     std::string strError;
     std::vector<COutput> vPossibleCoins;
+/* TODO:
     pwallet->AvailableCoins(vPossibleCoins, true, NULL, false);
+*/
 
     UniValue results(UniValue::VOBJ);
 
@@ -582,6 +586,9 @@ static RPCHelpMan infinitynodeupdatemeta()
     if (!wallet) return NullUniValue;
     CWallet* const pwallet = wallet.get();
 
+    NodeContext& node = EnsureAnyNodeContext(request.context);
+    ChainstateManager& chainman = EnsureAnyChainman(request.context);
+
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
@@ -622,7 +629,7 @@ static RPCHelpMan infinitynodeupdatemeta()
 
     std::string metaID = strprintf("%s-%s", strOwnerAddress, burnfundTxID);
     CMetadata myMeta = infnodemeta.Find(metaID);
-    int nCurrentHeight = ::ChainActive().Height();
+    int nCurrentHeight = chainman.ActiveChain().Height();
     if(myMeta.getMetadataHeight() > 0 && nCurrentHeight < myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2){
         int nWait = myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2 - nCurrentHeight;
         std::string strError = strprintf("Error: Please wait %d blocks and try to update again.", nWait);
@@ -682,7 +689,9 @@ static RPCHelpMan infinitynodeupdatemeta()
 
     std::string strError;
     std::vector<COutput> vPossibleCoins;
+/*TODO:
     pwallet->AvailableCoins(vPossibleCoins, true, NULL, false);
+*/
 
     // cMetadataAddress
     CTxDestination dest = DecodeDestination(Params().GetConsensus().cMetadataAddress);
@@ -869,6 +878,10 @@ static RPCHelpMan infinitynodeupdatemeta_external()
 {
     UniValue results(UniValue::VOBJ);
 
+    NodeContext& node = EnsureAnyNodeContext(request.context);
+    ChainstateManager& chainman = EnsureAnyChainman(request.context);
+
+
     if(request.params[0].isNull()) {
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid inputs");
     }
@@ -907,7 +920,7 @@ static RPCHelpMan infinitynodeupdatemeta_external()
 
     std::string metaID = strprintf("%s-%s", strOwnerAddress, burnfundTxID);
     CMetadata myMeta = infnodemeta.Find(metaID);
-    int nCurrentHeight = ::ChainActive().Height();
+    int nCurrentHeight = chainman.ActiveChain().Height();
     if(myMeta.getMetadataHeight() > 0 && nCurrentHeight < myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2){
         int nWait = myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2 - nCurrentHeight;
         std::string strError = strprintf("Error: Please wait %d blocks and try to update again.", nWait);

@@ -1255,10 +1255,10 @@ void CWallet::DisableTransaction(const CTransaction &tx)
         for(const CTxIn& txin : tx.vin)
         {
             CWalletTx &coin = mapWallet.at(txin.prevout.hash);
-            NotifyTransactionChanged(this, coin.GetHash(), CT_UPDATED);
+            NotifyTransactionChanged(coin.GetHash(), CT_UPDATED);
         }
 
-        NotifyTransactionChanged(this, hash, CT_DELETED);
+        NotifyTransactionChanged(hash, CT_DELETED);
     }
 }
 
@@ -1982,8 +1982,6 @@ void MaybeResendWalletTxs()
  * @{
  */
 
-            ret.m_mine_stake = wtx.GetStakeCredit();
-
 bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins, uint64_t& nWeight, bool fScale)
 {
     LOCK(cs_wallet);
@@ -2079,7 +2077,9 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins, uint64_t& nW
             if (!pindex) {
                 {
                     LOCK(cs_main);
-                    pindex = g_chainman.m_blockman.LookupBlockIndex(wtx.m_confirm.hashBlock);
+                    if (!chain().findIndex(wtx.m_confirm.hashBlock, pindex)) {
+                        continue;
+                    }
                 }
             }
 

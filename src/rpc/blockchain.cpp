@@ -174,11 +174,14 @@ double GetPoSKernelPS()
     return result;
 }
 
-double GetEstimatedAnnualROI()
+double GetEstimatedAnnualROI(CBlockIndex* tip)
 {
     double result = 0;
+    if (!tip) {
+        return result;
+    }
     double networkWeight = GetPoSKernelPS();
-    CBlockIndex* pindex = pindexBestHeader == 0 ? ::ChainActive().Tip() : pindexBestHeader;
+    CBlockIndex* pindex = pindexBestHeader == 0 ? tip : pindexBestHeader;
     int nHeight = pindex ? pindex->nHeight : 0;
     const Consensus::Params& consensusParams = Params().GetConsensus();
     double subsidy = GetBlockSubsidy(nHeight, consensusParams);
@@ -302,18 +305,6 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIn
         result.pushKV("nextblockhash", pnext->GetBlockHash().GetHex());
     // proof-of-stake
     result.pushKV("flags", strprintf("%s", blockindex->IsProofOfStake()? "proof-of-stake" : "proof-of-work"));
-    if (block.IsProofOfStake()) {
-        uint256 hashProofOfStakeRet = uint256();
-        {
-            LOCK(cs_main);
-            if (blockindex->pprev && !GetStakeKernelHash(hashProofOfStakeRet, block, blockindex->pprev)) {
-                throw JSONRPCError(RPC_INTERNAL_ERROR, "Cannot get proof of stake hash");
-            }
-        }
-        std::string stakeModifier = (blockindex->GetStakeModifier().GetHex());
-        result.pushKV("stakeModifier", stakeModifier);
-        result.pushKV("hashProofOfStake", hashProofOfStakeRet.GetHex());
-    }
     return result;
 }
 
@@ -331,8 +322,13 @@ static RPCHelpMan getestimatedannualroi()
                 },
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
-    LOCK(cs_main);
-    return GetEstimatedAnnualROI();
+    CBlockIndex* tip;
+    {
+        ChainstateManager& chainman = EnsureAnyChainman(request.context);
+        LOCK(cs_main);
+        tip = chainman.ActiveChain().Tip();
+    }
+    return GetEstimatedAnnualROI(tip);
 },
     };
 }
@@ -555,7 +551,7 @@ static RPCHelpMan getdifficulty()
 {
     ChainstateManager& chainman = EnsureAnyChainman(request.context);
     LOCK(cs_main);
-    return GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), false));
+    return GetDifficulty(GetLastBlockIndex(chainman.ActiveChain().Tip(), false));
 },
     };
 }
@@ -575,11 +571,12 @@ static RPCHelpMan getdifficultypos()
         [&](const RPCHelpMan& self, const JSONRPCRequest& request) -> UniValue
 {
     const Consensus::Params& consensus = Params().GetConsensus();
+    ChainstateManager& chainman = EnsureAnyChainman(request.context);
     LOCK(cs_main);
-    if (::ChainActive().Height() < consensus.nStartPoSHeight) {
+    if (chainman.ActiveChain().Height() < consensus.nStartPoSHeight) {
         throw JSONRPCError(RPC_MISC_ERROR, "proof-of-stake phase hasn't started yet");
     } else { 
-        return GetDifficulty(GetLastBlockIndex(::ChainActive().Tip(), true));
+        return GetDifficulty(GetLastBlockIndex(chainman.ActiveChain().Tip(), true));
     }
 },
     };
@@ -1130,8 +1127,8 @@ static RPCHelpMan getblock()
     CBlock block;
     const CBlockIndex* pblockindex;
     const CBlockIndex* tip;
+    ChainstateManager& chainman = EnsureAnyChainman(request.context);
     {
-        ChainstateManager& chainman = EnsureAnyChainman(request.context);
         LOCK(cs_main);
         pblockindex = chainman.m_blockman.LookupBlockIndex(hash);
         tip = chainman.ActiveChain().Tip();
@@ -1151,7 +1148,26 @@ static RPCHelpMan getblock()
         return strHex;
     }
 
-    return blockToJSON(block, tip, pblockindex, verbosity >= 2);
+    UniValue ret(UniValue::VOBJ);
+    ret = blockToJSON(block, tip, pblockindex, verbosity >= 2);
+    if (block.IsProofOfStake()) {
+        uint256 hashProofOfStake = uint256();
+        {
+            LOCK(cs_main);
+            // Initialize stake input
+            std::unique_ptr<CSinStake> stakeInput;
+            if (!chainman.ActiveChainstate().LoadStakeInput(block, pblockindex->pprev, stakeInput))
+                throw JSONRPCError(RPC_INTERNAL_ERROR, "Cannot get proof of stake hash");
+
+            CStakeKernel stakeKernel(pblockindex->pprev, stakeInput.get(), block.nBits, block.nTime);
+            hashProofOfStake = stakeKernel.GetHash();
+        }
+        std::string stakeModifier = (pblockindex->GetStakeModifier().GetHex());
+        ret.pushKV("stakeModifier", stakeModifier);
+        ret.pushKV("hashProofOfStake", hashProofOfStake.GetHex());
+    }
+
+    return ret;
 },
     };
 }
@@ -1615,7 +1631,7 @@ RPCHelpMan getblockchaininfo()
     obj.pushKV("headers",               pindexBestHeader ? pindexBestHeader->nHeight : -1);
     obj.pushKV("bestblockhash",         tip->GetBlockHash().GetHex());
     obj.pushKV("difficulty_pow",        (double)GetDifficulty(GetLastBlockIndex(tip, false)));
-    if (::ChainActive().Height() > consensus.nStartPoSHeight) {
+    if (chainman.ActiveChain().Height() > consensus.nStartPoSHeight) {
         obj.pushKV("difficulty_pos",    (double)GetDifficulty(GetLastBlockIndex(tip, true)));
     }
     obj.pushKV("mediantime",            (int64_t)tip->GetMedianTimePast());
