@@ -2584,8 +2584,6 @@ void CInfinityNodeLockReward::TryConnectToMySigners(int rewardHeight, CConnman& 
             }
 
             if(!fconnected && !fBadSignerConnection){
-                // TODO: Change logic here as upstream changed
-                /*
                 CNode* pnode = connman.OpenNetworkConnection(add, false, nullptr, addr.ToStringIP().c_str(), ConnectionType::MANUAL);
                 if(pnode == NULL) {
                     fconnected = false;
@@ -2595,7 +2593,6 @@ void CInfinityNodeLockReward::TryConnectToMySigners(int rewardHeight, CConnman& 
                     fBadSignerConnection = false;
                     connectionType = strprintf("new connection(%s)", add.ToStringIP());
                 }
-                */
             }
 
             if(fconnected){

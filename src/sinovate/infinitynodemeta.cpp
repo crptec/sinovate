@@ -279,24 +279,18 @@ bool CInfinitynodeMeta::Get(std::string  nodePublicKey, CMetadata& meta)
     return res;
 }
 
-bool CInfinitynodeMeta::metaScan(int nBlockHeight)
+bool CInfinitynodeMeta::metaScan(int nBlockHeight, ChainstateManager& chainman)
 {
     Clear();
 
     LOCK(cs_main);
 
     LogPrint(BCLog::INFINITYMETA,"CInfinitynodeMeta::metaScan -- Cleared map. Size is %d at height: %d\n", (int)mapNodeMetadata.size(), nBlockHeight);
-    /* TODO:
-    int lastHeight = ::ChainActive().Height();
-    */
-    int lastHeight = 0;
+    int lastHeight = chainman.ActiveChain().Height();
     if (nBlockHeight <= Params().GetConsensus().nInfinityNodeGenesisStatement) return false;
     if (nBlockHeight > lastHeight) nBlockHeight = lastHeight;
 
-    /* TODO:
-    CBlockIndex* pindex  = ::ChainActive()[nBlockHeight];
-    */
-    CBlockIndex* pindex = nullptr;
+    CBlockIndex* pindex  = chainman.ActiveChain()[nBlockHeight];
     CBlockIndex* prevBlockIndex = pindex;
 
     while (prevBlockIndex->nHeight >= Params().GetConsensus().nInfinityNodeGenesisStatement)

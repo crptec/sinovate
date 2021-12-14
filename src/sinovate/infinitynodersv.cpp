@@ -105,15 +105,12 @@ int CInfinitynodersv::getResult(std::string proposal, bool opinion, int mode)
     }
 }
 
-bool CInfinitynodersv::rsvScan(int nBlockHeight)
+bool CInfinitynodersv::rsvScan(int nBlockHeight, ChainstateManager& chainman)
 {
     Clear();
     LogPrint(BCLog::INFINITYRSV,"CInfinitynodersv::rsvScan -- Cleared map. Size is %d\n", (int)mapProposalVotes.size());
     if (nBlockHeight <= Params().GetConsensus().nInfinityNodeGenesisStatement) return false;
-    /*TODO:
-    CBlockIndex* pindex  = ::ChainActive()[nBlockHeight];
-    */
-    CBlockIndex* pindex = nullptr;
+    CBlockIndex* pindex  = chainman.ActiveChain()[nBlockHeight];
     CBlockIndex* prevBlockIndex = pindex;
 
     while (prevBlockIndex->nHeight >= Params().GetConsensus().nInfinityNodeGenesisStatement)

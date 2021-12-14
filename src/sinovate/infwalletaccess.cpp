@@ -94,10 +94,24 @@ bool CInfWalletAccess::RegisterLROnchain()
     bilingual_str strError;
     mapValue_t mapValue;
 
-    std::vector<COutput> vPossibleCoins;
-/* TODO:
-    pwallet->AvailableCoins(vPossibleCoins, true, NULL);
-*/
+    int nMinDepth = 1;
+    int nMaxDepth = 9999999;
+    CAmount nMinimumAmount = 0;
+    CAmount nMaximumAmount = MAX_MONEY;
+    CAmount nMinimumSumAmount = MAX_MONEY;
+    uint64_t nMaximumCount = 0;
+    bool include_unsafe = true;
+
+    std::vector<COutput> vecOutputs;
+    {
+        CCoinControl cctl;
+        cctl.m_avoid_address_reuse = false;
+        cctl.m_min_depth = nMinDepth;
+        cctl.m_max_depth = nMaxDepth;
+        cctl.m_include_unsafe_inputs = include_unsafe;
+        LOCK(pwallet->cs_wallet);
+        pwallet->AvailableCoins(vecOutputs, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
+    }
     CTransactionRef tx_New;
     CCoinControl coin_control;
 
@@ -115,7 +129,7 @@ bool CInfWalletAccess::RegisterLROnchain()
     //select coin from Node Address, accept only this address
     CAmount selected = 0;
     int nInput = 0;
-    for (COutput& out : vPossibleCoins) {
+    for (COutput& out : vecOutputs) {
         if(selected >= nAmountToSelect) break;
         if(out.nDepth >= 2 && selected < nAmountToSelect){
             CScript pubScript;

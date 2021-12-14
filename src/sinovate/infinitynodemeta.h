@@ -135,7 +135,7 @@ public:
 
     bool RemoveMetaFromBlock(const CBlock& block, CBlockIndex* pindex, CCoinsViewCache& view, const CChainParams& chainparams);
 
-    bool metaScan(int nHeight);
+    bool metaScan(int nHeight, ChainstateManager& chainman);
     bool setActiveBKAddress(std::string  metaID);
 
     std::string ToString() const;

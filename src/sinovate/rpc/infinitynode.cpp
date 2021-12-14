@@ -473,10 +473,24 @@ static RPCHelpMan infinitynodeburnfund()
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SIN address as SINBackupAddress");
 
     std::string strError;
-    std::vector<COutput> vPossibleCoins;
-/* TODO:
-    pwallet->AvailableCoins(vPossibleCoins, true, NULL, false);
-*/
+    int nMinDepth = 1;
+    int nMaxDepth = 9999999;
+    CAmount nMinimumAmount = 0;
+    CAmount nMaximumAmount = MAX_MONEY;
+    CAmount nMinimumSumAmount = MAX_MONEY;
+    uint64_t nMaximumCount = 0;
+    bool include_unsafe = true;
+
+    std::vector<COutput> vecOutputs;
+    {
+        CCoinControl cctl;
+        cctl.m_avoid_address_reuse = false;
+        cctl.m_min_depth = nMinDepth;
+        cctl.m_max_depth = nMaxDepth;
+        cctl.m_include_unsafe_inputs = include_unsafe;
+        LOCK(pwallet->cs_wallet);
+        pwallet->AvailableCoins(vecOutputs, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
+    }
 
     UniValue results(UniValue::VOBJ);
 
@@ -493,7 +507,7 @@ static RPCHelpMan infinitynodeburnfund()
     // Wallet comments
     std::set<CTxDestination> destinations;
     LOCK(pwallet->cs_wallet);
-    for (COutput& out : vPossibleCoins) {
+    for (COutput& out : vecOutputs) {
         CTxDestination addressCoin;
         const CScript& scriptPubKeyCoin = out.tx->tx->vout[out.i].scriptPubKey;
         bool fValidAddress = ExtractDestination(scriptPubKeyCoin, addressCoin);
@@ -688,10 +702,24 @@ static RPCHelpMan infinitynodeupdatemeta()
     EnsureWalletIsUnlocked(*pwallet);
 
     std::string strError;
-    std::vector<COutput> vPossibleCoins;
-/*TODO:
-    pwallet->AvailableCoins(vPossibleCoins, true, NULL, false);
-*/
+    int nMinDepth = 1;
+    int nMaxDepth = 9999999;
+    CAmount nMinimumAmount = 0;
+    CAmount nMaximumAmount = MAX_MONEY;
+    CAmount nMinimumSumAmount = MAX_MONEY;
+    uint64_t nMaximumCount = 0;
+    bool include_unsafe = true;
+
+    std::vector<COutput> vecOutputs;
+    {
+        CCoinControl cctl;
+        cctl.m_avoid_address_reuse = false;
+        cctl.m_min_depth = nMinDepth;
+        cctl.m_max_depth = nMaxDepth;
+        cctl.m_include_unsafe_inputs = include_unsafe;
+        LOCK(pwallet->cs_wallet);
+        pwallet->AvailableCoins(vecOutputs, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
+    }
 
     // cMetadataAddress
     CTxDestination dest = DecodeDestination(Params().GetConsensus().cMetadataAddress);
@@ -702,7 +730,7 @@ static RPCHelpMan infinitynodeupdatemeta()
 
     std::ostringstream streamInfo;
 
-    for (COutput& out : vPossibleCoins) {
+    for (COutput& out : vecOutputs) {
         CTxDestination addressCoin;
         const CScript& scriptPubKeyCoin = out.tx->tx->vout[out.i].scriptPubKey;
         bool fValidAddress = ExtractDestination(scriptPubKeyCoin, addressCoin);
