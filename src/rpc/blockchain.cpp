@@ -174,14 +174,14 @@ double GetPoSKernelPS()
     return result;
 }
 
-double GetEstimatedAnnualROI(CBlockIndex* tip)
+double GetEstimatedAnnualROI(const CBlockIndex* tip)
 {
     double result = 0;
     if (!tip) {
         return result;
     }
     double networkWeight = GetPoSKernelPS();
-    CBlockIndex* pindex = pindexBestHeader == 0 ? tip : pindexBestHeader;
+    const CBlockIndex* pindex = pindexBestHeader == 0 ? tip : pindexBestHeader;
     int nHeight = pindex ? pindex->nHeight : 0;
     const Consensus::Params& consensusParams = Params().GetConsensus();
     double subsidy = GetBlockSubsidy(nHeight, consensusParams);

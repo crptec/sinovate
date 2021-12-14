@@ -274,8 +274,7 @@ public:
     double getEstimatedAnnualROINode() override
     {
         LOCK(::cs_main);
-        //return GetEstimatedAnnualROI(chainman().ActiveChain().Tip());
-        return 0;
+        return GetEstimatedAnnualROI(chainman().ActiveChain().Tip());
     }
     WalletClient& walletClient() override
     {
