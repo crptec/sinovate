@@ -3643,18 +3643,6 @@ static bool ContextualCheckBlockHeader(const CBlockHeader& block, BlockValidatio
     bool IsPoS = false;
     bool fRegTest = Params().NetworkIDString() == CBaseChainParams::REGTEST;
 
-//>SIN
-    /* TODO:
-    // Check reorg bounds
-    int nMaxReorgDepth = gArgs.GetArg("-maxreorg", Params().MaxReorganizationDepth());
-    bool fGreaterThanMaxReorg = m_chainman.ActiveChainstate().Height() - (nHeight - 1) >= nMaxReorgDepth;
-    if (fGreaterThanMaxReorg && !::ChainstateActive().IsInitialBlockDownload()) {
-        LogPrintf("ERROR: %s: forked chain older than max reorganization depth (height %d)\n", __func__, nHeight);
-        return state.Invalid(BlockValidationResult::BLOCK_MAXREORGDEPTH, "bad-fork-prior-to-maxreorgdepth");
-    }
-    */
-//<SIN
-
     // Check proof of work/proof-of-stake diff
     if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams, false)) {
         // if the header doesn't match diff, we assume the block is PoS as of now, and carry on with timestamp checks.
@@ -3900,6 +3888,15 @@ bool ChainstateManager::ProcessNewBlockHeaders(const std::vector<CBlockHeader>& 
             if (ppindex) {
                 *ppindex = pindex;
             }
+            //>SIN
+            // Check reorg bounds
+            int nMaxReorgDepth = gArgs.GetArg("-maxreorg", Params().MaxReorganizationDepth());
+            bool fGreaterThanMaxReorg = m_active_chainstate->m_chain.Height() - (pindex->nHeight) >= nMaxReorgDepth;
+            if (fGreaterThanMaxReorg && !ActiveChainstate().IsInitialBlockDownload()) {
+                LogPrintf("ERROR: %s: forked chain older than max reorganization depth (height %d)\n", __func__, pindex->nHeight);
+                return false;
+            }
+            //<SIN
         }
     }
     if (NotifyHeaderTip(ActiveChainstate())) {
