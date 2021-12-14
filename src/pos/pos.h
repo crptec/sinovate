@@ -67,6 +67,6 @@ bool Stake(const CBlockIndex* pindexPrev, CStakeInput* stakeInput, unsigned int 
  *                              (if nullptr, it will be searched in mapBlockIndex)
  * @return      bool            true if the block has a valid proof of stake
  */
-bool CheckProofOfStake(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev = nullptr, CSinStake* stakeInput = nullptr);
+bool CheckProofOfStake(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev = nullptr, CStakeInput* stakeInput = nullptr);
 
 #endif // SIN_POS_H

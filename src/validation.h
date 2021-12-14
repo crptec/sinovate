@@ -792,7 +792,7 @@ public:
     bool LoadChainTip() EXCLUSIVE_LOCKS_REQUIRED(cs_main);
 
     /** Load a stake input from a block and its previous index */
-    bool LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::unique_ptr<CSinStake>& stake);
+    bool LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::unique_ptr<CStakeInput>& stake);
 
     //! Dictates whether we need to flush the cache to disk or not.
     //!

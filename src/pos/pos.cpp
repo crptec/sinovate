@@ -95,7 +95,7 @@ bool Stake(const CBlockIndex* pindexPrev, CStakeInput* stakeInput, unsigned int 
  *                              (if nullptr, it will be searched in mapBlockIndex)
  * @return      bool            true if the block has a valid proof of stake
  */
-bool CheckProofOfStake(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev, CSinStake* stakeInput)
+bool CheckProofOfStake(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev, CStakeInput* stakeInput)
 {
     const int nHeight = pindexPrev->nHeight + 1;
 

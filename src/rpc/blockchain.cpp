@@ -1155,7 +1155,7 @@ static RPCHelpMan getblock()
         {
             LOCK(cs_main);
             // Initialize stake input
-            std::unique_ptr<CSinStake> stakeInput;
+            std::unique_ptr<CStakeInput> stakeInput;
             if (!chainman.ActiveChainstate().LoadStakeInput(block, pblockindex->pprev, stakeInput))
                 throw JSONRPCError(RPC_INTERNAL_ERROR, "Cannot get proof of stake hash");
 

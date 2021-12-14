@@ -1890,7 +1890,7 @@ static unsigned int GetBlockScriptFlags(const CBlockIndex* pindex, const Consens
  */
 
 // helper function for CheckProofOfStake and GetStakeKernelHash
-bool CChainState::LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::unique_ptr<CSinStake>& stake)
+bool CChainState::LoadStakeInput(const CBlock& block, const CBlockIndex* pindexPrev, std::unique_ptr<CStakeInput>& stake)
 {
     // Reality check
     assert(block.IsProofOfStake());
@@ -1901,27 +1901,28 @@ bool CChainState::LoadStakeInput(const CBlock& block, const CBlockIndex* pindexP
     if (!pindexPrev) {
         pindexPrev = m_blockman.LookupBlockIndex(block.hashPrevBlock);
         if (!pindexPrev) {
-            LogPrintf("%s : couldn't find previous block", __func__);
+            LogPrint(BCLog::STAKING, "%s : couldn't find previous block", __func__);
             return false;
         }
     } else {
         // check that is the actual parent block
-        if (block.hashPrevBlock != pindexPrev->GetBlockHash())
-            LogPrintf("%s : previous block mismatch", __func__);
+        if (block.hashPrevBlock != pindexPrev->GetBlockHash()) {
+            LogPrint(BCLog::STAKING, "%s : previous block mismatch", __func__);
             return false;
+        }
     }
 
     // Find the previous transaction in database
     uint256 hash_block;
     if (!g_txindex) {
-        LogPrintf("%s : FATAL: No txindex enabled, PoS validation failed", __func__);
+        LogPrint(BCLog::STAKING, "%s : FATAL: No txindex enabled, PoS validation failed", __func__);
         return false;
     }
 
     CTransactionRef txPrev = GetTransaction(nullptr, nullptr, txin.prevout.hash, Params().GetConsensus(), hash_block);
 
     if (txPrev == nullptr) {
-        LogPrintf("%s : INFO: read txPrev failed, tx id prev: %s", __func__, txin.prevout.hash.GetHex());
+        LogPrint(BCLog::STAKING, "%s : INFO: read txPrev failed, tx id prev: %s", __func__, txin.prevout.hash.GetHex());
         return false;
     }
 
@@ -1937,12 +1938,12 @@ bool CChainState::LoadStakeInput(const CBlock& block, const CBlockIndex* pindexP
 
     // Check that the input is in the active chain
     if (!pindexFrom) {
-        LogPrintf("%s : Failed to find the block index for stake origin", __func__);
+        LogPrint(BCLog::STAKING, "%s : Failed to find the block index for stake origin", __func__);
         return false;
     }
 
     // Construct the stakeinput object
-    stake = std::unique_ptr<CSinStake>(new CSinStake(txPrev->vout[txin.prevout.n], txin.prevout, pindexFrom));
+    stake = std::unique_ptr<CStakeInput>(new CSinStake(txPrev->vout[txin.prevout.n], txin.prevout, pindexFrom));
 
     return stake && stake->InitFromTxIn(txin);
 }
@@ -2024,7 +2025,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
             LogPrint(BCLog::STAKING, "Setting stake modifier : input %s block %s modifierPrev info: nHeight=%d, PrevStakeModifier=%s StakeModifier=%s\n", block.vtx[1]->vin[0].prevout.hash.ToString(), block.GetHash().ToString(), nPrevHeight, sPrevStakeModifier, sStakeModifier);
         }
         // proof-of-stake: initialize stake input
-        std::unique_ptr<CSinStake> stakeInput;
+        std::unique_ptr<CStakeInput> stakeInput;
         if (!LoadStakeInput(block, pindex->pprev, stakeInput)) {
             return state.Invalid(BlockValidationResult::BLOCK_POS_BAD, "bad-pos-stakeinput", "cannot init stakeinput");
         }
