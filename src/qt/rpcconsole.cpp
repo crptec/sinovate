@@ -544,6 +544,8 @@ RPCConsole::RPCConsole(interfaces::Node& node, const PlatformStyle *_platformSty
     //: Secondary shortcut to decrease the RPC console font size.
     GUIUtil::AddButtonShortcut(ui->fontSmallerButton, tr("Ctrl+_"));
 
+     ui->promptIcon->setIcon(platformStyle->MultiStatesIcon(QStringLiteral(":/icons/prompticon"), PlatformStyle::PushButtonIcon));
+
     // Install event filter for up and down arrow
     ui->lineEdit->installEventFilter(this);
     ui->lineEdit->setMaxLength(16 * 1024 * 1024);
@@ -900,24 +902,22 @@ void RPCConsole::keyPressEvent(QKeyEvent *event)
 
 void RPCConsole::changeEvent(QEvent* e)
 {
-#ifdef Q_OS_MACOS
 
     if (e->type() == QEvent::PaletteChange) {
-        ui->clearButton->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/remove")));
-        ui->fontBiggerButton->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/fontbigger")));
-        ui->fontSmallerButton->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/fontsmaller")));
-        ui->promptIcon->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/prompticon")));
+        ui->clearButton->setIcon(platformStyle->MultiStatesIcon(QStringLiteral(":/icons/remove"), PlatformStyle::PushButtonIcon));
+        ui->fontBiggerButton->setIcon(platformStyle->MultiStatesIcon(QStringLiteral(":/icons/fontbigger"), PlatformStyle::PushButtonIcon));
+        ui->fontSmallerButton->setIcon(platformStyle->MultiStatesIcon(QStringLiteral(":/icons/fontsmaller"), PlatformStyle::PushButtonIcon));
+        ui->promptIcon->setIcon(platformStyle->MultiStatesIcon(QStringLiteral(":/icons/prompticon"), PlatformStyle::PushButtonIcon));
 
         for (int i = 0; ICON_MAPPING[i].url; ++i) {
             ui->messagesWidget->document()->addResource(
                 QTextDocument::ImageResource,
                 QUrl(ICON_MAPPING[i].url),
-                platformStyle->SingleColorImage(ICON_MAPPING[i].source).scaled(QSize(consoleFontSize * 2, consoleFontSize * 2), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+                platformStyle->TableColorImage(ICON_MAPPING[i].source, ICON_MAPPING[i].type).scaled(QSize(consoleFontSize*2, consoleFontSize*2), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
         }
     }
 
     QWidget::changeEvent(e);
-#endif
 }
 
 void RPCConsole::message(int category, const QString &message, bool html)
