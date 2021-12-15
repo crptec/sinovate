@@ -35,7 +35,6 @@
 #include <wallet/wallet.h>
 #endif
 
-#include <QAbstractButton>
 #include <QAbstractItemModel>
 #include <QDateTime>
 #include <QFont>
@@ -545,16 +544,14 @@ RPCConsole::RPCConsole(interfaces::Node& node, const PlatformStyle *_platformSty
     //: Secondary shortcut to decrease the RPC console font size.
     GUIUtil::AddButtonShortcut(ui->fontSmallerButton, tr("Ctrl+_"));
 
-    ui->promptIcon->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/prompticon")));
-
     // Install event filter for up and down arrow
     ui->lineEdit->installEventFilter(this);
     ui->lineEdit->setMaxLength(16 * 1024 * 1024);
     ui->messagesWidget->installEventFilter(this);
 
-    connect(ui->clearButton, &QAbstractButton::clicked, [this] { clear(); });
-    connect(ui->fontBiggerButton, &QAbstractButton::clicked, this, &RPCConsole::fontBigger);
-    connect(ui->fontSmallerButton, &QAbstractButton::clicked, this, &RPCConsole::fontSmaller);
+    connect(ui->clearButton, &QPushButton::clicked, [this] { clear(); });
+    connect(ui->fontBiggerButton, &QPushButton::clicked, this, &RPCConsole::fontBigger);
+    connect(ui->fontSmallerButton, &QPushButton::clicked, this, &RPCConsole::fontSmaller);
     connect(ui->btnClearTrafficGraph, &QPushButton::clicked, ui->trafficGraph, &TrafficGraphWidget::clear);
 
     // disable the wallet selector by default
@@ -903,6 +900,8 @@ void RPCConsole::keyPressEvent(QKeyEvent *event)
 
 void RPCConsole::changeEvent(QEvent* e)
 {
+#ifdef Q_OS_MACOS
+
     if (e->type() == QEvent::PaletteChange) {
         ui->clearButton->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/remove")));
         ui->fontBiggerButton->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/fontbigger")));
@@ -918,6 +917,7 @@ void RPCConsole::changeEvent(QEvent* e)
     }
 
     QWidget::changeEvent(e);
+#endif
 }
 
 void RPCConsole::message(int category, const QString &message, bool html)
