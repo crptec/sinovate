@@ -647,7 +647,7 @@ void InfinitynodeList::on_btnSetup_clicked()
     }
 
     if (mInvoiceid==0)  {
-        QMessageBox::warning(this, "Maintenance Mode", "We are sorry, Node Setup is in maintenance mode at this moment. Please try later.", QMessageBox::Ok, QMessageBox::Ok);
+        QMessageBox::warning(this, "Maintenance Mode", "We are sorry, internet connection issue or system maintenance. Please try again later.", QMessageBox::Ok, QMessageBox::Ok);
     }
 
     if ( mOrderid > 0 && mInvoiceid > 0) {
