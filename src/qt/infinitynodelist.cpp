@@ -769,7 +769,7 @@ QString InfinitynodeList::nodeSetupGetNewAddress()    {
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR getnewaddress: unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText( QString::fromStdString( "ERROR getnewaddress: Unexpected error " ) + QString::fromStdString( e.what() ));
     }
 
     return strAddress;
@@ -801,7 +801,7 @@ QString InfinitynodeList::nodeSetupSendToAddress( QString strAddress, int amount
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR sendtoaddress: unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText( QString::fromStdString( "ERROR sendtoaddress: Unexpected error " ) + QString::fromStdString( e.what() ));
     }
 
     return strTxId;
@@ -833,7 +833,7 @@ UniValue InfinitynodeList::nodeSetupGetTxInfo( QString txHash, std::string attri
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR gettransaction: unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText( QString::fromStdString( "ERROR gettransaction: Unexpected error " ) + QString::fromStdString( e.what() ));
     }
 
     return ret;
@@ -947,7 +947,7 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
 
             if ( mBurnPrepareTx=="" )  {
                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-               ui->labelMessage->setText( "ERROR: failed to prepare burn transaction." );
+               ui->labelMessage->setText( "ERROR: Failed to prepare burn transaction." );
             }
             nodeSetupStep( "setupWait", "Preparing burn transaction");
         }
@@ -1002,7 +1002,7 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR get owner address: unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText( QString::fromStdString( "ERROR get owner address: Unexpected error " ) + QString::fromStdString( e.what() ));
     }
     return address;
 }
@@ -1030,7 +1030,7 @@ void InfinitynodeList::nodeSetupCheckBurnPrepareConfirmations()   {
         }
         else    {
             ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-            ui->labelMessage->setText( "ERROR: failed to create burn transaction." );
+            ui->labelMessage->setText( "ERROR: Failed to create burn transaction." );
         }
     }
 }
@@ -1088,7 +1088,7 @@ LogPrintf("[nodeSetup] infinitynodeupdatemeta SUCCESS \n" );
             catch ( std::runtime_error e)
             {
                 ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-                ui->labelMessage->setText( QString::fromStdString( "ERROR infinitynodeupdatemeta: unexpected error " ) + QString::fromStdString( e.what() ));
+                ui->labelMessage->setText( QString::fromStdString( "ERROR infinitynodeupdatemeta: Unexpected error " ) + QString::fromStdString( e.what() ));
                 nodeSetupStep( "setupKo", "Node setup failed");
             }
         }
@@ -1136,7 +1136,7 @@ QString InfinitynodeList::nodeSetupRPCBurnFund( QString collateralAddress, CAmou
         }
         else {
             ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
-            ui->labelMessage->setText(QString::fromStdString( "ERROR infinitynodeburnfund: unknown response") );
+            ui->labelMessage->setText(QString::fromStdString( "ERROR infinitynodeburnfund: Unknown response") );
         }
     }
     catch (const UniValue& objError)
@@ -1147,7 +1147,7 @@ QString InfinitynodeList::nodeSetupRPCBurnFund( QString collateralAddress, CAmou
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR infinitynodeburnfund: unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText( QString::fromStdString( "ERROR infinitynodeburnfund: Unexpected error " ) + QString::fromStdString( e.what() ));
     }
     return burnTx;
 }
@@ -1400,28 +1400,28 @@ bool InfinitynodeList::nodeSetupCheckFunds( CAmount invoiceAmount )   {
     CAmount nUpdateMetaRequirement = (NODESETUP_UPDATEMETA_AMOUNT + 1) * COIN ;
 
     if ( curBalance > invoiceAmount + nNodeRequirement + nUpdateMetaRequirement)  {
-        nodeSetupStep( "setupOk", strChecking + " : " + "funds available.");
+        nodeSetupStep( "setupOk", strChecking + " : " + "Funds available.");
         bRet = true;
     }
     else    {
         if ( curBalance > nNodeRequirement + nUpdateMetaRequirement)  {
             QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), curBalance - nNodeRequirement - nUpdateMetaRequirement);
             QString strInvoiceAmount = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), invoiceAmount );
-            stringStream << strChecking << " : not enough funds to pay invoice amount. (you have " << strAvailable.toStdString() << " , need " << strInvoiceAmount.toStdString() << " )";
+            stringStream << strChecking << " : Not enough funds to pay invoice amount. (you have " << strAvailable.toStdString() << " , need " << strInvoiceAmount.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
                 nodeSetupStep( "setupKo", copyOfStr);
         }
         else if ( curBalance > nNodeRequirement  )  {
             QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), (curBalance - nNodeRequirement) );
             QString strUpdateMeta = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), nUpdateMetaRequirement );
-            stringStream << strChecking << " : not enough amount for UpdateMeta operation (you have " <<  strAvailable.toStdString() << " , you need " << strUpdateMeta.toStdString() << " )";
+            stringStream << strChecking << " : Not enough amount for UpdateMeta operation (you have " <<  strAvailable.toStdString() << " , you need " << strUpdateMeta.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
             nodeSetupStep( "setupKo", copyOfStr);
         }
         else    {
             QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), curBalance );
             QString strNeed = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), invoiceAmount + nNodeRequirement + nUpdateMetaRequirement );
-            stringStream << strChecking << " : not enough funds (you have " <<  strAvailable.toStdString() << " , you need " << strNeed.toStdString() << " )";
+            stringStream << strChecking << " : Not enough funds (you have " <<  strAvailable.toStdString() << " , you need " << strNeed.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
             nodeSetupStep( "setupKo", copyOfStr);
         }
