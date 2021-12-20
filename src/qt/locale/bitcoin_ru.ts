@@ -242,7 +242,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinApplication</name>
+    <name>SINApplication</name>
     <message>
         <source>Runaway exception</source>
         <translation type="unfinished">Неизвестная ошибка</translation>
@@ -292,7 +292,7 @@
         <translation type="unfinished">Сумма</translation>
     </message>
     <message>
-        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <source>Enter a SIN address (e.g. %1)</source>
         <translation type="unfinished">Введите биткоин-адрес (напр. %1)</translation>
     </message>
     <message>
@@ -429,7 +429,7 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>SINGUI</name>
     <message>
         <source>&amp;Overview</source>
         <translation>&amp;Обзор</translation>
@@ -492,7 +492,7 @@
         <translation type="unfinished">Прокси &lt;b&gt;включён&lt;/b&gt;: %1</translation>
     </message>
     <message>
-        <source>Send coins to a Bitcoin address</source>
+        <source>Send coins to a SIN address</source>
         <translation>Отправить средства на биткоин-адрес</translation>
     </message>
     <message>
@@ -544,7 +544,7 @@
         <translation type="unfinished">Подписать &amp;сообщение...</translation>
     </message>
     <message>
-        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
+        <source>Sign messages with your SIN addresses to prove you own them</source>
         <translation>Подписывайте сообщения вашими биткоин-адресами, чтобы доказать, что вы ими владеете</translation>
     </message>
     <message>
@@ -552,7 +552,7 @@
         <translation type="unfinished">&amp;Проверить сообщение</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
+        <source>Verify messages to ensure they were signed with specified SIN addresses</source>
         <translation>Проверяйте сообщения, чтобы убедиться, что они подписаны конкретными биткоин-адресами</translation>
     </message>
     <message>
@@ -620,8 +620,8 @@
         <translation type="unfinished">Подключение к узлам...</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
-        <translation type="unfinished">Запросить платёж (генерирует QR-коды и URI протокола bitcoin:)</translation>
+        <source>Request payments (generates QR codes and SIN: URIs)</source>
+        <translation type="unfinished">Запросить платёж (генерирует QR-коды и URI протокола SIN:)</translation>
     </message>
     <message>
         <source>Show the list of used sending addresses and labels</source>
@@ -760,12 +760,12 @@
         <translation type="unfinished">%1 клиент</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to Bitcoin network.</source>
+        <source>%n active connection(s) to SIN network.</source>
         <extracomment>A substring of the tooltip.</extracomment>
         <translation type="unfinished">
-            <numerusform>%n активное подключение к сети Bitcoin.</numerusform>
-            <numerusform>%n активных подключений к сети Bitcoin.</numerusform>
-            <numerusform>%n активных подключений к сети Bitcoin.</numerusform>
+            <numerusform>%n активное подключение к сети SIN.</numerusform>
+            <numerusform>%n активных подключений к сети SIN.</numerusform>
+            <numerusform>%n активных подключений к сети SIN.</numerusform>
         </translation>
     </message>
     <message>
@@ -1241,7 +1241,7 @@
 <context>
     <name>Intro</name>
     <message>
-        <source>Bitcoin</source>
+        <source>SIN</source>
         <translation type="unfinished">биткоин</translation>
     </message>
     <message>
@@ -1274,7 +1274,7 @@
         </translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the Bitcoin block chain.</source>
+        <source>%1 will download and store a copy of the SIN block chain.</source>
         <translation type="unfinished">%1 скачает и сохранит копию цепочки блоков биткоина.</translation>
     </message>
     <message>
@@ -1541,8 +1541,8 @@
         <translation type="unfinished">&amp;Путь к скрипту внешней подписи</translation>
     </message>
     <message>
-        <source>Full path to a Bitcoin Core compatible script (e.g. C:\Downloads\hwi.exe or /Users/you/Downloads/hwi.py). Beware: malware can steal your coins!</source>
-        <translation type="unfinished">Полный путь к сценарию, совместимому с Bitcoin Core (например, C:\Downloads\hwi.exe или /Users/you/Downloads/hwi.py). Осторожно: вредоносные программы могут украсть ваши монеты!</translation>
+        <source>Full path to a SIN Core compatible script (e.g. C:\Downloads\hwi.exe or /Users/you/Downloads/hwi.py). Beware: malware can steal your coins!</source>
+        <translation type="unfinished">Полный путь к сценарию, совместимому с SIN Core (например, C:\Downloads\hwi.exe или /Users/you/Downloads/hwi.py). Осторожно: вредоносные программы могут украсть ваши монеты!</translation>
     </message>
     <message>
         <source>Automatically open the Sinovate client port on the router. This only works when your router supports UPnP and it is enabled.</source>
@@ -1553,7 +1553,7 @@
         <translation>Пробросить порт через &amp;UPnP</translation>
     </message>
     <message>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
+        <source>Automatically open the SIN client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
         <translation type="unfinished">Автоматически открыть порт биткоин-клиента на роутере. Работает? если ваш роутер поддерживает NAT-PMP, и данная функция на нём включена. Внешний порт может быть случайным.</translation>
     </message>
     <message>
@@ -3836,8 +3836,8 @@ Go to File &gt; Open Wallet to load a wallet.
         <translation type="unfinished">Разработчики %s</translation>
     </message>
     <message>
-        <source>%s corrupt. Try using the wallet tool bitcoin-wallet to salvage or restoring a backup.</source>
-        <translation type="unfinished">%s испорчен. Попробуйте восстановить с помощью инструмента bitcoin-wallet или восстановите из резервной копии.</translation>
+        <source>%s corrupt. Try using the wallet tool SIN-wallet to salvage or restoring a backup.</source>
+        <translation type="unfinished">%s испорчен. Попробуйте восстановить с помощью инструмента SIN-wallet или восстановите из резервной копии.</translation>
     </message>
     <message>
         <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
@@ -3876,8 +3876,8 @@ Go to File &gt; Open Wallet to load a wallet.
         <translation type="unfinished">Ошибка: запись идентификатора дамп-файла неверна. Обнаружено "%s", ожидалось "%s".</translation>
     </message>
     <message>
-        <source>Error: Dumpfile version is not supported. This version of bitcoin-wallet only supports version 1 dumpfiles. Got dumpfile with version %s</source>
-        <translation type="unfinished">Ошибка: версия дамп-файла не поддерживается. Эта версия bitcoin-wallet поддерживает только дамп-файлы версии 1. Обнаружено дамп-файл версии %s</translation>
+        <source>Error: Dumpfile version is not supported. This version of SIN-wallet only supports version 1 dumpfiles. Got dumpfile with version %s</source>
+        <translation type="unfinished">Ошибка: версия дамп-файла не поддерживается. Эта версия SIN-wallet поддерживает только дамп-файлы версии 1. Обнаружено дамп-файл версии %s</translation>
     </message>
     <message>
         <source>Error: Legacy wallets only support the "legacy", "p2sh-segwit", and "bech32" address types</source>
