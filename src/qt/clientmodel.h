@@ -48,7 +48,7 @@ enum NumConnections {
 
 struct SINStatsStruct {
     QString blockcount = "";
-    double known_hashrate = 0.0;
+    QString hashrate = "";
     QString difficulty = "";
     double lastPrice = 0.0;
     double usdPrice = 0.0;

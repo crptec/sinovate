@@ -42,9 +42,7 @@ void StatsPage::getStatistics()
         QLocale l = QLocale(QLocale::English);
         // Set NETWORK strings
         QString heightValue(s.blockcount);
-        QString knownHashrateString = QString::number(s.known_hashrate/1000000, 'f', 2);
-        QString hashrateString = knownHashrateString;
-        m_ui->hashrateValueLabel->setText(hashrateString +" MH/s");
+        m_ui->hashrateValueLabel->setText(s.hashrate +" GH/s");
         m_ui->difficultyValueLabel->setText(s.difficulty);
         m_ui->lastPriceValueLabel->setText(QString::number(s.lastPrice, 'f', 8) + QString(" BTC"));
         m_ui->heightValueLabel->setText(heightValue);
