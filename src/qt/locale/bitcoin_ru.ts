@@ -293,7 +293,7 @@
     </message>
     <message>
         <source>Enter a SIN address (e.g. %1)</source>
-        <translation type="unfinished">Введите биткоин-адрес (напр. %1)</translation>
+        <translation type="unfinished">Введите SIN-адрес (напр. %1)</translation>
     </message>
     <message>
         <source>Unroutable</source>
@@ -493,7 +493,7 @@
     </message>
     <message>
         <source>Send coins to a SIN address</source>
-        <translation>Отправить средства на биткоин-адрес</translation>
+        <translation>Отправить средства на SIN-адрес</translation>
     </message>
     <message>
         <source>Backup wallet to another location</source>
@@ -545,7 +545,7 @@
     </message>
     <message>
         <source>Sign messages with your SIN addresses to prove you own them</source>
-        <translation>Подписывайте сообщения вашими биткоин-адресами, чтобы доказать, что вы ими владеете</translation>
+        <translation>Подписывайте сообщения вашими SIN-адресами, чтобы доказать, что вы ими владеете</translation>
     </message>
     <message>
         <source>&amp;Verify message…</source>
@@ -553,7 +553,7 @@
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified SIN addresses</source>
-        <translation>Проверяйте сообщения, чтобы убедиться, что они подписаны конкретными биткоин-адресами</translation>
+        <translation>Проверяйте сообщения, чтобы убедиться, что они подписаны конкретными SIN-адресами</translation>
     </message>
     <message>
         <source>&amp;Load PSBT from file…</source>
@@ -681,7 +681,7 @@
     </message>
     <message>
         <source>Load Partially Signed Sinovate Transaction from clipboard</source>
-        <translation type="unfinished">Загрузить частично подписанную биткоин-транзакцию из буфера обмена</translation>
+        <translation type="unfinished">Загрузить частично подписанную SIN-транзакцию из буфера обмена</translation>
     </message>
     <message>
         <source>Node window</source>
@@ -1242,7 +1242,7 @@
     <name>Intro</name>
     <message>
         <source>SIN</source>
-        <translation type="unfinished">биткоин</translation>
+        <translation type="unfinished">SIN</translation>
     </message>
     <message>
         <source>%1 GB of free space available</source>
@@ -1275,7 +1275,7 @@
     </message>
     <message>
         <source>%1 will download and store a copy of the SIN block chain.</source>
-        <translation type="unfinished">%1 скачает и сохранит копию цепочки блоков биткоина.</translation>
+        <translation type="unfinished">%1 скачает и сохранит копию цепочки блоков SIN.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1368,7 +1368,7 @@
     </message>
     <message>
         <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Sinovate network, as detailed below.</source>
-        <translation type="unfinished">Недавние транзакции могут быть пока не видны, и поэтому отображаемый баланс вашего кошелька может быть неверным. Информация станет верной после завершения синхронизации с сетью биткоина, прогресс которой вы можете видеть ниже.</translation>
+        <translation type="unfinished">Недавние транзакции могут быть пока не видны, и поэтому отображаемый баланс вашего кошелька может быть неверным. Информация станет верной после завершения синхронизации с сетью SIN, прогресс которой вы можете видеть ниже.</translation>
     </message>
     <message>
         <source>Attempting to spend Sinovate's that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
@@ -1554,7 +1554,7 @@
     </message>
     <message>
         <source>Automatically open the SIN client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
-        <translation type="unfinished">Автоматически открыть порт биткоин-клиента на роутере. Работает? если ваш роутер поддерживает NAT-PMP, и данная функция на нём включена. Внешний порт может быть случайным.</translation>
+        <translation type="unfinished">Автоматически открыть порт SIN-клиента на роутере. Работает? если ваш роутер поддерживает NAT-PMP, и данная функция на нём включена. Внешний порт может быть случайным.</translation>
     </message>
     <message>
         <source>Map port using NA&amp;T-PMP</source>
@@ -3136,7 +3136,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee rate of "100 satos
     </message>
     <message>
         <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
-        <translation type="unfinished">Введите ниже адрес получателя, сообщение (убедитесь, что переводы строк, пробелы, знаки табуляции и т. п. скопированы в точности) и подпись, чтобы проверить сообщение. Убедитесь, что вы не придаёте сообщению большего смысла, чем оно на самом деле несёт, чтобы не стать жертвой атаки "человек посередине". Обратите внимание, что подпись доказывает лишь то, что подписавший может получать биткоины на этот адрес, но никак не то, что он отправил какую-либо транзакцию!</translation>
+        <translation type="unfinished">Введите ниже адрес получателя, сообщение (убедитесь, что переводы строк, пробелы, знаки табуляции и т. п. скопированы в точности) и подпись, чтобы проверить сообщение. Убедитесь, что вы не придаёте сообщению большего смысла, чем оно на самом деле несёт, чтобы не стать жертвой атаки "человек посередине". Обратите внимание, что подпись доказывает лишь то, что подписавший может получать SINS на этот адрес, но никак не то, что он отправил какую-либо транзакцию!</translation>
     </message>
     <message>
         <source>The Sinovate address the message was signed with</source>
