@@ -72,7 +72,7 @@
     <message>
         <source>These are your SIN addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.
 Signing is only possible with addresses of the type 'legacy'.</source>
-        <translation type="unfinished">Це ваші Біткоїн адреси для отримання платежів. Використовуйте кнопку "Створити нову адресу для отримання" на вкладці отримання, щоб створити нові адреси.
+        <translation type="unfinished">Це ваші sin адреси для отримання платежів. Використовуйте кнопку "Створити нову адресу для отримання" на вкладці отримання, щоб створити нові адреси.
 Підпис можливий лише з адресами типу "legacy".</translation>
     </message>
     <message>
@@ -165,7 +165,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR SINS&lt;/b&gt;!</source>
-        <translation type="unfinished">Увага: Якщо ви зашифруєте гаманець і забудете пароль, ви &lt;b&gt;ВТРАТИТЕ ВСІ СВОЇ БІТКОЇНИ&lt;/b&gt;!</translation>
+        <translation type="unfinished">Увага: Якщо ви зашифруєте гаманець і забудете пароль, ви &lt;b&gt;ВТРАТИТЕ ВСІ СВОЇ SINS&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -185,7 +185,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Remember that encrypting your wallet cannot fully protect your SINs from being stolen by malware infecting your computer.</source>
-        <translation type="unfinished">Пам’ятайте, що шифрування гаманця не може повністю захистити ваші біткоїни від крадіжки, у випадку якщо ваш комп’ютер буде інфіковано шкідливими програмами.</translation>
+        <translation type="unfinished">Пам’ятайте, що шифрування гаманця не може повністю захистити ваші sins від крадіжки, у випадку якщо ваш комп’ютер буде інфіковано шкідливими програмами.</translation>
     </message>
     <message>
         <source>Wallet to be encrypted</source>
@@ -694,7 +694,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Open a SIN: URI</source>
-        <translation type="unfinished">Відкрити біткоїн URI</translation>
+        <translation type="unfinished">Відкрити sin URI</translation>
     </message>
     <message>
         <source>Open Wallet</source>
@@ -756,9 +756,9 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>%n active connection(s) to SIN network.</source>
         <extracomment>A substring of the tooltip.</extracomment>
         <translation type="unfinished">
-            <numerusform>%n активне з'єднання до мережі Біткоїн.</numerusform>
-            <numerusform>%n активних з'єднання до мережі Біткоїн.</numerusform>
-            <numerusform>%n активних з'єднань до мережі Біткоїн.</numerusform>
+            <numerusform>%n активне з'єднання до мережі SIN.</numerusform>
+            <numerusform>%n активних з'єднання до мережі SIN.</numerusform>
+            <numerusform>%n активних з'єднань до мережі SIN.</numerusform>
         </translation>
     </message>
     <message>
@@ -1357,11 +1357,11 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the SIN network, as detailed below.</source>
-        <translation type="unfinished">Нещодавні транзакції ще не відображаються, тому баланс вашого гаманця може бути неточним. Ця інформація буде вірною після того, як ваш гаманець завершить синхронізацію з мережею Біткоїн, враховуйте показники нижче.</translation>
+        <translation type="unfinished">Нещодавні транзакції ще не відображаються, тому баланс вашого гаманця може бути неточним. Ця інформація буде вірною після того, як ваш гаманець завершить синхронізацію з мережею SIN, враховуйте показники нижче.</translation>
     </message>
     <message>
         <source>Attempting to spend SINs that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation type="unfinished">Спроба відправити біткоїни, які ще не відображаються, не буде прийнята мережею.</translation>
+        <translation type="unfinished">Спроба відправити sins, які ще не відображаються, не буде прийнята мережею.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1408,7 +1408,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <name>OpenURIDialog</name>
     <message>
         <source>Open SIN URI</source>
-        <translation type="unfinished">Відкрити біткоїн URI</translation>
+        <translation type="unfinished">Відкрити sin URI</translation>
     </message>
     </context>
 <context>
@@ -1531,7 +1531,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Automatically open the SIN client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Автоматично відкривати порт для клієнту Біткоїн на роутері. Працює лише, якщо ваш роутер підтримує UPnP, і ця функція увімкнена.</translation>
+        <translation>Автоматично відкривати порт для клієнту SIN на роутері. Працює лише, якщо ваш роутер підтримує UPnP, і ця функція увімкнена.</translation>
     </message>
     <message>
         <source>Map port using &amp;UPnP</source>
@@ -1539,7 +1539,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Automatically open the SIN client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
-        <translation type="unfinished">Автоматично відкривати порт клієнта Біткоїн в маршрутизаторі. Це працює, якщо ваш маршрутизатор підтримує NAT-PMP, і ця функція увімкнута. Зовнішній порт може бути випадковим.</translation>
+        <translation type="unfinished">Автоматично відкривати порт клієнта SIN в маршрутизаторі. Це працює, якщо ваш маршрутизатор підтримує NAT-PMP, і ця функція увімкнута. Зовнішній порт може бути випадковим.</translation>
     </message>
     <message>
         <source>Map port using NA&amp;T-PMP</source>
@@ -1627,7 +1627,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Connect to the SIN network through a separate SOCKS5 proxy for Tor onion services.</source>
-        <translation type="unfinished">Підключитися до мережі Біткоїн через окремий проксі-сервер SOCKS5 для сервісів Tor.</translation>
+        <translation type="unfinished">Підключитися до мережі SIN через окремий проксі-сервер SOCKS5 для сервісів Tor.</translation>
     </message>
     <message>
         <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor onion services:</source>
@@ -1715,7 +1715,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>The displayed information may be out of date. Your wallet automatically synchronizes with the SIN network after a connection is established, but this process has not completed yet.</source>
-        <translation>Показана інформація вже може бути застарілою. Ваш гаманець буде автоматично синхронізовано з мережею Біткоїн після встановлення підключення, але цей процес ще не завершено.</translation>
+        <translation>Показана інформація вже може бути застарілою. Ваш гаманець буде автоматично синхронізовано з мережею SIN після встановлення підключення, але цей процес ще не завершено.</translation>
     </message>
     <message>
         <source>Watch-only:</source>
@@ -1918,7 +1918,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Cannot start SIN: click-to-pay handler</source>
-        <translation type="unfinished">Не вдається запустити біткоїн: обробник клацни-плати</translation>
+        <translation type="unfinished">Не вдається запустити sin: обробник клацни-плати</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -1938,7 +1938,7 @@ If you are receiving this error you should request the merchant provide a BIP21 
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid SIN address or malformed URI parameters.</source>
-        <translation type="unfinished">Неможливо обробити URI! Причиною цього може бути некоректна біткоїн-адреса або неправильні параметри URI.</translation>
+        <translation type="unfinished">Неможливо обробити URI! Причиною цього може бути некоректна sin-адреса або неправильні параметри URI.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -2726,7 +2726,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee rate of "100 satos
     </message>
     <message>
         <source>When there is less transaction volume than space in the blocks, miners as well as relaying nodes may enforce a minimum fee. Paying only this minimum fee is just fine, but be aware that this can result in a never confirming transaction once there is more demand for SIN transactions than the network can process.</source>
-        <translation type="unfinished">Якщо обсяг транзакцій менше, ніж простір у блоках, майнери, а також вузли ретрансляції можуть стягувати мінімальну плату. Сплата лише цієї мінімальної суми може призвести до ніколи не підтверджуваної транзакції, коли буде більше попиту на біткоїн-транзакції, ніж мережа може обробити.</translation>
+        <translation type="unfinished">Якщо обсяг транзакцій менше, ніж простір у блоках, майнери, а також вузли ретрансляції можуть стягувати мінімальну плату. Сплата лише цієї мінімальної суми може призвести до ніколи не підтверджуваної транзакції, коли буде більше попиту на sin-транзакції, ніж мережа може обробити.</translation>
     </message>
     <message>
         <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
@@ -2959,7 +2959,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee rate of "100 satos
     </message>
     <message>
         <source>Warning: Invalid SIN address</source>
-        <translation type="unfinished">Увага: Неприпустима біткоїн-адреса.</translation>
+        <translation type="unfinished">Увага: Неприпустима sin-адреса.</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -3014,7 +3014,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee rate of "100 satos
     </message>
     <message>
         <source>The fee will be deducted from the amount being sent. The recipient will receive less SINs than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation type="unfinished">Комісію буде знято зі вказаної суми. До отримувача надійде менше біткоїнів, ніж було вказано в полі кількості. Якщо ж отримувачів декілька - комісію буде розподілено між ними.</translation>
+        <translation type="unfinished">Комісію буде знято зі вказаної суми. До отримувача надійде менше sinів, ніж було вказано в полі кількості. Якщо ж отримувачів декілька - комісію буде розподілено між ними.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -3065,7 +3065,7 @@ Note:  Since the fee is calculated on a per-byte basis, a fee rate of "100 satos
     </message>
     <message>
         <source>You can sign messages/agreements with your addresses to prove you can receive SINs sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation type="unfinished">Ви можете підписувати повідомлення/угоди своїми адресами, щоб довести можливість отримання біткоїнів, що будуть надіслані на них. Остерігайтеся підписувати будь-що нечітке чи неочікуване, так як за допомогою фішинг-атаки вас можуть спробувати ввести в оману для отримання вашого підпису під чужими словами. Підписуйте лише чіткі твердження, з якими ви повністю згодні.</translation>
+        <translation type="unfinished">Ви можете підписувати повідомлення/угоди своїми адресами, щоб довести можливість отримання sinів, що будуть надіслані на них. Остерігайтеся підписувати будь-що нечітке чи неочікуване, так як за допомогою фішинг-атаки вас можуть спробувати ввести в оману для отримання вашого підпису під чужими словами. Підписуйте лише чіткі твердження, з якими ви повністю згодні.</translation>
     </message>
     <message>
         <source>The SIN address to sign the message with</source>
