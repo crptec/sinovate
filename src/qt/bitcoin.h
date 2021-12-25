@@ -90,6 +90,9 @@ public:
     /// Setup platform style
     void setupPlatformStyle();
 
+    /// Restart wallet if needed
+    void restartWallet();
+
     interfaces::Node& node() const { assert(m_node); return *m_node; }
     void setNode(interfaces::Node& node);
 
@@ -128,6 +131,8 @@ private:
     interfaces::Node* m_node = nullptr;
 
     void startThread();
+    void restart(const QString& commandLine);
+    bool restartApp;
 };
 
 int GuiMain(int argc, char* argv[]);

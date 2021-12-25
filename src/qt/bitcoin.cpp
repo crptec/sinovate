@@ -54,6 +54,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QTranslator>
+#include <QProcess>
 
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
@@ -210,7 +211,8 @@ BitcoinApplication::BitcoinApplication():
     window(nullptr),
     pollShutdownTimer(nullptr),
     returnValue(0),
-    platformStyle(nullptr)
+    platformStyle(nullptr),
+    restartApp(false)
 {
     // Qt runs setlocale(LC_ALL, "") on initialization.
     RegisterMetaTypes();
@@ -346,6 +348,8 @@ void BitcoinApplication::requestShutdown()
     // Must disconnect node signals otherwise current thread can deadlock since
     // no event loop is running.
     window->unsubscribeFromCoreSignals();
+    // Get restart wallet
+    if(optionsModel) restartApp = optionsModel->getRestartApp();
     // Request node shutdown, which can interrupt long operations, like
     // rescanning a wallet.
     node().startShutdown();
@@ -447,6 +451,26 @@ WId BitcoinApplication::getMainWinId() const
 
     return window->winId();
 }
+
+void BitcoinApplication::restart(const QString& commandLine)
+{
+    QThread::currentThread()->sleep(2);
+
+    // Create new process and start the wallet
+    QProcess::startDetached(commandLine);
+}
+
+
+void BitcoinApplication::restartWallet()
+{
+    if(restartApp)
+    {
+        // Restart wallet for option
+        QString commandLine = arguments().join(' ');
+        restart(commandLine);
+    }
+}
+
 
 static void SetupUIArgs(ArgsManager& argsman)
 {
@@ -657,5 +681,6 @@ int GuiMain(int argc, char* argv[])
         PrintExceptionContinue(nullptr, "Runaway exception");
         app.handleRunawayException(QString::fromStdString(app.node().getWarnings().translated));
     }
+    app.restartWallet();
     return rv;
 }
