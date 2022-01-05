@@ -700,8 +700,8 @@ void BitcoinGUI::createToolBars()
         bottomOptionButton->setToolTip( "Open Options Window"  );
         bottomOptionButton->setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; } QPushButton {background-color: transparent; border: none; min-width: 16px;} QPushButton:hover {border: 1px solid" + colcode + "; }");
         
-        bottomSetupButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/setup_bottom",PlatformStyle::NavBar));
-        bottomSetupButton->setIconSize(QSize(38, 16));
+        bottomSetupButton->setIcon(QIcon(":/styles/theme2/app-icons/setup_bottom"));
+        bottomSetupButton->setIconSize(QSize(50, 13));
         bottomSetupButton->setToolTip( "Open SetUP Wizard"  );
         bottomSetupButton->setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; } QPushButton {background-color: transparent; border: none; min-width: 38px;} QPushButton:hover {border: 1px solid" + colcode + "; }");
     

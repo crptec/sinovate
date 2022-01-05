@@ -9,11 +9,7 @@ QWidget{
 Main Window CSS
 --------------------------------------------*/
 QMainWindow{
-    /*background-color: #1f1f1f;
-    border: 0px solid transparent;
-    background-image: url(":/styles/theme1/app-icons/bg");
-    background-position: bottom left;
-    background-repeat: no-repeat;*/
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgba(0,6,53,1), stop: 0.1 rgba(1,1,0,1), stop: 0.5 rgba(0,3,84,1), stop: 1.0 rgba(0,3,84,1));
 }
 QMainWindow .QFrame{
     border: 1px solid transparent;
@@ -57,10 +53,10 @@ QFrame#vLine,
     border-left: 1px solid #404041;
 }
 WalletFrame{
-    background-color: #000000;
+    background-color: transparent;
 }
 QDialog{
-    background-color: #000000;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgba(0,6,53,1), stop: 0.1 rgba(1,1,0,1), stop: 0.5 rgba(0,3,84,1), stop: 1.0 rgba(0,3,84,1));
     font-family:MADE TOMMY;
 }
 QLabel{
@@ -538,7 +534,7 @@ QTextEdit CSS
 QTextEdit {
     border: 1px solid #5a5a5d;
     border-radius: 12px;
-    background-color: #000000;
+    background-color: transparent;
     color: #bdbdbd;
     padding-left: 5px;
 }
@@ -810,7 +806,7 @@ QWidget#buttonsContainerWhite,
     background: #000000;
 }
 QWidget#ReceiveRequestDialog {
-    background: #000000;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgba(0,6,53,1), stop: 0.1 rgba(1,1,0,1), stop: 0.5 rgba(0,3,84,1), stop: 1.0 rgba(0,3,84,1));
 }
 QTextEdit#outUri {
     border: none;
@@ -882,7 +878,7 @@ QWidget#scrollAreaWidgetContents, QWidget#detailWidget {
 Debug Dialog CSS
 --------------------------------------------*/
 QWidget#RPCConsole{
-    background-color: #000000;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgba(0,6,53,1), stop: 0.1 rgba(1,1,0,1), stop: 0.5 rgba(0,3,84,1), stop: 1.0 rgba(0,3,84,1));
 }
 /*--------------------------------------------
 Shut Down Window CSS
@@ -1024,7 +1020,7 @@ Stake Page Widget CSS
     color: #9c9c9c;
 }
 #frameStakeInfo {
-    background-color: #000000;
+    background-color: transparent;
     border: 1px dotted #9c9c9c;
     color: #9c9c9c;
     border-radius: 4px;
@@ -1208,8 +1204,8 @@ QToolBar {
     background-image: url(":/styles/theme1/app-icons/bg");
     background-position: bottom left;
     background-repeat: no-repeat;
-    background-color: #000000;
-    border-right: 1px solid rgba(0, 79, 255, .5);
+    background-color: transparent;
+    /*border-right: 1px solid rgba(0, 79, 255, .5);*/
     height:100%;
     padding-top:20px
     }
@@ -1247,12 +1243,12 @@ QToolBar {
 QverviewPage -> QToolButton START
 ----------------------------------------------*/
 QWidget#toolBoxWidget .QToolButton {
-    border:  1px solid  rgba(0, 79, 255, .5);
+    border:  1px solid  #CCCDDA;
     background-color: transparent;
     font-size:12px;
     font-weight: bold;
     padding:4px 6px;
-    color: rgba(0, 79, 255, .5);
+    color: #CCCDDA;
     border-radius: 12px;
     }
   
