@@ -1360,12 +1360,12 @@ StatsPage #label,
 #top10Label,
 #top50Label,
 #activeLabel{
-    color: rgba(0, 79, 255, .5);
+    color: #3253ba;
 }
 
 StatsPage #hline1Stats,
 #hline2Stats,
 #hline3Stats,
 #hline4Stats {
-    background-color: rgba(0, 79, 255, .5);
+    background-color: #3253ba;
 }
