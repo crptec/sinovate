@@ -175,13 +175,11 @@ QComboBox QAbstractItemView::item:selected {
     padding: 4px;
 }
 QComboBox QAbstractItemView{
-    background-color: #DEDDDE;
+    background-color: #0029A9;
     border: none;
-    /*border-top: 1px solid #727272;
-    border-bottom: 1px solid #727272;*/
-    border-radius: 0px;
-    padding: 4px;
-    margin-top: 3px;
+    border-radius: 6px;
+    padding: 6px 0px;
+    margin-top: 5px;
     margin-bottom: 3px;
 }
 QComboBox::disabled {
