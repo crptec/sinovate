@@ -129,13 +129,17 @@ Intro::Intro(QWidget *parent, int64_t blockchain_size_gb, int64_t chain_state_si
     m_prune_target_gb{GetPruneTargetGB()}
 {
     ui->setupUi(this);
+    ui->frameTheme1->setStyleSheet("border-image : url(:/icons/theme1) 0 0 0 0 stretch stretch");
+    ui->frameTheme2->setStyleSheet("border-image : url(:/icons/theme2) 0 0 0 0 stretch stretch");
+    ui->frameTheme3->setStyleSheet("border-image : url(:/icons/theme3) 0 0 0 0 stretch stretch");
+    ui->theme1->setChecked(true);
     ui->welcomeLabel->setText(ui->welcomeLabel->text().arg(PACKAGE_NAME));
     ui->storageLabel->setText(ui->storageLabel->text().arg(PACKAGE_NAME));
-
+    
     ui->lblExplanation1->setText(ui->lblExplanation1->text()
         .arg(PACKAGE_NAME)
         .arg(m_blockchain_size_gb)
-        .arg(2009)
+        .arg(2018)
         .arg(tr("SIN"))
     );
     ui->lblExplanation2->setText(ui->lblExplanation2->text().arg(PACKAGE_NAME));
@@ -395,3 +399,19 @@ void Intro::UpdatePruneLabels(bool prune_checked)
     );
     this->adjustSize();
 }
+
+//++ Allows the user to select a theme on the intro screen. //
+//++ If the user does not select a theme, "theme1" is selected as the default theme by styleSheet.cpp //
+void Intro::on_theme2_clicked()
+{
+    QSettings settings;
+        settings.setValue("Theme", "theme2");
+}
+
+void Intro::on_theme3_clicked()
+{
+    QSettings settings;
+        settings.setValue("Theme", "theme3");
+}
+
+//--

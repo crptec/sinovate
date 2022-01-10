@@ -184,7 +184,20 @@ QStringList StyleSheet::getSupportedThemesNames()
 
 QString StyleSheet::getDefaultTheme()
 {
-    return "theme1";
+    
+    //++ Allows the user to select a theme on the intro screen. //
+    //++ If the user does not select a theme, "theme1" is selected as the default theme. //
+    QSettings settings;
+    if (settings.contains("Theme")) //If one is selected theme on the intro screen.
+    {
+     QString themeValue;
+     themeValue = settings.value("Theme").toString();
+             
+        return themeValue;
+    }
+    else{
+        return "theme1";
+    }
 }
 
 bool StyleSheet::setTheme(const QString &theme)
