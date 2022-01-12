@@ -1319,6 +1319,10 @@ QWidget#toolBoxWidget .QToolButton {
     color: #6f80ab;
   }
   
+  InfinitynodeList #labelBalance {
+  color: #000000;
+  }
+
   #setupSinovateButton {
     background: transparent;
     background-image: url(':/styles/theme2/app-icons/setup_bottom');

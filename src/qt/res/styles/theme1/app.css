@@ -1327,6 +1327,11 @@ InfinitynodeList .QLabel {
     border-image : url(:/styles/theme1/app-icons/bulb) 0 0 0 0 stretch stretch;
     border-width: 0px;
         }
+
+    InfinitynodeList #labelBalance {
+    color: white;
+            }
+
     /*HelpMessage*/
 HelpMessageDialog #aboutLogo {
     background-image:  url(":/icons/about_white");

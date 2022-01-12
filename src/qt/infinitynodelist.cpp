@@ -247,6 +247,19 @@ void InfinitynodeList::setClientModel(ClientModel *model)
 void InfinitynodeList::setWalletModel(WalletModel *model)
 {
     this->walletModel = model;
+
+    if(model && model->getOptionsModel())
+    {
+    interfaces::Wallet& wallet = model->wallet();
+    interfaces::WalletBalances balances = wallet.getBalances();
+    setBalance(balances);
+    connect(model, &WalletModel::balanceChanged, this, &InfinitynodeList::setBalance);
+
+    connect(model->getOptionsModel(), &OptionsModel::displayUnitChanged, this, &InfinitynodeList::updateDisplayUnit);
+
+    }
+    // update the display unit, to not use the default ("SIN")
+    updateDisplayUnit();
 }
 
 void InfinitynodeList::showContextDINMenu(const QPoint &point)
@@ -2063,6 +2076,24 @@ void InfinitynodeList::loadMotd()
 
 void InfinitynodeList::on_setupSinovateButton_clicked() {
     QDesktopServices::openUrl(QUrl("https://setup.sinovate.io/", QUrl::TolerantMode));
+}
+
+void InfinitynodeList::setBalance(const interfaces::WalletBalances& balances)
+{
+    int unit = walletModel->getOptionsModel()->getDisplayUnit();
+    m_balances = balances;
+    ui->labelBalance->setText(BitcoinUnits::floorHtmlWithUnit(unit, balances.balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
+    
+}
+
+void InfinitynodeList::updateDisplayUnit()
+{
+    if(walletModel && walletModel->getOptionsModel())
+    {
+       
+       setBalance(m_balances);
+       
+    }
 }
 // --
 

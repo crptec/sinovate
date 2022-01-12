@@ -86,6 +86,7 @@ private:
     std::vector<std::pair<int, QAction*>> contextDINColumnsActions;
     int64_t nTimeFilterUpdated;
     bool fFilterUpdated;
+    interfaces::WalletBalances m_balances;
 
     QLabel* labelPic[8];
     QLabel* labelTxt[8];
@@ -94,6 +95,7 @@ private:
 public Q_SLOTS:
     void updateDINList();
     bool filterNodeRow( int nRow );
+    void setBalance(const interfaces::WalletBalances& balances);
 
     // node setup functions
     void nodeSetupInitialize();
@@ -210,6 +212,8 @@ private Q_SLOTS:
     void on_btnRestore_clicked();
     void getStatistics();
     void loadMotd();
+
+    void updateDisplayUnit();
 };
 
 #endif // FXTC_QT_INFINITYNODELIST_H
