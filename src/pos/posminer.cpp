@@ -75,6 +75,9 @@ bool CreateCoinStake(CWallet* pwallet,
     int nAttempts = 0;
     CTxOut outProvider;
     for (auto it = availableCoins->begin(); it != availableCoins->end();) {
+        if (!it->pindex) {
+            continue;
+        }
         COutPoint outPoint = COutPoint(it->tx->GetHash(), it->i);
         CSinStake stakeInput(it->tx->tx->vout[it->i],
                              outPoint,

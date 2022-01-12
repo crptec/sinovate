@@ -501,7 +501,11 @@ public:
     {
         WAIT_LOCK(cs_main, lock);
         const CChain& active = Assert(m_node.chainman)->ActiveChain();
-        return m_node.chainman->m_blockman.LookupBlockIndex(hash);
+        pindex = m_node.chainman->m_blockman.LookupBlockIndex(hash);
+        if (pindex) {
+            return true;
+        }
+        return false;
     }
     bool findFirstBlockWithTimeAndHeight(int64_t min_time, int min_height, const FoundBlock& block) override
     {
