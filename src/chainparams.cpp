@@ -265,7 +265,7 @@ public:
         consensus.nInfinityNodeUpdateMeta=5;
         consensus.nInfinityNodeVoteValue=100;
         consensus.nInfinityNodeNotificationValue=1;
-        consensus.nInfinityNodeCallLockRewardDeepth=12;
+        consensus.nInfinityNodeCallLockRewardDeepth=10;
         consensus.nInfinityNodeCallLockRewardLoop=3; //in number of blocks
         consensus.nInfinityNodeLockRewardTop=10; //in number
         consensus.nInfinityNodeLockRewardSigners=3; //in number
