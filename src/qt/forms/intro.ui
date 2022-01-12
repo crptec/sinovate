@@ -24,8 +24,41 @@
 background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgba(0,6,53,1), stop: 0.1 rgba(1,1,0,1), stop: 0.5 rgba(0,3,84,1), stop: 1.0 rgba(0,3,84,1));
 }
 
-#Intro .QLabel, .QRadioButton, .QCheckBox {
+#Intro .QLabel,  .QCheckBox {
 color: white;
+}
+
+QRadioButton{
+    color: #bdbdbd;
+    outline-style: none;
+}
+QRadioButton:hover, QRadioButton:checked {
+    color: #ffffff;
+}
+QRadioButton:disabled {
+    color: rgba(255, 255, 255, 10%);
+}
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+}
+QRadioButton::indicator::unchecked {
+    image: url(:/styles/theme1/app-icons/radiobutton_unchecked);
+}
+QRadioButton::indicator::checked {
+    image: url(:/styles/theme1/app-icons/radiobutton_checked);
+}
+QRadioButton::indicator::unchecked:hover {
+    image: url(:/styles/theme1/app-icons/radiobutton_unchecked_hover);
+}
+QRadioButton::indicator::checked:hover {
+    image: url(:/styles/theme1/app-icons/radiobutton_checked_hover);
+}
+QRadioButton:indicator:unchecked:disabled {
+    image: url(:/styles/theme1/app-icons/radiobutton_unchecked_disabled);  
+}
+QRadioButton:indicator:checked:disabled {
+    image: url(:/styles/theme1/app-icons/radiobutton_checked_disabled);
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">

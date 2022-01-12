@@ -402,6 +402,12 @@ void Intro::UpdatePruneLabels(bool prune_checked)
 
 //++ Allows the user to select a theme on the intro screen. //
 //++ If the user does not select a theme, "theme1" is selected as the default theme by styleSheet.cpp //
+void Intro::on_theme1_clicked()
+{
+    QSettings settings;
+        settings.setValue("Theme", "theme1");
+}
+
 void Intro::on_theme2_clicked()
 {
     QSettings settings;

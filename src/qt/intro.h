@@ -61,6 +61,7 @@ private Q_SLOTS:
     void on_ellipsisButton_clicked();
     void on_dataDirDefault_clicked();
     void on_dataDirCustom_clicked();
+    void on_theme1_clicked();
     void on_theme2_clicked();
     void on_theme3_clicked();
 
