@@ -80,8 +80,6 @@ public:
         // broken negative fee blocks
         brokenfeeblocksData = brokenfeeblocksDataMain;
 
-
-        // legacy Dash, needs refac
         consensus.nMasternodeBurnSINNODE_1 = 100000;
         consensus.nMasternodeBurnSINNODE_5 = 500000;
         consensus.nMasternodeBurnSINNODE_10 = 1000000;
@@ -267,7 +265,7 @@ public:
         consensus.nInfinityNodeUpdateMeta=5;
         consensus.nInfinityNodeVoteValue=100;
         consensus.nInfinityNodeNotificationValue=1;
-        consensus.nInfinityNodeCallLockRewardDeepth=7;
+        consensus.nInfinityNodeCallLockRewardDeepth=12;
         consensus.nInfinityNodeCallLockRewardLoop=3; //in number of blocks
         consensus.nInfinityNodeLockRewardTop=10; //in number
         consensus.nInfinityNodeLockRewardSigners=3; //in number
@@ -291,7 +289,7 @@ public:
         consensus.lwmaAveragingWindow = 96;
 
         // IN reorg bounds have been parameterised
-        nMaxReorganizationDepth = 14; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
+        nMaxReorganizationDepth = 5; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
         nDeltaChangeHeight = 0;
 
         // proof-of-stake: activation and params
@@ -383,7 +381,7 @@ public:
         m_is_mockable_chain = false;
 
         // IN reorg bounds have been parameterised
-        nMaxReorganizationDepth = 14; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
+        nMaxReorganizationDepth = 7; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
         nDeltaChangeHeight = 0;
 
         checkpointData = {
