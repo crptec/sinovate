@@ -2402,20 +2402,24 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                         }
                     }
 
-                    //LR and amount of reward is valid, check script to make sure that destination is candidate
+                    //LR and amount of reward is valid, check script to make sure that destination is candidate, if not FALSE
                     if(fCandidateValid){
                         if (txout.scriptPubKey == infOwner.GetInfo().scriptPubKey){
                             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, Payment for SINtype: %d, address: %s\n", txIndex, SINType, addressTxDIN2);
                             counterNodePayment ++;
                         } else {
-                            LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- INVALID tx out: %d, Payment for SINtype: %d, payment address: %s, colateral address: %s\n", txIndex, SINType, addressTxDIN2, infOwner.getCollateralAddress());
+                            LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- INVALID tx out: %d, Payment for SINtype: %d, payment address: %s, colateral address: %s\n",
+                            txIndex, SINType, addressTxDIN2, infOwner.getCollateralAddress());
+                            return false;
                         }
                     }
-                    //No LR found for candidate => payment is correct if reward is burnt and amount is correct
+                    //No LR found for candidate => payment is correct if reward is burnt and amount is correct, if not FALSE
                     else {
                         if (txout.scriptPubKey == burnfundScript && txout.nValue == InfPaymentOwner){
                             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, No LR for SINtype: %d, burnd it: %d.\n", txIndex, SINType, addressTxDIN2);
                             counterNodePayment ++;
+                        } else {
+                            return false;
                         }
                     }
                 }
@@ -2424,6 +2428,8 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                     if (txout.scriptPubKey == burnfundScript && txout.nValue == InfPaymentOwner){
                         LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, No Candiate found for SINtype: %d.\n", txIndex, SINType);
                         counterNodePayment ++;
+                    } else {
+                           return false;
                     }
                 }
             } // from 6 to 8th positiion of payment small payment for VPS
@@ -2501,6 +2507,8 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                         if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nBlockHeight < Params().GetConsensus().nPoSModSwitch) {
                             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, TESTNET condition: No Candiate found for SINtype: %d.\n", txIndex, SINType);
                             counterNodePayment ++;
+                        } else {
+                            return false;
                         }
                     }
                 } else if(fNodeAddressValid == false && fBurnRewardNode == false){
@@ -2508,7 +2516,11 @@ bool LockRewardValidation(const int nBlockHeight, const CTransactionRef txNew, b
                         if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nBlockHeight < Params().GetConsensus().nPoSModSwitch) {
                             LogPrint(BCLog::INFINITYLOCK, "LockRewardValidation -- VALID tx out: %d, TESTNET condition: No Candiate found for SINtype: %d.\n", txIndex, SINType);
                             counterNodePayment ++;
+                        } else {
+                            return false;
                         }
+                } else {
+                    return false;
                 }
             }
             int64_t nTime2;
