@@ -1295,6 +1295,11 @@ bool GetTransaction(const uint256& hash, CTransactionRef& txOut, uint256& hashBl
 //<SIN
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams, bool fProofOfStake, bool fOnlyPoS)
 {
+    // Testnet premine (150 BIGs)
+    if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight == 2) {
+        return 150 * Params().GetConsensus().nMasternodeBurnSINNODE_10 * COIN;
+    }
+
     CAmount reward = 0;
 
     if (nHeight  <   22000) reward = 10000 * COIN;
