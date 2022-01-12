@@ -497,15 +497,11 @@ public:
         const CChain& active = Assert(m_node.chainman)->ActiveChain();
         return FillBlock(m_node.chainman->m_blockman.LookupBlockIndex(hash), block, lock, active);
     }
-    bool findIndex(const uint256& hash, const CBlockIndex* pindex) override
+    const CBlockIndex* findIndex(const uint256& hash) override
     {
         WAIT_LOCK(cs_main, lock);
         const CChain& active = Assert(m_node.chainman)->ActiveChain();
-        pindex = m_node.chainman->m_blockman.LookupBlockIndex(hash);
-        if (pindex) {
-            return true;
-        }
-        return false;
+        return m_node.chainman->m_blockman.LookupBlockIndex(hash);
     }
     bool findFirstBlockWithTimeAndHeight(int64_t min_time, int min_height, const FoundBlock& block) override
     {

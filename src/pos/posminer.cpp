@@ -76,6 +76,8 @@ bool CreateCoinStake(CWallet* pwallet,
     CTxOut outProvider;
     for (auto it = availableCoins->begin(); it != availableCoins->end();) {
         if (!it->pindex) {
+            LogPrintf("CreateCoinStake : missing pindex\n");
+            it++;
             continue;
         }
         COutPoint outPoint = COutPoint(it->tx->GetHash(), it->i);

@@ -2077,7 +2077,8 @@ bool CWallet::StakeableCoins(std::vector<CStakeableOutput>* pCoins, uint64_t& nW
             if (!pindex) {
                 {
                     LOCK(cs_main);
-                    if (!chain().findIndex(wtx.m_confirm.hashBlock, pindex)) {
+                    pindex = chain().findIndex(wtx.m_confirm.hashBlock);
+                    if (!pindex) {
                         continue;
                     }
                 }

@@ -120,7 +120,7 @@ public:
     virtual bool findBlock(const uint256& hash, const FoundBlock& block={}) = 0;
 
     //! Return pindex if node has the block
-    virtual bool findIndex(const uint256& hash, const CBlockIndex* pindex) = 0;
+    virtual const CBlockIndex* findIndex(const uint256& hash) = 0;
 
     //! Find first block in the chain with timestamp >= the given time
     //! and height >= than the given height, return false if there is no block
