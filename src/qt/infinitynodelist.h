@@ -212,8 +212,8 @@ private Q_SLOTS:
     void on_btnRestore_clicked();
     void getStatistics();
     void loadMotd();
-
     void updateDisplayUnit();
+    void toggleShowPassword(bool);
 };
 
 #endif // FXTC_QT_INFINITYNODELIST_H
