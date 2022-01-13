@@ -1189,7 +1189,7 @@ void InfinitynodeList::on_btnLogin_clicked()
         nodeSetupEnableClientId( clientId );
         nodeSetupSetClientId( clientId, ui->txtEmail->text(), ui->txtPassword->text() );
         ui->btnLogin->setText("Logout");
-        ui->txtPassword->setText("");
+        ui->toggleShowPasswordButton->setCheckState( Qt::Unchecked );
         ui->btnSetup->setEnabled(true);
     }
 }
