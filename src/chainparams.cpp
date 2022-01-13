@@ -276,10 +276,10 @@ public:
         /*Previously used as simple constants in validation */
         consensus.nINActivationHeight = 100; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
         consensus.nINEnforcementHeight = 120; // Enforcement of IN payments
-        consensus.nDINActivationHeight = 2880; // Activation of DIN 1.0 payments, and new dev fee address.
-        consensus.nINMetaUpdateChangeHeight=3000;
-        consensus.nINMetaUpdateCachedNextBlock=3000;
-        consensus.nTxFeeHeight=36270;
+        consensus.nDINActivationHeight = 500; // Activation of DIN 1.0 payments, and new dev fee address.
+        consensus.nINMetaUpdateChangeHeight=500;
+        consensus.nINMetaUpdateCachedNextBlock=500;
+        consensus.nTxFeeHeight=500;
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 150;
