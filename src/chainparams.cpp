@@ -279,7 +279,7 @@ public:
         consensus.nDINActivationHeight = 500; // Activation of DIN 1.0 payments, and new dev fee address.
         consensus.nINMetaUpdateChangeHeight=500;
         consensus.nINMetaUpdateCachedNextBlock=500;
-        consensus.nTxFeeHeight=500;
+        consensus.nTxFeeHeight=650;
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 150;
