@@ -70,9 +70,9 @@ constexpr CAmount DEFAULT_PAY_TX_FEE = 0;
 //! -fallbackfee default
 static const CAmount DEFAULT_FALLBACK_FEE = 20000;
 //! -discardfee default
-static const CAmount DEFAULT_DISCARD_FEE = 10000; // 10x -mintxfee default (as per SIN modification)
+static const CAmount DEFAULT_DISCARD_FEE = 25000000; // 10x -mintxfee default (as per SIN modification)
 //! -mintxfee default
-static const CAmount DEFAULT_TRANSACTION_MINFEE = 1000; //SIN modified
+static const CAmount DEFAULT_TRANSACTION_MINFEE = 2500000; //SIN modified
 /**
  * maximum fee increase allowed to do partial spend avoidance, even for nodes with this feature disabled by default
  *
