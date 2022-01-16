@@ -1324,7 +1324,7 @@ QWidget#toolBoxWidget .QToolButton {
   }
 
   #setupSinovateButton {
-    background: transparent;
+    background: #4F9FDE;
     background-image: url(':/styles/theme2/app-icons/setup_bottom');
     background-position : center;
     background-repeat:none;
