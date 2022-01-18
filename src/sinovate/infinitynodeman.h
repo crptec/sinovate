@@ -151,7 +151,9 @@ public:
     bool calculStatementOnValidation(int nHeight);
     bool deterministicRewardAtHeightOnValidation(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet);
 
-    bool deterministicRewardAtHeight(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet);
+    //find candidate at Height. use for LR with nInfinityNodeCallLockRewardDeepth block in future
+    bool deterministicRewardAtHeight_V2(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet);
+
     std::map<int, CInfinitynode> calculInfinityNodeRank(int nBlockHeight, int nSinType, bool updateList=false, bool flagExtCall = false);
     std::pair<int, int> getLastStatementBySinType(int nSinType);
     std::string getLastStatementString() const;

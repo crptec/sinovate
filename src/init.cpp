@@ -1848,6 +1848,7 @@ bool AppInitMain(NodeContext& node, interfaces::BlockAndHeaderTipInfo* tip_info)
 //>SIN
     // simple raw block height index: 
     nRawBlockCount = chain_active_height;
+    infnodeman.UpdateChainActiveHeight(chain_active_height);
 //<SIN
     if (node.peerman) node.peerman->SetBestHeight(chain_active_height);
 

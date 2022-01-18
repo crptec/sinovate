@@ -200,6 +200,11 @@ static RPCHelpMan infinitynode()
 
         int nHeight = atoi(strFilter);
 
+        if (nHeight < Params().GetConsensus().nInfinityNodeGenesisStatement) {
+            strError = strprintf("nHeight must be higher than the Genesis Statement height (%s)", Params().GetConsensus().nInfinityNodeGenesisStatement);
+            throw JSONRPCError(RPC_INVALID_PARAMETER, strError);
+        }
+
         std::map<int, int> mapBIG = infnodeman.getStatementMap(10);
         std::map<int, int> mapMID = infnodeman.getStatementMap(5);
         std::map<int, int> mapLIL = infnodeman.getStatementMap(1);
@@ -257,9 +262,9 @@ static RPCHelpMan infinitynode()
 
         CInfinitynode infBIG, infMID, infLIL;
         LOCK(infnodeman.cs);
-        infnodeman.deterministicRewardAtHeight(nextHeight, 10, infBIG);
-        infnodeman.deterministicRewardAtHeight(nextHeight, 5, infMID);
-        infnodeman.deterministicRewardAtHeight(nextHeight, 1, infLIL);
+        infnodeman.deterministicRewardAtHeight_V2(nextHeight, 10, infBIG);
+        infnodeman.deterministicRewardAtHeight_V2(nextHeight, 5, infMID);
+        infnodeman.deterministicRewardAtHeight_V2(nextHeight, 1, infLIL);
 
         obj.pushKV("CandidateBIG: ", infBIG.getCollateralAddress());
         obj.pushKV("CandidateMID: ", infMID.getCollateralAddress());

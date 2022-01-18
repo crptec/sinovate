@@ -824,85 +824,44 @@ bool CInfinitynodeMan::deterministicRewardAtHeightOnValidation(int nBlockHeight,
     return true;
 }
 
-bool CInfinitynodeMan::deterministicRewardAtHeight(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet)
+bool CInfinitynodeMan::deterministicRewardAtHeight_V2(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet)
 {
     if (nBlockHeight < Params().GetConsensus().nInfinityNodeGenesisStatement) {
         return false;
     }
+
+    //case 1: nBlockHeight is in pass, nBlockHeight < nCachedBlockHeight
+    //case 2: nBlockHeight is in future, nBlockHeight > nCachedBlockHeight
+    //Cond: lastStatementSize > 2 * nMaxReorganizationDepth and lastStatementSize > 2 * nInfinityNodeCallLockRewardDeepth
+    //     with the condition above, the candidate
+    if (nBlockHeight >= (nCachedBlockHeight + Params().MaxReorganizationDepth())) {
+        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight_V2 -- cannot calcul the candidate too far in future, height: %d, current + reorg: %d\n",
+                                    nBlockHeight, (nCachedBlockHeight + Params().MaxReorganizationDepth()));
+        return false;
+    }
+
     //step1: copy mapStatement for nSinType
     std::map<int, int> mapStatementSinType = getStatementMap(nSinType);
 
     if (mapStatementSinType.size() == 0) {
-        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight -- we've just start node. map of Stm is not built yet\n");
+        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight_V2 -- we've just start node. map of Stm is not built yet\n");
         return false;
     }
 
-    //step2: find last Statement for nBlockHeight (user can enter nBlockHeight, so it may be in past, current or future)
-    int nDelta = Params().getNodeDelta(nBlockHeight); //big enough > number of 
-    int lastStatement = 0;
-    int lastStatementSize = 0;
-    bool fUpdateStm = false;
-    int nNextStmHeight = 0;
-    long unsigned int loop = 1;
-    for (auto& stm : mapStatementSinType)
-    {
-        if (nBlockHeight == stm.first)
-        {
-                lastStatement = stm.first;
-                lastStatementSize = stm.second;
-        }
-        if (nBlockHeight > stm.first && nDelta > (nBlockHeight -stm.first))
-        {
-            nDelta = nBlockHeight -stm.first;
-            if (nDelta <= stm.second) {
-                lastStatement = stm.first;
-                lastStatementSize = stm.second;
-            } else if (loop == mapStatementSinType.size() && nDelta > stm.second && (nDelta - stm.second) <= Params().MaxReorganizationDepth()) {
-                //at end of loop
-                //we are near the end of current Stm and
-                //we try LR in next stm, but deterministicRewardStatement is not call, dont wait and try to update here
-                fUpdateStm = true;
-                nNextStmHeight = stm.first + stm.second;
-            }
-        } else if (nBlockHeight > stm.first && nDelta == (nBlockHeight -stm.first)) {
-            if (loop == mapStatementSinType.size()) {
-                //at end of loop
-                fUpdateStm = true;
-                nNextStmHeight = stm.first + stm.second;
-            }
-        }
-        loop++;
-        if (lastStatement > 0 || fUpdateStm == true) {
-            LogPrintf("CInfinitynodeMan::deterministicRewardAtHeight -- Height: %s, Stm height: %d, stm size: %d, Delta: %d, Need update:%d, loop: %d, mapStmSize: %d, calculated last stm height: %d\n", nBlockHeight, stm.first, stm.second, nDelta, fUpdateStm, loop, mapStatementSinType.size(), lastStatement);
-        }
-    }
+    std::map<int,int>::iterator it;
+    it = mapStatementSinType.lower_bound(nBlockHeight);
+    --it;
+    int lastStatement = it->first;
+    int lastStatementSize = it->second;
 
-    //receive update flag
-    if (fUpdateStm) {
-        int totalSinTypeNextStm = 0;
-        for (auto& infpair : mapInfinitynodes) {
-            if (infpair.second.getSINType() == nSinType && infpair.second.getHeight() < nNextStmHeight && nNextStmHeight <= infpair.second.getExpireHeight()) {
-                totalSinTypeNextStm = totalSinTypeNextStm + 1;
-            }
-        }
-
-        if (nSinType == 10) {mapStatementBIG[nNextStmHeight] = totalSinTypeNextStm;}
-        if (nSinType == 5) {mapStatementMID[nNextStmHeight] = totalSinTypeNextStm;}
-        if (nSinType == 1) {mapStatementLIL[nNextStmHeight] = totalSinTypeNextStm;}
-
-        lastStatement = nNextStmHeight;
-        lastStatementSize = totalSinTypeNextStm;
-    }
-
-    //return false if not found statement
-    if (lastStatement == 0) {
-        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight -- lastStatement not found: %d\n", lastStatement);
-        return false;
+    //find future candidate and for next STM
+    if (nBlockHeight >= (lastStatement + lastStatementSize) && nBlockHeight >= nCachedBlockHeight) {
+        lastStatement = lastStatement + lastStatementSize;
     }
 
     std::map<int, CInfinitynode> rankOfStatement = calculInfinityNodeRank(lastStatement, nSinType, false);
     if (rankOfStatement.empty()) {
-        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight -- can not calculate rank at %d\n", lastStatement);
+        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight_V2 -- can not calculate rank at %d\n", lastStatement);
         return false;
     }
 
@@ -912,8 +871,8 @@ bool CInfinitynodeMan::deterministicRewardAtHeight(int nBlockHeight, int nSinTyp
         return true;
     }
 
-    if ((nBlockHeight < lastStatement) || (rankOfStatement.size() < (nBlockHeight - lastStatement + 1))) {
-        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight -- out of range at lastStatement:%d, nBlockHeight:%d, size:%d\n", lastStatement, nBlockHeight, rankOfStatement.size());
+    if (rankOfStatement.size() < (nBlockHeight - lastStatement + 1)) {
+        LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeight_V2 -- out of range at lastStatement:%d, nBlockHeight:%d, size:%d\n", lastStatement, nBlockHeight, rankOfStatement.size());
         return false;
     }
 

@@ -93,7 +93,7 @@ bool CLockRewardRequest::IsValid(CNode* pnode, int nValidationHeight, std::strin
 {
     CInfinitynode inf;
     LOCK(infnodeman.cs);
-    if(!infnodeman.deterministicRewardAtHeight(nRewardHeight, nSINtype, inf)){
+    if(!infnodeman.deterministicRewardAtHeight_V2(nRewardHeight, nSINtype, inf)){
         strError = strprintf("Cannot find candidate for Height of LockRequest: %d and SINtype: %d\n", nRewardHeight, nSINtype);
         return false;
     }
@@ -2179,7 +2179,7 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight, CChainState& chains
             std::string sErrorCheck = "";
 
             LOCK(infnodeman.cs);
-            if (infnodeman.deterministicRewardAtHeight(nBlockHeight, SINType, infOwner)){
+            if (infnodeman.deterministicRewardAtHeight_V2(nBlockHeight, SINType, infOwner)){
                 DINPayee = infOwner.GetInfo().scriptPubKey;
                 for (auto& v : vecLockRewardRet) {
                     if(v.nSINtype == SINType && v.nRewardHeight == nBlockHeight){
@@ -2259,7 +2259,7 @@ void FillBlock(CMutableTransaction& txNew, int nBlockHeight, CChainState& chains
         InfPayment = Params().GetConsensus().nMasternodeBurnSINNODE_10;
         {
             LOCK(infnodeman.cs);
-            if (infnodeman.deterministicRewardAtHeight(nBlockHeight, SINType, infinitynode)){
+            if (infnodeman.deterministicRewardAtHeight_V2(nBlockHeight, SINType, infinitynode)){
 
                 LogPrint(BCLog::INFINITYLOCK, "FillBlockPayments -- candidate %d at height %d: %s\n", SINType, nBlockHeight, infinitynode.getCollateralAddress());
                 CMetadata metaSender = infnodemeta.Find(infinitynode.getMetaID());
