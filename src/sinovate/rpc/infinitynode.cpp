@@ -70,7 +70,7 @@ static RPCHelpMan infinitynode()
                     + "\nShow current statement of Infinitynode at Height\n"
                     + HelpExampleCli("infinitynode", "show-stm-at")
                     + "\nShow the candidates for Height\n"
-                    + HelpExampleCli("infinitynode", "show-candiate height")
+                    + HelpExampleCli("infinitynode", "show-candidate height")
                     + "\nShow informations about all infinitynodes of network.\n"
                     + HelpExampleCli("infinitynode", "show-infos")
                     + "\nShow metadata of all infinitynodes of network.\n"
