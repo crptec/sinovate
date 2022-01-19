@@ -993,7 +993,10 @@ bool CInfinityNodeLockReward::FindAndSendSignersGroup(CConnman& connman, Chainst
  */
 bool CInfinityNodeLockReward::CheckGroupSigner(CNode* pnode, const CGroupSigners& gsigners, int& nDos)
 {
-    if(!fInfinityNode && !fInfinitynodeRelay) return false;
+    if(!fInfinityNode && !fInfinitynodeRelay) {
+        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckGroupSigner -- fInfinityNode: %d, fInfinitynodeRelay: %d\n");
+        return false;
+    }
 
     AssertLockHeld(cs);
 
@@ -1060,7 +1063,10 @@ bool CInfinityNodeLockReward::CheckGroupSigner(CNode* pnode, const CGroupSigners
 bool CInfinityNodeLockReward::MusigPartialSign(CNode* pnode, const CGroupSigners& gsigners, CConnman& connman, ChainstateManager& chainman)
 {
     //only Infinitynode will participate in Musig
-    if(!fInfinityNode) return false;
+    if(!fInfinityNode) {
+        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::MusigPartialSign -- node is not DIN node.\n");
+        return false;
+    }
 
     AssertLockHeld(cs);
 
@@ -2765,7 +2771,8 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                 //Ban Misbehaving here
                 return;
             }
-            LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- LockRewardRequest is valid. Add new LockRewardRequest from %d\n",pfrom->GetId());
+            LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- LockRewardRequest is valid for Height: %d (delta: %d), current height: %d. Add new LockRewardRequest from %d\n",
+                     lockReq.nRewardHeight,(lockReq.nRewardHeight - nCachedBlockHeight), nCachedBlockHeight, pfrom->GetId());
             if(AddLockRewardRequest(lockReq)){
                 lockReq.Relay(connman);
 
