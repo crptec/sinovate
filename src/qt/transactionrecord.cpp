@@ -232,7 +232,7 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, cons
         }
     }
     // For generated transactions, determine maturity
-    else if(type == TransactionRecord::Generated || type == TransactionRecord::Minted)
+    else if(type == TransactionRecord::Generated || type == TransactionRecord::Minted || type == TransactionRecord::DINReward)
     {
         if (wtx.blocks_to_maturity > 0)
         {

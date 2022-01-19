@@ -449,7 +449,6 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord *wtx, b
     case TransactionRecord::Generated:
     case TransactionRecord::DINReward:
     case TransactionRecord::Burn:
-        return lookupAddress(wtx->address, tooltip) + watchAddress;
     case TransactionRecord::Minted:
         return lookupAddress(wtx->address, tooltip) + watchAddress;
     case TransactionRecord::SendToOther:
@@ -471,11 +470,6 @@ QVariant TransactionTableModel::addressColor(const TransactionRecord *wtx) const
     case TransactionRecord::Generated:
     case TransactionRecord::DINReward:
     case TransactionRecord::Burn:
-        {
-        QString label = walletModel->getAddressTableModel()->labelForAddress(QString::fromStdString(wtx->address));
-        if(label.isEmpty())
-            return color_bareaddress;
-        } break;
     case TransactionRecord::Minted:
         {
         QString label = walletModel->getAddressTableModel()->labelForAddress(QString::fromStdString(wtx->address));
