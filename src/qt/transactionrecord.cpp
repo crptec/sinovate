@@ -87,7 +87,11 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                 {
                     // Minted
                     sub.type = TransactionRecord::Minted;
-                    sub.credit = nNet;
+                    if (i == 3 || i == 4 || i == 5) {
+                        sub.type = TransactionRecord::DINReward;
+                    } else {
+                        sub.credit = nNet;
+                    }
                 }
 
                 parts.append(sub);
