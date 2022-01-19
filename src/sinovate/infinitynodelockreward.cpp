@@ -2671,13 +2671,20 @@ bool CInfinityNodeLockReward::ProcessBlock(int nBlockHeight, CConnman& connman, 
     int nRewardHeight = infnodeman.isPossibleForLockReward(infinitynodePeer.burntx);
 
     LOCK2(cs_main, cs);
-    if(nRewardHeight == 0 || (nRewardHeight < (nCachedBlockHeight + Params().GetConsensus().nInfinityNodeCallLockRewardLoop))){
+    if (nRewardHeight == 0 || (nRewardHeight < (nCachedBlockHeight + Params().GetConsensus().nInfinityNodeCallLockRewardLoop))) {
         LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessBlock -- Try to LockReward false at height %d\n", nBlockHeight);
         mapSigners.clear();
         mapMyPartialSigns.clear();
         currentLockRequestHash = uint256();
         nFutureRewardHeight = 0;
         nGroupSigners = 0;
+        return false;
+    }
+
+    //if Musig exist for reward height, dont create LockRewardRequest
+    if (mapSigned.count(nRewardHeight)) {
+        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessBlock -- !!! Musig for :%d was built for height :%d. Dont do LockRewardRequest.\n",
+                          nRewardHeight);
         return false;
     }
 
