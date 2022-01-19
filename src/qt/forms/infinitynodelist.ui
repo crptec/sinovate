@@ -455,33 +455,227 @@ width: 200px;
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <layout class="QGridLayout" name="gridLayout_4">
-           <item row="7" column="0">
-            <widget class="QLabel" name="label_12">
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="3">
+            <widget class="QLineEdit" name="txtPassword">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
-               <width>85</width>
+               <width>210</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>85</width>
-               <height>0</height>
+               <width>210</width>
+               <height>16777215</height>
               </size>
              </property>
-             <property name="text">
-              <string/>
+             <property name="styleSheet">
+              <string notr="true">selection-color: white;
+selection-background-color: #BC8F3A;;</string>
+             </property>
+             <property name="echoMode">
+              <enum>QLineEdit::Password</enum>
+             </property>
+             <property name="placeholderText">
+              <string>&lt;Enter password&gt;</string>
              </property>
             </widget>
            </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelEmail">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>55</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>55</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>-1</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">font-size:16px;
+
+
+</string>
+             </property>
+             <property name="text">
+              <string>Email:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="4" alignment="Qt::AlignLeft">
+            <widget class="QCheckBox" name="toggleShowPasswordButton">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>110</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>8</pointsize>
+               <strikeout>false</strikeout>
+              </font>
+             </property>
+             <property name="acceptDrops">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">margin-left :10px</string>
+             </property>
+             <property name="text">
+              <string>Show password</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="txtEmail">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>210</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">selection-color: white;
+selection-background-color: #BC8F3A;;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="8">
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
            <item row="0" column="6">
+            <widget class="SinPushButton" name="btnLogin">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>86</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>86</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="text">
+              <string>Login</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="labelPassword">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>91</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>91</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>-1</pointsize>
+               <weight>50</weight>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">font-size:16px;
+
+
+
+</string>
+             </property>
+             <property name="text">
+              <string>Password: </string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="7">
             <widget class="SinPushButton" name="btnRestore">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -509,120 +703,8 @@ width: 200px;
              </property>
             </widget>
            </item>
-           <item row="3" column="5">
-            <widget class="QRadioButton" name="radioBIGNode">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>BIG Node</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="3">
-            <widget class="QRadioButton" name="radioMIDNode">
-             <property name="minimumSize">
-              <size>
-               <width>157</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>157</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>MID Node</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="3">
-            <widget class="QLabel" name="labelMIDDesc">
-             <property name="styleSheet">
-              <string notr="true">font-size:18px;
-</string>
-             </property>
-             <property name="text">
-              <string>500 000 SIN Burn</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLabel" name="miniRoiLabel">
-             <property name="styleSheet">
-              <string notr="true">font-size:14px;
-</string>
-             </property>
-             <property name="text">
-              <string>mini APY % NaN</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QLabel" name="label_3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>spacer</string>
-             </property>
-            </widget>
-           </item>
-           <item row="8" column="1" colspan="4">
-            <widget class="QLabel" name="labelMotd">
-             <property name="styleSheet">
-              <string notr="true">font-size:14px;
-color: red;</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <spacer name="verticalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>27</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="0" column="7">
-            <spacer name="horizontalSpacer_8">
+           <item row="0" column="5">
+            <spacer name="horizontalSpacer_5">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -634,7 +716,72 @@ color: red;</string>
              </property>
             </spacer>
            </item>
-           <item row="3" column="1">
+          </layout>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <property name="topMargin">
+            <number>15</number>
+           </property>
+           <item row="1" column="5">
+            <widget class="QRadioButton" name="radioBIGNode">
+             <property name="minimumSize">
+              <size>
+               <width>157</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>157</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="text">
+              <string>BIG Node</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="5">
+            <widget class="QLabel" name="labelBIGDesc">
+             <property name="styleSheet">
+              <string notr="true">font-size:18px;
+</string>
+             </property>
+             <property name="text">
+              <string>1 000 000 SIN Burn</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="label_12">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>55</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>55</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
             <widget class="QRadioButton" name="radioLILNode">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -665,8 +812,8 @@ color: red;</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="labelEmail">
+           <item row="4" column="1">
+            <widget class="QLabel" name="label_3">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -675,106 +822,103 @@ color: red;</string>
              </property>
              <property name="minimumSize">
               <size>
-               <width>82</width>
+               <width>210</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>70</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>-1</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">font-size:16px;
-
-
-</string>
-             </property>
-             <property name="text">
-              <string>Email:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="4">
-            <widget class="QLabel" name="spacerLabel1">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>87</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>87</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="5">
-            <widget class="SinPushButton" name="btnLogin">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>86</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>86</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>Login</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLabel" name="label_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
+               <width>210</width>
                <height>0</height>
               </size>
              </property>
              <property name="text">
               <string>spacer</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="QLabel" name="labelMIDDesc">
+             <property name="styleSheet">
+              <string notr="true">font-size:18px;
+</string>
+             </property>
+             <property name="text">
+              <string>500 000 SIN Burn</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="miniRoiLabel">
+             <property name="styleSheet">
+              <string notr="true">font-size:14px;
+</string>
+             </property>
+             <property name="text">
+              <string>mini APY % NaN</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="labelLILDesc">
+             <property name="styleSheet">
+              <string notr="true">font-size:18px;
+</string>
+             </property>
+             <property name="text">
+              <string>100 000 SIN Burn</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="6">
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>92</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="5">
+            <widget class="QLabel" name="bigRoiLabel">
+             <property name="styleSheet">
+              <string notr="true">font-size:14px;
+</string>
+             </property>
+             <property name="text">
+              <string>big APY % NaN</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLabel" name="label_14">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>91</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>91</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
@@ -791,14 +935,67 @@ color: red;</string>
              </property>
             </spacer>
            </item>
-           <item row="5" column="5">
-            <widget class="QLabel" name="bigRoiLabel">
-             <property name="styleSheet">
-              <string notr="true">font-size:14px;
-</string>
+           <item row="0" column="4">
+            <widget class="QLabel" name="spacerLabel1">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>91</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>91</width>
+               <height>0</height>
+              </size>
              </property>
              <property name="text">
-              <string>big APY % NaN</string>
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="1" colspan="3">
+            <widget class="QLabel" name="labelBalance">
+             <property name="font">
+              <font>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>0.00 SIN</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="3">
+            <widget class="QLabel" name="label_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>210</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>210</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
@@ -820,51 +1017,30 @@ color: red;</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="5">
-            <widget class="QLabel" name="labelBIGDesc">
-             <property name="styleSheet">
-              <string notr="true">font-size:18px;
-</string>
-             </property>
-             <property name="text">
-              <string>1 000 000 SIN Burn</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QLineEdit" name="txtPassword">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+           <item row="1" column="3">
+            <widget class="QRadioButton" name="radioMIDNode">
              <property name="minimumSize">
               <size>
-               <width>200</width>
-               <height>0</height>
+               <width>157</width>
+               <height>32</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>200</width>
-               <height>16777215</height>
+               <width>157</width>
+               <height>32</height>
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">selection-color: white;
-selection-background-color: #BC8F3A;;</string>
+              <string notr="true"/>
              </property>
-             <property name="echoMode">
-              <enum>QLineEdit::Password</enum>
-             </property>
-             <property name="placeholderText">
-              <string>&lt;Enter password&gt;</string>
+             <property name="text">
+              <string>MID Node</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="labelPassword">
+           <item row="4" column="5">
+            <widget class="QLabel" name="label_9">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -873,65 +1049,22 @@ selection-background-color: #BC8F3A;;</string>
              </property>
              <property name="minimumSize">
               <size>
-               <width>88</width>
+               <width>210</width>
                <height>0</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>88</width>
-               <height>16777215</height>
+               <width>210</width>
+               <height>0</height>
               </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>-1</pointsize>
-               <weight>50</weight>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">font-size:16px;
-
-
-
-</string>
              </property>
              <property name="text">
-              <string>Password:</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              <string>TextLabel</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="txtEmail">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>200</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">selection-color: white;
-selection-background-color: #BC8F3A;;</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="3">
+           <item row="3" column="3">
             <widget class="QLabel" name="midRoiLabel">
              <property name="styleSheet">
               <string notr="true">font-size:14px;
@@ -942,21 +1075,14 @@ selection-background-color: #BC8F3A;;</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QLabel" name="labelLILDesc">
+           <item row="8" column="1" colspan="4">
+            <widget class="QLabel" name="labelMotd">
              <property name="styleSheet">
-              <string notr="true">font-size:18px;
-</string>
+              <string notr="true">font-size:14px;
+color: red;</string>
              </property>
              <property name="text">
-              <string>100 000 SIN Burn</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="QCheckBox" name="toggleShowPasswordButton">
-             <property name="text">
-              <string>Show password</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -1127,13 +1253,13 @@ min-width: 270px;
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>77</width>
+                  <width>55</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>77</width>
+                  <width>55</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -1684,34 +1810,6 @@ min-width: 270px;
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="labelBalanceText">
-              <property name="font">
-               <font>
-                <pointsize>10</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Balance : </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="labelBalance">
-              <property name="font">
-               <font>
-                <pointsize>10</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>0.00 SIN</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <spacer name="horizontalSpacer_2">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -1779,10 +1877,6 @@ min-width: 270px;
   <tabstop>comboTier</tabstop>
   <tabstop>searchBackupAddr</tabstop>
   <tabstop>dinTable</tabstop>
-  <tabstop>txtEmail</tabstop>
-  <tabstop>txtPassword</tabstop>
-  <tabstop>btnLogin</tabstop>
-  <tabstop>btnRestore</tabstop>
   <tabstop>radioLILNode</tabstop>
   <tabstop>radioMIDNode</tabstop>
   <tabstop>radioBIGNode</tabstop>
