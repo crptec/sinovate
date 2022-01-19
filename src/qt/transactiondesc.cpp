@@ -423,13 +423,23 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     if (wtx.is_coinbase)
     {
         quint32 numBlocksToMaturity = COINBASE_MATURITY +  1;
-        strHTML += "<br>" + tr("Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        int idx = rec->getOutputIndex(); 
+        if (idx == 2 || idx == 3 || idx == 4) {
+            strHTML += "<br>" + tr("DIN rewards must mature %1 blocks before they can be spent. When the miner generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another miner mines a block within a few seconds of the current miner doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other miners block.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        } else {
+            strHTML += "<br>" + tr("Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        }
     }
 
     if (wtx.is_coinstake)
     {
         quint32 numBlocksToMaturity = COINSTAKE_MATURITY +  1;
-        strHTML += "<br>" + tr("Minted coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        int idx = rec->getOutputIndex(); 
+        if (idx == 3 || idx == 4 || idx == 5) {
+            strHTML += "<br>" + tr("DIN rewards must mature %1 blocks before they can be spent. When the staker generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another staker stakes a block within a few seconds of the current staker doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other stakers block.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        } else {
+            strHTML += "<br>" + tr("Minted coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";           
+        }
     }
 
     //
