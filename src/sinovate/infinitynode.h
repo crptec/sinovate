@@ -78,7 +78,19 @@ public:
         READWRITE(obj.metadataID);
     }
 
-    void setHeight(int nInHeight){nHeight = nInHeight; nExpireHeight=nInHeight + Params().GetConsensus().nInfinityNodeExpireTime;}
+    void setHeight (int nInHeight) {
+        nHeight = nInHeight;
+        //node expired before FH
+        if ((nInHeight + Params().GetConsensus().nInfinityNodeExpireTime) <= Params().GetConsensus().nINPOSExpireTimeChange) {
+            nExpireHeight=nInHeight + Params().GetConsensus().nInfinityNodeExpireTime;
+        //node alive at FH
+        } else if (nInHeight < Params().GetConsensus().nINPOSExpireTimeChange &&
+                   Params().GetConsensus().nINPOSExpireTimeChange < (nInHeight + Params().GetConsensus().nInfinityNodeExpireTime)) {
+            nExpireHeight = Params().GetConsensus().nINPOSExpireTimeChange + 2 * (nInHeight + Params().GetConsensus().nInfinityNodeExpireTime - Params().GetConsensus().nINPOSExpireTimeChange);
+        } else if (nInHeight >= Params().GetConsensus().nINPOSExpireTimeChange) {
+            nExpireHeight=nInHeight + Params().GetConsensus().nInfinityNodePOSExpireTime;
+        }
+    }
     void setCollateralAddress(std::string address) {
         collateralAddress = address;
         std::string burnfundTxId = vinBurnFund.prevout.ToStringFull().substr(0, 16);
@@ -99,7 +111,19 @@ public:
     std::string getBackupAddress(){return backupAddress;}
     CScript getScriptPublicKey(){return scriptPubKey;}
     int getHeight(){return nHeight;}
-    int getExpireHeight(){return nExpireHeight ;}
+    int getExpireHeight () {
+        if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+            //node expired before FH
+            if ((nHeight + Params().GetConsensus().nInfinityNodeExpireTime) <= Params().GetConsensus().nINPOSExpireTimeChange) {
+                nExpireHeight=nHeight + Params().GetConsensus().nInfinityNodeExpireTime;
+            //node alive at FH
+            } else if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange &&
+                   Params().GetConsensus().nINPOSExpireTimeChange < (nHeight + Params().GetConsensus().nInfinityNodeExpireTime)) {
+                nExpireHeight = Params().GetConsensus().nINPOSExpireTimeChange + 2 * (nHeight + Params().GetConsensus().nInfinityNodeExpireTime - Params().GetConsensus().nINPOSExpireTimeChange);
+            }
+        }
+        return nExpireHeight;
+    }
     int getRoundBurnValue(){CAmount nBurnAmount = nBurnValue / COIN + 1; return nBurnAmount;}
     int getSINType(){return nSINType;}
     int getLastRewardHeight(){return nLastRewardHeight;}

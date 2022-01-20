@@ -1333,33 +1333,17 @@ CAmount GetInfinitynodePayment(int nHeight, int sintype)
     }
 
     if (sintype == 1) {
-        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight >=105 && nHeight <  150000) {
-            return 8 * COIN;
+        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight >=105 && nHeight <  1500000) {
+            if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+                return 8 * COIN;
+            }
+            return 4 * COIN;
         }
-        if (Params().NetworkIDString() == CBaseChainParams::REGTEST && nHeight >=105 && nHeight <  150000) {
-            return 8 * COIN;
-        }
-
-            if (nHeight <  150000) {
-            return  0 * COIN;  //testnet
-        }
-            if (nHeight <  170100) {
-            return  0 * COIN;  //hard fork
-        }
-            if (nHeight < 550000) { //hf block
-            return  160 * COIN;
-        }
-        if (nHeight < 5000000) {
-            return  560 * COIN;
-        }
-    }
-
-    if (sintype == 5) {
-        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight >=105 && nHeight <  150000) {
-            return 41 * COIN;
-        }
-        if (Params().NetworkIDString() == CBaseChainParams::REGTEST && nHeight >=105 && nHeight <  150000) {
-            return 41 * COIN;
+        if (Params().NetworkIDString() == CBaseChainParams::REGTEST && nHeight >=105 && nHeight <  1500000) {
+            if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+                return 8 * COIN;
+            }
+            return 4 * COIN;
         }
 
         if (nHeight <  150000) {
@@ -1368,27 +1352,70 @@ CAmount GetInfinitynodePayment(int nHeight, int sintype)
         if (nHeight <  170100) {
             return  0 * COIN;  //hard fork
         }
+        if (nHeight < 550000) { //hf block
+            return  160 * COIN;
+        }
+        if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+            return 560 * COIN;
+        }
         if (nHeight < 5000000) {
-            return  838 * COIN;
+            return  280 * COIN;
+        }
+    }
+
+    if (sintype == 5) {
+        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight >=105 && nHeight <  1500000) {
+            if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+                return 41 * COIN;
+            }
+            return 20.5 * COIN;
+        }
+        if (Params().NetworkIDString() == CBaseChainParams::REGTEST && nHeight >=105 && nHeight <  1500000) {
+            if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+                return 41 * COIN;
+            }
+            return 20.5 * COIN;
+        }
+
+        if (nHeight <  150000) {
+            return  0 * COIN;  //testnet
+        }
+        if (nHeight <  170100) {
+            return  0 * COIN;  //hard fork
+        }
+        if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+            return 838 * COIN;
+        }
+        if (nHeight < 5000000) {
+            return  419 * COIN;
         }
     }
 
     if (sintype == 10) {
-        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight >=105 && nHeight <  150000) {
-            return 85 * COIN;
+        if (Params().NetworkIDString() == CBaseChainParams::TESTNET && nHeight >=105 && nHeight <  1500000) {
+            if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+                return 85 * COIN;
+            }
+            return 42.5 * COIN;
         }
-        if (Params().NetworkIDString() == CBaseChainParams::REGTEST && nHeight >=105 && nHeight <  150000) {
-            return 85 * COIN;
+        if (Params().NetworkIDString() == CBaseChainParams::REGTEST && nHeight >=105 && nHeight <  1500000) {
+            if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+                return 85 * COIN;
+            }
+            return 42.5 * COIN;
         }
 
-            if (nHeight <  150000) {
+        if (nHeight <  150000) {
             return  0 * COIN;  //testnet
         }
-            if (nHeight <  170100) {
+        if (nHeight <  170100) {
             return  0 * COIN;  //hard fork
         }
-            if (nHeight < 5000000) {
-            return  1752 * COIN;
+        if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+            return 1752 * COIN;
+        }
+        if (nHeight < 5000000) {
+            return  876 * COIN;
         }
     }
 
