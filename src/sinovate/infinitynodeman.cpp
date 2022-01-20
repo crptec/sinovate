@@ -811,7 +811,11 @@ bool CInfinitynodeMan::deterministicRewardAtHeightOnValidation(int nBlockHeight,
     }
 
     /*at the begin of network, lastStatementSize=1, each block is begin/end of Stm at the same time*/
+    /*Rank begin at 1, not 0*/
     if (rankOfStatement.size() == 1) {
+        //make sure that node is not expired at height
+        if (rankOfStatement[1].getExpireHeight() < nBlockHeight) return false;
+
         infinitynodeRet = rankOfStatement[1];
         return true;
     }
@@ -820,6 +824,9 @@ bool CInfinitynodeMan::deterministicRewardAtHeightOnValidation(int nBlockHeight,
         LogPrint(BCLog::INFINITYMAN,"CInfinitynodeMan::deterministicRewardAtHeightOnValidation -- out of range at lastStatement: %d, nBlockHeight: %d, size: %d\n", lastStatement, nBlockHeight, rankOfStatement.size());
         return false;
     }
+
+    //make sure that node is not expired at height
+    if (rankOfStatement[nBlockHeight - lastStatement + 1].getExpireHeight() < nBlockHeight) return false;
     infinitynodeRet = rankOfStatement[nBlockHeight - lastStatement + 1];
     return true;
 }
