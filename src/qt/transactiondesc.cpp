@@ -165,6 +165,7 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     CAmount nDebit = wtx.debit;
     CAmount nNet = nCredit - nDebit;
     std::string nodeMessage = "";
+    int idx = rec->getOutputIndex(); 
 
     strHTML += TransactionFormater::ItemNameColor(tr("Status")) + FormatTxStatus(wtx, status, inMempool, numBlocks);
     strHTML += "<br>";
@@ -176,11 +177,19 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     //
     if (wtx.is_coinbase)
     {
-        strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("Generated") + "<br>";
+        if (idx == 2 || idx == 3 || idx == 4) {
+            strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("DIN Reward") + "<br>";
+        } else {
+            strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("Generated") + "<br>";
+        }
     }
     if (wtx.is_coinstake)
     {
-        strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("Minted") + "<br>";
+        if (idx == 3 || idx == 4 || idx == 5) {
+            strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("DIN Reward") + "<br>";
+        } else {
+            strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("Minted") + "<br>";
+        }
     }
     else if (wtx.value_map.count("from") && !wtx.value_map["from"].empty())
     {
@@ -250,7 +259,7 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     //
     if ((wtx.is_coinstake || wtx.is_coinbase) && nCredit == 0)
     {
-        if (wtx.is_coinbase) {
+        if (wtx.is_coinbase && (idx != 2 || idx != 3 || idx != 4)) {
             //
             // Coinbase
             //
@@ -264,7 +273,7 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
                 strHTML += "(" + tr("not accepted") + ")";
             strHTML += "<br>";
         }
-        if (wtx.is_coinstake) {
+        if (wtx.is_coinstake && (idx != 3 || idx != 4 || idx != 5)) {
             //
             // Coinstake
             //
