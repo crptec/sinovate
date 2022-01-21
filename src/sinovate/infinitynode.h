@@ -81,14 +81,14 @@ public:
     void setHeight (int nInHeight) {
         nHeight = nInHeight;
         //node expired before FH
-        if ((nInHeight + Params().GetConsensus().nInfinityNodeExpireTime) <= Params().GetConsensus().nINPOSExpireTimeChange) {
-            nExpireHeight=nInHeight + Params().GetConsensus().nInfinityNodeExpireTime;
+        if ((nInHeight + Params().GetConsensus().nInfinityNodeExpireBlocks) <= Params().GetConsensus().nINPOSExpireBlocksForkHeight) {
+            nExpireHeight=nInHeight + Params().GetConsensus().nInfinityNodeExpireBlocks;
         //node alive at FH
-        } else if (nInHeight < Params().GetConsensus().nINPOSExpireTimeChange &&
-                   Params().GetConsensus().nINPOSExpireTimeChange < (nInHeight + Params().GetConsensus().nInfinityNodeExpireTime)) {
-            nExpireHeight = Params().GetConsensus().nINPOSExpireTimeChange + 2 * (nInHeight + Params().GetConsensus().nInfinityNodeExpireTime - Params().GetConsensus().nINPOSExpireTimeChange);
-        } else if (nInHeight >= Params().GetConsensus().nINPOSExpireTimeChange) {
-            nExpireHeight=nInHeight + Params().GetConsensus().nInfinityNodePOSExpireTime;
+        } else if (nInHeight < Params().GetConsensus().nINPOSExpireBlocksForkHeight &&
+                   Params().GetConsensus().nINPOSExpireBlocksForkHeight < (nInHeight + Params().GetConsensus().nInfinityNodeExpireBlocks)) {
+            nExpireHeight = Params().GetConsensus().nINPOSExpireBlocksForkHeight + 2 * (nInHeight + Params().GetConsensus().nInfinityNodeExpireBlocks - Params().GetConsensus().nINPOSExpireBlocksForkHeight);
+        } else if (nInHeight >= Params().GetConsensus().nINPOSExpireBlocksForkHeight) {
+            nExpireHeight=nInHeight + Params().GetConsensus().nInfinityNodePOSExpireBlocks;
         }
     }
     void setCollateralAddress(std::string address) {
@@ -112,14 +112,13 @@ public:
     CScript getScriptPublicKey(){return scriptPubKey;}
     int getHeight(){return nHeight;}
     int getExpireHeight () {
-        if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange) {
+        if (nHeight < Params().GetConsensus().nINPOSExpireBlocksForkHeight) {
             //node expired before FH
-            if ((nHeight + Params().GetConsensus().nInfinityNodeExpireTime) <= Params().GetConsensus().nINPOSExpireTimeChange) {
-                nExpireHeight=nHeight + Params().GetConsensus().nInfinityNodeExpireTime;
+            if ((nHeight + Params().GetConsensus().nInfinityNodeExpireBlocks) <= Params().GetConsensus().nINPOSExpireBlocksForkHeight) {
+                nExpireHeight = nHeight + Params().GetConsensus().nInfinityNodeExpireBlocks;
             //node alive at FH
-            } else if (nHeight < Params().GetConsensus().nINPOSExpireTimeChange &&
-                   Params().GetConsensus().nINPOSExpireTimeChange < (nHeight + Params().GetConsensus().nInfinityNodeExpireTime)) {
-                nExpireHeight = Params().GetConsensus().nINPOSExpireTimeChange + 2 * (nHeight + Params().GetConsensus().nInfinityNodeExpireTime - Params().GetConsensus().nINPOSExpireTimeChange);
+            } else if (nHeight + Params().GetConsensus().nInfinityNodeExpireBlocks > Params().GetConsensus().nINPOSExpireBlocksForkHeight) {
+                nExpireHeight = Params().GetConsensus().nINPOSExpireBlocksForkHeight + 2 * (nHeight + Params().GetConsensus().nInfinityNodeExpireBlocks - Params().GetConsensus().nINPOSExpireBlocksForkHeight);
             }
         }
         return nExpireHeight;

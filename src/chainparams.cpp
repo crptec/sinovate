@@ -101,8 +101,8 @@ public:
         consensus.nInfinityNodeLockRewardSigners=4; //in number
         consensus.nInfinityNodeLockRewardSINType=10; //in number
         consensus.nSchnorrActivationHeight = 1350000; // wait for active
-        consensus.nInfinityNodeExpireTime=262800;//720*365 days = 1 year
-        consensus.nInfinityNodePOSExpireTime=525600;//1440*365 days = 1 year after POS
+        consensus.nInfinityNodeExpireBlocks=262800;//720*365 days = 1 year
+        consensus.nInfinityNodePOSExpireBlocks=525600;//1440*365 days = 1 year after POS
 
         /*Previously used as simple constants in validation */
         consensus.nINActivationHeight = 170000; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
@@ -111,7 +111,7 @@ public:
         consensus.nINMetaUpdateChangeHeight=9999999; // Activation newmethod updatemetadata. Sinovate mainnet The same as POS4
         consensus.nINMetaUpdateCachedNextBlock=9999999; // Activation new method with cached next block. Sinovate mainnet The same as POS4
         consensus.nTxFeeHeight=9999999; // Check burn tx fee and amount. Sinovate mainnet The same as POS4
-        consensus.nINPOSExpireTimeChange=9999999; // Change node timelife. Sinovate mainnet The same as POS4
+        consensus.nINPOSExpireBlocksForkHeight=9999999; // Change node timelife. Sinovate mainnet The same as POS4
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 170000;
@@ -273,8 +273,8 @@ public:
         consensus.nInfinityNodeLockRewardSigners=3; //in number
         consensus.nInfinityNodeLockRewardSINType=10; //in number
         consensus.nSchnorrActivationHeight = 1350000; // wait for active
-        consensus.nInfinityNodeExpireTime=5040;//720*7 days = 1 week
-        consensus.nInfinityNodePOSExpireTime=10080;//1440*14 days = 2 weeks after POS
+        consensus.nInfinityNodeExpireBlocks=5040;//720*7 days = 1 week
+        consensus.nInfinityNodePOSExpireBlocks=10080;//1440*14 days = 2 weeks after POS
 
         /*Previously used as simple constants in validation */
         consensus.nINActivationHeight = 100; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
@@ -283,7 +283,7 @@ public:
         consensus.nINMetaUpdateChangeHeight=500;
         consensus.nINMetaUpdateCachedNextBlock=500;
         consensus.nTxFeeHeight=650;
-        consensus.nINPOSExpireTimeChange=7000;// testnet param. same POS FH in mainnet
+        consensus.nINPOSExpireBlocksForkHeight=7000;// testnet param. same POS FH in mainnet
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 150;
@@ -545,8 +545,8 @@ public:
         consensus.nInfinityNodeLockRewardSigners=2; //in number
         consensus.nInfinityNodeLockRewardSINType=10; //in number
         consensus.nSchnorrActivationHeight = 1350000; // wait for active
-        consensus.nInfinityNodeExpireTime=262800;//720*365 days = 1 year
-        consensus.nInfinityNodePOSExpireTime=525600;//1440*365 days = 1 year after POS
+        consensus.nInfinityNodeExpireBlocks=262800;//720*365 days = 1 year
+        consensus.nInfinityNodePOSExpireBlocks=525600;//1440*365 days = 1 year after POS
 
         /*Previously used as simple constants in validation */
         consensus.nINActivationHeight = 500; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
@@ -555,7 +555,7 @@ public:
         consensus.nINMetaUpdateChangeHeight=0; // can use last method on regnet
         consensus.nINMetaUpdateCachedNextBlock=0; // can use last method on regnet
         consensus.nTxFeeHeight=1000;
-        consensus.nINPOSExpireTimeChange=1000;
+        consensus.nINPOSExpireBlocksForkHeight=1000;
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 500;

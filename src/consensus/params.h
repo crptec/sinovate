@@ -88,15 +88,15 @@ struct Params {
     int nInfinityNodeLockRewardTop; //in number
     int nInfinityNodeLockRewardSigners; //in number
     int nInfinityNodeLockRewardSINType; //in number
-    int nInfinityNodeExpireTime; //in number
-    int nInfinityNodePOSExpireTime; //in number - new node timelife after POS
+    int nInfinityNodeExpireBlocks; //in number
+    int nInfinityNodePOSExpireBlocks; //in number - new node timelife after POS
     int nSchnorrActivationHeight; // block height (int)
     int nINActivationHeight; // block height (int)
     int nINEnforcementHeight; // block height (int)
     int nDINActivationHeight; // block height (int) - DIN switch height
     int nINMetaUpdateChangeHeight; // block height (int) - new method of updatemetadata  -active the same time as POS
     int nINMetaUpdateCachedNextBlock; // block height (int) - fork to use cached metadata of next block -active the same time as POS
-    int nINPOSExpireTimeChange; // block height (int) - fork to change node timelife  -active the same time as POS
+    int nINPOSExpireBlocksForkHeight; // block height (int) - fork to change node timelife  -active the same time as POS
     int nTxFeeHeight; // block height (int) - check burn tx fee in consensus -active the same time as POS
 
     // different constant addresses we use 
