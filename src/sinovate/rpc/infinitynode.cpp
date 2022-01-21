@@ -211,9 +211,9 @@ static RPCHelpMan infinitynode()
 
         std::map<int,int>::iterator itBIG, itMID, itLIL;
 
-        itBIG = mapBIG.lower_bound(nHeight);
-        itMID = mapMID.lower_bound(nHeight);
-        itLIL = mapLIL.lower_bound(nHeight);
+        itBIG = mapBIG.upper_bound(nHeight);
+        itMID = mapMID.upper_bound(nHeight);
+        itLIL = mapLIL.upper_bound(nHeight);
 
         if(nHeight == Params().GetConsensus().nInfinityNodeGenesisStatement){
             std::ostringstream streamInfo;

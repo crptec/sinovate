@@ -856,7 +856,7 @@ bool CInfinitynodeMan::deterministicRewardAtHeight_V2(int nBlockHeight, int nSin
     }
 
     std::map<int,int>::iterator it;
-    it = mapStatementSinType.lower_bound(nBlockHeight);
+    it = mapStatementSinType.upper_bound(nBlockHeight);
     --it;
     int lastStatement = it->first;
     int lastStatementSize = it->second;
