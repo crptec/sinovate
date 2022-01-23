@@ -2821,6 +2821,7 @@ bool CChainState::ConnectTip(BlockValidationState& state, CBlockIndex* pindexNew
         LogPrint(BCLog::BENCH, "  - Sinovate BuildNonMatured: %.2fms\n", (nTime3_2 - nTime3_1) * MILLI);
 //<SIN
         bool rv = ConnectBlock(blockConnecting, state, pindexNew, view);
+        GetMainSignals().BlockChecked(blockConnecting, state);
         int64_t nTime3_3;
         nTime3_3  = GetTimeMicros();
         LogPrint(BCLog::BENCH, "  - Sinovate ConnectBlock: %.2fms\n", (nTime3_3 - nTime3_2) * MILLI);
