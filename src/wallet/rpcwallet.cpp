@@ -1453,26 +1453,23 @@ static void ListTransactions(const CWallet& wallet, const CWalletTx& wtx, int nM
                 entry.pushKV("involvesWatchonly", true);
             }
             MaybePushAddress(entry, r.destination);
-            if (wtx.IsCoinBase())
-            {
-                if (wtx.GetDepthInMainChain() < 1)
+            if (wtx.IsCoinBase()) {
+                if (wtx.GetDepthInMainChain() < 1) {
                     entry.pushKV("category", "orphan");
-                else if (wtx.IsImmatureCoinBase())
+                } else if (wtx.IsImmatureCoinBase()) {
                     entry.pushKV("category", "immature");
-                else
+                } else {
                     entry.pushKV("category", "generate");
-            }
-            if (wtx.IsCoinStake())
-            {
-                if (wtx.GetDepthInMainChain() < 1)
+                }
+            } else if (wtx.IsCoinStake()) {
+                if (wtx.GetDepthInMainChain() < 1) {
                     entry.pushKV("category", "orphan stake");
-                else if (wtx.IsImmatureCoinBase())
-                    entry.pushKV("category", "immature");
-                else
+                } else if (wtx.IsImmatureCoinBase()) {
+                    entry.pushKV("category", "immature coinstake");
+                } else {
                     entry.pushKV("category", "minted");
-            }
-            else
-            {
+                }
+            } else {
                 entry.pushKV("category", "receive");
             }
             entry.pushKV("amount", ValueFromAmount(r.amount));
