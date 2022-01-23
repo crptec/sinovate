@@ -644,8 +644,8 @@ void BitcoinGUI::createToolBars()
         toolbar->addAction(stakePageAction);
         toolbar->addAction(infinitynodeAction); 
         toolbar->addAction(statsPageAction);
-        toolbar->addAction(statsPageAction);
         toolbar->addAction(historyAction);
+        toolbar->addAction(statsPageAction);
 
         homeAction->setChecked(true);
 
