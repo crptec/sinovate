@@ -218,6 +218,8 @@ void TxToUniv(const CTransaction& tx, const uint256& hashBlock, bool include_add
         }
         if (tx.IsCoinStake()) {
             in.pushKV("coinstake", HexStr(txin.scriptSig));
+            in.pushKV("txid", txin.prevout.hash.GetHex());
+            in.pushKV("vout", (int64_t)txin.prevout.n);
         }
         else {
             in.pushKV("txid", txin.prevout.hash.GetHex());
