@@ -215,8 +215,6 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
 
     nodeSetupInitialize();
 
-    connect(ui->toggleShowPasswordButton, &QPushButton::toggled, this, &InfinitynodeList::toggleShowPassword);
-
 }
 
 InfinitynodeList::~InfinitynodeList()
@@ -1189,7 +1187,6 @@ void InfinitynodeList::on_btnLogin_clicked()
         nodeSetupEnableClientId( clientId );
         nodeSetupSetClientId( clientId, ui->txtEmail->text(), ui->txtPassword->text() );
         ui->btnLogin->setText("Logout");
-        ui->toggleShowPasswordButton->setCheckState( Qt::Unchecked );
         ui->btnSetup->setEnabled(true);
     }
 }
@@ -1248,12 +1245,10 @@ void InfinitynodeList::nodeSetupInitialize()   {
         ui->setupButtons->hide();
         ui->labelClientId->setText("");
         ui->labelClientIdValue->hide();
-        ui->toggleShowPasswordButton->show();
     }
     else {
         nodeSetupEnableClientId(clientId);
         ui->btnLogin->setText("Logout");
-        ui->toggleShowPasswordButton->hide();
     }
     mClientid = clientId;
 
@@ -1306,7 +1301,6 @@ void InfinitynodeList::nodeSetupResetClientId( )  {
     ui->labelClientId->setText("");
     ui->labelClientIdValue->hide();
     ui->btnRestore->setText("Restore");
-    ui->toggleShowPasswordButton->show();
 
     ui->btnSetup->setEnabled(false);
     mClientid = 0;
@@ -1337,7 +1331,6 @@ void InfinitynodeList::nodeSetupEnableClientId( int clientId )  {
     ui->labelMessage->setText("Select a node Tier and press 'START' to verify if you meet the prerequisites");
     mClientid = clientId;
     ui->btnRestore->setText("Support");
-    ui->toggleShowPasswordButton->hide();
 }
 
 void InfinitynodeList::nodeSetupPopulateInvoicesCombo( )  {
@@ -2102,14 +2095,6 @@ void InfinitynodeList::updateDisplayUnit()
        
     }
 }
-
-void InfinitynodeList::toggleShowPassword(bool show)
-{
-    ui->toggleShowPasswordButton->setDown(show);
-    const auto mode = show ? QLineEdit::Normal : QLineEdit::Password;
-    ui->txtPassword->setEchoMode(mode);
-}
-
 
 // --
 

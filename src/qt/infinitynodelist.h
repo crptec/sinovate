@@ -213,7 +213,6 @@ private Q_SLOTS:
     void getStatistics();
     void loadMotd();
     void updateDisplayUnit();
-    void toggleShowPassword(bool);
 };
 
 #endif // FXTC_QT_INFINITYNODELIST_H

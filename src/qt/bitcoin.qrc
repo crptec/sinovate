@@ -85,6 +85,7 @@
         <file alias="theme1">res/icons/theme1.png</file>
         <file alias="theme2">res/icons/theme2.png</file>
         <file alias="theme3">res/icons/theme3.png</file>
+        
     </qresource>
     <qresource prefix="/movies">
         <file alias="spinner-000">res/movies/spinner-000.png</file>
@@ -197,6 +198,8 @@
         <file alias="setupKo">res/styles/theme1/app-icons/ko.png</file>
         <file alias="setupWait">res/styles/theme1/app-icons/wait.gif</file>
         <file alias="bulb">res/styles/theme1/app-icons/bulb.png</file>
+        <file alias="eyeOn">res/styles/theme1/app-icons/eyeOn.png</file>
+        <file alias="eyeOff">res/styles/theme1/app-icons/eyeOff.png</file>
         
     </qresource>
     <qresource prefix="/styles/theme2">
@@ -263,6 +266,8 @@
         <file alias="setupKo">res/styles/theme2/app-icons/ko.png</file>
         <file alias="setupWait">res/styles/theme2/app-icons/wait.gif</file>
         <file alias="bulb">res/styles/theme2/app-icons/bulb.png</file>
+        <file alias="eyeOn">res/styles/theme2/app-icons/eyeOn.png</file>
+        <file alias="eyeOff">res/styles/theme2/app-icons/eyeOff.png</file>
     </qresource>
     <qresource prefix="/styles/theme3">
         <file alias="app">res/styles/theme3/app.css</file>
