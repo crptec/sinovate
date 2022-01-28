@@ -297,7 +297,7 @@
         <item>
          <widget class="QPushButton" name="btnRefreshAddress">
           <property name="text">
-           <string>Address Re&amp;fresh</string>
+           <string>Ge&amp;t New Address</string>
           </property>
          </widget>
         </item>
