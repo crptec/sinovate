@@ -94,7 +94,7 @@ src/qt/bitcoin-qt.includes
 Makefile
 !depends/Makefile
 src/qt/sin-qt
-Bitcoin-Qt.app
+Sin-Qt.app
 
 # Qt Creator
 Makefile.am.user
