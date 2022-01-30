@@ -522,6 +522,7 @@ bool CInfinitynodeMan::GetInfinitynodeInfo(const COutPoint& outpoint, infinityno
 
 bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
 {
+    LOCK(cs);
     if (nHeight < Params().GetConsensus().nInfinityNodeGenesisStatement) {
         mapStatementLIL.clear();
         mapStatementMID.clear();
@@ -659,6 +660,37 @@ std::string CInfinitynodeMan::getLastStatementString() const
     return info.str();
 }
 
+std::string CInfinitynodeMan::getLastStatement()
+{
+    LOCK (cs);
+    std::ostringstream info;
+    info << " Height: ";
+    if (nCachedBlockHeight < Params().GetConsensus().nDINActivationHeight) {return info.str();}
+    info << nCachedBlockHeight;
+
+    std::map<int, int>::iterator itBIG = mapStatementBIG.upper_bound(nCachedBlockHeight);
+    std::map<int, int>::iterator itMID = mapStatementMID.upper_bound(nCachedBlockHeight);
+    std::map<int, int>::iterator itLIL = mapStatementLIL.upper_bound(nCachedBlockHeight);
+
+
+    if(nCachedBlockHeight == Params().GetConsensus().nDINActivationHeight) {
+            info << " BIG:" << itBIG->first << "/" << itBIG->second << " " <<
+                    " MID:" << itMID->first << "/" << itMID->second << " " <<
+                    " LIL:" << itLIL->first << "/" << itLIL->second << " "
+                    ;
+    } else if (nCachedBlockHeight > Params().GetConsensus().nDINActivationHeight) {
+
+            std::map<int, int>::iterator itLastBIG = --itBIG;
+            std::map<int, int>::iterator itLastMID = --itMID;
+            std::map<int, int>::iterator itLastLIL = --itLIL;
+
+            info << " BIG:" << itBIG->first << "/" << itBIG->second << " " <<
+                    " MID:" << itMID->first << "/" << itMID->second << " " <<
+                    " LIL:" << itLIL->first << "/" << itLIL->second << " "
+                    ;
+    }
+    return info.str();
+}
 /**
 * Rank = 0 when node is expired
 * Rank > 0 node is not expired, order by nHeight and

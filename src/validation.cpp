@@ -2362,6 +2362,7 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
     if (pindex->nHeight <= m_params.GetConsensus().nDINActivationHeight) {
         //POW mode: do nothing
     } else {
+        LogPrintf("Statement (before): %s\n", infnodeman.getLastStatement());
         if (block.IsProofOfWork()) {
             //DIN mode: validation LR
             LogPrintf("Validation -- POW + Infinitynode\n");
@@ -2379,8 +2380,6 @@ bool CChainState::ConnectBlock(const CBlock& block, BlockValidationState& state,
                 return state.Invalid(BlockValidationResult::BLOCK_CONSENSUS, "bad-cs-bad-infinity-node-reward");
             }
         }
-        LogPrintf("SINOVATE INFO:\n");
-        LogPrintf("Statement: %s\n", infnodeman.getLastStatementString());
     }
 //<SIN
     if (!control.Wait()) {
@@ -2852,6 +2851,7 @@ bool CChainState::ConnectTip(BlockValidationState& state, CBlockIndex* pindexNew
         int64_t nTime3_7;
         nTime3_7  = GetTimeMicros();
             LogPrint(BCLog::BENCH, "  - Sinovate FlushStateToDisk: %.2fms\n", (nTime3_7 - nTime3_6) * MILLI);
+        LogPrintf("Statement (after): %s\n", infnodeman.getLastStatement());
 //<SIN
         if (!rv) {
             if (state.IsInvalid())

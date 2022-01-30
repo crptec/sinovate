@@ -157,6 +157,7 @@ public:
     std::map<int, CInfinitynode> calculInfinityNodeRank(int nBlockHeight, int nSinType, bool updateList=false, bool flagExtCall = false);
     std::pair<int, int> getLastStatementBySinType(int nSinType);
     std::string getLastStatementString() const;
+    std::string getLastStatement();
     int getRoi(int nSinType, int totalNode);
 
     int isPossibleForLockReward(COutPoint burntx);
