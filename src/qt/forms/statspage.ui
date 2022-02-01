@@ -358,7 +358,7 @@ font-size: 20px;
 margin-bottom: 20px;</string>
               </property>
               <property name="text">
-               <string>CIRCULATION SUPPLY</string>
+               <string>CIRCULATING SUPPLY</string>
               </property>
               <property name="indent">
                <number>4</number>
