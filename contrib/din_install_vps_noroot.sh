@@ -12,6 +12,7 @@ read NODEUSER
 if [ -z "$NODEUSER" ]; then
   NODEUSER="sinovate"
 fi
+echo
 
 ## Change where files are located
 CONFIGFOLDER="/home/$NODEUSER/.sin"
@@ -35,7 +36,7 @@ COIN_PORT=20970
 
 function create_user() {
   if [ $(grep -c "^$NODEUSER:" /etc/passwd) == 0 ]; then
-    echo -e "\nUser ${G}$NODEUSER${NC} doesn't exist, creating new user"
+    echo -e "User ${G}$NODEUSER${NC} doesn't exist, creating new user"
     useradd -s /bin/bash $NODEUSER
     while true; do
       passwd $NODEUSER && break
@@ -264,13 +265,26 @@ function compile_error() {
 }
 
 function checks() {
-  if [[ $(lsb_release -d) < *16.04* ]]; then
-    echo -e "${R}You are not running Ubuntu 18.04 or later. Installation is cancelled.${NC}"
+  if ! test -r /etc/os-release; then
+    echo -e "${R}Unsupported GNU/Linux distribution${NC}"
     exit 1
   fi
+  source /etc/os-release
+  case "$ID" in
+    debian ) if [ "$VERSION_ID" -lt "10" ]; then
+        echo -e "${R}Debian version must be 10 or higher${NC}"
+        exit 1
+    fi;;
+    ubuntu ) if [ "${VERSION_ID%%.*}" -lt "18" ]; then
+        echo -e "${R}Ubuntu version must be 18.04 or higher${NC}"
+        exit 1
+    fi;;
+    * ) echo -e "${R}Unsupported GNU/Linux distribution${NC}"
+    exit 1;;
+  esac
 
   if [[ $EUID -ne 0 ]]; then
-    echo -e "${R}$0 must be run as root.${NC}"
+    echo -e "${R}$(basename $0) must be run as root.${NC}"
     exit 1
   fi
 
