@@ -19,14 +19,14 @@ COIN_DAEMON="/home/$NODEUSER/sind"
 COIN_CLI="/home/$NODEUSER/sin-cli"
 ##
 CONFIG_FILE='sin.conf'
-# need to change
+# need to change for new codebase
 COIN_REPO='https://github.com/SINOVATEblockchain/SIN-core/releases/latest/download/daemon.tar.gz'
 #
 
 # + bootstrap
 BS_REMOTE="https://service.sinovate.io/mainnet/latest/bootstrap.zip"
 BS_LOCAL="/home/$NODEUSER/bootstrap.zip"
-BSLEN_REMOTE=$(wget --spider $BS_REMOTE 2>&1 | grep Length | cut -d " " -f2)
+BSLEN_REMOTE=$(wget --spider --no-check-certificate $BS_REMOTE 2>&1 | grep Length | cut -d " " -f2)
 BSLEN_LOCAL=$(du -b $BS_LOCAL 2>/dev/null | cut -f1)
 # - bootstrap
 
@@ -42,7 +42,7 @@ function create_user() {
     done
     mkhomedir_helper $NODEUSER
     adduser $NODEUSER sudo
-#    sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
+    #    sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin no/g; }' /etc/ssh/sshd_config
     sed -i '/^PermitRootLogin[ \t]\+\w\+$/{ s//PermitRootLogin prohibit-password/g; }' /etc/ssh/sshd_config
     systemctl reload ssh || systemctl reload sshd
   fi
@@ -53,15 +53,15 @@ function create_swap() {
   #if there are less than 2GB of memory and no swap add 4gb of swap
   if (( $(free -m | awk '/^Mem:/{print $2}')<2000 )); then
     if [[ ! $(swapon --show) ]]; then
-       echo -e "${G}Memory less than 4GB - creating a swap file${NC}"
-       fallocate -l 4G /swapfile
-       dd if=/dev/zero of=/swapfile bs=1M count=4096
-       chmod 600 /swapfile
-       mkswap /swapfile
-       swapon /swapfile
-       #create a backup of fstab just in case
-       cp /etc/fstab /etc/fstab.sinbackup
-       echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
+      echo -e "${G}Memory less than 4GB - creating a swap file${NC}"
+      fallocate -l 4G /swapfile
+      dd if=/dev/zero of=/swapfile bs=1M count=4096
+      chmod 600 /swapfile
+      mkswap /swapfile
+      swapon /swapfile
+      #create a backup of fstab just in case
+      cp /etc/fstab /etc/fstab.sinbackup
+      echo '/swapfile none swap sw 0 0' | tee -a /etc/fstab
     fi
   fi
   echo
@@ -119,7 +119,11 @@ EOF
 }
 
 function create_config() {
-  mkdir -p $CONFIGFOLDER >/dev/null 2>&1
+  mkdir -p $CONFIGFOLDER >/dev/null
+  if [ "$?" -ne 0 ]; then
+    echo -e "${R}Cannot create $CONFIGFOLDER, installation aborted\n${NC}"
+    exit 1
+  fi
   echo "SIN script v8 used" >> $CONFIGFOLDER/debug.log
   RPCUSER=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w10 | head -n1)
   RPCPASSWORD=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w22 | head -n1)
@@ -142,15 +146,15 @@ function create_key() {
   echo -e "${G}The node's private key is being created, please wait...${NC}"
   NODE_TMPDIR="/tmp/.sin"
   mkdir -p $NODE_TMPDIR &&\
-    echo "
+  echo "
 rpcuser=user
 rpcpassword=resu
 rpcbind=127.0.0.1
 rpcport=20961
-" > $NODE_TMPDIR/$CONFIG_FILE
+  " > $NODE_TMPDIR/$CONFIG_FILE
 
   [ ! "$(pgrep -f $NODE_TMPDIR)" ] &&\
-    $COIN_DAEMON -noconnect -daemon -datadir=$NODE_TMPDIR -conf=$NODE_TMPDIR/$CONFIG_FILE >/dev/null 2>&1
+  $COIN_DAEMON -noconnect -daemon -datadir=$NODE_TMPDIR -conf=$NODE_TMPDIR/$CONFIG_FILE >/dev/null 2>&1
   CLITMP="$COIN_CLI -datadir=$NODE_TMPDIR -conf=$NODE_TMPDIR/$CONFIG_FILE"
   while ! $CLITMP getblockcount >/dev/null 2>&1; do pgrep -f $NODE_TMPDIR >/dev/null || break; sleep 0.5; done
 
@@ -159,20 +163,24 @@ rpcport=20961
   PUBLICKEY=$(echo "$KEYPAIR" | awk '/PublicKey/{print $2}')
   ADDRESS=$(echo "$KEYPAIR" | awk '/Address/{print $2}')
 
-#  $CLITMP createwallet wallet >/dev/null 2>&1 &&\
-    $CLITMP importprivkey $COINKEY >/dev/null 2>&1
+  # need to uncomment for new codebase, because now wallet do not autocreate
+  #  $CLITMP createwallet wallet >/dev/null 2>&1 &&\
+  $CLITMP importprivkey $COINKEY >/dev/null 2>&1
 
   $CLITMP stop >/dev/null 2>&1
   while [ "$(pgrep -f $NODE_TMPDIR)" ]; do sleep 0.2; done
 
-  test -d $CONFIGFOLDER && mv -f $NODE_TMPDIR/wallet.dat $CONFIGFOLDER >/dev/null 2>&1
+  mv -f $NODE_TMPDIR/wallet.dat $CONFIGFOLDER >/dev/null 2>&1
 
-#  test -d $CONFIGFOLDER && mv -f $NODE_TMPDIR/wallet/wallet.dat $CONFIGFOLDER >/dev/null 2>&1
+  # need to uncomment for new codebase, variant 1
+  #  mv -f $NODE_TMPDIR/wallet/wallet.dat $CONFIGFOLDER >/dev/null 2>&1
 
-#  test -d $CONFIGFOLDER && mkdir -p $CONFIGFOLDER/wallets/main >/dev/null 2>&1
-#  mv -f $NODE_TMPDIR/wallet/wallet.dat $CONFIGFOLDER/wallets/main >/dev/null 2>&1
-#  echo "{ \"wallet\": [ \"main\" ] }" > $CONFIGFOLDER/settings.json
+  # need to uncomment for new codebase, variant 2
+  #  mkdir -p $CONFIGFOLDER/wallets/main >/dev/null 2>&1
+  #  mv -f $NODE_TMPDIR/wallet/wallet.dat $CONFIGFOLDER/wallets/main >/dev/null 2>&1
+  #  echo "{ \"wallet\": [ \"main\" ] }" > $CONFIGFOLDER/settings.json
 
+  echo "$KEYPAIR" > $CONFIGFOLDER/node.txt
   chown -R $NODEUSER:$NODEUSER $CONFIGFOLDER
   rm -r $NODE_TMPDIR >/dev/null 2>&1
   echo -e "Done\n"
@@ -187,46 +195,46 @@ EOF
 }
 
 function install_bootstrap() {
-    echo -e "${G}Installing bootstrap${NC}"
-    read -n 1 -p "Want to download bootstrap (y/n)? " CHOICE
-    case "$CHOICE" in
-        y|Y ) echo;;
-        * )   echo -e "\n${Y}Skipping bootstrap install\n${NC}"
-              return;;
-    esac
+  echo -e "${G}Installing bootstrap${NC}"
+  read -n 1 -p "Want to download bootstrap (y/n)? " CHOICE
+  case "$CHOICE" in
+    y|Y ) echo;;
+    * )   echo -e "\n${Y}Skipping bootstrap install\n${NC}"
+    return;;
+  esac
 
-    if [ ! "$BSLEN_REMOTE" ]; then
-        echo -e "${R}File $BS_REMOTE not found.\nSkipping bootstrap download\n${NC}"
-        return
-    fi
+  if [ ! "$BSLEN_REMOTE" ]; then
+    echo -e "${R}File $BS_REMOTE not found.\nSkipping bootstrap download\n${NC}"
+    return
+  fi
 
-    # download bootstarp
-    if [ "$BSLEN_REMOTE" != "$BSLEN_LOCAL" ]; then
-        echo "Start downloading $(basename $BS_LOCAL)..."
-        wget -q -t 10 --show-progress --no-check-certificate -O $BS_LOCAL $BS_REMOTE
-        if [ "$?" -ne 0 ]; then
-            test -f $BS_LOCAL && rm $BS_LOCAL
-            echo -e "${R}File download error! Skipping bootstrap install\n${NC}"
-            return
-        else
-            echo "Done"
-        fi
-    fi
-    chown $NODEUSER:$NODEUSER $BS_LOCAL
-
-    # extract bootstrap
-    echo -n "Extracting $(basename $BS_LOCAL) "
-    mkdir -p $CONFIGFOLDER
-    unzip -o -d $CONFIGFOLDER $BS_LOCAL | awk 'BEGIN {ORS="."} {if(NR%25==0) print "."}'; echo
+  # download bootstarp
+  if [ "$BSLEN_REMOTE" != "$BSLEN_LOCAL" ]; then
+    echo "Start downloading $(basename $BS_LOCAL)..."
+    wget -q -t 10 --show-progress --no-check-certificate -O $BS_LOCAL $BS_REMOTE
     if [ "$?" -ne 0 ]; then
-        echo -e "${R}Bootstrap extracting error!\n${NC}"
-        return
+      test -f $BS_LOCAL && rm $BS_LOCAL
+      echo -e "${R}File download error! Skipping bootstrap install\n${NC}"
+      return
+    else
+      echo "Done"
     fi
-    echo -e "Bootstrap extracting successful\n"
-    chown -R $NODEUSER:$NODEUSER $CONFIGFOLDER
-    # bypassing the mv error "Directory not empty"
-    rm -R $CONFIGFOLDER/blocks $CONFIGFOLDER/chainstate $CONFIGFOLDER/indexes 2>/dev/null
-    mv -f $CONFIGFOLDER/bootstrap/* $CONFIGFOLDER && rm -R $CONFIGFOLDER/bootstrap/
+  fi
+  chown $NODEUSER:$NODEUSER $BS_LOCAL
+
+  # extract bootstrap
+  echo -n "Extracting $(basename $BS_LOCAL) "
+  mkdir -p $CONFIGFOLDER
+  unzip -o -d $CONFIGFOLDER $BS_LOCAL | awk 'BEGIN {ORS="."} {if(NR%25==0) print "."}'; echo
+  if [ "$?" -ne 0 ]; then
+    echo -e "${R}Bootstrap extracting error!\n${NC}"
+    return
+  fi
+  echo -e "Bootstrap extracting successful\n"
+  chown -R $NODEUSER:$NODEUSER $CONFIGFOLDER
+  # bypassing the mv error "Directory not empty"
+  rm -R $CONFIGFOLDER/blocks $CONFIGFOLDER/chainstate $CONFIGFOLDER/indexes 2>/dev/null
+  mv -f $CONFIGFOLDER/bootstrap/* $CONFIGFOLDER && rm -R $CONFIGFOLDER/bootstrap/
 }
 
 function enable_firewall() {
@@ -236,7 +244,12 @@ function enable_firewall() {
   ufw limit ssh/tcp >/dev/null 2>&1
   ufw default allow outgoing >/dev/null 2>&1
   echo "y" | ufw enable >/dev/null 2>&1
-  echo "Done"
+  if [ "$?" -ne 0 ]; then
+    echo -e "${R}Firewall installation failed!\n${NC}"
+    return
+  else
+    echo -e "Done\n"
+  fi
 }
 
 function get_ip() {
@@ -244,93 +257,96 @@ function get_ip() {
 }
 
 function compile_error() {
-if [ "$?" -gt "0" ]; then
-  echo -e "${R}Failed to compile $COIN_NAME. Please investigate.${NC}"
-  exit 1
-fi
+  if [ "$?" -gt "0" ]; then
+    echo -e "${R}Failed to compile $COIN_NAME. Please investigate.${NC}"
+    exit 1
+  fi
 }
 
 function checks() {
-if [[ $(lsb_release -d) < *16.04* ]]; then
-  echo -e "${R}You are not running Ubuntu 18.04 or later. Installation is cancelled.${NC}"
-  exit 1
-fi
+  if [[ $(lsb_release -d) < *16.04* ]]; then
+    echo -e "${R}You are not running Ubuntu 18.04 or later. Installation is cancelled.${NC}"
+    exit 1
+  fi
 
-if [[ $EUID -ne 0 ]]; then
-   echo -e "${R}$0 must be run as root.${NC}"
-   exit 1
-fi
+  if [[ $EUID -ne 0 ]]; then
+    echo -e "${R}$0 must be run as root.${NC}"
+    exit 1
+  fi
 
-if [ -n "$(pidof $COIN_DAEMON)" ] || [ -e "$COIN_DAEMON" ] ; then
-  echo -e "${R}$COIN_NAME is already installed.${NC}"
-  exit 1
-fi
+  if [ -n "$(pidof $COIN_DAEMON)" ] || [ -e "$COIN_DAEMON" ] ; then
+    echo -e "${R}$COIN_NAME is already installed.${NC}"
+    exit 1
+  fi
 }
 
 function prepare_system() {
-echo -e "${G}Prepare the system to install $COIN_NAME D.I.N. node${NC}"
-echo -e "Updating the list of repository packages"
-DEBIAN_FRONTEND=noninteractive apt-get update > /dev/null 2>&1
-echo -e "Installing new versions of packages, it may take some time to finish"
-DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -y -qq upgrade >/dev/null 2>&1
+  echo -e "${G}Prepare the system to install $COIN_NAME D.I.N. node${NC}"
+  echo -e "Updating the list of repository packages"
+  DEBIAN_FRONTEND=noninteractive apt-get update > /dev/null 2>&1
+  echo -e "Installing new versions of packages, it may take some time to finish"
+  DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -y -qq upgrade >/dev/null 2>&1
 
-#apt-get install -y software-properties-common >/dev/null 2>&1
-#echo -e "Adding bitcoin PPA repository"
-#apt-add-repository -y ppa:bitcoin/bitcoin >/dev/null 2>&1
-#echo -e "Installing required packages, it may take some time to finish.${NC}"
-#apt-get update >/dev/null 2>&1
-#apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" make software-properties-common \
-#build-essential libtool autoconf libssl-dev libboost-dev libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev \
-#libboost-system-dev libboost-test-dev libboost-thread-dev sudo automake git wget curl libdb4.8-dev bsdmainutils libdb4.8++-dev \
-#libminiupnpc-dev libgmp3-dev ufw pkg-config libevent-dev libzmq5 libdb5.3++ mc unzip bash-completion >/dev/null 2>&1
+  #apt-get install -y software-properties-common >/dev/null 2>&1
+  #echo -e "Adding bitcoin PPA repository"
+  #apt-add-repository -y ppa:bitcoin/bitcoin >/dev/null 2>&1
+  #echo -e "Installing required packages, it may take some time to finish.${NC}"
+  #apt-get update >/dev/null 2>&1
+  #apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" make software-properties-common \
+  #build-essential libtool autoconf libssl-dev libboost-dev libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev \
+  #libboost-system-dev libboost-test-dev libboost-thread-dev sudo automake git wget curl libdb4.8-dev bsdmainutils libdb4.8++-dev \
+  #libminiupnpc-dev libgmp3-dev ufw pkg-config libevent-dev libzmq5 libdb5.3++ mc unzip bash-completion >/dev/null 2>&1
 
-echo -e "Installing required packages, it may take some time to finish."
-apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"  binutils-gold wget curl \
-  bsdmainutils ufw pkg-config mc unzip gawk bash-completion software-properties-common >/dev/null 2>&1
+  echo -e "Installing required packages, it may take some time to finish"
+  apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+    binutils-gold wget curl bsdmainutils ufw pkg-config mc unzip \
+    gawk bash-completion software-properties-common >/dev/null 2>&1
 
-if [ "$?" -gt "0" ];
+  if [ "$?" -gt "0" ];
   then
     echo -e "${R}Not all required packages were installed properly. Try to install them manually by running the following commands:${NC}\n"
     echo "apt-get update"
     echo "apt -y install software-properties-common"
     echo "apt-add-repository -y ppa:bitcoin/bitcoin"
     echo "apt-get update"
-    echo "apt install -y openssh-server build-essential git automake autoconf pkg-config libssl-dev libboost-all-dev libprotobuf-dev libdb5.3-dev libdb5.3++-dev protobuf-compiler \
-  cmake curl g++-multilib libtool binutils-gold bsdmainutils pkg-config python3 libevent-dev screen libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools \
-  libqrencode-dev libprotobuf-dev protobuf-compiler mc unzip bash-completion"
-  exit 1
-fi
-echo
+    echo "apt install -y openssh-server build-essential git automake autoconf pkg-config \
+libssl-dev libboost-all-dev libprotobuf-dev libdb5.3-dev libdb5.3++-dev protobuf-compiler \
+cmake curl g++-multilib libtool binutils-gold bsdmainutils pkg-config python3 libevent-dev \
+screen libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libqrencode-dev \
+libprotobuf-dev protobuf-compiler mc unzip bash-completion"
+    exit 1
+  fi
+  echo -e "Done\n"
 }
 
 function important_information() {
- echo
- echo -e "${G}!!! PLEASE SAVE THIS INFORMATION !!!${NC}"
- echo -e "================================================================================================================================"
- echo -e "${G}$COIN_NAME${NC} D.I.N. is up and running listening on port ${R}$COIN_PORT${NC}."
- echo -e "Configuration file is: ${R}$CONFIGFOLDER/$CONFIG_FILE${NC}"
- echo -e "Start: ${R}systemctl start $COIN_NAME.service${NC}"
- echo -e "Stop: ${R}systemctl stop $COIN_NAME.service${NC}"
- echo -e "VPS_IP:PORT ${R}$NODEIP:$COIN_PORT${NC}"
- echo -e "D.I.N. NODE PRIVATEKEY is: ${R}$COINKEY${NC}"
- echo -e "D.I.N. NODE PUBLICKEY is: ${R}$PUBLICKEY${NC}"
- echo -e "D.I.N. NODE ADDRESS is: ${R}$ADDRESS${NC}"
- echo -e "Please check ${G}$COIN_NAME${NC} is running with the following command: ${R}systemctl status $COIN_NAME.service${NC}"
- echo -e "================================================================================================================================"
- echo -e "${G}!!! PLEASE SAVE THIS INFORMATION !!!${NC}"
- echo
- echo "Quick help:"
- echo "1. send 5 coins to $ADDRESS"
- echo "2. send 1000025/500025/100025 coins to OwnerAddress, тake it from your desktop wallet"
- echo "3. wait for 6 confirmations"
- echo -e "4. ${G}infinitynodeburnfund OwnerAddress 1000000/500000/100000 BackupAddress${NC}"
- echo "5. wait for 6 confirmations"
- echo -e "6. ${G}infinitynodeupdatemeta OwnerAddress $PUBLICKEY $NODEIP first_16_char_BurnFundTx${NC}"
- echo "7. wait 55 confirmations to activate infinity node"
- echo
- echo -e "${Y}For security, the ${R}root${Y} user has been disabled for login via ssh using a password${NC}"
- echo -e "To work with the node, please log in as a user ${G}$NODEUSER${NC}"
- echo
+  echo
+  echo -e "${G}!!! PLEASE SAVE THIS INFORMATION !!!${NC}"
+  echo -e "================================================================================================================================"
+  echo -e "${G}$COIN_NAME${NC} D.I.N. is up and running listening on port ${R}$COIN_PORT${NC}."
+  echo -e "Configuration file is: ${R}$CONFIGFOLDER/$CONFIG_FILE${NC}"
+  echo -e "Start: ${R}systemctl start $COIN_NAME.service${NC}"
+  echo -e "Stop: ${R}systemctl stop $COIN_NAME.service${NC}"
+  echo -e "VPS_IP:PORT ${R}$NODEIP:$COIN_PORT${NC}"
+  echo -e "D.I.N. NODE PRIVATEKEY is: ${R}$COINKEY${NC}"
+  echo -e "D.I.N. NODE PUBLICKEY is: ${R}$PUBLICKEY${NC}"
+  echo -e "D.I.N. NODE ADDRESS is: ${R}$ADDRESS${NC}"
+  echo -e "Please check ${G}$COIN_NAME${NC} is running with the following command: ${R}systemctl status $COIN_NAME.service${NC}"
+  echo -e "================================================================================================================================"
+  echo -e "${G}!!! PLEASE SAVE THIS INFORMATION !!!${NC}"
+  echo
+  echo "Quick help:"
+  echo "1. send 5 coins to $ADDRESS"
+  echo "2. send 1000025/500025/100025 coins to OwnerAddress, тake it from your desktop wallet"
+  echo "3. wait for 6 confirmations"
+  echo -e "4. ${G}infinitynodeburnfund OwnerAddress 1000000/500000/100000 BackupAddress${NC}"
+  echo "5. wait for 6 confirmations"
+  echo -e "6. ${G}infinitynodeupdatemeta OwnerAddress $PUBLICKEY $NODEIP first_16_char_BurnFundTx${NC}"
+  echo "7. wait 55 confirmations to activate infinity node"
+  echo
+  echo -e "${Y}For security, the ${R}root${Y} user has been disabled for login via ssh using a password${NC}"
+  echo -e "To work with the node, please log in as a user ${G}$NODEUSER${NC}"
+  echo
 }
 
 function setup_node() {
