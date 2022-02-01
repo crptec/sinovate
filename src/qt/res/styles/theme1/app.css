@@ -107,7 +107,7 @@ QLineEdit::focus:!read-only{
 }
 QLineEdit::disabled{
     border: 1px solid rgba(59, 59, 59, 40%);
-    color: #CCCCCC);
+    color: #CCCCCC;
 }
 QAbstractItemView#autoCompleterPopup{
     background-color: #2e2e2e;
