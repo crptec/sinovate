@@ -145,6 +145,7 @@
         <file alias="buttondark">res/styles/theme1/buttondark.css</file>
         <file alias="buttonlight">res/styles/theme1/buttonlight.css</file>
         <file alias="buttongray">res/styles/theme1/buttongray.css</file>
+        <file alias="buttoncustom">res/styles/theme1/buttoncustom.css</file>
         <file alias="buttontransparent">res/styles/theme1/buttontransparent.css</file>
         <file alias="buttontransparentbordered">res/styles/theme1/buttontransparentbordered.css</file>
         <file alias="navbutton">res/styles/theme1/navbutton.css</file>
@@ -204,6 +205,7 @@
     </qresource>
     <qresource prefix="/styles/theme2">
         <file alias="app">res/styles/theme2/app.css</file>
+        <file alias="buttoncustom">res/styles/theme2/buttoncustom.css</file>
         <file alias="buttontransparent">res/styles/theme2/buttontransparent.css</file>
         <file alias="scrollbardark">res/styles/theme2/scrollbardark.css</file>
         <file alias="treeview">res/styles/theme2/treeview.css</file>
@@ -271,6 +273,7 @@
     </qresource>
     <qresource prefix="/styles/theme3">
         <file alias="app">res/styles/theme3/app.css</file>
+        <file alias="buttoncustom">res/styles/theme3/buttoncustom.css</file>
         <file alias="buttontransparent">res/styles/theme3/buttontransparent.css</file>
         <file alias="scrollbardark">res/styles/theme3/scrollbardark.css</file>
         <file alias="treeview">res/styles/theme3/treeview.css</file>

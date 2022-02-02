@@ -1,0 +1,23 @@
+/*--------------------------------------------
+Push Button CSS
+--------------------------------------------*/
+QPushButton {
+    color: white; 
+    background:  rgba(0, 79, 255, .5);
+    border: none;
+    border-radius: 12px;
+    min-width: 5em;
+    padding: 6px;
+    margin: 0px;
+}
+QPushButton:hover{
+    background: #1E2B47;
+}
+QPushButton:pressed {
+    background: #1E2B47;
+    color: #a4d1f0;
+}
+QPushButton::disabled {
+    color: rgba(255, 255, 255, 40%);
+    background: rgba(2, 156, 224, 60%);
+}

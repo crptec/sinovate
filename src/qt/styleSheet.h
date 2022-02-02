@@ -36,6 +36,7 @@ namespace StyleSheetNames
     static const QString TreeView                    = "treeview";
     static const QString ScrollBarLight              = "scrollbarlight";
     static const QString ScrollBarDark               = "scrollbardark";
+    static const QString ButtonCustom               = "buttoncustom";
 }
 
 /** Singleton class that manage the styles
