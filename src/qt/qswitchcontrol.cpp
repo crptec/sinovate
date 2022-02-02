@@ -75,6 +75,7 @@ void QSwitchControl::onStatusChanged()
         stakeWarnDialog->button(QMessageBox::No)->setObjectName("No");
         SetObjectStyleSheet(stakeWarnDialog->button(QMessageBox::Yes), StyleSheetNames::ButtonCustom);
         SetObjectStyleSheet(stakeWarnDialog->button(QMessageBox::No), StyleSheetNames::ButtonCustom);
+        stakeWarnDialog->setStyleSheet("color: #6F80AB;");
         int click = stakeWarnDialog->exec();
             if (click == QMessageBox::No) {
                 return;
