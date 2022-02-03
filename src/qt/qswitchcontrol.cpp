@@ -71,20 +71,20 @@ void QSwitchControl::onStatusChanged()
             if (IsHidden == false){
             QMessageBox *stakeWarnDialog = new QMessageBox(this);
             stakeWarnDialog->setWindowModality(Qt::WindowModal);
-            stakeWarnDialog->setWindowTitle("Confirm Staking!!!");
+            stakeWarnDialog->setWindowTitle("Confirm Staking!");
             stakeWarnDialog->setCheckBox(warnStakeCheckBoxShowHide);
-            stakeWarnDialog->setText(tr("<h2><u>Warning!!!</u></h2>")  
+            stakeWarnDialog->setText(tr("<h2>WARNING!</h2>")  
                     + tr("When the <b>Staking</b> button is turned on, all the available coins will start staking and will not be available for 14400 blocks (~10 days)")
                     + "<br><br>" + tr("If some coins are not intended for staking, <b>first go to INPUTS in SEND Tab and lock some of the inputs!</b>")
-                    +"<br><br>"+ tr("Are you sure?"));
+                    +"<br><br>"+ tr("Are you sure?")+"<br><br><br>");
             stakeWarnDialog->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             stakeWarnDialog->setIcon(QMessageBox::Warning);
             stakeWarnDialog->button(QMessageBox::Yes)->setObjectName("Yes");
             stakeWarnDialog->button(QMessageBox::No)->setObjectName("No");
             SetObjectStyleSheet(stakeWarnDialog->button(QMessageBox::Yes), StyleSheetNames::ButtonCustom);
             SetObjectStyleSheet(stakeWarnDialog->button(QMessageBox::No), StyleSheetNames::ButtonCustom);
-            stakeWarnDialog->setStyleSheet("color: #6F80AB;");
-            warnStakeCheckBoxShowHide->setStyleSheet("background-color: transparent;");
+            stakeWarnDialog->setStyleSheet("color: #6F80AB");
+            warnStakeCheckBoxShowHide->setStyleSheet("background-color: transparent; font: 9px;");
             int click = stakeWarnDialog->exec();
             warnStakeShowStatus = warnStakeCheckBoxShowHide->isChecked();        
             settings.setValue("warnStakeShowStatus", warnStakeShowStatus);
