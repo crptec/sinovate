@@ -972,8 +972,8 @@ bool CInfinityNodeLockReward::FindAndSendSignersGroup(CConnman& connman, Chainst
                     CGroupSigners gSigners(infinitynodePeer.burntx, currentLockRequestHash, nGroupSigners, mapLockRewardRequest[currentLockRequestHash].nRewardHeight, signerIndex);
                     if(gSigners.Sign(infinitynodePeer.keyInfinitynode, infinitynodePeer.pubKeyInfinitynode)) {
                         if (AddGroupSigners(gSigners)) {
-                            LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::FindAndSendSignersGroup -- relay my GroupSigner: %d, hash: %s, LockRequest: %s\n",
-                                      nGroupSigners, gSigners.GetHash().ToString(), currentLockRequestHash.ToString());
+                            LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::FindAndSendSignersGroup -- relay my GroupSigner: %d, RewardHeight: %d, hash: %s, LockRequest: %s\n",
+                                      nGroupSigners, mapLockRewardRequest[currentLockRequestHash].nRewardHeight, gSigners.GetHash().ToString(), currentLockRequestHash.ToString());
                             gSigners.Relay(connman);
                         }
                     }
@@ -2846,8 +2846,8 @@ void CInfinityNodeLockReward::ProcessMessage(CNode* pfrom, const std::string& st
                 return;
             }
             if(AddGroupSigners(gSigners)){
-                LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- receive group signer %s for lockrequest %s\n",
-                          gSigners.signersId, gSigners.nHashRequest.ToString());
+                LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessMessage -- receive group signer %s for lockrequest %s, height: %d\n",
+                          gSigners.signersId, gSigners.nHashRequest.ToString(), gSigners.nRewardHeight);
             }
             gSigners.Relay(connman);
 
@@ -2945,9 +2945,17 @@ void CInfinityNodeLockReward::CheckAndRemove(int nHeight)
     std::map<uint256, CGroupSigners>::iterator itGroup = mapLockRewardGroupSigners.begin();
     while(itGroup != mapLockRewardGroupSigners.end()) {
         if (itGroup->second.nRewardHeight < (nHeight - LIMIT_MEMORY)) {
-            LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckAndRemove -- remove mapLockRewardGroupSigners for height: %d, current: %d\n",
-                     itGroup->second.nRewardHeight, nHeight);
-            mapLockRewardGroupSigners.erase(itGroup++);
+            uint256 nLRHash = itGroup->second.nHashRequest;
+            LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckAndRemove -- remove mapLockRewardGroupSigners for height: %d, LR hash: %s, current: %d\n",
+                     itGroup->second.nRewardHeight, nLRHash.ToString(), nHeight);
+
+            if (itGroup->second.nRewardHeight == 0 && mapLockRewardRequest.count(nLRHash) && mapLockRewardRequest[nLRHash].nRewardHeight >= (nHeight - LIMIT_MEMORY)) {
+                LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::CheckAndRemove -- DO NOT remove mapLockRewardGroupSigners for height: %d, detected bad height in LR\n",
+                     itGroup->second.nRewardHeight);
+                continue;
+            } else {
+                mapLockRewardGroupSigners.erase(itGroup++);
+            }
         } else {
             ++itGroup;
         }
