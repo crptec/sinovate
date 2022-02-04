@@ -2681,8 +2681,8 @@ bool CInfinityNodeLockReward::ProcessBlock(int nBlockHeight, CConnman& connman, 
     int nRewardHeight = infnodeman.isPossibleForLockReward(infinitynodePeer.burntx);
 
     LOCK2(cs_main, cs);
-    if (nRewardHeight == 0 || (nRewardHeight < (nCachedBlockHeight + Params().GetConsensus().nInfinityNodeCallLockRewardLoop))) {
-        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessBlock -- Try to LockReward false at height %d\n", nBlockHeight);
+    if (nRewardHeight == 0 || (nRewardHeight < (nCachedBlockHeight + 1))) {
+        LogPrint(BCLog::INFINITYLOCK,"CInfinityNodeLockReward::ProcessBlock -- Try to LockReward false at height %d, calulated reward height: %d, clear cache info.\n", nBlockHeight, nRewardHeight);
         mapSigners.clear();
         mapMyPartialSigns.clear();
         currentLockRequestHash = uint256();
