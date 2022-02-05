@@ -64,14 +64,14 @@ void QSwitchControl::onStatusChanged()
     {
         //++
         QSettings settings;
-        QCheckBox *warnStakeCheckBoxShowHide = new QCheckBox("Don't show this again");
+        QCheckBox *warnStakeCheckBoxShowHide = new QCheckBox(tr("Don't show this again"));
         bool warnStakeShowStatus;
         QVariant IsHidden = settings.value("warnStakeShowStatus", warnStakeShowStatus);
 
             if (IsHidden == false){
             QMessageBox *stakeWarnDialog = new QMessageBox(this);
             stakeWarnDialog->setWindowModality(Qt::WindowModal);
-            stakeWarnDialog->setWindowTitle("Confirm Staking!");
+            stakeWarnDialog->setWindowTitle(tr("Confirm Staking!"));
             stakeWarnDialog->setCheckBox(warnStakeCheckBoxShowHide);
             stakeWarnDialog->setText(tr("<h2>WARNING!</h2>")  
                     + tr("When the <b>Staking</b> button is turned on, all the available coins will start staking and will not be available for 14400 blocks (~10 days)")
@@ -81,6 +81,8 @@ void QSwitchControl::onStatusChanged()
             stakeWarnDialog->setIcon(QMessageBox::Warning);
             stakeWarnDialog->button(QMessageBox::Yes)->setObjectName("Yes");
             stakeWarnDialog->button(QMessageBox::No)->setObjectName("No");
+            stakeWarnDialog->setButtonText(QMessageBox::Yes, tr("Yes"));
+            stakeWarnDialog->setButtonText(QMessageBox::No, tr("No"));
             SetObjectStyleSheet(stakeWarnDialog->button(QMessageBox::Yes), StyleSheetNames::ButtonCustom);
             SetObjectStyleSheet(stakeWarnDialog->button(QMessageBox::No), StyleSheetNames::ButtonCustom);
             stakeWarnDialog->setStyleSheet("color: #6F80AB");
