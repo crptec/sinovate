@@ -697,17 +697,17 @@ void BitcoinGUI::createToolBars()
                 
         bottomOptionButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/options",PlatformStyle::NavBar));
         bottomOptionButton->setIconSize(QSize(16, 16));
-        bottomOptionButton->setToolTip( "Open Options Window"  );
+        bottomOptionButton->setToolTip(tr("Open Options Window"));
         bottomOptionButton->setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; } QPushButton {background-color: transparent; border: none; min-width: 16px;} QPushButton:hover {border: 1px solid" + colcode + "; }");
         
         bottomSetupButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/setup_bottom",PlatformStyle::NavBar));
         bottomSetupButton->setIconSize(QSize(50, 13));
-        bottomSetupButton->setToolTip( "Open SetUP Wizard"  );
+        bottomSetupButton->setToolTip( tr("Open SetUP Wizard"));
         bottomSetupButton->setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; } QPushButton {background-color: transparent; border: none; min-width: 38px;} QPushButton:hover {border: 1px solid" + colcode + "; }");
     
         bottomConsoleButton->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/debugwindow",PlatformStyle::NavBar));
         bottomConsoleButton->setIconSize(QSize(16, 16));
-        bottomConsoleButton->setToolTip( "Open Console"  );
+        bottomConsoleButton->setToolTip(tr("Open Console"));
         bottomConsoleButton->setStyleSheet("QToolTip { color: #000000; background-color: #ffffff; border: 0px; } QPushButton {background-color: transparent; border: none; min-width: 16px;} QPushButton:hover {border: 1px solid" + colcode + "; }");
 
         bottomBar->setLayout(bottomBarLayout);
