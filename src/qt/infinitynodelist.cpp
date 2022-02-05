@@ -1,5 +1,4 @@
-// Copyright (c) 2014-2017 The Dash Core developers
-// Copyright (c) 2018-2021 SIN developers
+// Copyright (c) 2018-2022 SIN developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -338,9 +337,9 @@ void InfinitynodeList::updateDINList()
             QString strBurnTx = QString::fromStdString(burnfundTxId).left(16);
 
             if (metadata.getMetadataHeight() == 0 || metadata.getMetaPublicKey() == "" ){
-                status="Incomplete";
+                status=tr("Incomplete").toStdString();
             } else {
-                status="Ready";
+                status=tr("Ready").toStdString();
 
                 std::string metaPublicKey = metadata.getMetaPublicKey();
                 std::vector<unsigned char> tx_data = DecodeBase64(metaPublicKey.c_str());
@@ -370,7 +369,7 @@ void InfinitynodeList::updateDINList()
             if (infoInf.nSINType == 1) strNodeType="MINI"; if (infoInf.nSINType == 5) strNodeType="MID"; if (infoInf.nSINType == 10) strNodeType="BIG";
 
             if(infoInf.nExpireHeight < nCurrentHeight){
-                status="Expired";
+                status=tr("Expired").toStdString();
                 // update used burn tx map
                 nodeSetupUsedBurnTxs.insert( { burnfundTxId, 1  } );
                 nExpired++;
@@ -401,10 +400,10 @@ void InfinitynodeList::updateDINList()
                 bool flocked = mapLockRewardHeight.find(sPeerAddress) != mapLockRewardHeight.end();
                 if(flocked) {
                     ui->dinTable->setItem(k, 8, new QTableWidgetItem(QString::number(mapLockRewardHeight[sPeerAddress])));
-                    ui->dinTable->setItem(k, 9, new QTableWidgetItem(QString(QString::fromStdString("Yes"))));
+                    ui->dinTable->setItem(k, 9, new QTableWidgetItem(QString(QString::fromStdString(tr("Yes").toStdString()))));
                 } else {
                     ui->dinTable->setItem(k, 8, new QTableWidgetItem(QString(QString::fromStdString(""))));
-                    ui->dinTable->setItem(k, 9, new QTableWidgetItem(QString(QString::fromStdString("No"))));
+                    ui->dinTable->setItem(k, 9, new QTableWidgetItem(QString(QString::fromStdString(tr("No").toStdString()))));
                 }
                 ui->dinTable->setItem(k,10, new QTableWidgetItem(QString(QString::fromStdString(pair.second))));
 
@@ -415,10 +414,10 @@ void InfinitynodeList::updateDINList()
                     ui->dinTable->setItem(k, 12, new QTableWidgetItem(pairStatus.second));
                 }
 
-                if (status == "Incomplete") {
+                if (status == tr("Incomplete").toStdString()) {
                     nIncomplete++;
                 }
-                if (status == "Ready") {
+                if (status == tr("Ready").toStdString()) {
                     nReady++;
                 }
 
@@ -466,7 +465,7 @@ bool InfinitynodeList::filterNodeRow( int nRow )    {
         return false;
     }
 
-    if (ui->comboStatus->currentText() != "<Status>" && ui->dinTable->item(nRow, 3)->text() != ui->comboStatus->currentText() )  {
+    if (ui->comboStatus->currentText() != tr("<Status>") && ui->dinTable->item(nRow, 3)->text() != ui->comboStatus->currentText() )  {
 //LogPrintf("filterNodeRow status %d, %s, %s \n", nRow, ui->comboStatus->currentText().toStdString(), ui->dinTable->item(nRow, 3)->text().toStdString());
         return false;
     }
@@ -486,7 +485,7 @@ bool InfinitynodeList::filterNodeRow( int nRow )    {
         return false;
     }
 
-    if (ui->comboTier->currentText() != "<Node Tier>" && ui->dinTable->item(nRow, 7)->text() != ui->comboTier->currentText() )  {
+    if (ui->comboTier->currentText() != tr("<Node Tier>") && ui->dinTable->item(nRow, 7)->text() != ui->comboTier->currentText() )  {
 //LogPrintf("filterNodeRow tier %d, %s \n", nRow, ui->dinTable->item(nRow, 7)->text().toStdString());
         return false;
     }
@@ -523,7 +522,7 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
     QMessageBox msg;
 
 //LogPrintf("nodeSetupCheckDINNode %d, %s \n", nSelectedRow, strStatus.toStdString());
-    if ( strStatus!="Ready" )    {
+    if ( strStatus!=tr("Ready"))    {
         if (bShowMsg)   {
             msg.setText(tr("DIN node must be in Ready status"));
             msg.exec();
@@ -532,8 +531,8 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
     else    {
         QString email, pass, strError;
         int clientId = nodeSetupGetClientId( email, pass, true );
-        ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem("Loading..."));
-        ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem("Loading..."));
+        ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(tr("Loading...")));
+        ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem(tr("Loading...")));
         int serviceId = nodeSetupGetServiceForNodeAddress( strAddress );
         if (serviceId <= 0)   {     // retry load nodes' service data
             if (clientId>0 && pass != "") {
@@ -561,10 +560,10 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
                 }
                 else    {
                     if (bShowMsg)   {
-                        msg.setText("Node status check timeout:\nCheck if your Node Setup password is correct, then try again.");
+                        msg.setText(tr("Node status check timeout:\nCheck if your Node Setup password is correct, then try again."));
                         msg.exec();
                     }
-                    ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem("Error 1"));
+                    ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(tr("Error 1")));
                     ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem(""));
                 }
             }
@@ -573,7 +572,7 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
                     msg.setText("Only for SetUP hosted nodes\nCould not recover node's client ID\nPlease log in with your user email and password in the Node SetUP tab");
                     msg.exec();
                 }
-                ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem("Error 2"));
+                ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(tr("Error 2")));
                 ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem(""));
             }
         }
@@ -582,7 +581,7 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
                 msg.setText("Only for SetUP hosted nodes\nCould not recover node's service ID\nPlease log in with your user email and password in the Node SetUP tab");
                 msg.exec();
             }
-            ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem("Login required"));
+            ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(tr("Login required")));
             ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem(""));
         }
     }
@@ -646,7 +645,7 @@ void InfinitynodeList::on_btnSetup_clicked()
     nodeSetupCleanProgress();
     if ( !nodeSetupCheckFunds() )   {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText("You didn't pass the funds check. Please review.");
+        ui->labelMessage->setText(tr("You didn't pass the funds check. Please review."));
         return;
     }
 
@@ -660,13 +659,13 @@ void InfinitynodeList::on_btnSetup_clicked()
     }
 
     if (mInvoiceid==0)  {
-        QMessageBox::warning(this, "Maintenance Mode", "We are sorry, internet connection issue or system maintenance. Please try again later.", QMessageBox::Ok, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Maintenance Mode"), tr("We are sorry, internet connection issue or system maintenance. Please try again later."), QMessageBox::Ok, QMessageBox::Ok);
     }
 
     if ( mOrderid > 0 && mInvoiceid > 0) {
         nodeSetupSetOrderId( mOrderid, mInvoiceid, mProductIds );
         nodeSetupEnableOrderUI(true, mOrderid, mInvoiceid);
-        ui->labelMessage->setText(QString::fromStdString(strprintf("Order placed successfully. Order ID #%d Invoice ID #%d", mOrderid, mInvoiceid)));
+        ui->labelMessage->setText(QString::fromStdString(strprintf(tr("Order placed successfully. Order ID #%d Invoice ID #%d").toStdString(), mOrderid, mInvoiceid)));
 
         // get invoice data and do payment
         QString strAmount, strStatus, paymentAddress;
@@ -731,7 +730,7 @@ void InfinitynodeList::on_payButton_clicked()
                 if ( pendingPaymentsTimer !=NULL && !pendingPaymentsTimer->isActive() )  {
                  pendingPaymentsTimer->start(30000);
                 }
-                nodeSetupStep( "setupWait", "Pending Invoice Payment finished, please wait for confirmations.");
+                nodeSetupStep( "setupWait", tr("Pending Invoice Payment finished, please wait for confirmations.").toStdString());
              }
          }
      }
@@ -777,12 +776,12 @@ QString InfinitynodeList::nodeSetupGetNewAddress()    {
         }
     } catch (UniValue& objError ) {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
-        ui->labelMessage->setText( "Error getting new wallet address" );
+        ui->labelMessage->setText(tr("Error getting new wallet address"));
     }
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR getnewaddress: Unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText( QString::fromStdString(tr("ERROR getnewaddress: Unexpected error ").toStdString()) + QString::fromStdString( e.what() ));
     }
 
     return strAddress;
@@ -806,7 +805,7 @@ QString InfinitynodeList::nodeSetupSendToAddress( QString strAddress, int amount
     } catch (UniValue& objError ) {
         QString errMessage = QString::fromStdString(find_value(objError, "message").get_str());
         if ( errMessage.contains("walletpassphrase") )  {
-            QMessageBox::warning(this, "Please Unlock Wallet", "In order to make payments, please unlock your wallet and retry", QMessageBox::Ok, QMessageBox::Ok);
+            QMessageBox::warning(this, tr("Please Unlock Wallet"), tr("In order to make payments, please unlock your wallet and retry"), QMessageBox::Ok, QMessageBox::Ok);
         }
 
         ui->labelMessage->setText( QString::fromStdString(find_value(objError, "message").get_str()) );
@@ -814,7 +813,7 @@ QString InfinitynodeList::nodeSetupSendToAddress( QString strAddress, int amount
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR sendtoaddress: Unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText( QString::fromStdString(tr("ERROR sendtoaddress: Unexpected error ").toStdString()) + QString::fromStdString( e.what() ));
     }
 
     return strTxId;
@@ -837,16 +836,16 @@ UniValue InfinitynodeList::nodeSetupGetTxInfo( QString txHash, std::string attri
         }
         else {
             ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
-            ui->labelMessage->setText( "Error calling RPC gettransaction");
+            ui->labelMessage->setText(tr("Error calling RPC gettransaction"));
         }
     } catch (UniValue& objError ) {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
-        ui->labelMessage->setText( "Error calling RPC gettransaction");
+        ui->labelMessage->setText(tr("Error calling RPC gettransaction"));
     }
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR gettransaction: Unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText( QString::fromStdString(tr("ERROR gettransaction: Unexpected error ").toStdString()) + QString::fromStdString( e.what() ));
     }
 
     return ret;
@@ -864,23 +863,23 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
 
     CAmount invoiceAmount = strAmount.toDouble();
     if ( strStatus == "Cancelled" || strStatus == "Refunded" )  {  // reset and call again
-        nodeSetupStep( "setupWait", "Order cancelled or refunded, creating a new order");
+        nodeSetupStep( "setupWait", tr("Order cancelled or refunded, creating a new order").toStdString());
         invoiceTimer->stop();
         nodeSetupResetOrderId();
         on_btnSetup_clicked();
     }
 
     if ( strStatus == "Unpaid" )  {
-        ui->labelMessage->setText(QString::fromStdString(strprintf("Invoice amount %f SIN", invoiceAmount)));
+        ui->labelMessage->setText(QString::fromStdString(strprintf(tr("Invoice amount %f SIN").toStdString(), invoiceAmount)));
         if ( mPaymentTx != "" ) {   // already paid, waiting confirmations
-            nodeSetupStep( "setupWait", "Invoice paid, waiting for confirmation");
+            nodeSetupStep( "setupWait", tr("Invoice paid, waiting for confirmation").toStdString());
             ui->btnSetup->setEnabled(false);
             ui->btnSetupReset->setEnabled(false);
         }
         else    {
             // Display message box
             QMessageBox::StandardButton retval = QMessageBox::question(this, tr("Confirm Invoice Payment"),
-                "Are you sure you want to pay " + QString::number(invoiceAmount) + " SIN?",
+                tr("Are you sure you want to pay ") + QString::number(invoiceAmount) + " SIN?",
                 QMessageBox::Yes | QMessageBox::Cancel,
                 QMessageBox::Cancel);
 
@@ -888,7 +887,7 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
                 invoiceTimer->stop();
                 ui->btnSetup->setEnabled(true);
                 ui->btnSetupReset->setEnabled(true);
-                ui->labelMessage->setText( "Press Reset Order button to cancel node setup process, or Continue setUP button to resume." );
+                ui->labelMessage->setText(tr("Press Reset Order button to cancel node setup process, or Continue setUP button to resume." ));
                 return "cancelled";
             }
 
@@ -897,18 +896,18 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
             }
             else   {
                 ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-                ui->labelMessage->setText( "Unlocking wallet is required to make the payments." );
+                ui->labelMessage->setText(tr("Unlocking wallet is required to make the payments." ));
                 return "cancelled";
             }
 
-            nodeSetupStep( "setupWait", "Paying invoice");
+            nodeSetupStep( "setupWait", tr("Paying invoice").toStdString());
             if ( mPaymentTx != "" ) {
                 interfaces::Wallet& wallet = walletModel->wallet();
                 CTxDestination dest = DecodeDestination(paymentAddress.toStdString());
                 wallet.setAddressBook(dest, strprintf("Invoice #%d", mInvoiceid), "send");
 
                 nodeSetupSetPaymentTx(mPaymentTx);
-                ui->labelMessage->setText( "Payment finished, please wait until platform confirms payment to proceed to node creation." );
+                ui->labelMessage->setText(tr("Payment finished, please wait until platform confirms payment to proceed to node creation." ));
                 ui->btnSetup->setEnabled(false);
                 ui->btnSetupReset->setEnabled(false);
                 if ( !invoiceTimer->isActive() )  {
@@ -920,7 +919,7 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
 
     if ( strStatus == "Paid" )  {           // launch node setup (RPC)
         if (invoiceAmount==0)   {
-            ui->labelMessage->setText(QString::fromStdString("Invoice paid with balance"));
+            ui->labelMessage->setText(QString::fromStdString(tr("Invoice paid with balance").toStdString()));
         }
 
         invoiceTimer->stop();
@@ -947,7 +946,7 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
             // amount necessary for updatemeta may be already spent, send again.
             if (nodeSetupUnlockWallet()) {
                 mMetaTx = nodeSetupSendToAddress( mBurnAddress, NODESETUP_UPDATEMETA_AMOUNT , NULL );
-                nodeSetupStep( "setupWait", "Maturing, please wait...");
+                nodeSetupStep( "setupWait", tr("Maturing, please wait...").toStdString());
             }
         }
         else    {   // burn tx not made yet
@@ -960,9 +959,9 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
 
             if ( mBurnPrepareTx=="" )  {
                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-               ui->labelMessage->setText( "ERROR: Failed to prepare burn transaction." );
+               ui->labelMessage->setText(tr("ERROR: Failed to prepare burn transaction." ));
             }
-            nodeSetupStep( "setupWait", "Preparing burn transaction");
+            nodeSetupStep( "setupWait", tr("Preparing burn transaction").toStdString());
         }
     }
 
@@ -1003,11 +1002,11 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
         }
         else {
             ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-            ui->labelMessage->setText( "Error calling RPC getrawtransaction");
+            ui->labelMessage->setText(tr("Error calling RPC getrawtransaction"));
         }
     } catch (UniValue& objError ) {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( "Error RPC obtaining owner address");
+        ui->labelMessage->setText(tr("Error RPC obtaining owner address"));
         int code = find_value(objError, "code").get_int();
         std::string message = find_value(objError, "message").get_str();
         LogPrintf("nodeSetupGetOwnerAddressFromBurnTx error@2 code=%d, message=%s \n", code, message);
@@ -1015,7 +1014,7 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR get owner address: Unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText( QString::fromStdString(tr("ERROR get owner address: Unexpected error " ).toStdString()) + QString::fromStdString( e.what() ));
     }
     return address;
 }
@@ -1026,7 +1025,7 @@ void InfinitynodeList::nodeSetupCheckBurnPrepareConfirmations()   {
     UniValue objConfirms = nodeSetupGetTxInfo( mBurnPrepareTx, "confirmations" );
     int numConfirms = objConfirms.get_int();
     if ( numConfirms>NODESETUP_CONFIRMS )    {
-        nodeSetupStep( "setupWait", "Sending burn transaction");
+        nodeSetupStep( "setupWait", tr("Sending burn transaction").toStdString());
         burnPrepareTimer->stop();
         QString strAddressBackup = nodeSetupGetNewAddress();
         int nMasternodeBurn = nodeSetupGetBurnAmount();
@@ -1043,7 +1042,7 @@ void InfinitynodeList::nodeSetupCheckBurnPrepareConfirmations()   {
         }
         else    {
             ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-            ui->labelMessage->setText( "ERROR: Failed to create burn transaction." );
+            ui->labelMessage->setText(tr("ERROR: Failed to create burn transaction."));
         }
     }
 }
@@ -1061,7 +1060,7 @@ void InfinitynodeList::nodeSetupCheckBurnSendConfirmations()   {
     int numConfirms = objConfirms.get_int();
     int numConfirmsMeta = objConfirmsMeta.get_int();
     if ( numConfirms>NODESETUP_CONFIRMS && numConfirmsMeta>NODESETUP_CONFIRMS && pass != "" )    {
-        nodeSetupStep( "setupOk", "Finishing node setup");
+        nodeSetupStep( "setupOk", tr("Finishing node setup").toStdString());
         burnSendTimer->stop();
 
         QJsonObject root = nodeSetupAPIInfo( mServiceId, clientId, email, pass, strError );
@@ -1091,25 +1090,25 @@ LogPrintf("[nodeSetup] infinitynodeupdatemeta SUCCESS \n" );
                 nodeSetupLockWallet();
                 nodeSetupResetOrderId();
                 nodeSetupEnableOrderUI(false);
-                nodeSetupStep( "setupOk", "Node setup finished");
+                nodeSetupStep( "setupOk", tr("Node setup finished").toStdString());
             }
             catch (const UniValue& objError)    {
                 QString str = nodeSetupGetRPCErrorMessage( objError );
                 ui->labelMessage->setText( str ) ;
-                nodeSetupStep( "setupKo", "Node setup failed");
+                nodeSetupStep( "setupKo", tr("Node setup failed").toStdString());
             }
             catch ( std::runtime_error e)
             {
                 ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-                ui->labelMessage->setText( QString::fromStdString( "ERROR infinitynodeupdatemeta: Unexpected error " ) + QString::fromStdString( e.what() ));
+                ui->labelMessage->setText( QString::fromStdString(tr("ERROR infinitynodeupdatemeta: Unexpected error ").toStdString()) + QString::fromStdString( e.what() ));
                 nodeSetupStep( "setupKo", "Node setup failed");
             }
         }
         else    {
             LogPrintf("infinitynodeupdatemeta Error while obtaining node info \n");
             ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-            ui->labelMessage->setText( "ERROR: infinitynodeupdatemeta " );
-            nodeSetupStep( "setupKo", "Node setup failed");
+            ui->labelMessage->setText(tr("ERROR: infinitynodeupdatemeta "));
+            nodeSetupStep( "setupKo", tr("Node setup failed").toStdString());
         }
         nodeSetupLockWallet();
     }
@@ -1135,7 +1134,7 @@ QString InfinitynodeList::nodeSetupRPCBurnFund( QString collateralAddress, CAmou
         UniValue jsonVal = nodeSetupCallRPC( cmd.str() );
         if ( jsonVal.isStr() )       // some error happened, cannot continue
         {
-            ui->labelMessage->setText(QString::fromStdString( "ERROR infinitynodeburnfund: " ) + QString::fromStdString(jsonVal.get_str()));
+            ui->labelMessage->setText(QString::fromStdString(tr("ERROR infinitynodeburnfund: ").toStdString()) + QString::fromStdString(jsonVal.get_str()));
         }
         else if ( jsonVal.isArray() ){
             UniValue jsonArr = jsonVal.get_array();
@@ -1149,7 +1148,7 @@ QString InfinitynodeList::nodeSetupRPCBurnFund( QString collateralAddress, CAmou
         }
         else {
             ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
-            ui->labelMessage->setText(QString::fromStdString( "ERROR infinitynodeburnfund: Unknown response") );
+            ui->labelMessage->setText(QString::fromStdString(tr("ERROR infinitynodeburnfund: Unknown response").toStdString()));
         }
     }
     catch (const UniValue& objError)
@@ -1160,7 +1159,7 @@ QString InfinitynodeList::nodeSetupRPCBurnFund( QString collateralAddress, CAmou
     catch ( std::runtime_error e)
     {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-        ui->labelMessage->setText( QString::fromStdString( "ERROR infinitynodeburnfund: Unexpected error " ) + QString::fromStdString( e.what() ));
+        ui->labelMessage->setText(QString::fromStdString(tr("ERROR infinitynodeburnfund: Unexpected error ").toStdString()) + QString::fromStdString( e.what() ));
     }
     return burnTx;
 }
@@ -1171,7 +1170,7 @@ void InfinitynodeList::on_btnLogin_clicked()
 //LogPrintf("nodeSetup::on_btnLogin_clicked -- %d\n", mClientid);
     if ( bNodeSetupLogged )    {   // reset
         nodeSetupResetClientId();
-        ui->btnLogin->setText("Login");
+        ui->btnLogin->setText(tr("Login"));
         bNodeSetupLogged = false;
         return;
     }
@@ -1186,7 +1185,7 @@ void InfinitynodeList::on_btnLogin_clicked()
         bNodeSetupLogged = true;
         nodeSetupEnableClientId( clientId );
         nodeSetupSetClientId( clientId, ui->txtEmail->text(), ui->txtPassword->text() );
-        ui->btnLogin->setText("Logout");
+        ui->btnLogin->setText(tr("Logout"));
         ui->btnSetup->setEnabled(true);
     }
 }
@@ -1248,13 +1247,13 @@ void InfinitynodeList::nodeSetupInitialize()   {
     }
     else {
         nodeSetupEnableClientId(clientId);
-        ui->btnLogin->setText("Logout");
+        ui->btnLogin->setText(tr("Logout"));
     }
     mClientid = clientId;
 
     mOrderid = nodeSetupGetOrderId( mInvoiceid, mProductIds );
     if ( mOrderid > 0 )    {
-        ui->labelMessage->setText(QString::fromStdString(strprintf("There is an order ongoing (#%d). Press 'Continue' or 'Reset' order.", mOrderid)));
+        ui->labelMessage->setText(QString::fromStdString(strprintf(tr("There is an order ongoing (#%d). Press 'Continue' or 'Reset' order.").toStdString(), mOrderid)));
         nodeSetupEnableOrderUI(true, mOrderid, mInvoiceid);
         mPaymentTx = nodeSetupGetPaymentTx();
     }
@@ -1276,7 +1275,7 @@ void InfinitynodeList::nodeSetupEnableOrderUI( bool bEnable, int orderID , int i
         ui->labelOrder->setVisible(true);
         ui->labelOrderID->setVisible(true);
         ui->labelOrderID->setText(QString::fromStdString("#")+QString::number(orderID));
-        ui->btnSetup->setText(QString::fromStdString("Continue setUP"));
+        ui->btnSetup->setText(QString::fromStdString(tr("Continue setUP").toStdString()));
         ui->labelInvoice->setVisible(true);
         ui->labelInvoiceID->setVisible(true);
         ui->labelInvoiceID->setText(QString::fromStdString("#")+QString::number(mInvoiceid));
@@ -1300,12 +1299,12 @@ void InfinitynodeList::nodeSetupResetClientId( )  {
     ui->setupButtons->hide();
     ui->labelClientId->setText("");
     ui->labelClientIdValue->hide();
-    ui->btnRestore->setText("Restore");
+    ui->btnRestore->setText(tr("Restore"));
 
     ui->btnSetup->setEnabled(false);
     mClientid = 0;
     nodeSetupResetOrderId();
-    ui->labelMessage->setText("Enter email/pass to create a new user or login with existing one.");
+    ui->labelMessage->setText(tr("Enter email/pass to create a new user or login with existing one."));
 }
 
 void InfinitynodeList::nodeSetupResetOrderId( )   {
@@ -1313,8 +1312,8 @@ void InfinitynodeList::nodeSetupResetOrderId( )   {
     nodeSetupSetOrderId( 0, 0, "");
     ui->btnSetupReset->setEnabled(false);
     ui->btnSetup->setEnabled(true);
-    ui->btnSetup->setText(QString::fromStdString("START"));
-    ui->labelMessage->setText("Select a node Tier and then follow below steps for setup.");
+    ui->btnSetup->setText(QString::fromStdString(tr("START").toStdString()));
+    ui->labelMessage->setText(tr("Select a node Tier and then follow below steps for setup."));
     mOrderid = mInvoiceid = mServiceId = 0;
     mPaymentTx = "";
     nodeSetupSetPaymentTx("");
@@ -1328,9 +1327,9 @@ void InfinitynodeList::nodeSetupEnableClientId( int clientId )  {
     ui->setupButtons->show();
     ui->labelClientIdValue->show();
     ui->labelClientId->setText("#"+QString::number(clientId));
-    ui->labelMessage->setText("Select a node Tier and press 'START' to verify if you meet the prerequisites");
+    ui->labelMessage->setText(tr("Select a node Tier and press 'START' to verify if you meet the prerequisites"));
     mClientid = clientId;
-    ui->btnRestore->setText("Support");
+    ui->btnRestore->setText(tr("Support"));
 }
 
 void InfinitynodeList::nodeSetupPopulateInvoicesCombo( )  {
@@ -1403,7 +1402,7 @@ bool InfinitynodeList::nodeSetupCheckFunds( CAmount invoiceAmount )   {
         nMasternodeBurn = 0;    // burn tx re-used, no need of funds
     }
 
-    std::string strChecking = "Checking funds";
+    std::string strChecking = tr("Checking funds").toStdString();
     nodeSetupStep( "setupWait", strChecking );
 
     interfaces::Wallet& wallet = walletModel->wallet();
@@ -1413,28 +1412,28 @@ bool InfinitynodeList::nodeSetupCheckFunds( CAmount invoiceAmount )   {
     CAmount nUpdateMetaRequirement = (NODESETUP_UPDATEMETA_AMOUNT + 1) * COIN ;
 
     if ( curBalance > invoiceAmount + nNodeRequirement + nUpdateMetaRequirement)  {
-        nodeSetupStep( "setupOk", strChecking + " : " + "Funds available.");
+        nodeSetupStep( "setupOk", strChecking + " : " + tr("Funds available.").toStdString());
         bRet = true;
     }
     else    {
         if ( curBalance > nNodeRequirement + nUpdateMetaRequirement)  {
             QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), curBalance - nNodeRequirement - nUpdateMetaRequirement);
             QString strInvoiceAmount = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), invoiceAmount );
-            stringStream << strChecking << " : Not enough funds to pay invoice amount. (you have " << strAvailable.toStdString() << " , need " << strInvoiceAmount.toStdString() << " )";
+            stringStream << strChecking << tr(" : Not enough funds to pay invoice amount. (you have ").toStdString() << strAvailable.toStdString() << tr(" , need ").toStdString() << strInvoiceAmount.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
                 nodeSetupStep( "setupKo", copyOfStr);
         }
         else if ( curBalance > nNodeRequirement  )  {
             QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), (curBalance - nNodeRequirement) );
             QString strUpdateMeta = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), nUpdateMetaRequirement );
-            stringStream << strChecking << " : Not enough amount for UpdateMeta operation (you have " <<  strAvailable.toStdString() << " , you need " << strUpdateMeta.toStdString() << " )";
+            stringStream << strChecking << tr(" : Not enough amount for UpdateMeta operation (you have ").toStdString() <<  strAvailable.toStdString() << tr(" , you need ").toStdString() << strUpdateMeta.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
             nodeSetupStep( "setupKo", copyOfStr);
         }
         else    {
             QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), curBalance );
             QString strNeed = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), invoiceAmount + nNodeRequirement + nUpdateMetaRequirement );
-            stringStream << strChecking << " : Not enough funds (you have " <<  strAvailable.toStdString() << " , you need " << strNeed.toStdString() << " )";
+            stringStream << strChecking << tr(" : Not enough funds (you have ").toStdString() <<  strAvailable.toStdString() << tr(" , you need ").toStdString() << strNeed.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
             nodeSetupStep( "setupKo", copyOfStr);
         }
@@ -1457,7 +1456,7 @@ int InfinitynodeList::nodeSetupGetClientId( QString& email, QString& pass, bool 
     // pass taken from text control (not stored in settings)
     pass = ui->txtPassword->text();
     if ( pass == "" && !bSilent )   {
-        QMessageBox::warning(this, "Please enter password", "Node Setup password is not stored. Please enter nodeSetup password and retry.", QMessageBox::Ok, QMessageBox::Ok);
+        QMessageBox::warning(this, tr("Please enter password"), tr("Node Setup password is not stored. Please enter nodeSetup password and retry."), QMessageBox::Ok, QMessageBox::Ok);
         ui->txtPassword->setFocus();
     }
 
@@ -2082,7 +2081,7 @@ void InfinitynodeList::setBalance(const interfaces::WalletBalances& balances)
 {
     int unit = walletModel->getOptionsModel()->getDisplayUnit();
     m_balances = balances;
-    ui->labelBalance->setText("Balance : " + BitcoinUnits::floorHtmlWithUnit(unit, balances.balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
+    ui->labelBalance->setText(tr("Balance : ") + BitcoinUnits::floorHtmlWithUnit(unit, balances.balance, false, BitcoinUnits::SeparatorStyle::ALWAYS));
     
 }
 
