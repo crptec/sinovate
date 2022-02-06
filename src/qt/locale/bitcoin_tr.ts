@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<TS version="2.0" language="tr">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -730,50 +730,6 @@ v%1</translation>
         <translation>Orjinal mesaj:</translation>
     </message>
     <message>
-        <source>&amp;Options…</source>
-        <translation>Seçenekler…</translation>
-    </message>
-    <message>
-        <source>&amp;Encrypt Wallet…</source>
-        <translation>&amp;Cüzdanı Şifrele…</translation>
-    </message>
-    <message>
-        <source>&amp;Backup Wallet…</source>
-        <translation>&amp;Cüzdanı Yedekle…</translation>
-    </message>
-    <message>
-        <source>&amp;Change Passphrase…</source>
-        <translation>&amp;Parolayı Değiştir…</translation>
-    </message>
-    <message>
-        <source>&amp;Verify message…</source>
-        <translation>&amp;Mesajı doğrula…</translation>
-    </message>
-    <message>
-        <source>&amp;Load PSBT from file…</source>
-        <translation>Dosyadan &amp;PSBT&apos;yi yükle…</translation>
-    </message>
-    <message>
-        <source>Load PSBT from clipboard…</source>
-        <translation>PSBT&apos;yi panodan yükle…</translation>
-    </message>
-    <message>
-        <source>Open &amp;URI…</source>
-        <translation>&amp;URI&apos;yi aç…</translation>
-    </message>
-    <message>
-        <source>Close Wallet…</source>
-        <translation>Cüzdanı Kapat…</translation>
-    </message>
-    <message>
-        <source>Create Wallet…</source>
-        <translation>Cüzdan Oluştur…</translation>
-    </message>
-    <message>
-        <source>Close All Wallets…</source>
-        <translation>Tüm Cüzdanları Kapatın…</translation>
-    </message>
-    <message>
         <source>Open Options Window</source>
         <translation>Seçenekler Penceresini Aç</translation>
     </message>
@@ -786,32 +742,82 @@ v%1</translation>
         <translation>Konsolu Aç</translation>
     </message>
     <message>
-        <source>Syncing Headers (%1%)…</source>
-        <translation>Başlıklar Eşitleniyor (%1%)…</translation>
+        <source>&amp;Options...</source>
+        <translatorcomment>&amp;Seçenekler...</translatorcomment>
+        <translation></translation>
     </message>
     <message>
-        <source>Synchronizing with network…</source>
-        <translation>Ağ ile senkronize ediliyor…</translation>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation>&amp;Cüzdanı Şifrele...</translation>
     </message>
     <message>
-        <source>Indexing blocks on disk…</source>
-        <translation>Diskteki bloklar indeksleniyor…</translation>
+        <source>&amp;Backup Wallet...</source>
+        <translatorcomment>Cüzdanı &amp;Yedekle</translatorcomment>
+        <translation></translation>
     </message>
     <message>
-        <source>Processing blocks on disk…</source>
-        <translation>Diskteki bloklar işleniyor…</translation>
+        <source>&amp;Change Passphrase...</source>
+        <translation>&amp;Parolayı Değiştir...</translation>
     </message>
     <message>
-        <source>Reindexing blocks on disk…</source>
-        <translation>Diskteki bloklar yeniden indeksleniyor…</translation>
+        <source>&amp;Verify message...</source>
+        <translation>&amp;Mesajı doğrula...</translation>
     </message>
     <message>
-        <source>Connecting to peers…</source>
-        <translation>Akranlara bağlanılıyor…</translation>
+        <source>&amp;Load PSBT from file...</source>
+        <translation>&amp;Dosyadan PSBT&apos;yi yükle...</translation>
     </message>
     <message>
-        <source>Catching up…</source>
-        <translation>Yakalamak…</translation>
+        <source>Load PSBT from clipboard...</source>
+        <translation>PSBT&apos;yi panodan yükle...</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation>&amp;URI&apos;yi aç...</translation>
+    </message>
+    <message>
+        <source>Close Wallet...</source>
+        <translation>Cüzdanı Kapat...</translation>
+    </message>
+    <message>
+        <source>Create Wallet...</source>
+        <translation>Cüzdan Oluştur...</translation>
+    </message>
+    <message>
+        <source>Close All Wallets...</source>
+        <translation>Tüm Cüzdanları Kapat...</translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation>Başlıklar Eşitleniyor (%1%)...</translation>
+    </message>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation>Ağ ile senkronize ediliyor...</translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation>Diskteki bloklar indeksleniyor...</translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation>Diskteki bloklar işleniyor...</translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation>Diskteki bloklar yeniden indeksleniyor...</translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <translation>Akranlara bağlanılıyor...</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation>Yakalamak...</translation>
+    </message>
+    <message>
+        <source>Home</source>
+        <translation>Genel Bakış</translation>
     </message>
 </context>
 <context>
@@ -985,8 +991,8 @@ v%1</translation>
         <translation>imzalayanlar listelenemiyor</translation>
     </message>
     <message>
-        <source>Creating Wallet &lt;b&gt;%1&lt;/b&gt;…</source>
-        <translation>Cüzdan &lt;b&gt;%1&lt;/b&gt; oluşturuluyor…</translation>
+        <source>Creating Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation>Cüzdan &lt;b&gt;%1&lt;/b&gt; oluşturuluyor...</translation>
     </message>
 </context>
 <context>
@@ -1923,7 +1929,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>Number of blocks left</source>
         <translation>Kalan blok sayısı</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>calculating…</source>
         <translation>hesaplanıyor...</translation>
     </message>
@@ -1963,13 +1969,17 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>%1 is currently syncing.  It will download headers and blocks from peers and validate them until reaching the tip of the block chain.</source>
         <translation>%1 şu anda eşitleniyor. Akranlardan başlıkları ve blokları indirecek ve blok zincirinin ucuna ulaşana kadar bunları doğrulayacaktır.</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Unknown…</source>
         <translation>Bilinmeyen…</translation>
     </message>
     <message>
-        <source>Unknown. Syncing Headers (%1, %2%)…</source>
-        <translation>Bilinmeyen. Başlıklar Eşitleniyor (%1, %2%)…</translation>
+        <source>Unknown...</source>
+        <translation>Bilinmeyen...</translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1, %2%)...</source>
+        <translation>Bilinmeyen. Başlıklar Eşitleniyor (%1, %2%)...</translation>
     </message>
 </context>
 <context>
@@ -1998,8 +2008,8 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <translation>varsayılan cüzdan</translation>
     </message>
     <message>
-        <source>Opening Wallet &lt;b&gt;%1&lt;/b&gt;…</source>
-        <translation>Cüzdan &lt;b&gt;%1&lt;/b&gt; açılıyor…</translation>
+        <source>Opening Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation>Cüzdan &lt;b&gt;%1&lt;/b&gt; açılıyor...</translation>
     </message>
 </context>
 <context>
@@ -2046,7 +2056,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
     </message>
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
-        <translation>Çalışma dizininden %1&#xa0; yapılandırma dosyasını aç.</translation>
+        <translation>Çalışma dizininden %1  yapılandırma dosyasını aç.</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -2467,7 +2477,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>Copy to Clipboard</source>
         <translation>Panoya kopyala</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Save…</source>
         <translation>Kaydet...</translation>
     </message>
@@ -2759,8 +2769,8 @@ Bu hatayı alıyorsanız, satıcıdan BIP21 uyumlu bir URI sağlamasını isteme
         <translation>%1 GB</translation>
     </message>
     <message>
-        <source>%1 didn&apos;t yet exit safely…</source>
-        <translation>%1 henüz güvenli bir şekilde çıkmadı…</translation>
+        <source>%1 didn&apos;t yet exit safely...</source>
+        <translation>%1 henüz güvenli bir şekilde çıkmadı...</translation>
     </message>
 </context>
 <context>
@@ -2791,8 +2801,8 @@ Bu hatayı alıyorsanız, satıcıdan BIP21 uyumlu bir URI sağlamasını isteme
         <translation>PNG Resim</translation>
     </message>
     <message>
-        <source>&amp;Save Image…</source>
-        <translation>&amp;Resmi Kaydet…</translation>
+        <source>&amp;Save Image...</source>
+        <translation>&amp;Resmi Kaydet...</translation>
     </message>
 </context>
 <context>
@@ -3213,9 +3223,9 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <translation>(eş: %1)</translation>
     </message>
     <message>
-        <source>Executing…</source>
+        <source>Executing...</source>
         <extracomment>A console message indicating an entered command is currently being executed.</extracomment>
-        <translation>Yürütülüyor…</translation>
+        <translation>Yürütülüyor...</translation>
     </message>
 </context>
 <context>
@@ -3645,7 +3655,7 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <source>Custom</source>
         <translation>Özel</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
         <translation>(Akıllı ücret henüz başlatılmadı. Bu genellikle birkaç blok sürer…)</translation>
     </message>
@@ -3757,7 +3767,7 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <translation></translation>
     </message>
     <message>
-        <source>To review recipient list click &quot;Show Details…&quot;</source>
+        <source>To review recipient list click &quot;Show Details...&quot;</source>
         <translation>Alıcı listesini gözden geçirmek için &quot;Ayrıntıları Göster...&quot;e tıklayın.</translation>
     </message>
 </context>
@@ -3852,8 +3862,8 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <translation>Bu pencere kalkıncaya dek bilgisayarı kapatmayınız.</translation>
     </message>
     <message>
-        <source>%1 is shutting down…</source>
-        <translation>%1 kapanıyor…</translation>
+        <source>%1 is shutting down...</source>
+        <translation>%1 kapanıyor...</translation>
     </message>
 </context>
 <context>
@@ -4029,9 +4039,9 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <source>Stake:</source>
         <translation>Stake:</translation>
     </message>
-    <message>
-        <source>0.000&#x2009;000&#x2009;00 SIN</source>
-        <translation>0.000&#x2009;000&#x2009;00 SIN</translation>
+    <message utf8="true">
+        <source>0.000 000 00 SIN</source>
+        <translation>0.000 000 00 SIN</translation>
     </message>
     <message>
         <source>Staking</source>
@@ -4702,8 +4712,8 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <translation>ID</translation>
     </message>
     <message>
-        <source>Range…</source>
-        <translation>Tarih Aralığı…</translation>
+        <source>Range...</source>
+        <translation>Tarih Aralığı...</translation>
     </message>
 </context>
 <context>
@@ -5347,48 +5357,48 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <translation>Cüzdanın tekrar yazılması gerekiyordu: işlemi tamamlamak için %s programını yeniden başlatınız</translation>
     </message>
     <message>
-        <source>Importing…</source>
-        <translation>İçe aktarılıyor…</translation>
+        <source>Importing...</source>
+        <translation>İçe aktarılıyor...</translation>
     </message>
     <message>
-        <source>Loading P2P addresses…</source>
-        <translation>P2P adresleri yükleniyor…</translation>
+        <source>Loading P2P addresses...</source>
+        <translation>P2P adresleri yükleniyor...</translation>
     </message>
     <message>
-        <source>Loading banlist…</source>
-        <translation>Yasak listesi yükleniyor…</translation>
+        <source>Loading banlist...</source>
+        <translation>Yasak listesi yükleniyor...</translation>
     </message>
     <message>
-        <source>Loading block index…</source>
-        <translation>Blok dizini yükleniyor…</translation>
+        <source>Loading block index...</source>
+        <translation>Blok dizini yükleniyor...</translation>
     </message>
     <message>
-        <source>Loading wallet…</source>
-        <translation>Cüzdan yükleniyor…</translation>
+        <source>Loading wallet...</source>
+        <translation>Cüzdan yükleniyor...</translation>
     </message>
     <message>
-        <source>Pruning blockstore…</source>
-        <translation>Budama bloğu deposu…</translation>
+        <source>Pruning blockstore...</source>
+        <translation>Budama bloğu deposu...</translation>
     </message>
     <message>
-        <source>Replaying blocks…</source>
-        <translation>Bloklar yeniden oynatılıyor…</translation>
+        <source>Replaying blocks...</source>
+        <translation>Bloklar yeniden oynatılıyor...</translation>
     </message>
     <message>
-        <source>Rescanning…</source>
-        <translation>Yeniden taranıyor…</translation>
+        <source>Rescanning...</source>
+        <translation>Yeniden taranıyor...</translation>
     </message>
     <message>
-        <source>Starting network threads…</source>
-        <translation>Ağ iş parçacıkları başlatılıyor…</translation>
+        <source>Starting network threads...</source>
+        <translation>Ağ iş parçacıkları başlatılıyor...</translation>
     </message>
     <message>
-        <source>Verifying blocks…</source>
-        <translation>Bloklar doğrulanıyor…</translation>
+        <source>Verifying blocks...</source>
+        <translation>Bloklar doğrulanıyor...</translation>
     </message>
     <message>
-        <source>Verifying wallet(s)…</source>
-        <translation>Cüzdan(lar) doğrulanıyor…</translation>
+        <source>Verifying wallet(s)...</source>
+        <translation>Cüzdan(lar) doğrulanıyor...</translation>
     </message>
 </context>
 <context>

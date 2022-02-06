@@ -278,7 +278,7 @@ void BitcoinGUI::createActions()
     tabGroup->addAction(overviewAction);
 
     homeAction =new QAction(overviewAction);
-    homeAction->setText("Home");
+    homeAction->setText(tr("Home"));
     homeAction->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/home",PlatformStyle::NavBar));
     homeAction->setToolTip(homeAction->statusTip());
     homeAction->setCheckable(true);
