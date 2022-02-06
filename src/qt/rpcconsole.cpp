@@ -1028,7 +1028,7 @@ void RPCConsole::on_lineEdit_returnPressed()
 
     message(CMD_REQUEST, QString::fromStdString(strFilteredCmd));
     //: A console message indicating an entered command is currently being executed.
-    message(CMD_REPLY, tr("Executing…"));
+    message(CMD_REPLY, tr("Executing..."));
     m_is_executing = true;
     Q_EMIT cmdRequest(cmd, m_last_wallet_model);
 
