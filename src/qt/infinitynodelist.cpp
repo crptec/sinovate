@@ -93,6 +93,8 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     LogPrintf("infinitynodelist: setup UI\n");
     ui->setupUi(this);
 
+    ui->searchBackupAddr->hide(); //Since it doesn't fit the design,  hidden for now.
+
     QSettings settings;
     ui->dinTable->horizontalHeader()->restoreState(settings.value("DinTableHeaderState").toByteArray());
 
