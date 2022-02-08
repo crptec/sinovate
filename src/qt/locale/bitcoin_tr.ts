@@ -336,7 +336,7 @@ Cüzdan kilidini aç.</translation>
     </message>
     <message>
         <source>&amp;About %1</source>
-        <translation>&amp;Hakkında %1</translation>
+        <translation>%1 &amp;Hakkında </translation>
     </message>
     <message>
         <source>Show information about %1</source>
@@ -428,7 +428,7 @@ Cüzdan kilidini aç.</translation>
     </message>
     <message>
         <source>&amp;Receiving addresses</source>
-        <translation>Alıcı Ad&amp;resleri</translation>
+        <translation>Alma Ad&amp;resleri</translation>
     </message>
     <message>
         <source>Show the list of used receiving addresses and labels</source>
@@ -759,7 +759,7 @@ v%1</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
-        <translation>&amp;Mesajı doğrula...</translation>
+        <translation>M&amp;esajı doğrula...</translation>
     </message>
     <message>
         <source>&amp;Load PSBT from file...</source>
@@ -1410,7 +1410,7 @@ v%1</translation>
     </message>
     <message>
         <source>Right click IP address to check node stats (55 updatemeta confirmations to appear in the list.)</source>
-        <translation>Düğüm istatistiklerini kontrol etmek için IP adresini sağ tıklayın ( 55 updatememeta onayıından sonra listede görünecek)</translation>
+        <translation>Düğüm istatistiklerini kontrol etmek için IP adresini sağ tıklayın ( 55 updatememeta onayından sonra listede görünecek)</translation>
     </message>
     <message>
         <source>1-Click Node setUP</source>
@@ -1518,7 +1518,7 @@ v%1</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>BAŞLA</translation>
+        <translation>BAŞLAT</translation>
     </message>
     <message>
         <source>pic</source>
@@ -2617,6 +2617,49 @@ Bu hatayı alıyorsanız, satıcıdan BIP21 uyumlu bir URI sağlamasını isteme
     </message>
 </context>
 <context>
+    <name>PeerTableModel</name>
+    <message>
+        <source>Peer</source>
+        <extracomment>Title of Peers Table column which contains a unique number used to identify a connection.</extracomment>
+        <translation>Akran</translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <extracomment>Title of Peers Table column which contains the IP/Onion/I2P address of the connected peer.</extracomment>
+        <translation>Adres</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <extracomment>Title of Peers Table column which describes the type of peer connection. The &quot;type&quot; describes why the connection exists.</extracomment>
+        <translation>Tür</translation>
+    </message>
+    <message>
+        <source>Network</source>
+        <extracomment>Title of Peers Table column which states the network the peer connected through.</extracomment>
+        <translation>Ağ</translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <extracomment>Title of Peers Table column which indicates the current latency of the connection with the peer.</extracomment>
+        <translation>Ping</translation>
+    </message>
+    <message>
+        <source>Sent</source>
+        <extracomment>Title of Peers Table column which indicates the total amount of network information we have sent to the peer.</extracomment>
+        <translation>Gönderildi</translation>
+    </message>
+    <message>
+        <source>Received</source>
+        <extracomment>Title of Peers Table column which indicates the total amount of network information we have received from the peer.</extracomment>
+        <translation>Alınan</translation>
+    </message>
+    <message>
+        <source>User Agent</source>
+        <extracomment>Title of Peers Table column which contains the peer&apos;s User Agent string.</extracomment>
+        <translation>Kullanıcı Yazılımı</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <source>Error: Specified data directory &quot;%1&quot; does not exist.</source>
@@ -2769,6 +2812,62 @@ Bu hatayı alıyorsanız, satıcıdan BIP21 uyumlu bir URI sağlamasını isteme
     <message>
         <source>%1 didn&apos;t yet exit safely...</source>
         <translation>%1 henüz güvenli bir şekilde çıkmadı...</translation>
+    </message>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation>Tutarların gösterileceği birim. Başka bir birim seçmek için tıklayın.</translation>
+    </message>
+    <message>
+        <source>No wallet has been loaded.
+Go to File &gt; Open Wallet to load a wallet.
+- OR -</source>
+        <translation>Cüzdan yüklenmedi.
+Bir cüzdan yüklemek için Dosya &gt; Cüzdanı Aç&apos;a gidin.
+- VEYA -</translation>
+    </message>
+    <message>
+        <source>Create a new wallet</source>
+        <translation>Yeni bir cüzdan oluştur</translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Blog</source>
+        <translation>Sinovate Blog&apos;u ziyaret edin</translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Docs</source>
+        <translation>Sinovate Dokümanlarını ziyaret edin</translation>
+    </message>
+    <message>
+        <source>Buy Sinovate Coin</source>
+        <translation>Sinovate Coin Satın Al</translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Block Explorer</source>
+        <translation>Sinovate Blok Gezgini&apos;ni ziyaret edin</translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Discord Channel</source>
+        <translation>Sinovate Discord Kanalını Ziyaret Edin</translation>
+    </message>
+    <message>
+        <source>Sinovate Roadmap</source>
+        <translation>Sinovate Yol Haritası</translation>
+    </message>
+    <message>
+        <source>Visit Sinovate WebTool</source>
+        <translation>Sinovate WebTool&apos;u ziyaret edin</translation>
+    </message>
+    <message>
+        <source>Download Latest Sinovate Wallets</source>
+        <translation>En Yeni Sinovate Cüzdanlarını İndirin</translation>
+    </message>
+    <message>
+        <source>Sinovate LitePaper</source>
+        <translation>Sinovate LitePaper</translation>
+    </message>
+    <message>
+        <source>Open FAQ Page</source>
+        <translation>SSS Sayfasını Aç</translation>
     </message>
 </context>
 <context>
@@ -3224,6 +3323,34 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <source>Executing...</source>
         <extracomment>A console message indicating an entered command is currently being executed.</extracomment>
         <translation>Yürütülüyor...</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation>Evet</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation>Hayır</translation>
+    </message>
+    <message>
+        <source>To</source>
+        <translation>Alıcı</translation>
+    </message>
+    <message>
+        <source>From</source>
+        <translation>Gönderen</translation>
+    </message>
+    <message>
+        <source>Ban for</source>
+        <translation>Şunun için yasakla:</translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation>Bilinmeyen</translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation>Asla</translation>
     </message>
 </context>
 <context>
@@ -4031,7 +4158,7 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
     </message>
     <message>
         <source>Staking assets</source>
-        <translation>Varlıkları stake etmek</translation>
+        <translation>Staking varlıklar</translation>
     </message>
     <message>
         <source>Stake:</source>
