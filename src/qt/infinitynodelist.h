@@ -192,7 +192,7 @@ private:
     QString mBurnTx;
     QString mMetaTx;
     QString mProductIds;
-    std::string billingOptions[3] = {"Monthly", "Semiannually", "Annually"};
+    std::string billingOptions[3] = {tr("Monthly").toStdString(), tr("Semiannually").toStdString(), tr("Annually").toStdString()};
     QAction *mCheckNodeAction;
     QAction *mCheckAllNodesAction;
     WalletModel::UnlockContext *pUnlockCtx = NULL;

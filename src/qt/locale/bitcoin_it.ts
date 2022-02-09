@@ -1819,6 +1819,18 @@ Verifica se la tua password di configurazione del nodo è corretta, quindi ripro
         <source>Balance : </source>
         <translation>Saldo : </translation>
     </message>
+    <message>
+        <source>Monthly</source>
+        <translation>Mensile</translation>
+    </message>
+    <message>
+        <source>Semiannually</source>
+        <translation>Semestrale</translation>
+    </message>
+    <message>
+        <source>Annually</source>
+        <translation>Annualmente</translation>
+    </message>
 </context>
 <context>
     <name>Intro</name>

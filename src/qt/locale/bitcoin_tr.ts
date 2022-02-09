@@ -1814,6 +1814,18 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>Balance : </source>
         <translation>Bakiye : </translation>
     </message>
+    <message>
+        <source>Monthly</source>
+        <translation>Aylık</translation>
+    </message>
+    <message>
+        <source>Semiannually</source>
+        <translation>Altı Aylık</translation>
+    </message>
+    <message>
+        <source>Annually</source>
+        <translation>Yıllık</translation>
+    </message>
 </context>
 <context>
     <name>Intro</name>
