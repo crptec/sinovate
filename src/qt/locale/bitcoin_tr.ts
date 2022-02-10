@@ -1596,7 +1596,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
     </message>
     <message>
         <source>You didn&apos;t pass the funds check. Please review.</source>
-        <translation>Fon kontrolünü geçmediniz. Gözden geçirin.</translation>
+        <translation>Fon kontrolünü geçemediniz. Lütfen gözden geçirin.</translation>
     </message>
     <message>
         <source>Maintenance Mode</source>
@@ -1784,7 +1784,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
     </message>
     <message>
         <source> : Not enough funds to pay invoice amount. (you have </source>
-        <translation>: Fatura tutarını ödemek için yeterli bakiye yok. (Sizde var</translation>
+        <translation>: Fatura tutarını ödemek için yeterli bakiye yok. (Sizde olan: </translation>
     </message>
     <message>
         <source> , need </source>
@@ -1792,15 +1792,15 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
     </message>
     <message>
         <source> : Not enough amount for UpdateMeta operation (you have </source>
-        <translation>: UpdateMeta işlemi için yeterli miktar yok (var</translation>
+        <translation>: UpdateMeta işlemi için yeterli miktar yok (sizde olan: </translation>
     </message>
     <message>
         <source> , you need </source>
-        <translation>, ihtiyacın var</translation>
+        <translation>, ihtiyacınız olan: </translation>
     </message>
     <message>
         <source> : Not enough funds (you have </source>
-        <translation>: Yeterli paranız yok (var</translation>
+        <translation>: Yeterli paranız yok (Sizde olan: </translation>
     </message>
     <message>
         <source>Please enter password</source>
@@ -4670,8 +4670,7 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
     </message>
     <message>
         <source>Burn for service</source>
-        <translatorcomment>Hizmet için yakılan</translatorcomment>
-        <translation></translation>
+        <translation>Hizmet için yakılan</translation>
     </message>
     <message>
         <source>DIN reward</source>
