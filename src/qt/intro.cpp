@@ -22,6 +22,8 @@
 #include <QFileDialog>
 #include <QSettings>
 #include <QMessageBox>
+#include <QLocale>
+#include <QDir>
 
 #include <cmath>
 
@@ -129,6 +131,30 @@ Intro::Intro(QWidget *parent, int64_t blockchain_size_gb, int64_t chain_state_si
     m_prune_target_gb{GetPruneTargetGB()}
 {
     ui->setupUi(this);
+
+    /* Display elements init */
+    QDir translations(":translations");
+
+    ui->lang->setToolTip(ui->lang->toolTip().arg(PACKAGE_NAME));
+    ui->lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
+    for (const QString &langStr : translations.entryList())
+    {
+        QLocale locale(langStr);
+
+        /** check if the locale name consists of 2 parts (language_country) */
+        if(langStr.contains("_"))
+        {
+            /** display language strings as "native language - native country (locale name)", e.g. "Deutsch - Deutschland (de)" */
+            ui->lang->addItem(locale.nativeLanguageName() + QString(" - ") + locale.nativeCountryName() + QString(" (") + langStr + QString(")"), QVariant(langStr));
+        }
+        else
+        {
+            /** display language strings as "native language (locale name)", e.g. "Deutsch (de)" */
+            ui->lang->addItem(locale.nativeLanguageName() + QString(" (") + langStr + QString(")"), QVariant(langStr));
+        }
+    }
+    connect(ui->lang, qOverload<>(&QValueComboBox::valueChanged), [this]{ updateLanguageSetting(); });
+    
     ui->frameTheme1->setStyleSheet("border-image : url(:/icons/theme1) 0 0 0 0 stretch stretch");
     ui->frameTheme2->setStyleSheet("border-image : url(:/icons/theme2) 0 0 0 0 stretch stretch");
     ui->frameTheme3->setStyleSheet("border-image : url(:/icons/theme3) 0 0 0 0 stretch stretch");
@@ -420,4 +446,16 @@ void Intro::on_theme3_clicked()
         settings.setValue("Theme", "theme3");
 }
 
+void Intro::setModel(OptionsModel *model){
+    this->model = model;
+}
+
+void Intro::updateLanguageSetting()
+{
+QSettings settings;
+QString value = ui->lang->currentData().toString();
+    if (settings.value("language") != value) {
+                settings.setValue("language", value);
+            }
+}
 //--

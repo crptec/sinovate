@@ -1938,6 +1938,10 @@ Verifica se la tua password di configurazione del nodo è corretta, quindi ripro
         <source>Light Theme</source>
         <translation>Tema Chiaro</translation>
     </message>
+    <message>
+        <source>User Interface language:</source>
+        <translation>Lingua Interfaccia Utente:</translation>
+    </message>
 </context>
 <context>
     <name>ModalOverlay</name>
@@ -2893,6 +2897,18 @@ Vai a File &gt;Apri Wallet per caricare un wallet.
     <message>
         <source>Create a new wallet</source>
         <translation>Crea un nuovo wallet</translation>
+    </message>
+    <message>
+        <source>Light blue theme</source>
+        <translation>Tema Chiaro</translation>
+    </message>
+    <message>
+        <source>Dark blue theme</source>
+        <translation>Tema Blu Scuro</translation>
+    </message>
+    <message>
+        <source>Dark theme</source>
+        <translation>Tema Scuro</translation>
     </message>
 </context>
 <context>

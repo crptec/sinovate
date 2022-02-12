@@ -1932,6 +1932,10 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>(%1 GB needed for full chain)</source>
         <translation>(%1 GB tam zincir için gerekli)</translation>
     </message>
+    <message>
+        <source>User Interface language:</source>
+        <translation>Kullanıcı Arayüzü dili:</translation>
+    </message>
 </context>
 <context>
     <name>ModalOverlay</name>
@@ -2880,6 +2884,18 @@ Bir cüzdan yüklemek için Dosya &gt; Cüzdanı Aç&apos;a gidin.
     <message>
         <source>Open FAQ Page</source>
         <translation>SSS Sayfasını Aç</translation>
+    </message>
+    <message>
+        <source>Light blue theme</source>
+        <translation>Açık mavi tema</translation>
+    </message>
+    <message>
+        <source>Dark blue theme</source>
+        <translation>Koyu mavi tema</translation>
+    </message>
+    <message>
+        <source>Dark theme</source>
+        <translation>Koyu tema</translation>
     </message>
 </context>
 <context>

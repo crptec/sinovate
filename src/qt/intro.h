@@ -12,6 +12,7 @@
 static const bool DEFAULT_CHOOSE_DATADIR = false;
 
 class FreespaceChecker;
+class OptionsModel;
 
 namespace interfaces {
     class Node;
@@ -36,6 +37,7 @@ public:
 
     QString getDataDirectory();
     void setDataDirectory(const QString &dataDir);
+    void setModel(OptionsModel *model);
     int64_t getPruneMiB() const;
 
     /**
@@ -64,6 +66,7 @@ private Q_SLOTS:
     void on_theme1_clicked();
     void on_theme2_clicked();
     void on_theme3_clicked();
+    void updateLanguageSetting();
 
 private:
     Ui::Intro *ui;
@@ -71,6 +74,8 @@ private:
     QMutex mutex;
     bool signalled;
     QString pathToCheck;
+    QString language;
+    OptionsModel *model;
     const int64_t m_blockchain_size_gb;
     const int64_t m_chain_state_size_gb;
     //! Total required space (in GB) depending on user choice (prune or not prune).
@@ -83,7 +88,7 @@ private:
     QString getPathToCheck();
     void UpdatePruneLabels(bool prune_checked);
     void UpdateFreeSpaceLabel();
-
+    
     friend class FreespaceChecker;
 };
 

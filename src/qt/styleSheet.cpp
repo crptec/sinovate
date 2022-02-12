@@ -178,7 +178,7 @@ QStringList StyleSheet::getSupportedThemes()
 
 QStringList StyleSheet::getSupportedThemesNames()
 {
-    return QStringList() << "Light blue theme" << "Dark blue theme" << "Dark theme";
+    return QStringList() << QObject::tr("Light blue theme") << QObject::tr("Dark blue theme") << QObject::tr("Dark theme");
 }
 
 

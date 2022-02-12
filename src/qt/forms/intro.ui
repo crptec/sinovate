@@ -21,45 +21,326 @@
   </property>
   <property name="styleSheet">
    <string notr="true">#Intro {
-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgba(0,6,53,1), stop: 0.1 rgba(1,1,0,1), stop: 0.5 rgba(0,3,84,1), stop: 1.0 rgba(0,3,84,1));
+background-color: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 1, stop: 0 #0C2448, stop: 1 #000D20);
 }
 
-#Intro .QLabel,  .QCheckBox {
-color: white;
+QLabel{
+    color: #6f80ab;
+}
+/*--------------------------------------------
+Combo Box CSS
+--------------------------------------------*/
+QComboBox {
+    border: 1px solid #49587A;
+    border-radius: 14px;
+    background-color: #1A233A;
+    color: #6f80ab;
+    padding: 4px;
+    padding-left: 10px;
+    padding-right: 8px;
+    combobox-popup: 0;
+}
+QComboBox:hover {
+    border: 1px solid #5d6b8f;
+}
+QComboBox:drop-down {
+    border: 0px;
+    border-left: 1px solid #49587A;
+    margin-left: -8px;
+}
+QComboBox:down-arrow {
+    image: url(&quot;:/styles/theme2/app-icons/down_arrow&quot;);
+    width: 6px;
+    height: 10px;
+    top: 1px;
+}
+QComboBox QAbstractItemView::item {
+    background-color: #49587a;
+    color: #1A233A;
+    padding: 4px;
+    padding-left: 10px;
+}
+QComboBox QAbstractItemView::item:selected {
+    background-color: #1A233A;
+    color: #ffffff;
+}
+QComboBox QAbstractItemView{
+    background-color: #49587a;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 0px;
+    margin-top: 5px;
+    margin-bottom: 3px;
+}
+QComboBox::disabled {
+    border: 1px solid rgba(23, 35, 62, 40%);
+    color: rgba(111, 128, 171, 20%);
+}
+QComboBox:drop-down:disabled {
+    border-left: 1px solid rgba(23, 35, 62, 40%);
+}
+QComboBox::down-arrow:disabled {
+    image: url(&quot;:/styles/theme2/app-icons/down_arrow_disabled&quot;);
 }
 
+/*--------------------------------------------
+Slider CSS
+--------------------------------------------*/
+QSlider {
+    border: none;
+    background-color: none;
+}
+QSlider:horizontal{
+    min-height: 36px;
+}
+QSlider::groove:horizontal {
+    background-color: transparent;
+    height: 20px;
+    left: 16px;
+    right: 7px;
+}
+QSlider::handle:horizontal {
+    background-image: url(&quot;:/styles/theme2/app-icons/slider_switcher&quot;);
+    background-repeat: none;
+    margin: 2px -10px -2px;
+}
+QSlider::handle:horizontal:active {
+    background-image: url(&quot;:/styles/theme2/app-icons/slider_switcher_hover&quot;);
+    background-repeat: none;
+    margin: 2px -10px -2px;
+}
+QSlider::add-page:horizontal {
+    margin: 9px -8px;
+    border: none;
+    background: #d7d7d7;
+    border-right: 1px solid #ababab;
+}
+QSlider::sub-page:horizontal {
+    margin: 9px -9px;
+    border: none;
+    background: #57b2d5;
+    border-left: 1px solid #498ea9;
+}
+QSlider::add-page:horizontal:disabled {
+    background: rgba(215, 215, 215, 40%);
+    border-right: 1px solid rgba(171, 171, 171, 40%);
+}
+QSlider::sub-page:horizontal:disabled {
+    background: rgba(87, 178, 213, 40%);
+    border-left: 1px solid rgba(73, 142, 169, 40%);
+}
+QSlider::handle:horizontal:disabled {
+    background-image: url(&quot;:/styles/theme2/app-icons/slider_switcher_disabled&quot;);
+}
+/*--------------------------------------------
+Spin Box CSS
+--------------------------------------------*/
+QAbstractSpinBox {
+    padding: 4px;
+    background-color: #1a233a;
+    background-position: right;
+    background-repeat: no-repeat;
+    border: 1px solid #49587A;
+    border-radius: 14px;
+    color: #6f80ab;
+    padding-left: 12px;
+}
+QAbstractSpinBox:hover {
+    border: 1px solid #5d6b8f;
+}
+QAbstractSpinBox::up-button {
+    border: none;
+    border-left: 1px solid #49587A;
+    width: 22px;
+    background-color: transparent;
+    border-top-right-radius: 12px;
+}
+QAbstractSpinBox::down-button {
+    border: none;
+    border-left: 1px solid #49587A;
+    margin-top: -1px;
+    width: 22px;
+    background-color: transparent;
+    border-bottom-right-radius: 12px;
+}
+QAbstractSpinBox::up-arrow {
+    image: url(&quot;:/styles/theme2/app-icons/up_arrow&quot;);
+    width: 6px;
+    height: 4px;
+    margin-right: 5px;
+    margin-top: 5px;
+}
+QAbstractSpinBox::down-arrow {
+    image: url(&quot;:/styles/theme2/app-icons/down_arrow&quot;);
+    width: 6px;
+    height: 4px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+QAbstractSpinBox::up-arrow:hover{
+    image: url(&quot;:/styles/theme2/app-icons/up_arrow_hover&quot;);
+}
+QAbstractSpinBox::down-arrow:hover{
+    image: url(&quot;:/styles/theme2/app-icons/down_arrow_hover&quot;);
+}
+QAbstractSpinBox::disabled {
+    border: 1px solid rgba(23, 35, 62, 40%);
+    color: rgba(189, 189, 189, 10%);
+}
+QAbstractSpinBox::up-button:disabled {
+    border-left: 1px solid rgba(23, 35, 62, 40%);
+}
+QAbstractSpinBox::down-button:disabled {
+    border-left: 1px solid rgba(23, 35, 62, 40%);
+}
+QAbstractSpinBox::up-arrow:disabled,
+QAbstractSpinBox::up-arrow:off {
+    image: url(&quot;:/styles/theme2/app-icons/up_arrow_disabled&quot;);
+}
+QAbstractSpinBox::down-arrow:disabled,
+QAbstractSpinBox::down-arrow:off {
+    image: url(&quot;:/styles/theme2/app-icons/down_arrow_disabled&quot;);
+}
+/*--------------------------------------------
+Check Box CSS
+--------------------------------------------*/
+QCheckBox{
+    color: #6f80ab;
+    outline-style: none;
+}
+QCheckBox:hover, QCheckBox:checked {
+    color: #6f80ab;
+}
+QCheckBox:disabled {
+    color: rgba(111, 128, 171, 20%);
+}
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+}
+QCheckBox::indicator::unchecked {
+    image: url(:/styles/theme2/app-icons/checkbox_unchecked);
+}
+QCheckBox::indicator::checked {
+    image: url(:/styles/theme2/app-icons/checkbox_checked);
+}
+QCheckBox:indicator:indeterminate {
+    image: url(:/styles/theme2/app-icons/checkbox_indeterminate);
+}
+QCheckBox::indicator::unchecked:hover {
+    image: url(:/styles/theme2/app-icons/checkbox_unchecked_hover);
+}
+QCheckBox::indicator::checked:hover {
+    image: url(:/styles/theme2/app-icons/checkbox_checked_hover);
+}
+QCheckBox:indicator:indeterminate:hover {
+    image: url(:/styles/theme2/app-icons/checkbox_indeterminate_hover);
+}
+QCheckBox:indicator:unchecked:disabled {
+    image: url(:/styles/theme2/app-icons/checkbox_unchecked_disabled);  
+}
+QCheckBox:indicator:checked:disabled {
+    image: url(:/styles/theme2/app-icons/checkbox_checked_disabled);
+}
+QCheckBox:indicator:indeterminate:disabled {
+    image: url(:/styles/theme2/app-icons/checkbox_indeterminate_disabled);
+}
+/*--------------------------------------------
+Radio Button CSS
+--------------------------------------------*/
 QRadioButton{
-    color: #bdbdbd;
+    color: #6f80ab;
     outline-style: none;
 }
 QRadioButton:hover, QRadioButton:checked {
-    color: #ffffff;
+    color: #6f80ab;
 }
 QRadioButton:disabled {
-    color: rgba(255, 255, 255, 10%);
+    color: rgba(111, 128, 171, 20%);
 }
 QRadioButton::indicator {
     width: 16px;
     height: 16px;
 }
 QRadioButton::indicator::unchecked {
-    image: url(:/styles/theme1/app-icons/radiobutton_unchecked);
+    image: url(:/styles/theme2/app-icons/radiobutton_unchecked);
 }
 QRadioButton::indicator::checked {
-    image: url(:/styles/theme1/app-icons/radiobutton_checked);
+    image: url(:/styles/theme2/app-icons/radiobutton_checked);
 }
 QRadioButton::indicator::unchecked:hover {
-    image: url(:/styles/theme1/app-icons/radiobutton_unchecked_hover);
+    image: url(:/styles/theme2/app-icons/radiobutton_unchecked_hover);
 }
 QRadioButton::indicator::checked:hover {
-    image: url(:/styles/theme1/app-icons/radiobutton_checked_hover);
+    image: url(:/styles/theme2/app-icons/radiobutton_checked_hover);
 }
 QRadioButton:indicator:unchecked:disabled {
-    image: url(:/styles/theme1/app-icons/radiobutton_unchecked_disabled);  
+    image: url(:/styles/theme2/app-icons/radiobutton_unchecked_disabled);  
 }
 QRadioButton:indicator:checked:disabled {
-    image: url(:/styles/theme1/app-icons/radiobutton_checked_disabled);
-}</string>
+    image: url(:/styles/theme2/app-icons/radiobutton_checked_disabled);
+}
+/*-------------------------------------------- 
+Line Edit CSS
+--------------------------------------------*/
+QLineEdit{
+    border: 1px solid #49587A;
+    border-radius: 14px;
+    background-color: #1a233a;
+    color: #6f80ab;
+    padding: 4px;
+}
+QLineEdit::hover:!read-only{
+    border: 1px solid #5d6b8f;
+}
+QLineEdit::focus:!read-only{
+    border: 1px solid #5d6b8f;
+}
+QLineEdit::disabled{
+    border: 1px solid rgba(23, 35, 62, 40%);
+    color: rgba(111, 128, 171, 20%);
+}
+QAbstractItemView#autoCompleterPopup{
+    background-color: #49587a;
+    border: none;
+    padding: 4px;
+}
+QAbstractItemView#autoCompleterPopup::item{
+    background-color: #49587a;
+    color: #1A233A;
+    padding: 4px;
+    padding-left: 10px;
+}
+QAbstractItemView#autoCompleterPopup::item:selected {
+    background-color: #1A233A;
+    color: #ffffff;
+}
+/*--------------------------------------------
+Push Button CSS
+--------------------------------------------*/
+QPushButton {
+    color: #4f9fdd; 
+    background: transparent;
+    border: 1px solid #49587a;
+    border-radius: 14px;
+    min-width: 5em;
+    padding: 6px;
+    margin: 0px;
+}
+QPushButton:hover{
+    border: 1px solid #5d6b8f;
+}
+QPushButton:pressed {
+    background: #4697D9;
+    color: #ffffff;
+}
+QPushButton::disabled {
+    color: rgba(79, 159, 221, 40%);
+    background: rgba(25, 40, 73, 60%);
+    border: 1px solid rgba(70, 88, 127, 40%);
+}
+
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -82,6 +363,20 @@ QRadioButton:indicator:checked:disabled {
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout" columnstretch="35,65" columnminimumwidth="0,0">
+     <item row="0" column="1">
+      <widget class="QValueComboBox" name="lang"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="langLabel">
+       <property name="text">
+        <string>User Interface language:</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <spacer name="verticalSpacer_4">
@@ -477,6 +772,9 @@ QRadioButton:indicator:checked:disabled {
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -487,6 +785,13 @@ QRadioButton:indicator:checked:disabled {
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QValueComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qt/qvaluecombobox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

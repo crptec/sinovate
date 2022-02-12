@@ -610,7 +610,7 @@ v%1</translation>
     <message numerus="yes">
         <source>Connected Peers : %n</source>
         <translation>
-            <numerusform>Подключенных узлов : %n</numerusform>
+            <numerusform>Подключенные узлы: %n</numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -1947,6 +1947,10 @@ Check if your Node Setup password is correct, then try again.</source>
         <source>Light Theme</source>
         <translation>Светлая тема</translation>
     </message>
+    <message>
+        <source>User Interface language:</source>
+        <translation>Язык пользовательского интерфейса:</translation>
+    </message>
 </context>
 <context>
     <name>ModalOverlay</name>
@@ -2907,6 +2911,18 @@ Go to File &gt; Open Wallet to load a wallet.
     <message>
         <source>Create a new wallet</source>
         <translation>Создать новый кошелёк</translation>
+    </message>
+    <message>
+        <source>Light blue theme</source>
+        <translation>Светлая тема</translation>
+    </message>
+    <message>
+        <source>Dark blue theme</source>
+        <translation>Темно-Синяя тема</translation>
+    </message>
+    <message>
+        <source>Dark theme</source>
+        <translation>Темная тема</translation>
     </message>
 </context>
 <context>
