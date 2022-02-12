@@ -308,7 +308,7 @@ static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_
         return;
     }
 
-    if(sync_state == SynchronizationState::POST_INIT && !infnodeman.isReachedLastBlock() && GetTimeMillis() < nLastUpdateNotification + MODEL_UPDATE_DELAY){
+    if(sync_state == SynchronizationState::POST_INIT && GetTimeMillis() < nLastUpdateNotification + MODEL_UPDATE_DELAY){
         return;
     }
 

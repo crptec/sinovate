@@ -277,11 +277,27 @@ void InfinitynodeList::showContextDINColumnsMenu(const QPoint &point)
     contextDINColumnsMenu->exec(QCursor::pos());
 }
 
+bool InfinitynodeList::isSynced()
+{
+    if (clientModel) {
+        int nBestHeight = clientModel->getHeaderTipHeight();
+        int nLoadingHeight = clientModel->getNumBlocks();
+        if (nBestHeight == nLoadingHeight) return true;
+        else {
+            LogPrintf("Sinovate Qt: not synced detected, current %d, bestHeight: %d\n", nLoadingHeight, nBestHeight);
+            return false;
+        }
+    }
+
+    return false;
+}
+
 void InfinitynodeList::updateDINList()
 {
     if(walletModel && walletModel->getOptionsModel())
     {
-        if(!infnodeman.isReachedLastBlock()) return;
+        if(!isSynced()) return;
+        LogPrintf("Sinovate Qt: update DIN list!\n");
 
         std::map<COutPoint, std::string> mOnchainDataInfo = walletModel->wallet().GetOnchainDataInfo();
         std::map<COutPoint, std::string> mapMynode;
@@ -517,7 +533,7 @@ void InfinitynodeList::on_checkDINNode()
 
 void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )    {
 
-    if(!infnodeman.isReachedLastBlock()) return;
+    if(!isSynced()) return;
 
     QString strAddress = ui->dinTable->item(nSelectedRow, 5)->text();
     QString strError;
@@ -741,7 +757,7 @@ void InfinitynodeList::on_payButton_clicked()
 
 void InfinitynodeList::nodeSetupCheckPendingPayments()    {
 
-    if(!infnodeman.isReachedLastBlock()) return;
+    if(!isSynced()) return;
 
     int invoiceToPay;
     QString strAmount, strStatus, paymentAddress;
@@ -855,7 +871,7 @@ UniValue InfinitynodeList::nodeSetupGetTxInfo( QString txHash, std::string attri
 }
 
 QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
-    if(!infnodeman.isReachedLastBlock()) return "";
+    if(!isSynced()) return "";
 
     QString strAmount, strStatus, paymentAddress;
     QString email, pass, strError;
@@ -1023,7 +1039,7 @@ QString InfinitynodeList::nodeSetupGetOwnerAddressFromBurnTx( QString burnTx )  
 }
 
 void InfinitynodeList::nodeSetupCheckBurnPrepareConfirmations()   {
-    if(!infnodeman.isReachedLastBlock()) return;
+    if(!isSynced()) return;
 
     UniValue objConfirms = nodeSetupGetTxInfo( mBurnPrepareTx, "confirmations" );
     int numConfirms = objConfirms.get_int();
@@ -1052,7 +1068,7 @@ void InfinitynodeList::nodeSetupCheckBurnPrepareConfirmations()   {
 
 void InfinitynodeList::nodeSetupCheckBurnSendConfirmations()   {
 
-    if(!infnodeman.isReachedLastBlock()) return;
+    if(!isSynced()) return;
     // recover data
     QString email, pass, strError;
     int clientId = nodeSetupGetClientId( email, pass, true);

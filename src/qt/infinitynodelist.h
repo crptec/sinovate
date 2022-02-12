@@ -93,6 +93,7 @@ private:
     int currentStep = 0;
 
 public Q_SLOTS:
+    bool isSynced();
     void updateDINList();
     bool filterNodeRow( int nRow );
     void setBalance(const interfaces::WalletBalances& balances);
