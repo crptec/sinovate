@@ -1,4 +1,6 @@
-<TS version="2.1" language="cs">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="cs">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -66,11 +68,6 @@
         <translation type="unfinished">Tohle jsou tvé SINové adresy pro posílání plateb. Před odesláním mincí si vždy zkontroluj částku a cílovou adresu.</translation>
     </message>
     <message>
-        <source>These are your SIN addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.
-Signing is only possible with addresses of the type 'legacy'.</source>
-        <translation type="unfinished">Tohle jsou tvé SINové adresy pro přijmaní plateb. Použij "Vytvoř novou přijimací adresu" pro vytvoření nových adres. Přihlašování je povoleno jen s adresami typu "Legacy"</translation>
-    </message>
-    <message>
         <source>&amp;Copy Address</source>
         <translation type="unfinished">&amp;Kopíruj adresu</translation>
     </message>
@@ -99,6 +96,15 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>Exporting Failed</source>
         <translation type="unfinished">Exportování selhalo</translation>
+    </message>
+    <message>
+        <source>&amp;Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>These are your SIN addresses for receiving payments. Use the &apos;Receive&apos; button in the My Wallet tab to create new addresses.
+Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -179,10 +185,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Zadej staré a nové heslo k peněžence.</translation>
     </message>
     <message>
-        <source>Remember that encrypting your wallet cannot fully protect your SINs from being stolen by malware infecting your computer.</source>
-        <translation type="unfinished">Pamatujte, že zašifrování peněženky nemůže plně ochránit vaše SINy před krádeží, pokud by byl váš počítač napadem malwarem.</translation>
-    </message>
-    <message>
         <source>Wallet to be encrypted</source>
         <translation type="unfinished">Peněženka k zašifrování</translation>
     </message>
@@ -226,6 +228,10 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Warning: The Caps Lock key is on!</source>
         <translation type="unfinished">Upozornění: Caps Lock je zapnutý!</translation>
     </message>
+    <message>
+        <source>Remember that encrypting your wallet cannot fully protect your sins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BanTableModel</name>
@@ -239,7 +245,11 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
 </context>
 <context>
-    <name>SINApplication</name>
+    <name>BitcoinApplication</name>
+    <message>
+        <source>Runaway exception</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>A fatal error occurred. %1 can no longer continue safely and will quit.</source>
         <translation type="unfinished">Stala se fatální chyba. %1 nemůže bezpečně pokračovat v činnosti, a bude ukončen.</translation>
@@ -254,129 +264,75 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>BitcoinGUI</name>
     <message>
-        <source>Error: Specified data directory "%1" does not exist.</source>
-        <translation type="unfinished">Chyba: Zadaný adresář pro data „%1“ neexistuje.</translation>
-    </message>
-    <message>
-        <source>Error: Cannot parse configuration file: %1.</source>
-        <translation type="unfinished">Chyba: Konfigurační soubor se nedá zpracovat: %1.</translation>
-    </message>
-    <message>
-        <source>Error: %1</source>
-        <translation type="unfinished">Chyba: %1</translation>
-    </message>
-    <message>
-        <source>Error initializing settings: %1</source>
-        <translation type="unfinished">Zjišťování neshod: %1</translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished">neznámo</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation type="unfinished">Částka</translation>
-    </message>
-    <message>
-        <source>Enter a SIN address (e.g. %1)</source>
-        <translation type="unfinished">Zadej SINovou adresu (např. %1)</translation>
-    </message>
-    <message>
-        <source>Inbound</source>
-        <translation type="unfinished">Sem</translation>
-    </message>
-    <message>
-        <source>Outbound</source>
-        <translation type="unfinished">Ven</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="unfinished">Žádné</translation>
-    </message>
-    <message>
-        <source>N/A</source>
-        <translation type="unfinished">nedostupná informace</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n second(s)</source>
-        <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n minute(s)</source>
-        <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n hour(s)</source>
-        <translation type="unfinished">
-            <numerusform>%n hodina</numerusform>
-            <numerusform>%n hodin</numerusform>
-            <numerusform>%n hodin</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n day(s)</source>
-        <translation type="unfinished">
-            <numerusform>%n den</numerusform>
-            <numerusform>%n dnů</numerusform>
-            <numerusform>%n dnů</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n week(s)</source>
-        <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message>
-        <source>%1 and %2</source>
-        <translation type="unfinished">%1 a %2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n year(s)</source>
-        <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    </context>
-<context>
-    <name>SINGUI</name>
-    <message>
-        <source>&amp;Overview</source>
-        <translation>&amp;Přehled</translation>
+        <source> &amp;My Wallet</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show general overview of wallet</source>
-        <translation>Zobraz celkový přehled peněženky</translation>
+        <translation type="unfinished">Zobraz celkový přehled peněženky</translation>
     </message>
     <message>
-        <source>&amp;Transactions</source>
-        <translation>&amp;Transakce</translation>
+        <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> &amp;Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send coins to a SIN address</source>
+        <translation type="unfinished">Pošli mince na SINovou adresu</translation>
+    </message>
+    <message>
+        <source> &amp;Receive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and sin: URIs)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Staki&amp;ng</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> St&amp;atistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> &amp;Transactions
+</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Browse transaction history</source>
-        <translation>Procházet historii transakcí</translation>
+        <translation type="unfinished">Procházet historii transakcí</translation>
+    </message>
+    <message>
+        <source> &amp;InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse Infinitynodes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation>&amp;Konec</translation>
+        <translation type="unfinished">&amp;Konec</translation>
     </message>
     <message>
         <source>Quit application</source>
-        <translation>Ukonči aplikaci</translation>
+        <translation type="unfinished">Ukonči aplikaci</translation>
     </message>
     <message>
         <source>&amp;About %1</source>
@@ -388,164 +344,95 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation>O &amp;Qt</translation>
+        <translation type="unfinished">O &amp;Qt</translation>
     </message>
     <message>
         <source>Show information about Qt</source>
-        <translation>Zobraz informace o Qt</translation>
+        <translation type="unfinished">Zobraz informace o Qt</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Modify configuration options for %1</source>
         <translation type="unfinished">Uprav nastavení %1</translation>
     </message>
     <message>
-        <source>Create a new wallet</source>
-        <translation type="unfinished">Vytvoř novou peněženku</translation>
-    </message>
-    <message>
-        <source>Wallet:</source>
-        <translation type="unfinished">Peněženka:</translation>
-    </message>
-    <message>
-        <source>Network activity disabled.</source>
-        <extracomment>A substring of the tooltip.</extracomment>
-        <translation type="unfinished">Síť je vypnutá.</translation>
-    </message>
-    <message>
-        <source>Proxy is &lt;b&gt;enabled&lt;/b&gt;: %1</source>
-        <translation type="unfinished">Proxy je &lt;b&gt;zapnutá&lt;/b&gt;: %1</translation>
-    </message>
-    <message>
-        <source>Send coins to a SIN address</source>
-        <translation>Pošli mince na SINovou adresu</translation>
-    </message>
-    <message>
-        <source>Backup wallet to another location</source>
-        <translation>Zazálohuj peněženku na jiné místo</translation>
-    </message>
-    <message>
-        <source>Change the passphrase used for wallet encryption</source>
-        <translation>Změň heslo k šifrování peněženky</translation>
-    </message>
-    <message>
-        <source>&amp;Send</source>
-        <translation>P&amp;ošli</translation>
-    </message>
-    <message>
-        <source>&amp;Receive</source>
-        <translation>Při&amp;jmi</translation>
-    </message>
-    <message>
-        <source>&amp;Options…</source>
-        <translation type="unfinished">&amp;Možnosti</translation>
-    </message>
-    <message>
         <source>&amp;Show / Hide</source>
-        <translation>&amp;Zobraz/Skryj</translation>
+        <translation type="unfinished">&amp;Zobraz/Skryj</translation>
     </message>
     <message>
         <source>Show or hide the main Window</source>
-        <translation>Zobraz nebo skryj hlavní okno</translation>
+        <translation type="unfinished">Zobraz nebo skryj hlavní okno</translation>
+    </message>
+    <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Encrypt the private keys that belong to your wallet</source>
-        <translation>Zašifruj soukromé klíče ve své peněžence</translation>
+        <translation type="unfinished">Zašifruj soukromé klíče ve své peněžence</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation type="unfinished">Zazálohuj peněženku na jiné místo</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation type="unfinished">Změň heslo k šifrování peněženky</translation>
+    </message>
+    <message>
+        <source>&amp;Unlock Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock wallet</source>
+        <translation type="unfinished">Odemkni peněženku</translation>
+    </message>
+    <message>
+        <source>&amp;Lock Wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Sign messages with your SIN addresses to prove you own them</source>
-        <translation>Podepiš zprávy svými SINovými adresami, čímž prokážeš, že jsi jejich vlastníkem</translation>
+        <translation type="unfinished">Podepiš zprávy svými SINovými adresami, čímž prokážeš, že jsi jejich vlastníkem</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified SIN addresses</source>
-        <translation>Ověř zprávy, aby ses ujistil, že byly podepsány danými SINovými adresami</translation>
+        <translation type="unfinished">Ověř zprávy, aby ses ujistil, že byly podepsány danými SINovými adresami</translation>
     </message>
     <message>
-        <source>Close Wallet…</source>
-        <translation type="unfinished">Zavřít peněženku...</translation>
-    </message>
-    <message>
-        <source>Create Wallet…</source>
-        <translation type="unfinished">Vytvořit peněženku...</translation>
-    </message>
-    <message>
-        <source>Close All Wallets…</source>
-        <translation type="unfinished">Zavřít všcehny peněženky...</translation>
-    </message>
-    <message>
-        <source>&amp;File</source>
-        <translation>&amp;Soubor</translation>
-    </message>
-    <message>
-        <source>&amp;Settings</source>
-        <translation>&amp;Nastavení</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation>Nápověd&amp;a</translation>
-    </message>
-    <message>
-        <source>Tabs toolbar</source>
-        <translation>Panel s listy</translation>
-    </message>
-    <message>
-        <source>Indexing blocks on disk…</source>
-        <translation type="unfinished">Vytvářím index bloků na disku...</translation>
-    </message>
-    <message>
-        <source>Request payments (generates QR codes and SIN: URIs)</source>
-        <translation type="unfinished">Požaduj platby (generuje QR kódy a SIN: URI)</translation>
-    </message>
-    <message>
-        <source>Show the list of used sending addresses and labels</source>
-        <translation type="unfinished">Ukaž seznam použitých odesílacích adres a jejich označení</translation>
-    </message>
-    <message>
-        <source>Show the list of used receiving addresses and labels</source>
-        <translation type="unfinished">Ukaž seznam použitých přijímacích adres a jejich označení</translation>
-    </message>
-    <message>
-        <source>&amp;Command-line options</source>
-        <translation type="unfinished">Ar&amp;gumenty příkazové řádky</translation>
-    </message>
-    <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
-        <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message>
-        <source>%1 behind</source>
-        <translation>Stahuji ještě %1 bloků transakcí</translation>
-    </message>
-    <message>
-        <source>Last received block was generated %1 ago.</source>
-        <translation>Poslední stažený blok byl vygenerován %1 zpátky.</translation>
-    </message>
-    <message>
-        <source>Transactions after this will not yet be visible.</source>
-        <translation>Následné transakce ještě nebudou vidět.</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Chyba</translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation>Upozornění</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation>Informace</translation>
-    </message>
-    <message>
-        <source>Up to date</source>
-        <translation>Aktuální</translation>
+        <source>&amp;Load PSBT from file...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Load Partially Signed SIN Transaction</source>
         <translation type="unfinished">Načíst částečně podepsanou SINovou transakci</translation>
+    </message>
+    <message>
+        <source>Load PSBT from clipboard...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Load Partially Signed SIN Transaction from clipboard</source>
@@ -564,12 +451,24 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Odesílací adresy</translation>
     </message>
     <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation type="unfinished">Ukaž seznam použitých odesílacích adres a jejich označení</translation>
+    </message>
+    <message>
         <source>&amp;Receiving addresses</source>
         <translation type="unfinished">Přijímací adresy</translation>
     </message>
     <message>
-        <source>Open a SIN: URI</source>
-        <translation type="unfinished">Načíst SIN: URI</translation>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation type="unfinished">Ukaž seznam použitých přijímacích adres a jejich označení</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open a sin: URI</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Wallet</source>
@@ -580,24 +479,36 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Otevřít peněženku</translation>
     </message>
     <message>
+        <source>Close Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Close wallet</source>
         <translation type="unfinished">Zavřít peněženku</translation>
+    </message>
+    <message>
+        <source>Create Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new wallet</source>
+        <translation type="unfinished">Vytvoř novou peněženku</translation>
+    </message>
+    <message>
+        <source>Close All Wallets...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close all wallets</source>
         <translation type="unfinished">Zavřít všechny peněženky</translation>
     </message>
     <message>
+        <source>&amp;Command-line options</source>
+        <translation type="unfinished">Ar&amp;gumenty příkazové řádky</translation>
+    </message>
+    <message>
         <source>Show the %1 help message to get a list with possible SIN command-line options</source>
         <translation type="unfinished">Seznam argumentů SINu pro příkazovou řádku získáš v nápovědě %1</translation>
-    </message>
-    <message>
-        <source>&amp;Mask values</source>
-        <translation type="unfinished">&amp;Skrýt částky</translation>
-    </message>
-    <message>
-        <source>Mask the values in the Overview tab</source>
-        <translation type="unfinished">Skrýt částky v přehledu</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -606,6 +517,14 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>No wallets available</source>
         <translation type="unfinished">Nejsou dostupné žádné peněženky</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation type="unfinished">&amp;Soubor</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation type="unfinished">&amp;Nastavení</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -624,25 +543,162 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Hlavní okno</translation>
     </message>
     <message>
+        <source>&amp;Help</source>
+        <translation type="unfinished">Nápověd&amp;a</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation type="unfinished">Panel s listy</translation>
+    </message>
+    <message>
+        <source>Wallet:</source>
+        <translation type="unfinished">Peněženka:</translation>
+    </message>
+    <message>
+        <source>BETELGEUSE
+v%1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Options Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open SetUP Wizard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>%1 client</source>
         <translation type="unfinished">%1 klient</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to SIN network.</source>
-        <extracomment>A substring of the tooltip.</extracomment>
+        <source>%n active connection(s) to SIN network</source>
         <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Click to disable network activity.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <extracomment>A substring of the tooltip.</extracomment>
+        <translation type="unfinished">Síť je vypnutá.</translation>
+    </message>
+    <message>
+        <source>Click for more actions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Connected Peers : %n</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Show Peers tab</source>
+        <extracomment>A context menu item. The &quot;Peers tab&quot; is an element of the &quot;Node window&quot;.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable network activity</source>
+        <extracomment>A context menu item.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable network activity</source>
+        <extracomment>A context menu item. The network activity was disabled previously.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Processed %n block(s) of transaction history.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation type="unfinished">Aktuální</translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation type="unfinished">Stahuji ještě %1 bloků transakcí</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation type="unfinished">Poslední stažený blok byl vygenerován %1 zpátky.</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation type="unfinished">Následné transakce ještě nebudou vidět.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Chyba</translation>
     </message>
     <message>
         <source>Error: %1</source>
         <translation type="unfinished">Chyba: %1</translation>
     </message>
     <message>
+        <source>Warning</source>
+        <translation type="unfinished">Upozornění</translation>
+    </message>
+    <message>
         <source>Warning: %1</source>
         <translation type="unfinished">Varování: %1</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished">Informace</translation>
     </message>
     <message>
         <source>Date: %1
@@ -682,11 +738,15 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Sent transaction</source>
-        <translation>Odeslané transakce</translation>
+        <translation type="unfinished">Odeslané transakce</translation>
     </message>
     <message>
         <source>Incoming transaction</source>
-        <translation>Příchozí transakce</translation>
+        <translation type="unfinished">Příchozí transakce</translation>
+    </message>
+    <message>
+        <source>Private key &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation type="unfinished">Privátní klíč &lt;b&gt;disabled&lt;/b&gt;</translation>
     </message>
     <message>
         <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
@@ -697,27 +757,76 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">HD generování klíčů je &lt;b&gt;vypnuté&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>Private key &lt;b&gt;disabled&lt;/b&gt;</source>
-        <translation type="unfinished">Privátní klíč &lt;b&gt;disabled&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
-        <translation>Peněženka je &lt;b&gt;zašifrovaná&lt;/b&gt; a momentálně &lt;b&gt;odemčená&lt;/b&gt;</translation>
+        <translation type="unfinished">Peněženka je &lt;b&gt;zašifrovaná&lt;/b&gt; a momentálně &lt;b&gt;odemčená&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
-        <translation>Peněženka je &lt;b&gt;zašifrovaná&lt;/b&gt; a momentálně &lt;b&gt;zamčená&lt;/b&gt;</translation>
+        <translation type="unfinished">Peněženka je &lt;b&gt;zašifrovaná&lt;/b&gt; a momentálně &lt;b&gt;zamčená&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Proxy is &lt;b&gt;enabled&lt;/b&gt;: %1</source>
+        <translation type="unfinished">Proxy je &lt;b&gt;zapnutá&lt;/b&gt;: %1</translation>
+    </message>
+    <message>
+        <source>Not staking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n hodina</numerusform>
+            <numerusform>%n hodin</numerusform>
+            <numerusform>%n hodin</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n den</numerusform>
+            <numerusform>%n dnů</numerusform>
+            <numerusform>%n dnů</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Staking.&lt;br&gt;Your weight is %1&lt;br&gt;Network weight is %2&lt;br&gt;Expected time to earn reward is %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because wallet is offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because wallet is syncing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because you don&apos;t have mature coins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because wallet is locked</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Original message:</source>
         <translation type="unfinished">Původní zpráva:</translation>
-    </message>
-</context>
-<context>
-    <name>UnitDisplayStatusBarControl</name>
-    <message>
-        <source>Unit to show amounts in. Click to select another unit.</source>
-        <translation type="unfinished">Jednotka pro částky. Klikni pro výběr nějaké jiné.</translation>
     </message>
 </context>
 <context>
@@ -850,6 +959,30 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>(change)</source>
         <translation type="unfinished">(drobné)</translation>
     </message>
+    <message>
+        <source>&amp;Copy address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy transaction &amp;ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>L&amp;ock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Unlock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateWalletActivity</name>
@@ -861,43 +994,13 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Create wallet warning</source>
         <translation type="unfinished">Vytvořit varování peněženky</translation>
     </message>
-    </context>
-<context>
-    <name>OpenWalletActivity</name>
     <message>
-        <source>Open wallet failed</source>
-        <translation type="unfinished">Otevření peněženky selhalo</translation>
+        <source>Creating Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open wallet warning</source>
-        <translation type="unfinished">Varování otevření peněženky</translation>
-    </message>
-    <message>
-        <source>default wallet</source>
-        <translation type="unfinished">výchozí peněženka</translation>
-    </message>
-    </context>
-<context>
-    <name>WalletController</name>
-    <message>
-        <source>Close wallet</source>
-        <translation type="unfinished">Zavřít peněženku</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to close the wallet &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation type="unfinished">Opravdu chcete zavřít peněženku &lt;i&gt;%1&lt;/i&gt;?</translation>
-    </message>
-    <message>
-        <source>Closing the wallet for too long can result in having to resync the entire chain if pruning is enabled.</source>
-        <translation type="unfinished">Zavření peněženky na příliš dlouhou dobu může vyústit v potřebu resynchronizace celého blockchainu pokud je zapnuté prořezávání.</translation>
-    </message>
-    <message>
-        <source>Close all wallets</source>
-        <translation type="unfinished">Zavřít všechny peněženky</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to close all wallets?</source>
-        <translation type="unfinished">Opravdu chcete zavřít všechny peněženky?</translation>
+        <source>Can&apos;t list signers</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -958,7 +1061,20 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Compiled without sqlite support (required for descriptor wallets)</source>
         <translation type="unfinished">Zkompilováno bez podpory sqlite (vyžadováno pro popisovačové peněženky)</translation>
     </message>
-    </context>
+    <message>
+        <source>Use an external signing device such as a hardware wallet. Configure the external signer script in wallet preferences first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External signer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compiled without external signing support (required for external signing)</source>
+        <extracomment>&quot;External signing&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>EditAddressDialog</name>
     <message>
@@ -994,16 +1110,16 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Uprav odesílací adresu</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid SIN address.</source>
+        <source>The entered address &quot;%1&quot; is not a valid SIN address.</source>
         <translation type="unfinished">Zadaná adresa „%1“ není platná SINová adresa.</translation>
     </message>
     <message>
-        <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
-        <translation type="unfinished">Adresa "%1" již existuje jako přijímací adresa s označením "%2" a proto nemůže být přidána jako odesílací adresa.</translation>
+        <source>Address &quot;%1&quot; already exists as a receiving address with label &quot;%2&quot; and so cannot be added as a sending address.</source>
+        <translation type="unfinished">Adresa &quot;%1&quot; již existuje jako přijímací adresa s označením &quot;%2&quot; a proto nemůže být přidána jako odesílací adresa.</translation>
     </message>
     <message>
-        <source>The entered address "%1" is already in the address book with label "%2".</source>
-        <translation type="unfinished">Zadaná adresa „%1“ už v adresáři je s označením "%2".</translation>
+        <source>The entered address &quot;%1&quot; is already in the address book with label &quot;%2&quot;.</source>
+        <translation type="unfinished">Zadaná adresa „%1“ už v adresáři je s označením &quot;%2&quot;.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -1012,6 +1128,117 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>New key generation failed.</source>
         <translation type="unfinished">Nepodařilo se mi vygenerovat nový klíč.</translation>
+    </message>
+</context>
+<context>
+    <name>FaqPage</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulář</translation>
+    </message>
+    <message>
+        <source>Frequently Asked Questions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close FAQ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1) What is  SINOVATE?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2) What is an InfinityNode?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3) Multi-Tiered InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4) What is Proof of Stake?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5) What are the Specs and Block Rewards?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6) Where can I get support and more detailed information?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is SINOVATE?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SINOVATE is a state of the art innovative public Blockchain focused on decentralized cloud solutions to overcome scalability, decentralization, and security challenges. We are ready to adapt, evolve, and sustain our relevance in a continuously changing environment. The goal is to launch innovations combined with a user-friendly platform to integrate into daily life. Our team is committed to transparency, accountability, and honesty. Combining both the PoW chain security and PoS chain security through the usage of hybrid proofs and PoB for InfinityNode notarization as an additional Byzantine-Fault-Tolerant (BFT) chain-based algorithm gives the SINOVATE Blockchain the highest, academically proven level of on-chain security. IDS provides high-speed decentralized cloud storage. Leveraging thousands of InfinityNodes that do not require high user fees and enforce network-wide security protocols give users power and control over their private data. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SINOVATE did not have an ICO. There was no pre-sale of coins, and no coins were pre-mined. &lt;/p&gt;&lt;p&gt;Since its inception in September 2018, the SINOVATE project has strived to deliver innovative solutions in the blockchain space. A complete democratic solution was created by respecting and taking on board opinions from the community. Ultimately, the community is the most critical aspect of any blockchain project. It is vital for all members of the community to feel welcome and appreciated.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SINOVATE has a different perspective on how to utilize blockchain technology to improve private and corporate parties.&lt;/p&gt;&lt;p&gt;The goal is to create a blockchain platform in which the community&apos;s needs are accommodated while learning from past mistakes and misfortune. SINOVATE is committed to transparency, accountability, and honesty as they strive to solve existing problems within the blockchain technology space. As succinctly put by the slogan; create, build, and innovate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is an InfinityNode?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;InfinityNodes are a first of its kind of burn-collateralized nodes that receive monetary incentives for running their hardware and hosting files. They are the backbone of the IDS network. Like other Blockchains work, the main SINOVATE chain relies upon nodes dispersed across the globe without concern for borders or jurisdiction. Each node hosts a copy of the main SIN Blockchain. InfinityNodes use a custom deterministic reward algorithm secured by Schnorr signatures for node validation. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;They provide bespoke functions such as controlling inflation and storing data that regular nodes cannot deliver. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Deterministic InfinityNodes are superior to Dash legacy masternodes or any other service nodes.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;1. Schnorr based Multi-Signature signing scheme (MuSig) &lt;/p&gt;&lt;p&gt;2. Provably fair and openly verifiable fully deterministic node rewards &lt;/p&gt;&lt;p&gt;3. Inflation control with a burn-to-run node ecosystem &lt;/p&gt;&lt;p&gt;4. Fully on-chain node registration and servicing &lt;/p&gt;&lt;p&gt;5. Decentralized Autonomous Organisation (DAO) with node democracy &lt;/p&gt;&lt;p&gt;6. Node incentives ensure sustainability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multi-Tiered InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An InfinityNode is an improved version of a conventional masternode implemented by the DASH cryptocurrency. There are still many similarities between the two. Going forward SINOVATE InfinityNodes will differentiate entirely from the DASH masternode code, and SINOVATE will become the first of its kind, a pure InfinityNode 1.0 Platform.There are three different tiers of InfinityNode available for users of the SINOVATE network. It is described as an evolution of previously implemented masternode technology by other blockchain projects. Each tier or layer provides different functions, but they all increase the overall decentralization and stability of the network. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Each tier requires different collateral in order to create the InfinityNode: &lt;/p&gt;&lt;p&gt;1. 100,000 SIN coins for Mini SIN&lt;/p&gt;&lt;p&gt;2. 500,000 SIN coins for Mid SIN &lt;/p&gt;&lt;p&gt;3. 1,000,000 SIN coins for Big SIN &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SIN coins used to create InfinityNodes are burnt and sent to the unspendable SIN wallet address below for full transparency.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SinBurnAddress123456789SuqaXbx3AMC&lt;br/&gt;&lt;br/&gt;For the installation guides, please visit &lt;a href=&quot;https://docs.sinovate.io/#/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;https://docs.sinovate.io/#/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is Proof of Stake?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Proof of Stake, or PoS, is a consensus algorithm that helps secure the SINOVATE blockchain and rewards participants. Anyone with coins in their wallet can start staking, which grants a chance at winning rewards on successfully proposed blocks. All of this is seamlessly taken care of by the wallet backend, so once you have activated staking, you are good to go.&lt;/p&gt;&lt;p&gt;Coins will be staked automatically after 14400 blocks, and stake rewards can be spent after 1440 blocks. This is done to ensure fair participation and offers higher security from a chain perspective.&lt;/p&gt;&lt;p&gt;Anyone with coins can start staking. Staking grants a chance at winning rewards on successfully proposed blocks. To start Stake, click on the Staking &amp;quot;switch button&amp;quot; and keep the wallet running.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What are the Specs and Block Rewards?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name: SINOVATE&lt;/p&gt;&lt;p&gt;Ticker: SIN&lt;/p&gt;&lt;p&gt;Proof-of-Work Algorithm: X25X &lt;/p&gt;&lt;p&gt;Proof-of-Stake Algorithm: PoS4&lt;/p&gt;&lt;p&gt;Collateralized Nodes: Deterministic InfinityNodes&lt;/p&gt;&lt;p&gt;Block Rewards: PoS 50 SIN, PoW 12.5 SIN &amp;amp; InfinityNodes tiered rewards&lt;/p&gt;&lt;p&gt;Block Time: 1 minute&lt;/p&gt;&lt;p&gt;Current Blockchain Size: 2.8 GB&lt;/p&gt;&lt;p&gt;Difficulty Retargeting Algo: LWMA&lt;/p&gt;&lt;p&gt;DAO Governance: RSV Revolving Sovereignty Votes&lt;/p&gt;&lt;p&gt;51% Attack Solution: Deterministically signed chain tips and 55 blocks finality&lt;/p&gt;&lt;p&gt;InfinityNodes Collateral: 100K-500K-1000K (three-tiers)&lt;/p&gt;&lt;p&gt;Max Supply: Yearly Deflating Supply with Proof-of-Burn (uncapped)&lt;/p&gt;&lt;p&gt;Premine: No&lt;/p&gt;&lt;p&gt;P2P Port: 20970&lt;/p&gt;&lt;p&gt;RPC Port: 20971&lt;/p&gt;&lt;p&gt;TPS: No segwit 1120 tx/s (theoretical), segwit-only 2240 tx/s (theoretical)&lt;/p&gt;&lt;p&gt;Treasury: 10% skim of each block subsidy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What are the Specifications and Block Rewards?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can get continuous support through our &lt;a href=&quot;https://discordapp.com/invite/CWbnW5y&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Discord&lt;/span&gt;&lt;/a&gt; support channel.&lt;/p&gt;&lt;p&gt;For more detailed information, you can visit the &lt;a href=&quot;https://sinovate.io/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;sinovate.io&lt;/span&gt;&lt;/a&gt; website. You can also check out our &lt;a href=&quot;https://sinovate.io/sin-whitepaper/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Whitepaper&lt;/span&gt;&lt;/a&gt; and &lt;a href=&quot;https://sinovate.io/SINOVATE_litepaper.pdf&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Litepaper&lt;/span&gt;&lt;/a&gt; documents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1038,6 +1265,577 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
 </context>
 <context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation type="unfinished">verze</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">O %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation type="unfinished">Argumenty příkazové řádky</translation>
+    </message>
+</context>
+<context>
+    <name>InfinitynodeList</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulář</translation>
+    </message>
+    <message>
+        <source>InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by owner address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Status&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expired</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incomplete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished">Neznámá</translation>
+    </message>
+    <message>
+        <source>Filter by IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by peer address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by burn tx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Node Tier&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MINI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BIG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by backup addres</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner address/Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Begin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished">Stav</translation>
+    </message>
+    <message>
+        <source>IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Peer address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Burn Tx ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node tier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backup address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blockcount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes Ready:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes Expired:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes Incomplete:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right click on the table header to hide / show the columns.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right click IP address to check node stats (55 updatemeta confirmations to appear in the list.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1-Click Node setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Enter password&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>big APY % NaN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MID Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MINI Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mini APY % NaN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0.00 SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BIG Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>100 000 SIN Burn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 000 000 SIN Burn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>500 000 SIN Burn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mid APY % NaN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter email/pass to create a new user or login with existing one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start over</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pending Invoice:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>START</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create new BurnTx or migrate (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select DIN hosting billing cycle (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1-Click setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pay pending invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#11</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#12</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit https://setup.sinovate.io</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check node status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check ALL nodes status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Ano</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Ne</translation>
+    </message>
+    <message>
+        <source>DIN node must be in Ready status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node status check timeout:
+Check if your Node Setup password is correct, then try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You didn&apos;t pass the funds check. Please review.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maintenance Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We are sorry, internet connection issue or system maintenance. Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order placed successfully. Order ID #%d Invoice ID #%d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm Invoice Payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pending Invoice Payment finished, please wait for confirmations.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error getting new wallet address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR getnewaddress: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please Unlock Wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In order to make payments, please unlock your wallet and retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR sendtoaddress: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error calling RPC gettransaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR gettransaction: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order cancelled or refunded, creating a new order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice amount %f SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice paid, waiting for confirmation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to pay </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press Reset Order button to cancel node setup process, or Continue setUP button to resume.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlocking wallet is required to make the payments.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paying invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Payment finished, please wait until platform confirms payment to proceed to node creation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice paid with balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maturing, please wait...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Failed to prepare burn transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preparing burn transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error calling RPC getrawtransaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error RPC obtaining owner address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR get owner address: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sending burn transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Failed to create burn transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finishing node setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node setup finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node setup failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeupdatemeta: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: infinitynodeupdatemeta </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeburnfund: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeburnfund: Unknown response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeburnfund: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is an order ongoing (#%d). Press &apos;Continue&apos; or &apos;Reset&apos; order.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a node Tier and then follow below steps for setup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a node Tier and press &apos;START&apos; to verify if you meet the prerequisites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Create new&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking funds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Funds available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> : Not enough funds to pay invoice amount. (you have </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> , need </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> : Not enough amount for UpdateMeta operation (you have </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> , you need </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> : Not enough funds (you have </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node Setup password is not stored. Please enter nodeSetup password and retry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Balance : </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monthly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Semiannually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Annually</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Intro</name>
     <message>
         <source>%1 GB of free space available</source>
@@ -1059,9 +1857,9 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>(sufficient to restore backups %n day(s) old)</source>
         <extracomment>Explanatory text on the capability of the current prune target.</extracomment>
         <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -1073,7 +1871,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Tvá peněženka bude uložena rovněž v tomto adresáři.</translation>
     </message>
     <message>
-        <source>Error: Specified data directory "%1" cannot be created.</source>
+        <source>Error: Specified data directory &quot;%1&quot; cannot be created.</source>
         <translation type="unfinished">Chyba: Nejde vytvořit požadovaný adresář pro data „%1“.</translation>
     </message>
     <message>
@@ -1120,27 +1918,33 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Use a custom data directory:</source>
         <translation>Použij tento adresář pro data:</translation>
     </message>
-</context>
-<context>
-    <name>HelpMessageDialog</name>
     <message>
-        <source>version</source>
-        <translation type="unfinished">verze</translation>
+        <source>User Interface language:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About %1</source>
-        <translation type="unfinished">O %1</translation>
+        <source>Limit block chain storage to</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Command-line options</source>
-        <translation type="unfinished">Argumenty příkazové řádky</translation>
+        <source>As this is the first time the program is launched, you can choose a theme. You can also change this setting later in the Options/Display menu.</source>
+        <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>ShutdownWindow</name>
     <message>
-        <source>Do not shut down the computer until this window disappears.</source>
-        <translation type="unfinished">Nevypínej počítač, dokud toto okno nezmizí.</translation>
+        <source>Dark Blue Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(%1 GB needed for full chain)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1150,22 +1954,14 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Formulář</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the SIN network, as detailed below.</source>
-        <translation type="unfinished">Nedávné transakce ještě nemusí být vidět, takže stav tvého účtu nemusí být platný. Jakmile se však tvá peněženka dosynchronizuje s SINovou sítí (viz informace níže), tak už bude stav správně.</translation>
-    </message>
-    <message>
-        <source>Attempting to spend SINs that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation type="unfinished">Utrácení SINů, které už utratily zatím nezobrazené transakce, nebude SINovou sítí umožněno.</translation>
-    </message>
-    <message>
         <source>Number of blocks left</source>
         <translation type="unfinished">Zbývající počet bloků</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Unknown…</source>
         <translation type="unfinished">Neznámý…</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>calculating…</source>
         <translation type="unfinished">propočítávám…</translation>
     </message>
@@ -1190,21 +1986,56 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Skryj</translation>
     </message>
     <message>
-        <source>Esc</source>
-        <translation type="unfinished">Esc - úniková klávesa</translation>
-    </message>
-    <message>
         <source>%1 is currently syncing.  It will download headers and blocks from peers and validate them until reaching the tip of the block chain.</source>
         <translation type="unfinished">%1 se právě synchronizuje. Stáhnou se hlavičky a bloky od protějsků. Ty se budou se ověřovat až se kompletně ověří celý řetězec bloků.</translation>
     </message>
-    </context>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Sinovate Blockchain, as detailed below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attempting to spend SIN that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1, %2%)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open SIN URI</source>
-        <translation type="unfinished">Otevřít SIN URI</translation>
+        <source>Open sin URI</source>
+        <translation type="unfinished"></translation>
     </message>
-    </context>
+    <message>
+        <source>URI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OpenWalletActivity</name>
+    <message>
+        <source>Open wallet failed</source>
+        <translation type="unfinished">Otevření peněženky selhalo</translation>
+    </message>
+    <message>
+        <source>Open wallet warning</source>
+        <translation type="unfinished">Varování otevření peněženky</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation type="unfinished">výchozí peněženka</translation>
+    </message>
+    <message>
+        <source>Opening Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>OptionsDialog</name>
     <message>
@@ -1222,10 +2053,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>&amp;Start %1 on system login</source>
         <translation type="unfinished">S&amp;pustit %1 po přihlášení do systému</translation>
-    </message>
-    <message>
-        <source>Enabling pruning significantly reduces the disk space required to store transactions. All blocks are still fully validated. Reverting this setting requires re-downloading the entire blockchain.</source>
-        <translation type="unfinished">Zapnutí prořezávání významně snižuje místo na disku, které je nutné pro uložení transakcí. Všechny bloky jsou stále plně validovány. Vrácení tohoto nastavení vyžaduje opětovné stažení celého blockchainu.</translation>
     </message>
     <message>
         <source>Size of &amp;database cache</source>
@@ -1254,10 +2081,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
         <translation type="unfinished">Otevře konfigurační soubor %1 z pracovního adresáře.</translation>
-    </message>
-    <message>
-        <source>Open Configuration File</source>
-        <translation type="unfinished">Otevřít konfigurační soubor</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -1356,10 +2179,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation>O&amp;kno</translation>
     </message>
     <message>
-        <source>Show the icon in the system tray.</source>
-        <translation type="unfinished">Zobrazit ikonu v systémové oblasti.</translation>
-    </message>
-    <message>
         <source>&amp;Show tray icon</source>
         <translation type="unfinished">&amp;Zobrazit ikonu v liště</translation>
     </message>
@@ -1398,30 +2217,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>Whether to show coin control features or not.</source>
         <translation type="unfinished">Zda ukazovat možnosti pro ruční správu mincí nebo ne.</translation>
-    </message>
-    <message>
-        <source>Connect to the SIN network through a separate SOCKS5 proxy for Tor onion services.</source>
-        <translation type="unfinished">Připojí se do SINové sítě přes vyhrazenou SOCKS5 proxy pro služby v Tor síti.</translation>
-    </message>
-    <message>
-        <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor onion services:</source>
-        <translation type="unfinished">Použít samostatnou SOCKS&amp;5 proxy ke spojení s protějšky přes skryté služby v Toru:</translation>
-    </message>
-    <message>
-        <source>&amp;Third party transaction URLs</source>
-        <translation type="unfinished">&amp;URL třetích stran pro transakce</translation>
-    </message>
-    <message>
-        <source>Monospaced font in the Overview tab:</source>
-        <translation type="unfinished">Písmo s pevnou šířkou v panelu Přehled:</translation>
-    </message>
-    <message>
-        <source>embedded "%1"</source>
-        <translation type="unfinished">zahrnuto "%1"</translation>
-    </message>
-    <message>
-        <source>closest matching "%1"</source>
-        <translation type="unfinished">nejbližší shoda "%1"</translation>
     </message>
     <message>
         <source>Options set in this dialog are overridden by the command line or in the configuration file:</source>
@@ -1479,6 +2274,71 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>The supplied proxy address is invalid.</source>
         <translation>Zadaná adresa proxy je neplatná.</translation>
     </message>
+    <message>
+        <source>Disables some advanced features but all blocks will still be fully validated. Reverting this setting requires re-downloading the entire blockchain. Actual disk usage may be somewhat higher.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External Signer (e.g. hardware wallet)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;External signer script path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full path to a SIN Core compatible script (e.g. C:\Downloads\hwi.exe or /Users/you/Downloads/hwi.py). Beware: malware can steal your coins!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect to the SIN network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide the icon from the system tray.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Third party transaction URLs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Interface &amp;style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Configuration File </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compiled without external signing support (required for external signing)</source>
+        <extracomment>&quot;External signing&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm wallet restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to restart your wallet?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OverviewPage</name>
@@ -1499,48 +2359,16 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">K dispozici:</translation>
     </message>
     <message>
-        <source>Your current spendable balance</source>
-        <translation>Aktuální disponibilní stav tvého účtu</translation>
-    </message>
-    <message>
         <source>Pending:</source>
         <translation type="unfinished">Očekáváno:</translation>
-    </message>
-    <message>
-        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
-        <translation>Souhrn transakcí, které ještě nejsou potvrzené a které se ještě nezapočítávají do celkového disponibilního stavu účtu</translation>
     </message>
     <message>
         <source>Immature:</source>
         <translation>Nedozráno:</translation>
     </message>
     <message>
-        <source>Mined balance that has not yet matured</source>
-        <translation>Vytěžené mince, které ještě nejsou zralé</translation>
-    </message>
-    <message>
-        <source>Balances</source>
-        <translation type="unfinished">Stavy účtů</translation>
-    </message>
-    <message>
-        <source>Total:</source>
-        <translation>Celkem:</translation>
-    </message>
-    <message>
-        <source>Your current total balance</source>
-        <translation>Celkový stav tvého účtu</translation>
-    </message>
-    <message>
         <source>Your current balance in watch-only addresses</source>
         <translation type="unfinished">Aktuální stav účtu sledovaných adres</translation>
-    </message>
-    <message>
-        <source>Spendable:</source>
-        <translation type="unfinished">Běžné:</translation>
-    </message>
-    <message>
-        <source>Recent transactions</source>
-        <translation type="unfinished">Poslední transakce</translation>
     </message>
     <message>
         <source>Unconfirmed transactions to watch-only addresses</source>
@@ -1558,6 +2386,102 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Privacy mode activated for the Overview tab. To unmask the values, uncheck Settings-&gt;Mask values.</source>
         <translation type="unfinished">Pro kartu Přehled je aktivovaný režim soukromí. Pro zobrazení částek, odškrtněte Nastavení -&gt; Skrýt částky.</translation>
     </message>
+    <message>
+        <source>Value USD :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value BTC :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Receive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RecentTransactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Datum</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">Typ</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Označení</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation type="unfinished">Částka</translation>
+    </message>
+    <message>
+        <source>ROADMAP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WALLET</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DISCORD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EXCHANGES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FAQ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DOCS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WEB TOOL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EXPLORER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LITEPAPER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value EUR: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0.00000000 EUR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Available EUR: </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PSBTOperationsDialog</name>
@@ -1573,7 +2497,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Copy to Clipboard</source>
         <translation type="unfinished">Kopírovat do schránky</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Save…</source>
         <translation type="unfinished">Uložit...</translation>
     </message>
@@ -1678,6 +2602,10 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Transaction status is unknown.</source>
         <translation type="unfinished">Stav transakce není známý.</translation>
     </message>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PaymentServer</name>
@@ -1686,20 +2614,12 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Chyba platebního požadavku</translation>
     </message>
     <message>
-        <source>Cannot start SIN: click-to-pay handler</source>
-        <translation type="unfinished">Nemůžu spustit SIN: obsluha click-to-pay</translation>
-    </message>
-    <message>
         <source>URI handling</source>
         <translation type="unfinished">Zpracování URI</translation>
     </message>
     <message>
-        <source>'SIN://' is not a valid URI. Use 'SIN:' instead.</source>
-        <translation type="unfinished">'SIN://' není platné URI. Místo toho použij 'SIN:'.</translation>
-    </message>
-    <message>
         <source>Cannot process payment request because BIP70 is not supported.
-Due to widespread security flaws in BIP70 it's strongly recommended that any merchant instructions to switch wallets be ignored.
+Due to widespread security flaws in BIP70 it&apos;s strongly recommended that any merchant instructions to switch wallets be ignored.
 If you are receiving this error you should request the merchant provide a BIP21 compatible URI.</source>
         <translation type="unfinished">Nelze zpracovat žádost o platbu, protože BIP70 není podporován.
 Vzhledem k rozšířeným bezpečnostním chybám v BIP70 je důrazně doporučeno ignorovat jakékoli požadavky obchodníka na přepnutí peněženek.
@@ -1713,12 +2633,20 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <source>Payment request file handling</source>
         <translation type="unfinished">Zpracování souboru platebního požadavku</translation>
     </message>
+    <message>
+        <source>Cannot start sin: click-to-pay handler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;sin://&apos; is not a valid URI. Use &apos;sin:&apos; instead.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PeerTableModel</name>
     <message>
         <source>User Agent</source>
-        <extracomment>Title of Peers Table column which contains the peer's User Agent string.</extracomment>
+        <extracomment>Title of Peers Table column which contains the peer&apos;s User Agent string.</extracomment>
         <translation type="unfinished">Typ klienta</translation>
     </message>
     <message>
@@ -1748,13 +2676,248 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     </message>
     <message>
         <source>Type</source>
-        <extracomment>Title of Peers Table column which describes the type of peer connection. The "type" describes why the connection exists.</extracomment>
+        <extracomment>Title of Peers Table column which describes the type of peer connection. The &quot;type&quot; describes why the connection exists.</extracomment>
         <translation type="unfinished">Typ</translation>
     </message>
     <message>
         <source>Network</source>
         <extracomment>Title of Peers Table column which states the network the peer connected through.</extracomment>
         <translation type="unfinished">Síť</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Error: Specified data directory &quot;%1&quot; does not exist.</source>
+        <translation type="unfinished">Chyba: Zadaný adresář pro data „%1“ neexistuje.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1.</source>
+        <translation type="unfinished">Chyba: Konfigurační soubor se nedá zpracovat: %1.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation type="unfinished">Chyba: %1</translation>
+    </message>
+    <message>
+        <source>Error initializing settings: %1</source>
+        <translation type="unfinished">Zjišťování neshod: %1</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished">neznámo</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation type="unfinished">Částka</translation>
+    </message>
+    <message>
+        <source>Enter a SIN address (e.g. %1)</source>
+        <translation type="unfinished">Zadej SINovou adresu (např. %1)</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation type="unfinished">Sem</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation type="unfinished">Ven</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Žádné</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation type="unfinished">nedostupná informace</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n hodina</numerusform>
+            <numerusform>%n hodin</numerusform>
+            <numerusform>%n hodin</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n den</numerusform>
+            <numerusform>%n dnů</numerusform>
+            <numerusform>%n dnů</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation type="unfinished">%1 a %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 didn&apos;t yet exit safely...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation type="unfinished">Jednotka pro částky. Klikni pro výběr nějaké jiné.</translation>
+    </message>
+    <message>
+        <source>Unroutable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feeler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address Fetch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 kB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Blog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Docs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buy Sinovate Coin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Block Explorer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Discord Channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sinovate Roadmap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate WebTool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download Latest Sinovate Wallets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sinovate LitePaper</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open FAQ Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light blue theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark blue theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No wallet has been loaded.
+Go to File &gt; Open Wallet to load a wallet.
+- OR -</source>
+        <translation type="unfinished">Není načtena žádná peněženka.
+Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
+- NEBO -</translation>
+    </message>
+    <message>
+        <source>Create a new wallet</source>
+        <translation type="unfinished">Vytvoř novou peněženku</translation>
     </message>
 </context>
 <context>
@@ -1784,6 +2947,45 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <extracomment>Expanded name of the PNG file format. See https://en.wikipedia.org/wiki/Portable_Network_Graphics</extracomment>
         <translation type="unfinished">obrázek PNG</translation>
     </message>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QSwitchControl</name>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm Staking!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;WARNING!&lt;/h2&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When the &lt;b&gt;Staking&lt;/b&gt; button is turned on, all the available coins will start staking and will not be available for 14400 blocks (~10 days)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If some coins are not intended for staking, &lt;b&gt;first go to INPUTS in SEND Tab and lock some of the inputs!&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Ano</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Ne</translation>
+    </message>
 </context>
 <context>
     <name>RPCConsole</name>
@@ -1808,12 +3010,12 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Adresář s daty</translation>
     </message>
     <message>
-        <source>To specify a non-default location of the data directory use the '%1' option.</source>
-        <translation type="unfinished">Pro specifikaci neklasické lokace pro data použij možnost '%1'</translation>
+        <source>To specify a non-default location of the data directory use the &apos;%1&apos; option.</source>
+        <translation type="unfinished">Pro specifikaci neklasické lokace pro data použij možnost &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>To specify a non-default location of the blocks directory use the '%1' option.</source>
-        <translation type="unfinished">Pro specifikaci neklasické lokace pro data použij možnost '%1'</translation>
+        <source>To specify a non-default location of the blocks directory use the &apos;%1&apos; option.</source>
+        <translation type="unfinished">Pro specifikaci neklasické lokace pro data použij možnost &apos;%1&apos;</translation>
     </message>
     <message>
         <source>Startup time</source>
@@ -2068,8 +3270,8 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Spouštění příkazu bez jakékoliv peněženky</translation>
     </message>
     <message>
-        <source>Executing command using "%1" wallet</source>
-        <translation type="unfinished">Příkaz se vykonává s použitím peněženky "%1"</translation>
+        <source>Executing command using &quot;%1&quot; wallet</source>
+        <translation type="unfinished">Příkaz se vykonává s použitím peněženky &quot;%1&quot;</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -2099,6 +3301,101 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <source>Unknown</source>
         <translation type="unfinished">Neznámá</translation>
     </message>
+    <message>
+        <source>Blocksdir</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>High bandwidth BIP152 compact block relay: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>High Bandwidth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inbound: initiated by peer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Full Relay: default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Block Relay: does not relay transactions or addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Manual: added using RPC %1 or %2/%3 configuration options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Feeler: short-lived, for testing addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Address Fetch: short-lived, for soliciting addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>we selected the peer for high bandwidth relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the peer selected us for high bandwidth relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no high bandwidth relay selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl++</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+=</source>
+        <extracomment>Secondary shortcut to increase the RPC console font size.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <extracomment>Main shortcut to decrease the RPC console font size.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+_</source>
+        <extracomment>Secondary shortcut to decrease the RPC console font size.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 d&amp;ay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Welcome to the %1 RPC console.
+Use up and down arrows to navigate history, and %2 to clear screen.
+Use %3 and %4 to increase or decrease the font size.
+Type %5 for an overview of available commands.
+For more information on using this console, type %6.
+
+%7WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.%8</source>
+        <extracomment>RPC console welcome message. Placeholders %7 and %8 are style tags for the warning content, and they are not space separated from the rest of the text intentionally.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Executing...</source>
+        <extracomment>A console message indicating an entered command is currently being executed.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(peer: %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ReceiveCoinsDialog</name>
@@ -2113,10 +3410,6 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     <message>
         <source>&amp;Message:</source>
         <translation type="unfinished">&amp;Zpráva:</translation>
-    </message>
-    <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the SIN network.</source>
-        <translation type="unfinished">Volitelná zpráva, která se připojí k platebnímu požadavku a která se zobrazí, když se požadavek otevře. Poznámka: tahle zpráva se neposílá s platbou po SINové síti.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2139,19 +3432,7 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Volitelná zpráva která se přidá k téjo platební výzvě a může být zobrazena odesílateli.</translation>
     </message>
     <message>
-        <source>&amp;Create new receiving address</source>
-        <translation type="unfinished">&amp;Vytvořit novou přijímací adresu</translation>
-    </message>
-    <message>
-        <source>Clear all fields of the form.</source>
-        <translation type="unfinished">Promaž obsah ze všech formulářových políček.</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="unfinished">Vyčistit</translation>
-    </message>
-    <message>
-        <source>Native segwit addresses (aka Bech32 or BIP-173) reduce your transaction fees later on and offer better protection against typos, but old wallets don't support them. When unchecked, an address compatible with older wallets will be created instead.</source>
+        <source>Native segwit addresses (aka Bech32 or BIP-173) reduce your transaction fees later on and offer better protection against typos, but old wallets don&apos;t support them. When unchecked, an address compatible with older wallets will be created instead.</source>
         <translation type="unfinished">Nativní segwit adresy (Bech32 nebo BIP-173) snižují Vaše budoucí transakční poplatky a nabízejí lepší ochranu před překlepy, avšak staré peněženky je nepodporují. Pokud je toto pole nezaškrtnuté, bude vytvořena adresa kompatibilní se staršími peněženkami.</translation>
     </message>
     <message>
@@ -2190,6 +3471,38 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <source>Could not generate new %1 address</source>
         <translation type="unfinished">Nelze vygenerovat novou adresu %1</translation>
     </message>
+    <message>
+        <source>Request payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Sinovate network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Zrušit</translation>
+    </message>
+    <message>
+        <source>S&amp;ubmit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Copy address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;amount</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ReceiveRequestDialog</name>
@@ -2198,36 +3511,44 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Adresa:</translation>
     </message>
     <message>
-        <source>Amount:</source>
-        <translation type="unfinished">Částka:</translation>
-    </message>
-    <message>
-        <source>Label:</source>
-        <translation type="unfinished">Označení:</translation>
-    </message>
-    <message>
-        <source>Message:</source>
-        <translation type="unfinished">Zpráva:</translation>
-    </message>
-    <message>
-        <source>Wallet:</source>
-        <translation type="unfinished">Peněženka:</translation>
-    </message>
-    <message>
-        <source>Copy &amp;URI</source>
-        <translation type="unfinished">&amp;Kopíruj URI</translation>
-    </message>
-    <message>
-        <source>Copy &amp;Address</source>
-        <translation type="unfinished">Kopíruj &amp;adresu</translation>
-    </message>
-    <message>
         <source>Payment information</source>
         <translation type="unfinished">Informace o platbě</translation>
     </message>
     <message>
         <source>Request payment to %1</source>
         <translation type="unfinished">Platební požadavek: %1</translation>
+    </message>
+    <message>
+        <source>QR Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QR image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation type="unfinished">Adresa</translation>
+    </message>
+    <message>
+        <source>Ge&amp;t New Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Request Payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation type="unfinished">Všechno &amp;smaž</translation>
     </message>
 </context>
 <context>
@@ -2328,18 +3649,6 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">za kilobajt</translation>
     </message>
     <message>
-        <source>Hide</source>
-        <translation type="unfinished">Skryj</translation>
-    </message>
-    <message>
-        <source>Recommended:</source>
-        <translation type="unfinished">Doporučený:</translation>
-    </message>
-    <message>
-        <source>Custom:</source>
-        <translation type="unfinished">Vlastní:</translation>
-    </message>
-    <message>
         <source>Send to multiple recipients at once</source>
         <translation>Pošli více příjemcům naráz</translation>
     </message>
@@ -2356,18 +3665,6 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Prach:</translation>
     </message>
     <message>
-        <source>Choose…</source>
-        <translation type="unfinished">Zvol...</translation>
-    </message>
-    <message>
-        <source>Hide transaction fee settings</source>
-        <translation type="unfinished">Schovat nastavení poplatků transakce - transaction fee</translation>
-    </message>
-    <message>
-        <source>When there is less transaction volume than space in the blocks, miners as well as relaying nodes may enforce a minimum fee. Paying only this minimum fee is just fine, but be aware that this can result in a never confirming transaction once there is more demand for SIN transactions than the network can process.</source>
-        <translation type="unfinished">Když je zde měně transakcí než místa na bloky, mineři stejně tak relay-e mohou nasadit minimální poplatky. Zaplacením pouze minimálního poplatku je v pohodě, ale mějte na paměti že toto může mít za následek nikdy neověřenou transakci pokud zde bude více SINových transakcí než může síť zvládnout.</translation>
-    </message>
-    <message>
         <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
         <translation type="unfinished">Příliš malý poplatek může způsobit, že transakce nebude nikdy potvrzena (přečtěte popis)</translation>
     </message>
@@ -2380,7 +3677,7 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Povolit možnost dodatečně transakci navýšit poplatek (tzv. „replace-by-fee“)</translation>
     </message>
     <message>
-        <source>With Replace-By-Fee (BIP-125) you can increase a transaction's fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
+        <source>With Replace-By-Fee (BIP-125) you can increase a transaction&apos;s fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
         <translation type="unfinished">S dodatečným navýšením poplatku (BIP-125, tzv. „Replace-By-Fee“) můžete zvýšit poplatek i po odeslání. Bez dodatečného navýšení bude navrhnut vyšší transakční poplatek, tak aby kompenzoval zvýšené riziko prodlení transakce.</translation>
     </message>
     <message>
@@ -2433,7 +3730,7 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     </message>
     <message>
         <source>Sign on device</source>
-        <extracomment>"device" usually means a hardware wallet</extracomment>
+        <extracomment>&quot;device&quot; usually means a hardware wallet</extracomment>
         <translation type="unfinished">Přihlásit na zařízení</translation>
     </message>
     <message>
@@ -2445,12 +3742,12 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Vytvořit částečně podepsanou SIN transakci (Partially Signed SIN Transaction - PSBT) k použtí kupříkladu s offline %1 peněženkou nebo s jinou kompatibilní PSBT hardware peněženkou.</translation>
     </message>
     <message>
-        <source> from wallet '%1'</source>
-        <translation type="unfinished">z peněženky '%1'</translation>
+        <source> from wallet &apos;%1&apos;</source>
+        <translation type="unfinished">z peněženky &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>%1 to '%2'</source>
-        <translation type="unfinished">%1 do '%2'</translation>
+        <source>%1 to &apos;%2&apos;</source>
+        <translation type="unfinished">%1 do &apos;%2&apos;</translation>
     </message>
     <message>
         <source>%1 to %2</source>
@@ -2487,7 +3784,7 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     </message>
     <message>
         <source>You can increase the fee later (signals Replace-By-Fee, BIP-125).</source>
-        <translation type="unfinished">Poplatek můžete navýšit později (vysílá se "Replace-By-Fee" - nahrazení poplatkem, BIP-125).</translation>
+        <translation type="unfinished">Poplatek můžete navýšit později (vysílá se &quot;Replace-By-Fee&quot; - nahrazení poplatkem, BIP-125).</translation>
     </message>
     <message>
         <source>Please, review your transaction proposal. This will produce a Partially Signed SIN Transaction (PSBT) which you can save or copy and then sign with e.g. an offline %1 wallet, or a PSBT-compatible hardware wallet.</source>
@@ -2503,7 +3800,7 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     </message>
     <message>
         <source>Not signalling Replace-By-Fee, BIP-125.</source>
-        <translation type="unfinished">Nevysílá se "Replace-By-Fee" - nahrazení poplatkem, BIP-125.</translation>
+        <translation type="unfinished">Nevysílá se &quot;Replace-By-Fee&quot; - nahrazení poplatkem, BIP-125.</translation>
     </message>
     <message>
         <source>Total Amount</source>
@@ -2556,9 +3853,9 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     <message numerus="yes">
         <source>Estimated to begin confirmation within %n block(s).</source>
         <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2581,6 +3878,65 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <source>(no label)</source>
         <translation type="unfinished">(bez označení)</translation>
     </message>
+    <message>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recommended</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then &quot;per kilobyte&quot; only pays 250 satoshis in fee, while &quot;total at least&quot; pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When there is less transaction volume than space in the blocks, miners as well as relaying nodes may enforce a minimum fee. Paying only this minimum fee is just fine, but be aware that this can result in a never confirming transaction once there is more demand for sin transactions than the network can process.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect your hardware wallet first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set external signer script path in Options -&gt; Wallet</source>
+        <extracomment>&quot;External signer&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To review recipient list click &quot;Show Details...&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign and send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External signer not found</source>
+        <extracomment>&quot;External signer&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External signer failure</source>
+        <extracomment>&quot;External signer&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External balance:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -2601,10 +3957,6 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Vyber již použitou adresu</translation>
     </message>
     <message>
-        <source>The SIN address to send the payment to</source>
-        <translation type="unfinished">SINová adresa příjemce</translation>
-    </message>
-    <message>
         <source>Paste address from clipboard</source>
         <translation>Vlož adresu ze schránky</translation>
     </message>
@@ -2615,10 +3967,6 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     <message>
         <source>The amount to send in the selected unit</source>
         <translation type="unfinished">Částka k odeslání ve vybrané měně</translation>
-    </message>
-    <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less SINs than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation type="unfinished">Poplatek se odečte od posílané částky. Příjemce tak dostane méně SINů, než zadáš do pole Částka. Pokud vybereš více příjemců, tak se poplatek rovnoměrně rozloží.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2645,16 +3993,43 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Zadej označení této adresy; obojí se ti pak uloží do adresáře</translation>
     </message>
     <message>
-        <source>A message that was attached to the SIN: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the SIN network.</source>
-        <translation type="unfinished">Zpráva, která byla připojena k SIN: URI a která se ti pro přehled uloží k transakci. Poznámka: Tahle zpráva se neposílá s platbou po SINové síti.</translation>
-    </message>
-    <message>
         <source>Pay To:</source>
         <translation type="unfinished">Komu:</translation>
     </message>
     <message>
         <source>Memo:</source>
         <translation type="unfinished">Poznámka:</translation>
+    </message>
+    <message>
+        <source>A message that was attached to the sin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Sin network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less sin than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The SIN address to send the payment to&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation type="unfinished">Nevypínej počítač, dokud toto okno nezmizí.</translation>
+    </message>
+    <message>
+        <source>%1 is shutting down...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2666,10 +4041,6 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     <message>
         <source>&amp;Sign Message</source>
         <translation>&amp;Podepiš zprávu</translation>
-    </message>
-    <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive SINs sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation type="unfinished">Podepsáním zprávy/smlouvy svými adresami můžeš prokázat, že jsi na ně schopen přijmout SINy. Buď opatrný a nepodepisuj nic vágního nebo náhodného; například při phishingových útocích můžeš být lákán, abys něco takového podepsal. Podepisuj pouze naprosto úplná a detailní prohlášení, se kterými souhlasíš.</translation>
     </message>
     <message>
         <source>The SIN address to sign the message with</source>
@@ -2716,7 +4087,7 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation>&amp;Ověř zprávu</translation>
     </message>
     <message>
-        <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
+        <source>Enter the receiver&apos;s address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
         <translation type="unfinished">K ověření podpisu zprávy zadej adresu příjemce, zprávu (ověř si, že správně kopíruješ zalomení řádků, mezery, tabulátory apod.) a podpis. Dávej pozor na to, abys nezkopíroval do podpisu víc, než co je v samotné podepsané zprávě, abys nebyl napálen man-in-the-middle útokem. Poznamenejme však, že takto lze pouze prokázat, že podepisující je schopný na dané adrese přijmout platbu, ale není možnéprokázat, že odeslal jakoukoli transakci!</translation>
     </message>
     <message>
@@ -2744,7 +4115,7 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation>Vymaž všechna pole formuláře pro ověření zrávy</translation>
     </message>
     <message>
-        <source>Click "Sign Message" to generate signature</source>
+        <source>Click &quot;Sign Message&quot; to generate signature</source>
         <translation type="unfinished">Kliknutím na „Podepiš zprávu“ vygeneruješ podpis</translation>
     </message>
     <message>
@@ -2799,15 +4170,220 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <source>Message verified.</source>
         <translation type="unfinished">Zpráva ověřena.</translation>
     </message>
+    <message>
+        <source>Alt+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can sign messages/agreements with your addresses to prove you can receive sins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StakePage</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulář</translation>
+    </message>
+    <message>
+        <source>Coins will be staked automatically after 14400 blocks (~10 days), and stake rewards can be spent after 1440 blocks (~1 day). This is done to ensure fair participation and offers higher security from a chain perspective.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation type="unfinished">Aktuální disponibilní stav tvého účtu</translation>
+    </message>
+    <message>
+        <source>Staking assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stake:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>0.000 000 00 SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block reward:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3052.5 SIN/Block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network weight:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected annualized ROI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>7.9 %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stake records</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatsPage</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulář</translation>
+    </message>
+    <message>
+        <source>0.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>POW DIFFICULTY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NETWORK HASHRATE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOCK HEIGHT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOCKCHAIN STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0/0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PRICE IN BTC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CIRCULATING SUPPLY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOCK REWARD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3478.75 SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MINI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>APY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL NODES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BIG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INFINITYNODE STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL SUPPLY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BURNT FEES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL BURNT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EMISSION STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BURNT NODES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL ADDRESSES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>00000</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOP 50</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>00000000</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOP 10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ADDRESS STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ACTIVE ADDRESSES</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>kB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TransactionDesc</name>
     <message numerus="yes">
         <source>Open for %n more block(s)</source>
         <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2889,9 +4465,9 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     <message numerus="yes">
         <source>matures in %n more block(s)</source>
         <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2951,7 +4527,7 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <translation type="unfinished">Obchodník</translation>
     </message>
     <message>
-        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
         <translation type="unfinished">Vygenerované mince musí čekat %1 bloků, než mohou být utraceny. Když jsi vygeneroval tenhle blok, tak byl rozposlán do sítě, aby byl přidán do blockchainu. Pokud se mu nepodaří dostat se do blockchainu, změní se na „neakceptovaný“ a nepůjde utratit. To se občas může stát, pokud jiný uzel vygeneruje blok zhruba ve stejném okamžiku jako ty.</translation>
     </message>
     <message>
@@ -2970,7 +4546,39 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <source>Amount</source>
         <translation type="unfinished">Částka</translation>
     </message>
-    </context>
+    <message>
+        <source>DIN Reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN rewards must mature %1 blocks before they can be spent. When the miner generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another miner mines a block within a few seconds of the current miner doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other miners block.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN rewards must mature %1 blocks before they can be spent. When the staker generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another staker stakes a block within a few seconds of the current staker doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other stakers block.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>true</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>false</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>TransactionDescDialog</name>
     <message>
@@ -2999,9 +4607,9 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     <message numerus="yes">
         <source>Open for %n more block(s)</source>
         <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -3088,6 +4696,22 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <source>Amount removed from or added to balance.</source>
         <translation type="unfinished">Částka odečtená z nebo přičtená k účtu.</translation>
     </message>
+    <message>
+        <source>Burn for service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TransactionView</name>
@@ -3149,7 +4773,6 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
     </message>
     <message>
         <source>Comma separated file</source>
-        <extracomment>Expanded name of the CSV file format. See https://en.wikipedia.org/wiki/Comma-separated_values</extracomment>
         <translation type="unfinished">Soubor s hodnotami oddělenými čárkami (CSV)</translation>
     </message>
     <message>
@@ -3200,20 +4823,88 @@ Pokud vidíte tuto chybu, měli byste požádat, aby obchodník poskytl adresu k
         <source>to</source>
         <translation type="unfinished">až</translation>
     </message>
-</context>
-<context>
-    <name>WalletFrame</name>
     <message>
-        <source>No wallet has been loaded.
-Go to File &gt; Open Wallet to load a wallet.
-- OR -</source>
-        <translation type="unfinished">Není načtena žádná peněženka.
-Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
-- NEBO -</translation>
+        <source>Range...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Create a new wallet</source>
-        <translation type="unfinished">Vytvoř novou peněženku</translation>
+        <source>Minted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Burn for service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abandon transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Increase transaction fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation type="unfinished">Kopíruj částku</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy raw transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy full transaction details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit address label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show transaction details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WalletController</name>
+    <message>
+        <source>Close wallet</source>
+        <translation type="unfinished">Zavřít peněženku</translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to close the wallet &lt;i&gt;%1&lt;/i&gt;?</source>
+        <translation type="unfinished">Opravdu chcete zavřít peněženku &lt;i&gt;%1&lt;/i&gt;?</translation>
+    </message>
+    <message>
+        <source>Closing the wallet for too long can result in having to resync the entire chain if pruning is enabled.</source>
+        <translation type="unfinished">Zavření peněženky na příliš dlouhou dobu může vyústit v potřebu resynchronizace celého blockchainu pokud je zapnuté prořezávání.</translation>
+    </message>
+    <message>
+        <source>Close all wallets</source>
+        <translation type="unfinished">Zavřít všechny peněženky</translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to close all wallets?</source>
+        <translation type="unfinished">Opravdu chcete zavřít všechny peněženky?</translation>
     </message>
 </context>
 <context>
@@ -3255,7 +4946,7 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Potvrď navýšení poplatku</translation>
     </message>
     <message>
-        <source>Can't draft transaction.</source>
+        <source>Can&apos;t draft transaction.</source>
         <translation type="unfinished">Nelze navrhnout transakci.</translation>
     </message>
     <message>
@@ -3263,7 +4954,7 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">PSBT zkopírována</translation>
     </message>
     <message>
-        <source>Can't sign transaction.</source>
+        <source>Can&apos;t sign transaction.</source>
         <translation type="unfinished">Nemůžu podepsat transakci.</translation>
     </message>
     <message>
@@ -3273,6 +4964,14 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
     <message>
         <source>default wallet</source>
         <translation type="unfinished">výchozí peněženka</translation>
+    </message>
+    <message>
+        <source>Warning: This may pay the additional fee by reducing change outputs or adding inputs, when necessary. It may add a new change output if one does not already exist. These changes may potentially leak privacy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t display address</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3334,21 +5033,13 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
     </message>
+    <message>
+        <source>&amp;Export</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>SIN-core</name>
-    <message>
-        <source>The %s developers</source>
-        <translation type="unfinished">Vývojáři %s</translation>
-    </message>
-    <message>
-        <source>%s corrupt. Try using the wallet tool SIN-wallet to salvage or restoring a backup.</source>
-        <translation type="unfinished">Soubor %s je poškozen. Zkus použít SIN-wallet pro opravu nebo obnov zálohu.</translation>
-    </message>
-    <message>
-        <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
-        <translation type="unfinished">-maxtxfee je nastaveno velmi vysoko! Takto vysoký poplatek může být zaplacen v jednotlivé transakci.</translation>
-    </message>
+    <name>bitcoin-core</name>
     <message>
         <source>Cannot downgrade wallet from version %i to version %i. Wallet version unchanged.</source>
         <translation type="unfinished">Nelze snížit verzi peněženky z verze %i na verzi %i. Verze peněženky nebyla změněna.</translation>
@@ -3356,10 +5047,6 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
     <message>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
         <translation type="unfinished">Nedaří se mi získat zámek na datový adresář %s. %s pravděpodobně už jednou běží.</translation>
-    </message>
-    <message>
-        <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
-        <translation type="unfinished">Nemohu poskytovat konkrétní spojení a současně chtít, aby addrman vyhledával odchozí spojení.</translation>
     </message>
     <message>
         <source>Cannot upgrade a non HD split wallet from version %i to version %i without upgrading to support pre-split keypool. Please use version %i or no version specified.</source>
@@ -3370,40 +5057,32 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Šířen pod softwarovou licencí MIT, viz přiložený soubor %s nebo %s</translation>
     </message>
     <message>
-        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
-        <translation type="unfinished">Nastala chyba při čtení souboru %s! Všechny klíče se přečetly správně, ale data o transakcích nebo záznamy v adresáři mohou chybět či být nesprávné.</translation>
+        <source>Error: Dumpfile format record is incorrect. Got &quot;%s&quot;, expected &quot;format&quot;.</source>
+        <translation type="unfinished">Chyba: záznam formátu souboru výpisu je nesprávný. Získáno &quot;%s&quot;, očekáváno &quot;format&quot;.</translation>
     </message>
     <message>
-        <source>Error: Dumpfile format record is incorrect. Got "%s", expected "format".</source>
-        <translation type="unfinished">Chyba: záznam formátu souboru výpisu je nesprávný. Získáno "%s", očekáváno "format".</translation>
+        <source>Error: Dumpfile identifier record is incorrect. Got &quot;%s&quot;, expected &quot;%s&quot;.</source>
+        <translation type="unfinished">Chyba: záznam identifikátoru souboru výpisu je nesprávný. Získáno &quot;%s&quot;, očekáváno &quot;%s&quot;.</translation>
     </message>
     <message>
-        <source>Error: Dumpfile identifier record is incorrect. Got "%s", expected "%s".</source>
-        <translation type="unfinished">Chyba: záznam identifikátoru souboru výpisu je nesprávný. Získáno "%s", očekáváno "%s".</translation>
+        <source>Error: Dumpfile version is not supported. This version of sin-wallet only supports version 1 dumpfiles. Got dumpfile with version %s</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error: Dumpfile version is not supported. This version of SIN-wallet only supports version 1 dumpfiles. Got dumpfile with version %s</source>
-        <translation type="unfinished">Chyba: verze souboru výpisu není podporována. Tato verze peněženky SIN podporuje pouze soubory výpisu verze 1. Získán soubor výpisu verze %s</translation>
+        <source>Error: Legacy wallets only support the &quot;legacy&quot;, &quot;p2sh-segwit&quot;, and &quot;bech32&quot; address types</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation type="unfinished">Chyba: Nelze naslouchat příchozí spojení (listen vrátil chybu %s)</translation>
     </message>
     <message>
-        <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>
-        <translation type="unfinished">Odhad poplatku se nepodařil. Fallbackfee je zakázaný. Počkejte několik bloků nebo povolte -fallbackfee.</translation>
-    </message>
-    <message>
         <source>File %s already exists. If you are sure this is what you want, move it out of the way first.</source>
         <translation type="unfinished">Soubor %s již existuje. Pokud si jste jistí, že tohle chcete, napřed ho přesuňte mimo.</translation>
     </message>
     <message>
-        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
-        <translation type="unfinished">Neplatná částka pro -maxtxfee=&lt;amount&gt;: '%s' (musí být alespoň jako poplatek minrelay %s, aby transakce nezůstávaly trčet)</translation>
-    </message>
-    <message>
-        <source>More than one onion bind address is provided. Using %s for the automatically created Tor onion service.</source>
-        <translation type="unfinished">Byla zadána více než jedna onion adresa. Použiju %s pro automaticky vytvořenou službu sítě Tor.</translation>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation type="unfinished">Neplatná částka pro -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (musí být alespoň jako poplatek minrelay %s, aby transakce nezůstávaly trčet)</translation>
     </message>
     <message>
         <source>No dump file provided. To use createfromdump, -dumpfile=&lt;filename&gt; must be provided.</source>
@@ -3418,68 +5097,12 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Nebyl poskytnut formát souboru peněženky. Pro použití createfromdump, -format=&lt;format&gt; musí být poskytnut.</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong, %s will not work properly.</source>
+        <source>Please check that your computer&apos;s date and time are correct! If your clock is wrong, %s will not work properly.</source>
         <translation type="unfinished">Zkontroluj, že máš v počítači správně nastavený datum a čas! Pokud jsou nastaveny špatně, %s nebude fungovat správně.</translation>
     </message>
     <message>
-        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
-        <translation type="unfinished">Prosíme, zapoj se nebo přispěj, pokud ti %s přijde užitečný. Více informací o programu je na %s.</translation>
-    </message>
-    <message>
-        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
-        <translation type="unfinished">Prořezávání je nastaveno pod minimum %d MiB.  Použij, prosím, nějaké vyšší číslo.</translation>
-    </message>
-    <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
-        <translation type="unfinished">Prořezávání: poslední synchronizace peněženky proběhla před už prořezanými daty. Je třeba provést -reindex (tedy v případě prořezávacího režimu stáhnout znovu celý blockchain)</translation>
-    </message>
-    <message>
-        <source>SQLiteDatabase: Unknown sqlite wallet schema version %d. Only version %d is supported</source>
-        <translation type="unfinished">SQLiteDatabase: Neznámá verze schématu sqlite peněženky: %d. Podporovaná je pouze verze %d</translation>
-    </message>
-    <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
-        <translation type="unfinished">Databáze bloků obsahuje blok, který vypadá jako z budoucnosti, což může být kvůli špatně nastavenému datu a času na tvém počítači. Nech databázi bloků přestavět pouze v případě, že si jsi jistý, že máš na počítači správný datum a čas</translation>
-    </message>
-    <message>
-        <source>The transaction amount is too small to send after the fee has been deducted</source>
-        <translation type="unfinished">Částka v transakci po odečtení poplatku je příliš malá na odeslání</translation>
-    </message>
-    <message>
-        <source>This error could occur if this wallet was not shutdown cleanly and was last loaded using a build with a newer version of Berkeley DB. If so, please use the software that last loaded this wallet</source>
-        <translation type="unfinished">Tato chyba může nastat pokud byla peněženka ukončena chybně a byla naposledy použita programem s novější verzi Berkeley DB. Je-li to tak, použijte program, který naposledy přistoupil k této peněžence</translation>
-    </message>
-    <message>
-        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
-        <translation type="unfinished">Tohle je testovací verze – používej ji jen na vlastní riziko, ale rozhodně ji nepoužívej k těžbě nebo pro obchodní aplikace</translation>
-    </message>
-    <message>
-        <source>This is the maximum transaction fee you pay (in addition to the normal fee) to prioritize partial spend avoidance over regular coin selection.</source>
-        <translation type="unfinished">Jedná se o maximální poplatek, který zaplatíte (navíc k běžnému poplatku), aby se upřednostnila útrata z dosud nepoužitých adres oproti těm už jednou použitých.</translation>
-    </message>
-    <message>
-        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
-        <translation type="unfinished">Tohle je transakční poplatek, který můžeš zrušit, pokud budou na této úrovni drobné menší než prach</translation>
-    </message>
-    <message>
-        <source>This is the transaction fee you may pay when fee estimates are not available.</source>
-        <translation type="unfinished">Toto je transakční poplatek, který se platí, pokud náhodou není k dispozici odhad poplatků.</translation>
-    </message>
-    <message>
-        <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
-        <translation type="unfinished">Celková délka síťového identifikačního řetězce (%i) překročila svůj horní limit (%i). Omez počet nebo velikost voleb uacomment.</translation>
-    </message>
-    <message>
-        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
-        <translation type="unfinished">Nedaří se mi znovu aplikovat bloky. Budeš muset přestavět databázi použitím -reindex-chainstate.</translation>
-    </message>
-    <message>
-        <source>Unknown wallet file format "%s" provided. Please provide one of "bdb" or "sqlite".</source>
-        <translation type="unfinished">Byl poskytnut neznámý formát souboru peněženky "%s". Poskytněte prosím "bdb" nebo "sqlite".</translation>
-    </message>
-    <message>
-        <source>Warning: Dumpfile wallet format "%s" does not match command line specified format "%s".</source>
-        <translation type="unfinished">Varování: formát výpisu peněženky "%s" se neshoduje s formátem "%s", který byl určen příkazem.</translation>
+        <source>Warning: Dumpfile wallet format &quot;%s&quot; does not match command line specified format &quot;%s&quot;.</source>
+        <translation type="unfinished">Varování: formát výpisu peněženky &quot;%s&quot; se neshoduje s formátem &quot;%s&quot;, který byl určen příkazem.</translation>
     </message>
     <message>
         <source>Warning: Private keys detected in wallet {%s} with disabled private keys</source>
@@ -3506,16 +5129,16 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Nastala závažná vnitřní chyba, podrobnosti viz v debug.log.</translation>
     </message>
     <message>
-        <source>Cannot resolve -%s address: '%s'</source>
-        <translation type="unfinished">Nemohu přeložit -%s adresu: '%s'</translation>
+        <source>Cannot resolve -%s address: &apos;%s&apos;</source>
+        <translation type="unfinished">Nemohu přeložit -%s adresu: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>Cannot set -peerblockfilters without -blockfilterindex.</source>
         <translation type="unfinished">Nelze nastavit -peerblockfilters bez -blockfilterindex.</translation>
     </message>
     <message>
-        <source>Cannot write to data directory '%s'; check permissions.</source>
-        <translation type="unfinished">Není možné zapisovat do adresáře ' %s'; zkontrolujte oprávnění.</translation>
+        <source>Cannot write to data directory &apos;%s&apos;; check permissions.</source>
+        <translation type="unfinished">Není možné zapisovat do adresáře &apos; %s&apos;; zkontrolujte oprávnění.</translation>
     </message>
     <message>
         <source>Change index out of range</source>
@@ -3606,7 +5229,7 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Chyba při aktualizaci stavové databáze blockchainu</translation>
     </message>
     <message>
-        <source>Error: Couldn't create cursor into database</source>
+        <source>Error: Couldn&apos;t create cursor into database</source>
         <translation type="unfinished">Chyba: nebylo možno vytvořit kurzor do databáze</translation>
     </message>
     <message>
@@ -3632,6 +5255,10 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
     <message>
         <source>Error: Missing checksum</source>
         <translation type="unfinished">Chyba: chybí kontrolní součet</translation>
+    </message>
+    <message>
+        <source>Error: No %s addresses available.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error: Unable to parse version %u as a uint32_t</source>
@@ -3662,6 +5289,10 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Ignoruji duplicitní -wallet %s.</translation>
     </message>
     <message>
+        <source>Importing...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
         <translation type="unfinished">Nemám žádný nebo jen špatný genesis blok. Není špatně nastavený datadir?</translation>
     </message>
@@ -3674,44 +5305,60 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Nedostatek prostředků</translation>
     </message>
     <message>
-        <source>Invalid -i2psam address or hostname: '%s'</source>
-        <translation type="unfinished">Neplatná -i2psam adresa či hostitel: '%s'</translation>
+        <source>Invalid -i2psam address or hostname: &apos;%s&apos;</source>
+        <translation type="unfinished">Neplatná -i2psam adresa či hostitel: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid -onion address or hostname: '%s'</source>
-        <translation type="unfinished">Neplatná -onion adresa či hostitel: '%s'</translation>
+        <source>Invalid -onion address or hostname: &apos;%s&apos;</source>
+        <translation type="unfinished">Neplatná -onion adresa či hostitel: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid -proxy address or hostname: '%s'</source>
-        <translation type="unfinished">Neplatná -proxy adresa či hostitel: '%s'</translation>
+        <source>Invalid -proxy address or hostname: &apos;%s&apos;</source>
+        <translation type="unfinished">Neplatná -proxy adresa či hostitel: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid P2P permission: '%s'</source>
-        <translation type="unfinished">Neplatné oprávnenie P2P: '%s'</translation>
+        <source>Invalid P2P permission: &apos;%s&apos;</source>
+        <translation type="unfinished">Neplatné oprávnenie P2P: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
-        <translation type="unfinished">Neplatná částka pro -%s=&lt;částka&gt;: '%s'</translation>
+        <source>Invalid amount for -%s=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished">Neplatná částka pro -%s=&lt;částka&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -discardfee=&lt;amount&gt;: '%s'</source>
-        <translation type="unfinished">Neplatná částka pro -discardfee=&lt;částka&gt;: '%s'</translation>
+        <source>Invalid amount for -discardfee=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished">Neplatná částka pro -discardfee=&lt;částka&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
-        <translation type="unfinished">Neplatná částka pro -fallbackfee=&lt;částka&gt;: '%s'</translation>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished">Neplatná částka pro -fallbackfee=&lt;částka&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
-        <translation type="unfinished">Neplatná částka pro -paytxfee=&lt;částka&gt;: '%s' (musí být alespoň %s)</translation>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least %s)</source>
+        <translation type="unfinished">Neplatná částka pro -paytxfee=&lt;částka&gt;: &apos;%s&apos; (musí být alespoň %s)</translation>
     </message>
     <message>
-        <source>Invalid netmask specified in -whitelist: '%s'</source>
-        <translation type="unfinished">Ve -whitelist byla zadána neplatná podsíť: '%s'</translation>
+        <source>Invalid netmask specified in -whitelist: &apos;%s&apos;</source>
+        <translation type="unfinished">Ve -whitelist byla zadána neplatná podsíť: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Need to specify a port with -whitebind: '%s'</source>
-        <translation type="unfinished">V rámci -whitebind je třeba specifikovat i port: '%s'</translation>
+        <source>Loading P2P addresses...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading banlist...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Need to specify a port with -whitebind: &apos;%s&apos;</source>
+        <translation type="unfinished">V rámci -whitebind je třeba specifikovat i port: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>No proxy server specified. Use -proxy=&lt;ip&gt; or -proxy=&lt;ip:port&gt;.</source>
@@ -3726,12 +5373,28 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Prořezávání nemůže být zkonfigurováno s negativní hodnotou.</translation>
     </message>
     <message>
+        <source>Prune mode is incompatible with -coinstatsindex.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Prune mode is incompatible with -txindex.</source>
         <translation type="unfinished">Prořezávací režim není kompatibilní s -txindex.</translation>
     </message>
     <message>
+        <source>Pruning blockstore...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
         <translation type="unfinished">Omezuji -maxconnections z %d na %d kvůli systémovým omezením.</translation>
+    </message>
+    <message>
+        <source>Replaying blocks...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>SQLiteDatabase: Failed to execute statement to verify database: %s</source>
@@ -3758,20 +5421,24 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Nepodařilo se podepsat transakci</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" does not exist</source>
-        <translation type="unfinished">Uvedená -walletdir "%s" neexistuje</translation>
+        <source>Specified -walletdir &quot;%s&quot; does not exist</source>
+        <translation type="unfinished">Uvedená -walletdir &quot;%s&quot; neexistuje</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" is a relative path</source>
-        <translation type="unfinished">Uvedená -walletdir "%s" je relatívna cesta</translation>
+        <source>Specified -walletdir &quot;%s&quot; is a relative path</source>
+        <translation type="unfinished">Uvedená -walletdir &quot;%s&quot; je relatívna cesta</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" is not a directory</source>
-        <translation type="unfinished">Uvedená -walletdir "%s" není složkou</translation>
+        <source>Specified -walletdir &quot;%s&quot; is not a directory</source>
+        <translation type="unfinished">Uvedená -walletdir &quot;%s&quot; není složkou</translation>
     </message>
     <message>
-        <source>Specified blocks directory "%s" does not exist.</source>
-        <translation type="unfinished">Zadaný adresář bloků "%s" neexistuje.</translation>
+        <source>Specified blocks directory &quot;%s&quot; does not exist.</source>
+        <translation type="unfinished">Zadaný adresář bloků &quot;%s&quot; neexistuje.</translation>
+    </message>
+    <message>
+        <source>Starting network threads...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The source code is available from %s.</source>
@@ -3818,6 +5485,10 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Transakce musí mít alespoň jednoho příjemce</translation>
     </message>
     <message>
+        <source>Transaction needs a change address, but we can&apos;t generate it. %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Transaction too large</source>
         <translation type="unfinished">Transakce je příliš velká</translation>
     </message>
@@ -3830,8 +5501,8 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Nedaří se mi připojit na %s na tomhle počítači. %s už pravděpodobně jednou běží.</translation>
     </message>
     <message>
-        <source>Unable to create the PID file '%s': %s</source>
-        <translation type="unfinished">Nebylo možné vytvořit soubor PID '%s': %s</translation>
+        <source>Unable to create the PID file &apos;%s&apos;: %s</source>
+        <translation type="unfinished">Nebylo možné vytvořit soubor PID &apos;%s&apos;: %s</translation>
     </message>
     <message>
         <source>Unable to generate initial keys</source>
@@ -3854,16 +5525,20 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Neznámá -blockfilterindex hodnota %s.</translation>
     </message>
     <message>
-        <source>Unknown address type '%s'</source>
-        <translation type="unfinished">Neznámý typ adresy '%s'</translation>
+        <source>Unknown address type &apos;%s&apos;</source>
+        <translation type="unfinished">Neznámý typ adresy &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Unknown change type '%s'</source>
-        <translation type="unfinished">Neznámý typ změny '%s'</translation>
+        <source>Unknown change type &apos;%s&apos;</source>
+        <translation type="unfinished">Neznámý typ změny &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Unknown network specified in -onlynet: '%s'</source>
-        <translation type="unfinished">V -onlynet byla uvedena neznámá síť: '%s'</translation>
+        <source>Unknown network specified in -onlynet: &apos;%s&apos;</source>
+        <translation type="unfinished">V -onlynet byla uvedena neznámá síť: &apos;%s&apos;</translation>
+    </message>
+    <message>
+        <source>Unknown new rules activated (versionbit %i)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unsupported logging category %s=%s.</source>
@@ -3882,8 +5557,107 @@ Přejděte do Soubor &gt; Otevřít peněženku pro načtení peněženky.
         <translation type="unfinished">Komentář u typu klienta (%s) obsahuje riskantní znaky.</translation>
     </message>
     <message>
+        <source>Verifying blocks...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Verifying wallet(s)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Wallet needed to be rewritten: restart %s to complete</source>
         <translation type="unfinished">Soubor s peněženkou potřeboval přepsat: restartuj %s, aby se operace dokončila</translation>
+    </message>
+</context>
+<context>
+    <name>sin-core</name>
+    <message>
+        <source>The %s developers</source>
+        <translation type="unfinished">Vývojáři %s</translation>
+    </message>
+    <message>
+        <source>%s corrupt. Try using the wallet tool sin-wallet to salvage or restoring a backup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
+        <translation type="unfinished">-maxtxfee je nastaveno velmi vysoko! Takto vysoký poplatek může být zaplacen v jednotlivé transakci.</translation>
+    </message>
+    <message>
+        <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
+        <translation type="unfinished">Nemohu poskytovat konkrétní spojení a současně chtít, aby addrman vyhledával odchozí spojení.</translation>
+    </message>
+    <message>
+        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
+        <translation type="unfinished">Nastala chyba při čtení souboru %s! Všechny klíče se přečetly správně, ale data o transakcích nebo záznamy v adresáři mohou chybět či být nesprávné.</translation>
+    </message>
+    <message>
+        <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>
+        <translation type="unfinished">Odhad poplatku se nepodařil. Fallbackfee je zakázaný. Počkejte několik bloků nebo povolte -fallbackfee.</translation>
+    </message>
+    <message>
+        <source>More than one onion bind address is provided. Using %s for the automatically created Tor onion service.</source>
+        <translation type="unfinished">Byla zadána více než jedna onion adresa. Použiju %s pro automaticky vytvořenou službu sítě Tor.</translation>
+    </message>
+    <message>
+        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
+        <translation type="unfinished">Prosíme, zapoj se nebo přispěj, pokud ti %s přijde užitečný. Více informací o programu je na %s.</translation>
+    </message>
+    <message>
+        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
+        <translation type="unfinished">Prořezávání je nastaveno pod minimum %d MiB.  Použij, prosím, nějaké vyšší číslo.</translation>
+    </message>
+    <message>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <translation type="unfinished">Prořezávání: poslední synchronizace peněženky proběhla před už prořezanými daty. Je třeba provést -reindex (tedy v případě prořezávacího režimu stáhnout znovu celý blockchain)</translation>
+    </message>
+    <message>
+        <source>SQLiteDatabase: Unknown sqlite wallet schema version %d. Only version %d is supported</source>
+        <translation type="unfinished">SQLiteDatabase: Neznámá verze schématu sqlite peněženky: %d. Podporovaná je pouze verze %d</translation>
+    </message>
+    <message>
+        <source>The block database contains a block which appears to be from the future. This may be due to your computer&apos;s date and time being set incorrectly. Only rebuild the block database if you are sure that your computer&apos;s date and time are correct</source>
+        <translation type="unfinished">Databáze bloků obsahuje blok, který vypadá jako z budoucnosti, což může být kvůli špatně nastavenému datu a času na tvém počítači. Nech databázi bloků přestavět pouze v případě, že si jsi jistý, že máš na počítači správný datum a čas</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation type="unfinished">Částka v transakci po odečtení poplatku je příliš malá na odeslání</translation>
+    </message>
+    <message>
+        <source>This error could occur if this wallet was not shutdown cleanly and was last loaded using a build with a newer version of Berkeley DB. If so, please use the software that last loaded this wallet</source>
+        <translation type="unfinished">Tato chyba může nastat pokud byla peněženka ukončena chybně a byla naposledy použita programem s novější verzi Berkeley DB. Je-li to tak, použijte program, který naposledy přistoupil k této peněžence</translation>
+    </message>
+    <message>
+        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
+        <translation type="unfinished">Tohle je testovací verze – používej ji jen na vlastní riziko, ale rozhodně ji nepoužívej k těžbě nebo pro obchodní aplikace</translation>
+    </message>
+    <message>
+        <source>This is the maximum transaction fee you pay (in addition to the normal fee) to prioritize partial spend avoidance over regular coin selection.</source>
+        <translation type="unfinished">Jedná se o maximální poplatek, který zaplatíte (navíc k běžnému poplatku), aby se upřednostnila útrata z dosud nepoužitých adres oproti těm už jednou použitých.</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
+        <translation type="unfinished">Tohle je transakční poplatek, který můžeš zrušit, pokud budou na této úrovni drobné menší než prach</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may pay when fee estimates are not available.</source>
+        <translation type="unfinished">Toto je transakční poplatek, který se platí, pokud náhodou není k dispozici odhad poplatků.</translation>
+    </message>
+    <message>
+        <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
+        <translation type="unfinished">Celková délka síťového identifikačního řetězce (%i) překročila svůj horní limit (%i). Omez počet nebo velikost voleb uacomment.</translation>
+    </message>
+    <message>
+        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
+        <translation type="unfinished">Nedaří se mi znovu aplikovat bloky. Budeš muset přestavět databázi použitím -reindex-chainstate.</translation>
+    </message>
+    <message>
+        <source>Unknown wallet file format &quot;%s&quot; provided. Please provide one of &quot;bdb&quot; or &quot;sqlite&quot;.</source>
+        <translation type="unfinished">Byl poskytnut neznámý formát souboru peněženky &quot;%s&quot;. Poskytněte prosím &quot;bdb&quot; nebo &quot;sqlite&quot;.</translation>
+    </message>
+    <message>
+        <source>Witness data for blocks after height %d requires validation. Please restart with -reindex.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

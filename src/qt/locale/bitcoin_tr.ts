@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<TS version="2.0" language="tr">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -1943,7 +1943,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>Number of blocks left</source>
         <translation>Kalan blok sayısı</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>calculating…</source>
         <translation>hesaplanıyor...</translation>
     </message>
@@ -1983,7 +1983,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>%1 is currently syncing.  It will download headers and blocks from peers and validate them until reaching the tip of the block chain.</source>
         <translation>%1 şu anda eşitleniyor. Akranlardan başlıkları ve blokları indirecek ve blok zincirinin ucuna ulaşana kadar bunları doğrulayacaktır.</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Unknown…</source>
         <translation>Bilinmeyen…</translation>
     </message>
@@ -2070,7 +2070,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
     </message>
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
-        <translation>Çalışma dizininden %1&#xa0; yapılandırma dosyasını aç.</translation>
+        <translation>Çalışma dizininden %1  yapılandırma dosyasını aç.</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -2491,7 +2491,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>Copy to Clipboard</source>
         <translation>Panoya kopyala</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Save…</source>
         <translation>Kaydet...</translation>
     </message>
@@ -3808,7 +3808,7 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <source>Custom</source>
         <translation>Özel</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
         <translation>(Akıllı ücret henüz başlatılmadı. Bu genellikle birkaç blok sürer…)</translation>
     </message>
@@ -4192,9 +4192,9 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <source>Stake:</source>
         <translation>Stake:</translation>
     </message>
-    <message>
-        <source>0.000&#x2009;000&#x2009;00 SIN</source>
-        <translation>0.000&#x2009;000&#x2009;00 SIN</translation>
+    <message utf8="true">
+        <source>0.000 000 00 SIN</source>
+        <translation>0.000 000 00 SIN</translation>
     </message>
     <message>
         <source>Staking</source>

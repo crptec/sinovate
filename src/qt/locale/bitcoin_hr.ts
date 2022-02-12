@@ -1,4 +1,6 @@
-<TS version="2.1" language="hr">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="hr">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -94,6 +96,16 @@
         <source>Exporting Failed</source>
         <translation type="unfinished">Izvoz neuspješan</translation>
     </message>
+    <message>
+        <source>These are your SIN addresses for receiving payments. Use the &apos;Receive&apos; button in the My Wallet tab to create new addresses.
+Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comma separated file</source>
+        <extracomment>Expanded name of the CSV file format. See https://en.wikipedia.org/wiki/Comma-separated_values</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AddressTableModel</name>
@@ -173,10 +185,6 @@
         <translation type="unfinished">Unesite staru i novu lozinku za novčanik.</translation>
     </message>
     <message>
-        <source>Remember that encrypting your wallet cannot fully protect your SINs from being stolen by malware infecting your computer.</source>
-        <translation type="unfinished">Zapamtite da šifriranje vašeg novčanika ne može u potpunosti zaštititi vaše SINove od zloćudnog softvera kojim se zarazi vaše računalo.</translation>
-    </message>
-    <message>
         <source>Wallet to be encrypted</source>
         <translation type="unfinished">Novčanik koji treba šifrirati</translation>
     </message>
@@ -220,6 +228,10 @@
         <source>Warning: The Caps Lock key is on!</source>
         <translation type="unfinished">Upozorenje: Caps Lock je uključen!</translation>
     </message>
+    <message>
+        <source>Remember that encrypting your wallet cannot fully protect your sins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BanTableModel</name>
@@ -233,121 +245,94 @@
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>BitcoinApplication</name>
     <message>
-        <source>Error: Specified data directory "%1" does not exist.</source>
-        <translation type="unfinished">Greška: Zadana podatkovna mapa "%1" ne postoji.</translation>
-    </message>
-    <message>
-        <source>Error: Cannot parse configuration file: %1.</source>
-        <translation type="unfinished">Greška: Ne može se parsirati konfiguracijska datoteka: %1.</translation>
+        <source>Runaway exception</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error: %1</source>
-        <translation type="unfinished">Greška: %1</translation>
+        <source>A fatal error occurred. %1 can no longer continue safely and will quit.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unknown</source>
-        <translation type="unfinished">nepoznato</translation>
+        <source>Internal error</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Amount</source>
-        <translation type="unfinished">Iznos</translation>
+        <source>An internal error occurred. %1 will attempt to continue safely. This is an unexpected bug which can be reported as described below.</source>
+        <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Enter a SIN address (e.g. %1)</source>
-        <translation type="unfinished">Unesite SIN adresu (npr. %1)</translation>
-    </message>
-    <message>
-        <source>Inbound</source>
-        <translation type="unfinished">Dolazni</translation>
-    </message>
-    <message>
-        <source>Outbound</source>
-        <translation type="unfinished">Izlazni</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="unfinished">Ništa</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n second(s)</source>
-        <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n minute(s)</source>
-        <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n hour(s)</source>
-        <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n day(s)</source>
-        <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n week(s)</source>
-        <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message>
-        <source>%1 and %2</source>
-        <translation type="unfinished">%1 i %2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n year(s)</source>
-        <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    </context>
+</context>
 <context>
-    <name>SINGUI</name>
+    <name>BitcoinGUI</name>
     <message>
-        <source>&amp;Overview</source>
-        <translation>&amp;Pregled</translation>
+        <source> &amp;My Wallet</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show general overview of wallet</source>
-        <translation>Prikaži opći pregled novčanika</translation>
+        <translation type="unfinished">Prikaži opći pregled novčanika</translation>
     </message>
     <message>
-        <source>&amp;Transactions</source>
-        <translation>&amp;Transakcije</translation>
+        <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> &amp;Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send coins to a SIN address</source>
+        <translation type="unfinished">Pošaljite novac na SIN adresu</translation>
+    </message>
+    <message>
+        <source> &amp;Receive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and sin: URIs)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Staki&amp;ng</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> St&amp;atistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> &amp;Transactions
+</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Browse transaction history</source>
-        <translation>Pretražite povijest transakcija</translation>
+        <translation type="unfinished">Pretražite povijest transakcija</translation>
+    </message>
+    <message>
+        <source> &amp;InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse Infinitynodes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation>&amp;Izlaz</translation>
+        <translation type="unfinished">&amp;Izlaz</translation>
     </message>
     <message>
         <source>Quit application</source>
-        <translation>Zatvorite aplikaciju</translation>
+        <translation type="unfinished">Zatvorite aplikaciju</translation>
     </message>
     <message>
         <source>&amp;About %1</source>
@@ -359,144 +344,95 @@
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation>Više o &amp;Qt</translation>
+        <translation type="unfinished">Više o &amp;Qt</translation>
     </message>
     <message>
         <source>Show information about Qt</source>
-        <translation>Prikažite informacije o Qt</translation>
+        <translation type="unfinished">Prikažite informacije o Qt</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Modify configuration options for %1</source>
         <translation type="unfinished">Promijenite postavke za %1</translation>
     </message>
     <message>
-        <source>Create a new wallet</source>
-        <translation type="unfinished">Stvorite novi novčanik</translation>
-    </message>
-    <message>
-        <source>Wallet:</source>
-        <translation type="unfinished">Novčanik:</translation>
-    </message>
-    <message>
-        <source>Network activity disabled.</source>
-        <extracomment>A substring of the tooltip.</extracomment>
-        <translation type="unfinished">Mrežna aktivnost isključena.</translation>
-    </message>
-    <message>
-        <source>Proxy is &lt;b&gt;enabled&lt;/b&gt;: %1</source>
-        <translation type="unfinished">Proxy je &lt;b&gt;uključen&lt;/b&gt;: %1</translation>
-    </message>
-    <message>
-        <source>Send coins to a SIN address</source>
-        <translation>Pošaljite novac na SIN adresu</translation>
-    </message>
-    <message>
-        <source>Backup wallet to another location</source>
-        <translation>Napravite sigurnosnu kopiju novčanika na drugoj lokaciji</translation>
-    </message>
-    <message>
-        <source>Change the passphrase used for wallet encryption</source>
-        <translation>Promijenite lozinku za šifriranje novčanika</translation>
-    </message>
-    <message>
-        <source>&amp;Send</source>
-        <translation>&amp;Pošaljite</translation>
-    </message>
-    <message>
-        <source>&amp;Receive</source>
-        <translation>Pri&amp;mite</translation>
-    </message>
-    <message>
         <source>&amp;Show / Hide</source>
-        <translation>Po&amp;kažite / Sakrijte</translation>
+        <translation type="unfinished">Po&amp;kažite / Sakrijte</translation>
     </message>
     <message>
         <source>Show or hide the main Window</source>
-        <translation>Prikažite ili sakrijte glavni prozor</translation>
+        <translation type="unfinished">Prikažite ili sakrijte glavni prozor</translation>
+    </message>
+    <message>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Encrypt the private keys that belong to your wallet</source>
-        <translation>Šifrirajte privatne ključeve u novčaniku</translation>
+        <translation type="unfinished">Šifrirajte privatne ključeve u novčaniku</translation>
+    </message>
+    <message>
+        <source>&amp;Backup Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backup wallet to another location</source>
+        <translation type="unfinished">Napravite sigurnosnu kopiju novčanika na drugoj lokaciji</translation>
+    </message>
+    <message>
+        <source>&amp;Change Passphrase...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation type="unfinished">Promijenite lozinku za šifriranje novčanika</translation>
+    </message>
+    <message>
+        <source>&amp;Unlock Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock wallet</source>
+        <translation type="unfinished">Otključajte novčanik</translation>
+    </message>
+    <message>
+        <source>&amp;Lock Wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Sign messages with your SIN addresses to prove you own them</source>
-        <translation>Poruku potpišemo s SIN adresom, kako bi dokazali vlasništvo nad tom adresom</translation>
+        <translation type="unfinished">Poruku potpišemo s SIN adresom, kako bi dokazali vlasništvo nad tom adresom</translation>
+    </message>
+    <message>
+        <source>&amp;Verify message...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified SIN addresses</source>
-        <translation>Provjerite poruku da je potpisana s navedenom SIN adresom</translation>
+        <translation type="unfinished">Provjerite poruku da je potpisana s navedenom SIN adresom</translation>
     </message>
     <message>
-        <source>&amp;File</source>
-        <translation>&amp;Datoteka</translation>
-    </message>
-    <message>
-        <source>&amp;Settings</source>
-        <translation>&amp;Postavke</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation>&amp;Pomoć</translation>
-    </message>
-    <message>
-        <source>Tabs toolbar</source>
-        <translation>Traka kartica</translation>
-    </message>
-    <message>
-        <source>Request payments (generates QR codes and SIN: URIs)</source>
-        <translation type="unfinished">Zatražite uplatu (stvara QR kod i SIN: URI adresu)</translation>
-    </message>
-    <message>
-        <source>Show the list of used sending addresses and labels</source>
-        <translation type="unfinished">Prikažite popis korištenih adresa i oznaka za slanje novca</translation>
-    </message>
-    <message>
-        <source>Show the list of used receiving addresses and labels</source>
-        <translation type="unfinished">Prikažite popis korištenih adresa i oznaka za primanje novca</translation>
-    </message>
-    <message>
-        <source>&amp;Command-line options</source>
-        <translation type="unfinished">Opcije &amp;naredbene linije</translation>
-    </message>
-    <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
-        <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
-        </translation>
-    </message>
-    <message>
-        <source>%1 behind</source>
-        <translation>%1 iza</translation>
-    </message>
-    <message>
-        <source>Last received block was generated %1 ago.</source>
-        <translation>Zadnji primljeni blok je bio ustvaren prije %1.</translation>
-    </message>
-    <message>
-        <source>Transactions after this will not yet be visible.</source>
-        <translation>Transakcije izvršene za tim blokom nisu još prikazane.</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Greška</translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation>Upozorenje</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation>Informacija</translation>
-    </message>
-    <message>
-        <source>Up to date</source>
-        <translation>Ažurno</translation>
+        <source>&amp;Load PSBT from file...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Load Partially Signed SIN Transaction</source>
         <translation type="unfinished">Učitaj djelomično potpisanu SIN transakciju</translation>
+    </message>
+    <message>
+        <source>Load PSBT from clipboard...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Load Partially Signed SIN Transaction from clipboard</source>
@@ -515,12 +451,24 @@
         <translation type="unfinished">Adrese za &amp;slanje</translation>
     </message>
     <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation type="unfinished">Prikažite popis korištenih adresa i oznaka za slanje novca</translation>
+    </message>
+    <message>
         <source>&amp;Receiving addresses</source>
         <translation type="unfinished">Adrese za &amp;primanje</translation>
     </message>
     <message>
-        <source>Open a SIN: URI</source>
-        <translation type="unfinished">Otvori SIN: URI</translation>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation type="unfinished">Prikažite popis korištenih adresa i oznaka za primanje novca</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open a sin: URI</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Wallet</source>
@@ -531,12 +479,32 @@
         <translation type="unfinished">Otvorite neki novčanik</translation>
     </message>
     <message>
+        <source>Close Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Close wallet</source>
         <translation type="unfinished">Zatvorite novčanik</translation>
     </message>
     <message>
+        <source>Create Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new wallet</source>
+        <translation type="unfinished">Stvorite novi novčanik</translation>
+    </message>
+    <message>
+        <source>Close All Wallets...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Close all wallets</source>
         <translation type="unfinished">Zatvori sve novčanike</translation>
+    </message>
+    <message>
+        <source>&amp;Command-line options</source>
+        <translation type="unfinished">Opcije &amp;naredbene linije</translation>
     </message>
     <message>
         <source>Show the %1 help message to get a list with possible SIN command-line options</source>
@@ -549,6 +517,14 @@
     <message>
         <source>No wallets available</source>
         <translation type="unfinished">Nema dostupnih novčanika</translation>
+    </message>
+    <message>
+        <source>&amp;File</source>
+        <translation type="unfinished">&amp;Datoteka</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation type="unfinished">&amp;Postavke</translation>
     </message>
     <message>
         <source>&amp;Window</source>
@@ -567,25 +543,162 @@
         <translation type="unfinished">Glavni prozor</translation>
     </message>
     <message>
+        <source>&amp;Help</source>
+        <translation type="unfinished">&amp;Pomoć</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation type="unfinished">Traka kartica</translation>
+    </message>
+    <message>
+        <source>Wallet:</source>
+        <translation type="unfinished">Novčanik:</translation>
+    </message>
+    <message>
+        <source>BETELGEUSE
+v%1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Options Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open SetUP Wizard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>%1 client</source>
         <translation type="unfinished">%1 klijent</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to SIN network.</source>
-        <extracomment>A substring of the tooltip.</extracomment>
+        <source>%n active connection(s) to SIN network</source>
         <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
+    </message>
+    <message>
+        <source>Click to disable network activity.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <extracomment>A substring of the tooltip.</extracomment>
+        <translation type="unfinished">Mrežna aktivnost isključena.</translation>
+    </message>
+    <message>
+        <source>Click for more actions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Connected Peers : %n</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Show Peers tab</source>
+        <extracomment>A context menu item. The &quot;Peers tab&quot; is an element of the &quot;Node window&quot;.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable network activity</source>
+        <extracomment>A context menu item.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable network activity</source>
+        <extracomment>A context menu item. The network activity was disabled previously.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Processed %n block(s) of transaction history.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation type="unfinished">Ažurno</translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation type="unfinished">%1 iza</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation type="unfinished">Zadnji primljeni blok je bio ustvaren prije %1.</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation type="unfinished">Transakcije izvršene za tim blokom nisu još prikazane.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Greška</translation>
     </message>
     <message>
         <source>Error: %1</source>
         <translation type="unfinished">Greška: %1</translation>
     </message>
     <message>
+        <source>Warning</source>
+        <translation type="unfinished">Upozorenje</translation>
+    </message>
+    <message>
         <source>Warning: %1</source>
         <translation type="unfinished">Upozorenje: %1</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished">Informacija</translation>
     </message>
     <message>
         <source>Date: %1
@@ -624,11 +737,15 @@
     </message>
     <message>
         <source>Sent transaction</source>
-        <translation>Poslana transakcija</translation>
+        <translation type="unfinished">Poslana transakcija</translation>
     </message>
     <message>
         <source>Incoming transaction</source>
-        <translation>Dolazna transakcija</translation>
+        <translation type="unfinished">Dolazna transakcija</translation>
+    </message>
+    <message>
+        <source>Private key &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation type="unfinished">Privatni ključ &lt;b&gt;onemogućen&lt;/b&gt;</translation>
     </message>
     <message>
         <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
@@ -639,23 +756,76 @@
         <translation type="unfinished">Generiranje HD ključeva je &lt;b&gt;isključeno&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>Private key &lt;b&gt;disabled&lt;/b&gt;</source>
-        <translation type="unfinished">Privatni ključ &lt;b&gt;onemogućen&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
-        <translation>Novčanik je &lt;b&gt;šifriran&lt;/b&gt; i trenutno &lt;b&gt;otključan&lt;/b&gt;</translation>
+        <translation type="unfinished">Novčanik je &lt;b&gt;šifriran&lt;/b&gt; i trenutno &lt;b&gt;otključan&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
-        <translation>Novčanik je &lt;b&gt;šifriran&lt;/b&gt; i trenutno &lt;b&gt;zaključan&lt;/b&gt;</translation>
+        <translation type="unfinished">Novčanik je &lt;b&gt;šifriran&lt;/b&gt; i trenutno &lt;b&gt;zaključan&lt;/b&gt;</translation>
     </message>
-    </context>
-<context>
-    <name>UnitDisplayStatusBarControl</name>
     <message>
-        <source>Unit to show amounts in. Click to select another unit.</source>
-        <translation type="unfinished">Jedinica u kojoj ćete prikazati iznose. Kliknite da izabrate drugu jedinicu.</translation>
+        <source>Proxy is &lt;b&gt;enabled&lt;/b&gt;: %1</source>
+        <translation type="unfinished">Proxy je &lt;b&gt;uključen&lt;/b&gt;: %1</translation>
+    </message>
+    <message>
+        <source>Not staking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Staking.&lt;br&gt;Your weight is %1&lt;br&gt;Network weight is %2&lt;br&gt;Expected time to earn reward is %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because wallet is offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because wallet is syncing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because you don&apos;t have mature coins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because wallet is locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Original message:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -750,7 +920,7 @@
     </message>
     <message>
         <source>Copy dust</source>
-        <translation type="unfinished">Kopirajte sićušne iznose ("prašinu")</translation>
+        <translation type="unfinished">Kopirajte sićušne iznose (&quot;prašinu&quot;)</translation>
     </message>
     <message>
         <source>Copy change</source>
@@ -770,7 +940,7 @@
     </message>
     <message>
         <source>This label turns red if any recipient receives an amount smaller than the current dust threshold.</source>
-        <translation type="unfinished">Oznaka postane crvene boje ako bilo koji primatelj dobije iznos manji od trenutnog praga "prašine" (sićušnog iznosa).</translation>
+        <translation type="unfinished">Oznaka postane crvene boje ako bilo koji primatelj dobije iznos manji od trenutnog praga &quot;prašine&quot; (sićušnog iznosa).</translation>
     </message>
     <message>
         <source>Can vary +/- %1 satoshi(s) per input.</source>
@@ -788,6 +958,30 @@
         <source>(change)</source>
         <translation type="unfinished">(ostatak)</translation>
     </message>
+    <message>
+        <source>&amp;Copy address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy transaction &amp;ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>L&amp;ock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Unlock unspent</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateWalletActivity</name>
@@ -799,41 +993,15 @@
         <source>Create wallet warning</source>
         <translation type="unfinished">Upozorenje kod stvaranja novčanika</translation>
     </message>
-    </context>
-<context>
-    <name>OpenWalletActivity</name>
     <message>
-        <source>Open wallet failed</source>
-        <translation type="unfinished">Neuspješno otvaranje novčanika</translation>
+        <source>Creating Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Open wallet warning</source>
-        <translation type="unfinished">Upozorenje kod otvaranja novčanika</translation>
+        <source>Can&apos;t list signers</source>
+        <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>default wallet</source>
-        <translation type="unfinished">uobičajeni novčanik</translation>
-    </message>
-    </context>
-<context>
-    <name>WalletController</name>
-    <message>
-        <source>Close wallet</source>
-        <translation type="unfinished">Zatvorite novčanik</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to close the wallet &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation type="unfinished">Jeste li sigurni da želite zatvoriti novčanik &lt;i&gt;%1&lt;/i&gt;?</translation>
-    </message>
-    <message>
-        <source>Closing the wallet for too long can result in having to resync the entire chain if pruning is enabled.</source>
-        <translation type="unfinished">Držanje novčanik zatvorenim predugo može rezultirati ponovnom sinkronizacijom cijelog lanca ako je obrezivanje uključeno.</translation>
-    </message>
-    <message>
-        <source>Close all wallets</source>
-        <translation type="unfinished">Zatvori sve novčanike</translation>
-    </message>
-    </context>
+</context>
 <context>
     <name>CreateWalletDialog</name>
     <message>
@@ -876,7 +1044,36 @@
         <source>Create</source>
         <translation type="unfinished">Stvorite</translation>
     </message>
-    </context>
+    <message>
+        <source>Advanced Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use descriptors for scriptPubKey management</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Descriptor Wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use an external signing device such as a hardware wallet. Configure the external signer script in wallet preferences first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External signer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compiled without sqlite support (required for descriptor wallets)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compiled without external signing support (required for external signing)</source>
+        <extracomment>&quot;External signing&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>EditAddressDialog</name>
     <message>
@@ -912,16 +1109,16 @@
         <translation type="unfinished">Uredi adresu za slanje</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid SIN address.</source>
-        <translation type="unfinished">Upisana adresa "%1" nije valjana SIN adresa.</translation>
+        <source>The entered address &quot;%1&quot; is not a valid SIN address.</source>
+        <translation type="unfinished">Upisana adresa &quot;%1&quot; nije valjana SIN adresa.</translation>
     </message>
     <message>
-        <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
-        <translation type="unfinished">Adresa "%1" već postoji kao primateljska adresa s oznakom "%2" te se ne može dodati kao pošiljateljska adresa.</translation>
+        <source>Address &quot;%1&quot; already exists as a receiving address with label &quot;%2&quot; and so cannot be added as a sending address.</source>
+        <translation type="unfinished">Adresa &quot;%1&quot; već postoji kao primateljska adresa s oznakom &quot;%2&quot; te se ne može dodati kao pošiljateljska adresa.</translation>
     </message>
     <message>
-        <source>The entered address "%1" is already in the address book with label "%2".</source>
-        <translation type="unfinished">Unesena adresa "%1" postoji već u imeniku pod oznakom "%2".</translation>
+        <source>The entered address &quot;%1&quot; is already in the address book with label &quot;%2&quot;.</source>
+        <translation type="unfinished">Unesena adresa &quot;%1&quot; postoji već u imeniku pod oznakom &quot;%2&quot;.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -930,6 +1127,117 @@
     <message>
         <source>New key generation failed.</source>
         <translation type="unfinished">Stvaranje novog ključa nije uspjelo.</translation>
+    </message>
+</context>
+<context>
+    <name>FaqPage</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Oblik</translation>
+    </message>
+    <message>
+        <source>Frequently Asked Questions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close FAQ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1) What is  SINOVATE?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2) What is an InfinityNode?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3) Multi-Tiered InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4) What is Proof of Stake?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5) What are the Specs and Block Rewards?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6) Where can I get support and more detailed information?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is SINOVATE?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SINOVATE is a state of the art innovative public Blockchain focused on decentralized cloud solutions to overcome scalability, decentralization, and security challenges. We are ready to adapt, evolve, and sustain our relevance in a continuously changing environment. The goal is to launch innovations combined with a user-friendly platform to integrate into daily life. Our team is committed to transparency, accountability, and honesty. Combining both the PoW chain security and PoS chain security through the usage of hybrid proofs and PoB for InfinityNode notarization as an additional Byzantine-Fault-Tolerant (BFT) chain-based algorithm gives the SINOVATE Blockchain the highest, academically proven level of on-chain security. IDS provides high-speed decentralized cloud storage. Leveraging thousands of InfinityNodes that do not require high user fees and enforce network-wide security protocols give users power and control over their private data. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SINOVATE did not have an ICO. There was no pre-sale of coins, and no coins were pre-mined. &lt;/p&gt;&lt;p&gt;Since its inception in September 2018, the SINOVATE project has strived to deliver innovative solutions in the blockchain space. A complete democratic solution was created by respecting and taking on board opinions from the community. Ultimately, the community is the most critical aspect of any blockchain project. It is vital for all members of the community to feel welcome and appreciated.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SINOVATE has a different perspective on how to utilize blockchain technology to improve private and corporate parties.&lt;/p&gt;&lt;p&gt;The goal is to create a blockchain platform in which the community&apos;s needs are accommodated while learning from past mistakes and misfortune. SINOVATE is committed to transparency, accountability, and honesty as they strive to solve existing problems within the blockchain technology space. As succinctly put by the slogan; create, build, and innovate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is an InfinityNode?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;InfinityNodes are a first of its kind of burn-collateralized nodes that receive monetary incentives for running their hardware and hosting files. They are the backbone of the IDS network. Like other Blockchains work, the main SINOVATE chain relies upon nodes dispersed across the globe without concern for borders or jurisdiction. Each node hosts a copy of the main SIN Blockchain. InfinityNodes use a custom deterministic reward algorithm secured by Schnorr signatures for node validation. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;They provide bespoke functions such as controlling inflation and storing data that regular nodes cannot deliver. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Deterministic InfinityNodes are superior to Dash legacy masternodes or any other service nodes.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;1. Schnorr based Multi-Signature signing scheme (MuSig) &lt;/p&gt;&lt;p&gt;2. Provably fair and openly verifiable fully deterministic node rewards &lt;/p&gt;&lt;p&gt;3. Inflation control with a burn-to-run node ecosystem &lt;/p&gt;&lt;p&gt;4. Fully on-chain node registration and servicing &lt;/p&gt;&lt;p&gt;5. Decentralized Autonomous Organisation (DAO) with node democracy &lt;/p&gt;&lt;p&gt;6. Node incentives ensure sustainability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multi-Tiered InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An InfinityNode is an improved version of a conventional masternode implemented by the DASH cryptocurrency. There are still many similarities between the two. Going forward SINOVATE InfinityNodes will differentiate entirely from the DASH masternode code, and SINOVATE will become the first of its kind, a pure InfinityNode 1.0 Platform.There are three different tiers of InfinityNode available for users of the SINOVATE network. It is described as an evolution of previously implemented masternode technology by other blockchain projects. Each tier or layer provides different functions, but they all increase the overall decentralization and stability of the network. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Each tier requires different collateral in order to create the InfinityNode: &lt;/p&gt;&lt;p&gt;1. 100,000 SIN coins for Mini SIN&lt;/p&gt;&lt;p&gt;2. 500,000 SIN coins for Mid SIN &lt;/p&gt;&lt;p&gt;3. 1,000,000 SIN coins for Big SIN &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SIN coins used to create InfinityNodes are burnt and sent to the unspendable SIN wallet address below for full transparency.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SinBurnAddress123456789SuqaXbx3AMC&lt;br/&gt;&lt;br/&gt;For the installation guides, please visit &lt;a href=&quot;https://docs.sinovate.io/#/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;https://docs.sinovate.io/#/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is Proof of Stake?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Proof of Stake, or PoS, is a consensus algorithm that helps secure the SINOVATE blockchain and rewards participants. Anyone with coins in their wallet can start staking, which grants a chance at winning rewards on successfully proposed blocks. All of this is seamlessly taken care of by the wallet backend, so once you have activated staking, you are good to go.&lt;/p&gt;&lt;p&gt;Coins will be staked automatically after 14400 blocks, and stake rewards can be spent after 1440 blocks. This is done to ensure fair participation and offers higher security from a chain perspective.&lt;/p&gt;&lt;p&gt;Anyone with coins can start staking. Staking grants a chance at winning rewards on successfully proposed blocks. To start Stake, click on the Staking &amp;quot;switch button&amp;quot; and keep the wallet running.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What are the Specs and Block Rewards?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name: SINOVATE&lt;/p&gt;&lt;p&gt;Ticker: SIN&lt;/p&gt;&lt;p&gt;Proof-of-Work Algorithm: X25X &lt;/p&gt;&lt;p&gt;Proof-of-Stake Algorithm: PoS4&lt;/p&gt;&lt;p&gt;Collateralized Nodes: Deterministic InfinityNodes&lt;/p&gt;&lt;p&gt;Block Rewards: PoS 50 SIN, PoW 12.5 SIN &amp;amp; InfinityNodes tiered rewards&lt;/p&gt;&lt;p&gt;Block Time: 1 minute&lt;/p&gt;&lt;p&gt;Current Blockchain Size: 2.8 GB&lt;/p&gt;&lt;p&gt;Difficulty Retargeting Algo: LWMA&lt;/p&gt;&lt;p&gt;DAO Governance: RSV Revolving Sovereignty Votes&lt;/p&gt;&lt;p&gt;51% Attack Solution: Deterministically signed chain tips and 55 blocks finality&lt;/p&gt;&lt;p&gt;InfinityNodes Collateral: 100K-500K-1000K (three-tiers)&lt;/p&gt;&lt;p&gt;Max Supply: Yearly Deflating Supply with Proof-of-Burn (uncapped)&lt;/p&gt;&lt;p&gt;Premine: No&lt;/p&gt;&lt;p&gt;P2P Port: 20970&lt;/p&gt;&lt;p&gt;RPC Port: 20971&lt;/p&gt;&lt;p&gt;TPS: No segwit 1120 tx/s (theoretical), segwit-only 2240 tx/s (theoretical)&lt;/p&gt;&lt;p&gt;Treasury: 10% skim of each block subsidy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What are the Specifications and Block Rewards?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can get continuous support through our &lt;a href=&quot;https://discordapp.com/invite/CWbnW5y&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Discord&lt;/span&gt;&lt;/a&gt; support channel.&lt;/p&gt;&lt;p&gt;For more detailed information, you can visit the &lt;a href=&quot;https://sinovate.io/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;sinovate.io&lt;/span&gt;&lt;/a&gt; website. You can also check out our &lt;a href=&quot;https://sinovate.io/sin-whitepaper/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Whitepaper&lt;/span&gt;&lt;/a&gt; and &lt;a href=&quot;https://sinovate.io/SINOVATE_litepaper.pdf&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Litepaper&lt;/span&gt;&lt;/a&gt; documents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -956,6 +1264,577 @@
     </message>
 </context>
 <context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation type="unfinished">verzija</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">O programu %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation type="unfinished">Opcije programa u naredbenoj liniji</translation>
+    </message>
+</context>
+<context>
+    <name>InfinitynodeList</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Oblik</translation>
+    </message>
+    <message>
+        <source>InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by owner address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Status&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expired</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incomplete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished">Nepoznato</translation>
+    </message>
+    <message>
+        <source>Filter by IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by peer address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by burn tx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Node Tier&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MINI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BIG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by backup addres</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner address/Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Begin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Peer address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Burn Tx ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node tier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backup address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blockcount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes Ready:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes Expired:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes Incomplete:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right click on the table header to hide / show the columns.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right click IP address to check node stats (55 updatemeta confirmations to appear in the list.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1-Click Node setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Enter password&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>big APY % NaN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MID Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MINI Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mini APY % NaN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0.00 SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BIG Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>100 000 SIN Burn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 000 000 SIN Burn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>500 000 SIN Burn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mid APY % NaN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter email/pass to create a new user or login with existing one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start over</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pending Invoice:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>START</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create new BurnTx or migrate (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select DIN hosting billing cycle (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1-Click setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pay pending invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#11</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#12</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit https://setup.sinovate.io</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check node status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check ALL nodes status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Da</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Ne</translation>
+    </message>
+    <message>
+        <source>DIN node must be in Ready status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node status check timeout:
+Check if your Node Setup password is correct, then try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You didn&apos;t pass the funds check. Please review.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maintenance Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We are sorry, internet connection issue or system maintenance. Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order placed successfully. Order ID #%d Invoice ID #%d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm Invoice Payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pending Invoice Payment finished, please wait for confirmations.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error getting new wallet address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR getnewaddress: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please Unlock Wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In order to make payments, please unlock your wallet and retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR sendtoaddress: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error calling RPC gettransaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR gettransaction: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order cancelled or refunded, creating a new order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice amount %f SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice paid, waiting for confirmation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to pay </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press Reset Order button to cancel node setup process, or Continue setUP button to resume.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlocking wallet is required to make the payments.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paying invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Payment finished, please wait until platform confirms payment to proceed to node creation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice paid with balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maturing, please wait...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Failed to prepare burn transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preparing burn transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error calling RPC getrawtransaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error RPC obtaining owner address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR get owner address: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sending burn transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Failed to create burn transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finishing node setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node setup finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node setup failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeupdatemeta: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: infinitynodeupdatemeta </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeburnfund: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeburnfund: Unknown response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeburnfund: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is an order ongoing (#%d). Press &apos;Continue&apos; or &apos;Reset&apos; order.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a node Tier and then follow below steps for setup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a node Tier and press &apos;START&apos; to verify if you meet the prerequisites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Create new&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking funds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Funds available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> : Not enough funds to pay invoice amount. (you have </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> , need </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> : Not enough amount for UpdateMeta operation (you have </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> , you need </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> : Not enough funds (you have </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node Setup password is not stored. Please enter nodeSetup password and retry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Balance : </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monthly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Semiannually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Annually</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Intro</name>
     <message>
         <source>At least %1 GB of data will be stored in this directory, and it will grow over time.</source>
@@ -969,9 +1848,9 @@
         <source>(sufficient to restore backups %n day(s) old)</source>
         <extracomment>Explanatory text on the capability of the current prune target.</extracomment>
         <translation type="unfinished">
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -983,8 +1862,8 @@
         <translation type="unfinished">Novčanik bit će pohranjen u ovoj mapi.</translation>
     </message>
     <message>
-        <source>Error: Specified data directory "%1" cannot be created.</source>
-        <translation type="unfinished">Greška: Zadana podatkovna mapa "%1" ne može biti stvorena.</translation>
+        <source>Error: Specified data directory &quot;%1&quot; cannot be created.</source>
+        <translation type="unfinished">Greška: Zadana podatkovna mapa &quot;%1&quot; ne može biti stvorena.</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1026,27 +1905,45 @@
         <source>Use a custom data directory:</source>
         <translation>Odaberite različitu podatkovnu mapu:</translation>
     </message>
-</context>
-<context>
-    <name>HelpMessageDialog</name>
     <message>
-        <source>version</source>
-        <translation type="unfinished">verzija</translation>
+        <source>User Interface language:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About %1</source>
-        <translation type="unfinished">O programu %1</translation>
+        <source>Limit block chain storage to</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Command-line options</source>
-        <translation type="unfinished">Opcije programa u naredbenoj liniji</translation>
+        <source> GB</source>
+        <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>ShutdownWindow</name>
     <message>
-        <source>Do not shut down the computer until this window disappears.</source>
-        <translation type="unfinished">Ne ugasite računalo dok ovaj prozor ne nestane.</translation>
+        <source>As this is the first time the program is launched, you can choose a theme. You can also change this setting later in the Options/Display menu.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark Blue Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 GB of free space available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(of %1 GB needed)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(%1 GB needed for full chain)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1054,14 +1951,6 @@
     <message>
         <source>Form</source>
         <translation type="unfinished">Oblik</translation>
-    </message>
-    <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the SIN network, as detailed below.</source>
-        <translation type="unfinished">Nedavne transakcije možda još nisu vidljive pa vam stanje novčanika može biti netočno. Ove informacije bit će točne nakon što vaš novčanik dovrši sinkronizaciju s SINovom mrežom, kako je opisano dolje.</translation>
-    </message>
-    <message>
-        <source>Attempting to spend SINs that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation type="unfinished">Mreža neće prihvatiti pokušaje trošenja SINa koji su utjecani sa strane transakcija koje još nisu vidljive.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1087,14 +1976,65 @@
         <source>Hide</source>
         <translation type="unfinished">Sakrijte</translation>
     </message>
-    </context>
+    <message>
+        <source>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Sinovate Blockchain, as detailed below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attempting to spend SIN that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>Unknown…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>calculating…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 is currently syncing.  It will download headers and blocks from peers and validate them until reaching the tip of the block chain.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1, %2%)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open SIN URI</source>
-        <translation type="unfinished">Otvori SIN: URI</translation>
+        <source>Open sin URI</source>
+        <translation type="unfinished"></translation>
     </message>
-    </context>
+    <message>
+        <source>URI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OpenWalletActivity</name>
+    <message>
+        <source>Open wallet failed</source>
+        <translation type="unfinished">Neuspješno otvaranje novčanika</translation>
+    </message>
+    <message>
+        <source>Open wallet warning</source>
+        <translation type="unfinished">Upozorenje kod otvaranja novčanika</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation type="unfinished">uobičajeni novčanik</translation>
+    </message>
+    <message>
+        <source>Opening Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>OptionsDialog</name>
     <message>
@@ -1140,10 +2080,6 @@
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
         <translation type="unfinished">Otvorite konfiguracijsku datoteku programa %1 s radne mape.</translation>
-    </message>
-    <message>
-        <source>Open Configuration File</source>
-        <translation type="unfinished">Otvorite konfiguracijsku datoteku</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -1278,10 +2214,6 @@
         <translation type="unfinished">Ovisi želite li prikazati mogućnosti kontroliranja inputa ili ne.</translation>
     </message>
     <message>
-        <source>&amp;Third party transaction URLs</source>
-        <translation type="unfinished">&amp;URL-ovi treće stranke o transakciji</translation>
-    </message>
-    <message>
         <source>Options set in this dialog are overridden by the command line or in the configuration file:</source>
         <translation type="unfinished">Opcije postavljene u ovom dijalogu nadglašene su naredbenom linijom ili konfiguracijskom datotekom:</translation>
     </message>
@@ -1337,6 +2269,75 @@
         <source>The supplied proxy address is invalid.</source>
         <translation>Priložena proxy adresa je nevažeća.</translation>
     </message>
+    <message>
+        <source>Disables some advanced features but all blocks will still be fully validated. Reverting this setting requires re-downloading the entire blockchain. Actual disk usage may be somewhat higher.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External Signer (e.g. hardware wallet)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;External signer script path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full path to a SIN Core compatible script (e.g. C:\Downloads\hwi.exe or /Users/you/Downloads/hwi.py). Beware: malware can steal your coins!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Automatically open the SIN client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Map port using NA&amp;T-PMP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Proxy &amp;IP:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect to the SIN network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide the icon from the system tray.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Show tray icon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Third party transaction URLs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Interface &amp;style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Configuration File </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Compiled without external signing support (required for external signing)</source>
+        <extracomment>&quot;External signing&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm wallet restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to restart your wallet?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OverviewPage</name>
@@ -1357,48 +2358,16 @@
         <translation type="unfinished">Dostupno:</translation>
     </message>
     <message>
-        <source>Your current spendable balance</source>
-        <translation>Trenutno stanje koje možete trošiti</translation>
-    </message>
-    <message>
         <source>Pending:</source>
         <translation type="unfinished">Neriješeno:</translation>
-    </message>
-    <message>
-        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
-        <translation>Ukupan iznos transakcija koje se još moraju potvrditi te se ne računa kao stanje koje se može trošiti</translation>
     </message>
     <message>
         <source>Immature:</source>
         <translation>Nezrelo:</translation>
     </message>
     <message>
-        <source>Mined balance that has not yet matured</source>
-        <translation>Izrudareno stanje koje još nije dozrijevalo</translation>
-    </message>
-    <message>
-        <source>Balances</source>
-        <translation type="unfinished">Stanja</translation>
-    </message>
-    <message>
-        <source>Total:</source>
-        <translation>Ukupno:</translation>
-    </message>
-    <message>
-        <source>Your current total balance</source>
-        <translation>Vaše trenutno svekupno stanje</translation>
-    </message>
-    <message>
         <source>Your current balance in watch-only addresses</source>
         <translation type="unfinished">Vaše trenutno stanje kod eksluzivno promatranih (watch-only) adresa</translation>
-    </message>
-    <message>
-        <source>Spendable:</source>
-        <translation type="unfinished">Stanje koje se može trošiti:</translation>
-    </message>
-    <message>
-        <source>Recent transactions</source>
-        <translation type="unfinished">Nedavne transakcije</translation>
     </message>
     <message>
         <source>Unconfirmed transactions to watch-only addresses</source>
@@ -1412,7 +2381,107 @@
         <source>Current total balance in watch-only addresses</source>
         <translation type="unfinished">Trenutno ukupno stanje na isključivo promatranim adresama</translation>
     </message>
-    </context>
+    <message>
+        <source>Value USD :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value BTC :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Receive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RecentTransactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Datum</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">Tip</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Oznaka</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation type="unfinished">Iznos</translation>
+    </message>
+    <message>
+        <source>ROADMAP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WALLET</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DISCORD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EXCHANGES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FAQ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DOCS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WEB TOOL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EXPLORER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LITEPAPER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value EUR: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0.00000000 EUR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Available EUR: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Privacy mode activated for the Overview tab. To unmask the values, uncheck Settings-&gt;Mask values.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>PSBTOperationsDialog</name>
     <message>
@@ -1427,7 +2496,116 @@
         <source>or</source>
         <translation type="unfinished">ili</translation>
     </message>
-    </context>
+    <message>
+        <source>Sign Tx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Broadcast Tx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy to Clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>Save…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to load transaction: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to sign transaction: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not sign any more inputs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Signed %1 inputs, but more signatures are still required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Signed transaction successfully. Transaction is ready to broadcast.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown error processing transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transaction broadcast successfully! Transaction ID: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transaction broadcast failed: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PSBT copied to clipboard.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Transaction Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Partially Signed Transaction (Binary)</source>
+        <extracomment>Expanded name of the binary PSBT file format. See: BIP 174.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PSBT saved to disk.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> * Sends %1 to %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to calculate transaction fee or total transaction amount.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pays transaction fee: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transaction has %1 unsigned inputs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transaction is missing some information about inputs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transaction still needs signature(s).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(But this wallet cannot sign transactions.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(But this wallet does not have the right keys.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transaction is fully signed and ready for broadcast.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transaction status is unknown.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>PaymentServer</name>
     <message>
@@ -1435,16 +2613,8 @@
         <translation type="unfinished">Greška kod zahtjeva za plaćanje</translation>
     </message>
     <message>
-        <source>Cannot start SIN: click-to-pay handler</source>
-        <translation type="unfinished">Ne može se pokrenuti klijent: rukovatelj "kliknite da platite"</translation>
-    </message>
-    <message>
         <source>URI handling</source>
         <translation type="unfinished">URI upravljanje</translation>
-    </message>
-    <message>
-        <source>'SIN://' is not a valid URI. Use 'SIN:' instead.</source>
-        <translation type="unfinished">'SIN://' nije ispravan URI. Koristite 'SIN:' umjesto toga.</translation>
     </message>
     <message>
         <source>URI cannot be parsed! This can be caused by an invalid SIN address or malformed URI parameters.</source>
@@ -1454,12 +2624,26 @@
         <source>Payment request file handling</source>
         <translation type="unfinished">Rukovanje datotekom zahtjeva za plaćanje</translation>
     </message>
+    <message>
+        <source>Cannot start sin: click-to-pay handler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;sin://&apos; is not a valid URI. Use &apos;sin:&apos; instead.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot process payment request because BIP70 is not supported.
+Due to widespread security flaws in BIP70 it&apos;s strongly recommended that any merchant instructions to switch wallets be ignored.
+If you are receiving this error you should request the merchant provide a BIP21 compatible URI.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PeerTableModel</name>
     <message>
         <source>User Agent</source>
-        <extracomment>Title of Peers Table column which contains the peer's User Agent string.</extracomment>
+        <extracomment>Title of Peers Table column which contains the peer&apos;s User Agent string.</extracomment>
         <translation type="unfinished">Korisnički agent</translation>
     </message>
     <message>
@@ -1479,13 +2663,256 @@
     </message>
     <message>
         <source>Type</source>
-        <extracomment>Title of Peers Table column which describes the type of peer connection. The "type" describes why the connection exists.</extracomment>
+        <extracomment>Title of Peers Table column which describes the type of peer connection. The &quot;type&quot; describes why the connection exists.</extracomment>
         <translation type="unfinished">Tip</translation>
     </message>
     <message>
         <source>Network</source>
         <extracomment>Title of Peers Table column which states the network the peer connected through.</extracomment>
         <translation type="unfinished">Mreža</translation>
+    </message>
+    <message>
+        <source>Peer</source>
+        <extracomment>Title of Peers Table column which contains a unique number used to identify a connection.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <extracomment>Title of Peers Table column which indicates the current latency of the connection with the peer.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Error: Specified data directory &quot;%1&quot; does not exist.</source>
+        <translation type="unfinished">Greška: Zadana podatkovna mapa &quot;%1&quot; ne postoji.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1.</source>
+        <translation type="unfinished">Greška: Ne može se parsirati konfiguracijska datoteka: %1.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation type="unfinished">Greška: %1</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished">nepoznato</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation type="unfinished">Iznos</translation>
+    </message>
+    <message>
+        <source>Enter a SIN address (e.g. %1)</source>
+        <translation type="unfinished">Unesite SIN adresu (npr. %1)</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation type="unfinished">Dolazni</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation type="unfinished">Izlazni</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Ništa</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation type="unfinished">%1 i %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Error initializing settings: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 didn&apos;t yet exit safely...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation type="unfinished">Jedinica u kojoj ćete prikazati iznose. Kliknite da izabrate drugu jedinicu.</translation>
+    </message>
+    <message>
+        <source>Unroutable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Full Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feeler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address Fetch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 kB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Blog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Docs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buy Sinovate Coin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Block Explorer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Discord Channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sinovate Roadmap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate WebTool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download Latest Sinovate Wallets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sinovate LitePaper</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open FAQ Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light blue theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark blue theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No wallet has been loaded.
+Go to File &gt; Open Wallet to load a wallet.
+- OR -</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new wallet</source>
+        <translation type="unfinished">Stvorite novi novčanik</translation>
     </message>
 </context>
 <context>
@@ -1510,7 +2937,51 @@
         <source>Save QR Code</source>
         <translation type="unfinished">Spremi QR kod</translation>
     </message>
-    </context>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PNG Image</source>
+        <extracomment>Expanded name of the PNG file format. See https://en.wikipedia.org/wiki/Portable_Network_Graphics</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QSwitchControl</name>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm Staking!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;WARNING!&lt;/h2&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When the &lt;b&gt;Staking&lt;/b&gt; button is turned on, all the available coins will start staking and will not be available for 14400 blocks (~10 days)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If some coins are not intended for staking, &lt;b&gt;first go to INPUTS in SEND Tab and lock some of the inputs!&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Da</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Ne</translation>
+    </message>
+</context>
 <context>
     <name>RPCConsole</name>
     <message>
@@ -1530,12 +3001,12 @@
         <translation type="unfinished">Datadir (podatkovna mapa)</translation>
     </message>
     <message>
-        <source>To specify a non-default location of the data directory use the '%1' option.</source>
-        <translation type="unfinished">Koristite opciju '%1' ako želite zadati drugu lokaciju podatkovnoj mapi.</translation>
+        <source>To specify a non-default location of the data directory use the &apos;%1&apos; option.</source>
+        <translation type="unfinished">Koristite opciju &apos;%1&apos; ako želite zadati drugu lokaciju podatkovnoj mapi.</translation>
     </message>
     <message>
-        <source>To specify a non-default location of the blocks directory use the '%1' option.</source>
-        <translation type="unfinished">Koristite opciju '%1' ako želite zadati drugu lokaciju mapi u kojoj se nalaze blokovi.</translation>
+        <source>To specify a non-default location of the blocks directory use the &apos;%1&apos; option.</source>
+        <translation type="unfinished">Koristite opciju &apos;%1&apos; ako želite zadati drugu lokaciju mapi u kojoj se nalaze blokovi.</translation>
     </message>
     <message>
         <source>Startup time</source>
@@ -1742,8 +3213,8 @@
         <translation type="unfinished">Izvršava se naredba bez bilo kakvog novčanika</translation>
     </message>
     <message>
-        <source>Executing command using "%1" wallet</source>
-        <translation type="unfinished">Izvršava se naredba koristeći novčanik "%1"</translation>
+        <source>Executing command using &quot;%1&quot; wallet</source>
+        <translation type="unfinished">Izvršava se naredba koristeći novčanik &quot;%1&quot;</translation>
     </message>
     <message>
         <source>via %1</source>
@@ -1773,6 +3244,153 @@
         <source>Unknown</source>
         <translation type="unfinished">Nepoznato</translation>
     </message>
+    <message>
+        <source>N/A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocksdir</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current block height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The direction and type of peer connection: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Direction/Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The network protocol this peer is connected through: IPv4, IPv6, Onion, I2P, or CJDNS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Whether the peer requested us to relay transactions.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wants Tx Relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>High bandwidth BIP152 compact block relay: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>High Bandwidth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Elapsed time since a novel block passing initial validity checks was received from this peer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Elapsed time since a novel transaction accepted into our mempool was received from this peer.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Tx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The mapped Autonomous System used for diversifying peer selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inbound: initiated by peer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Full Relay: default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Block Relay: does not relay transactions or addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Manual: added using RPC %1 or %2/%3 configuration options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Feeler: short-lived, for testing addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outbound Address Fetch: short-lived, for soliciting addresses</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>we selected the peer for high bandwidth relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>the peer selected us for high bandwidth relay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no high bandwidth relay selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl++</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+=</source>
+        <extracomment>Secondary shortcut to increase the RPC console font size.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <extracomment>Main shortcut to decrease the RPC console font size.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+_</source>
+        <extracomment>Secondary shortcut to decrease the RPC console font size.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 d&amp;ay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Welcome to the %1 RPC console.
+Use up and down arrows to navigate history, and %2 to clear screen.
+Use %3 and %4 to increase or decrease the font size.
+Type %5 for an overview of available commands.
+For more information on using this console, type %6.
+
+%7WARNING: Scammers have been active, telling users to type commands here, stealing their wallet contents. Do not use this console without fully understanding the ramifications of a command.%8</source>
+        <extracomment>RPC console welcome message. Placeholders %7 and %8 are style tags for the warning content, and they are not space separated from the rest of the text intentionally.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Executing...</source>
+        <extracomment>A console message indicating an entered command is currently being executed.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(peer: %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ReceiveCoinsDialog</name>
@@ -1787,10 +3405,6 @@
     <message>
         <source>&amp;Message:</source>
         <translation type="unfinished">&amp;Poruka:</translation>
-    </message>
-    <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the SIN network.</source>
-        <translation type="unfinished">Opcionalna poruka koja se može dodati kao privitak zahtjevu za plaćanje. Bit će prikazana kad je zahtjev otvoren. Napomena: Ova poruka neće biti poslana zajedno s uplatom preko SIN mreže.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -1809,19 +3423,7 @@
         <translation type="unfinished">Izborna poruka je priložena zahtjevu za plaćanje i može se prikazati pošiljatelju.</translation>
     </message>
     <message>
-        <source>&amp;Create new receiving address</source>
-        <translation type="unfinished">&amp;Stvorite novu primateljsku adresu</translation>
-    </message>
-    <message>
-        <source>Clear all fields of the form.</source>
-        <translation type="unfinished">Obriši sva polja</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="unfinished">Obrišite</translation>
-    </message>
-    <message>
-        <source>Native segwit addresses (aka Bech32 or BIP-173) reduce your transaction fees later on and offer better protection against typos, but old wallets don't support them. When unchecked, an address compatible with older wallets will be created instead.</source>
+        <source>Native segwit addresses (aka Bech32 or BIP-173) reduce your transaction fees later on and offer better protection against typos, but old wallets don&apos;t support them. When unchecked, an address compatible with older wallets will be created instead.</source>
         <translation type="unfinished">Izvorne SegWit adrese (tzv. Bech32 ili BIP-173) smanjuju vaše transakcijske naknade ubuduće i nude bolju zaštitu protiv tipfelera, ali stari novčanici ih ne podržavaju. Kada je ova opcija isključena, bit će umjesto toga stvorena adresa koja je kompatibilna sa starijim novčanicima.</translation>
     </message>
     <message>
@@ -1856,33 +3458,49 @@
         <source>Could not unlock wallet.</source>
         <translation type="unfinished">Ne može se otključati novčanik.</translation>
     </message>
-    </context>
+    <message>
+        <source>Request payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Sinovate network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An optional label to associate with the new receiving address (used by you to identify an invoice).  It is also attached to the payment request.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Odustani</translation>
+    </message>
+    <message>
+        <source>S&amp;ubmit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Copy address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy &amp;amount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not generate new %1 address</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>ReceiveRequestDialog</name>
-    <message>
-        <source>Amount:</source>
-        <translation type="unfinished">Iznos:</translation>
-    </message>
-    <message>
-        <source>Label:</source>
-        <translation type="unfinished">Oznaka</translation>
-    </message>
-    <message>
-        <source>Message:</source>
-        <translation type="unfinished">Poruka:</translation>
-    </message>
-    <message>
-        <source>Wallet:</source>
-        <translation type="unfinished">Novčanik:</translation>
-    </message>
-    <message>
-        <source>Copy &amp;URI</source>
-        <translation type="unfinished">Kopiraj &amp;URI</translation>
-    </message>
-    <message>
-        <source>Copy &amp;Address</source>
-        <translation type="unfinished">Kopiraj &amp;adresu</translation>
-    </message>
     <message>
         <source>Payment information</source>
         <translation type="unfinished">Informacije o uplati</translation>
@@ -1890,6 +3508,42 @@
     <message>
         <source>Request payment to %1</source>
         <translation type="unfinished">&amp;Zatražite plaćanje na adresu %1</translation>
+    </message>
+    <message>
+        <source>QR Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QR image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation type="unfinished">Adresa</translation>
+    </message>
+    <message>
+        <source>Ge&amp;t New Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Request Payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation type="unfinished">Obriši &amp;sve</translation>
     </message>
 </context>
 <context>
@@ -1990,18 +3644,6 @@
         <translation type="unfinished">po kilobajtu</translation>
     </message>
     <message>
-        <source>Hide</source>
-        <translation type="unfinished">Sakrijte</translation>
-    </message>
-    <message>
-        <source>Recommended:</source>
-        <translation type="unfinished">Preporučeno:</translation>
-    </message>
-    <message>
-        <source>Custom:</source>
-        <translation type="unfinished">Zadano:</translation>
-    </message>
-    <message>
         <source>Send to multiple recipients at once</source>
         <translation>Pošalji novce većem broju primatelja u jednoj transakciji</translation>
     </message>
@@ -2018,15 +3660,6 @@
         <translation type="unfinished">Prah:</translation>
     </message>
     <message>
-        <source>Hide transaction fee settings</source>
-        <translation type="unfinished">Sakrijte postavke za transakcijske provizije
-</translation>
-    </message>
-    <message>
-        <source>When there is less transaction volume than space in the blocks, miners as well as relaying nodes may enforce a minimum fee. Paying only this minimum fee is just fine, but be aware that this can result in a never confirming transaction once there is more demand for SIN transactions than the network can process.</source>
-        <translation type="unfinished">Kada je kapacitet transakcija manja od prostora u blokovima, rudari i čvorovi prenositelji mogu zatražiti minimalnu naknadu. Prihvatljivo je platiti samo ovu minimalnu naknadu, ali budite svjesni da ovime može nastati transakcija koja se nikad ne potvrđuje čim je potražnja za korištenjem SINa veća nego što mreža može obraditi.</translation>
-    </message>
-    <message>
         <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
         <translation type="unfinished">Preniska naknada može rezultirati transakcijom koja se nikad ne potvrđuje (vidite oblačić)</translation>
     </message>
@@ -2039,7 +3672,7 @@
         <translation type="unfinished">Uključite Replace-By-Fee</translation>
     </message>
     <message>
-        <source>With Replace-By-Fee (BIP-125) you can increase a transaction's fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
+        <source>With Replace-By-Fee (BIP-125) you can increase a transaction&apos;s fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
         <translation type="unfinished">Pomoću mogućnosti Replace-By-Fee (BIP-125) možete povećati naknadu transakcije nakon što je poslana. Bez ovoga može biti preporučena veća naknada kako bi nadoknadila povećani rizik zakašnjenja transakcije.</translation>
     </message>
     <message>
@@ -2080,7 +3713,7 @@
     </message>
     <message>
         <source>Copy dust</source>
-        <translation type="unfinished">Kopirajte sićušne iznose ("prašinu")</translation>
+        <translation type="unfinished">Kopirajte sićušne iznose (&quot;prašinu&quot;)</translation>
     </message>
     <message>
         <source>Copy change</source>
@@ -2095,12 +3728,12 @@
         <translation type="unfinished">Cr&amp;eate nije potpisan</translation>
     </message>
     <message>
-        <source> from wallet '%1'</source>
-        <translation type="unfinished">iz novčanika '%1'</translation>
+        <source> from wallet &apos;%1&apos;</source>
+        <translation type="unfinished">iz novčanika &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>%1 to '%2'</source>
-        <translation type="unfinished">od %1 do '%2'</translation>
+        <source>%1 to &apos;%2&apos;</source>
+        <translation type="unfinished">od %1 do &apos;%2&apos;</translation>
     </message>
     <message>
         <source>%1 to %2</source>
@@ -2189,9 +3822,9 @@
     <message numerus="yes">
         <source>Estimated to begin confirmation within %n block(s).</source>
         <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2214,6 +3847,91 @@
         <source>(no label)</source>
         <translation type="unfinished">(nema oznake)</translation>
     </message>
+    <message>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recommended</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then &quot;per kilobyte&quot; only pays 250 satoshis in fee, while &quot;total at least&quot; pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When there is less transaction volume than space in the blocks, miners as well as relaying nodes may enforce a minimum fee. Paying only this minimum fee is just fine, but be aware that this can result in a never confirming transaction once there is more demand for sin transactions than the network can process.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign on device</source>
+        <extracomment>&quot;device&quot; usually means a hardware wallet</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect your hardware wallet first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set external signer script path in Options -&gt; Wallet</source>
+        <extracomment>&quot;External signer&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Creates a Partially Signed SIN Transaction (PSBT) for use with e.g. an offline %1 wallet, or a PSBT-compatible hardware wallet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please, review your transaction proposal. This will produce a Partially Signed SIN Transaction (PSBT) which you can save or copy and then sign with e.g. an offline %1 wallet, or a PSBT-compatible hardware wallet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To review recipient list click &quot;Show Details...&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Unsigned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign and send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External signer not found</source>
+        <extracomment>&quot;External signer&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External signer failure</source>
+        <extracomment>&quot;External signer&quot; means using devices such as hardware wallets.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Transaction Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Partially Signed Transaction (Binary)</source>
+        <extracomment>Expanded name of the binary PSBT file format. See: BIP 174.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PSBT saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>External balance:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -2234,10 +3952,6 @@
         <translation type="unfinished">Odaberite prethodno korištenu adresu</translation>
     </message>
     <message>
-        <source>The SIN address to send the payment to</source>
-        <translation type="unfinished">SIN adresa na koju ćete poslati uplatu</translation>
-    </message>
-    <message>
         <source>Paste address from clipboard</source>
         <translation>Zalijepi adresu iz međuspremnika</translation>
     </message>
@@ -2248,10 +3962,6 @@
     <message>
         <source>The amount to send in the selected unit</source>
         <translation type="unfinished">Iznos za slanje u odabranoj valuti </translation>
-    </message>
-    <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less SINs than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation type="unfinished">Naknada će biti oduzeta od poslanog iznosa. Primatelj će primiti manji iznos od onoga koji unesete u polje iznosa. Ako je odabrano više primatelja, onda će naknada biti podjednako raspodijeljena.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2278,16 +3988,43 @@
         <translation type="unfinished">Unesite oznaku za ovu adresu kako bi ju dodali u vaš adresar</translation>
     </message>
     <message>
-        <source>A message that was attached to the SIN: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the SIN network.</source>
-        <translation type="unfinished">Poruka koja je dodana uplati: URI koji će biti spremljen s transakcijom za referencu. Napomena: Ova poruka neće biti poslana preko SIN mreže.</translation>
-    </message>
-    <message>
         <source>Pay To:</source>
         <translation type="unfinished">Primatelj plaćanja:</translation>
     </message>
     <message>
         <source>Memo:</source>
         <translation type="unfinished">Zapis:</translation>
+    </message>
+    <message>
+        <source>A message that was attached to the sin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Sin network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less sin than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The SIN address to send the payment to&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation type="unfinished">Ne ugasite računalo dok ovaj prozor ne nestane.</translation>
+    </message>
+    <message>
+        <source>%1 is shutting down...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2299,10 +4036,6 @@
     <message>
         <source>&amp;Sign Message</source>
         <translation>&amp;Potpišite poruku</translation>
-    </message>
-    <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive SINs sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation type="unfinished">Možete potpisati poruke/dogovore svojim adresama kako biste dokazali da možete pristupiti SINima poslanim na te adrese. Budite oprezni da ne potpisujte ništa nejasno ili nasumično, jer napadi phishingom vas mogu prevariti da prepišite svoj identitet njima. Potpisujte samo detaljno objašnjene izjave s kojima se slažete.</translation>
     </message>
     <message>
         <source>The SIN address to sign the message with</source>
@@ -2349,7 +4082,7 @@
         <translation>&amp;Potvrdite poruku</translation>
     </message>
     <message>
-        <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
+        <source>Enter the receiver&apos;s address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
         <translation type="unfinished">Unesite primateljevu adresu, poruku (provjerite da kopirate prekide crta, razmake, tabove, itd. točno) i potpis ispod da provjerite poruku. Pazite da ne pridodate veće značenje potpisu nego što je sadržano u samoj poruci kako biste izbjegli napad posrednika (MITM attack). Primijetite da ovo samo dokazuje da stranka koja potpisuje prima na adresu. Ne može dokažati da je neka stranka poslala transakciju!</translation>
     </message>
     <message>
@@ -2377,8 +4110,8 @@
         <translation>Resetirajte sva polja provjeravanja poruke</translation>
     </message>
     <message>
-        <source>Click "Sign Message" to generate signature</source>
-        <translation type="unfinished">Kliknite "Potpišite poruku" da generirate potpis</translation>
+        <source>Click &quot;Sign Message&quot; to generate signature</source>
+        <translation type="unfinished">Kliknite &quot;Potpišite poruku&quot; da generirate potpis</translation>
     </message>
     <message>
         <source>The entered address is invalid.</source>
@@ -2432,15 +4165,220 @@
         <source>Message verified.</source>
         <translation type="unfinished">Poruka provjerena.</translation>
     </message>
+    <message>
+        <source>Alt+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can sign messages/agreements with your addresses to prove you can receive sins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StakePage</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Oblik</translation>
+    </message>
+    <message>
+        <source>Coins will be staked automatically after 14400 blocks (~10 days), and stake rewards can be spent after 1440 blocks (~1 day). This is done to ensure fair participation and offers higher security from a chain perspective.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation type="unfinished">Trenutno stanje koje možete trošiti</translation>
+    </message>
+    <message>
+        <source>Staking assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stake:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>0.000 000 00 SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block reward:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3052.5 SIN/Block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network weight:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected annualized ROI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>7.9 %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stake records</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatsPage</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Oblik</translation>
+    </message>
+    <message>
+        <source>0.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>POW DIFFICULTY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NETWORK HASHRATE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOCK HEIGHT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOCKCHAIN STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0/0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PRICE IN BTC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CIRCULATING SUPPLY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOCK REWARD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3478.75 SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MINI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>APY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL NODES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BIG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INFINITYNODE STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL SUPPLY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BURNT FEES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL BURNT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EMISSION STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BURNT NODES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL ADDRESSES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>00000</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOP 50</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>00000000</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOP 10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ADDRESS STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ACTIVE ADDRESSES</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>kB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TransactionDesc</name>
     <message numerus="yes">
         <source>Open for %n more block(s)</source>
         <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2518,9 +4456,9 @@
     <message numerus="yes">
         <source>matures in %n more block(s)</source>
         <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2580,8 +4518,8 @@
         <translation type="unfinished">Trgovac</translation>
     </message>
     <message>
-        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to "not accepted" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
-        <translation type="unfinished">Generirani novčići moraju dozrijeti %1 blokova prije nego što mogu biti potrošeni. Kada ste generirali ovaj blok, bio je emitiran na mreži kako bi bio dodan lancu blokova. Ako ne uspije ući u lanac, stanje će mu promijeniti na "neprihvaćeno" i neće se moći trošiti. Ovo se može dogoditi povremeno ako drugi čvor generira blok u roku od nekoliko sekundi od vas.</translation>
+        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished">Generirani novčići moraju dozrijeti %1 blokova prije nego što mogu biti potrošeni. Kada ste generirali ovaj blok, bio je emitiran na mreži kako bi bio dodan lancu blokova. Ako ne uspije ući u lanac, stanje će mu promijeniti na &quot;neprihvaćeno&quot; i neće se moći trošiti. Ovo se može dogoditi povremeno ako drugi čvor generira blok u roku od nekoliko sekundi od vas.</translation>
     </message>
     <message>
         <source>Debug information</source>
@@ -2606,6 +4544,34 @@
     <message>
         <source>false</source>
         <translation type="unfinished">laž</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN Reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN rewards must mature %1 blocks before they can be spent. When the miner generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another miner mines a block within a few seconds of the current miner doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other miners block.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN rewards must mature %1 blocks before they can be spent. When the staker generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another staker stakes a block within a few seconds of the current staker doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other stakers block.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2636,9 +4602,9 @@
     <message numerus="yes">
         <source>Open for %n more block(s)</source>
         <translation>
-            <numerusform />
-            <numerusform />
-            <numerusform />
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
@@ -2728,6 +4694,18 @@
     <message>
         <source>Amount removed from or added to balance.</source>
         <translation type="unfinished">Iznos odbijen od ili dodan k saldu.</translation>
+    </message>
+    <message>
+        <source>Burn for service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2836,12 +4814,92 @@
         <source>to</source>
         <translation type="unfinished">za</translation>
     </message>
+    <message>
+        <source>Range...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Burn for service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abandon transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Increase transaction fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation type="unfinished">Kopirajte iznos</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy raw transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy full transaction details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit address label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show transaction details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comma separated file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>WalletFrame</name>
+    <name>WalletController</name>
     <message>
-        <source>Create a new wallet</source>
-        <translation type="unfinished">Stvorite novi novčanik</translation>
+        <source>Close wallet</source>
+        <translation type="unfinished">Zatvorite novčanik</translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to close the wallet &lt;i&gt;%1&lt;/i&gt;?</source>
+        <translation type="unfinished">Jeste li sigurni da želite zatvoriti novčanik &lt;i&gt;%1&lt;/i&gt;?</translation>
+    </message>
+    <message>
+        <source>Closing the wallet for too long can result in having to resync the entire chain if pruning is enabled.</source>
+        <translation type="unfinished">Držanje novčanik zatvorenim predugo može rezultirati ponovnom sinkronizacijom cijelog lanca ako je obrezivanje uključeno.</translation>
+    </message>
+    <message>
+        <source>Close all wallets</source>
+        <translation type="unfinished">Zatvori sve novčanike</translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to close all wallets?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2879,7 +4937,7 @@
         <translation type="unfinished">Potvrdite povećanje naknade</translation>
     </message>
     <message>
-        <source>Can't draft transaction.</source>
+        <source>Can&apos;t draft transaction.</source>
         <translation type="unfinished">Nije moguće pripremiti nacrt transakcije</translation>
     </message>
     <message>
@@ -2887,7 +4945,7 @@
         <translation type="unfinished">PSBT kopiran</translation>
     </message>
     <message>
-        <source>Can't sign transaction.</source>
+        <source>Can&apos;t sign transaction.</source>
         <translation type="unfinished">Transakcija ne može biti potpisana.</translation>
     </message>
     <message>
@@ -2897,6 +4955,18 @@
     <message>
         <source>default wallet</source>
         <translation type="unfinished">uobičajeni novčanik</translation>
+    </message>
+    <message>
+        <source>Do you want to draft a transaction with fee increase?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning: This may pay the additional fee by reducing change outputs or adding inputs, when necessary. It may add a new change output if one does not already exist. These changes may potentially leak privacy.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t display address</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2937,88 +5007,97 @@
         <source>Cancel</source>
         <translation type="unfinished">Odustanite</translation>
     </message>
-</context>
-<context>
-    <name>SIN-core</name>
     <message>
-        <source>The %s developers</source>
-        <translation type="unfinished">Ekipa %s</translation>
+        <source>Unable to decode PSBT from clipboard (invalid base64)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
-        <translation type="unfinished">-maxtxfee je postavljen preveliko. Naknade ove veličine će biti plaćene na individualnoj transakciji.</translation>
+        <source>Load Transaction Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Partially Signed Transaction (*.psbt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PSBT file must be smaller than 100 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to decode PSBT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wallet Data</source>
+        <extracomment>Name of the wallet data file format.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>bitcoin-core</name>
+    <message>
+        <source>Cannot downgrade wallet from version %i to version %i. Wallet version unchanged.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
         <translation type="unfinished">Program ne može pristupiti podatkovnoj mapi %s. %s je vjerojatno već pokrenut.</translation>
     </message>
     <message>
-        <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
-        <translation type="unfinished">Ne može ponuditi specifične veze i dati addrman da traži izlazne veze istovremeno.</translation>
+        <source>Cannot upgrade a non HD split wallet from version %i to version %i without upgrading to support pre-split keypool. Please use version %i or no version specified.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Distributed under the MIT software license, see the accompanying file %s or %s</source>
         <translation type="unfinished">Distribuirano pod MIT licencom softvera. Vidite pripadajuću datoteku %s ili %s.</translation>
     </message>
     <message>
-        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
-        <translation type="unfinished">Greška kod iščitanja %s! Svi ključevi su ispravno učitani, ali transakcijski podaci ili zapisi u adresaru mogu biti nepotpuni ili netočni.</translation>
+        <source>Error: Dumpfile format record is incorrect. Got &quot;%s&quot;, expected &quot;format&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Dumpfile identifier record is incorrect. Got &quot;%s&quot;, expected &quot;%s&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Dumpfile version is not supported. This version of sin-wallet only supports version 1 dumpfiles. Got dumpfile with version %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Legacy wallets only support the &quot;legacy&quot;, &quot;p2sh-segwit&quot;, and &quot;bech32&quot; address types</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation type="unfinished">Greška: Neuspješno slušanje dolažećih veza (listen je izbacio grešku %s)</translation>
     </message>
     <message>
-        <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>
-        <translation type="unfinished">Neuspješno procjenjivanje naknada. Fallbackfee je isključena. Pričekajte nekoliko blokova ili uključite -fallbackfee.</translation>
+        <source>File %s already exists. If you are sure this is what you want, move it out of the way first.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: '%s' (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
-        <translation type="unfinished">Neispravan iznos za -maxtxfee=&lt;amount&gt;: '%s' (mora biti barem minimalnu naknadu za proslijeđivanje od %s kako se ne bi zapela transakcija)</translation>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation type="unfinished">Neispravan iznos za -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (mora biti barem minimalnu naknadu za proslijeđivanje od %s kako se ne bi zapela transakcija)</translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong, %s will not work properly.</source>
+        <source>No dump file provided. To use createfromdump, -dumpfile=&lt;filename&gt; must be provided.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No dump file provided. To use dump, -dumpfile=&lt;filename&gt; must be provided.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No wallet file format provided. To use createfromdump, -format=&lt;format&gt; must be provided.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please check that your computer&apos;s date and time are correct! If your clock is wrong, %s will not work properly.</source>
         <translation type="unfinished">Molimo provjerite jesu li datum i vrijeme na vašem računalu točni. Ako je vaš sat krivo namješten, %s neće raditi ispravno.</translation>
     </message>
     <message>
-        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
-        <translation type="unfinished">Molimo vas da doprinijete programu %s ako ga smatrate korisnim. Posjetite %s za više informacija.</translation>
-    </message>
-    <message>
-        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
-        <translation type="unfinished">Obrezivanje postavljeno ispod minimuma od %d MiB. Molim koristite veći broj.</translation>
-    </message>
-    <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
-        <translation type="unfinished">Obrezivanje: zadnja sinkronizacija novčanika ide dalje od obrezivanih podataka. Morate koristiti -reindex (ponovo preuzeti cijeli lanac blokova u slučaju obrezivanog čvora)</translation>
-    </message>
-    <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
-        <translation type="unfinished">Baza blokova sadrži blok koji je naizgled iz budućnosti. Može to biti posljedica krivo namještenog datuma i vremena na vašem računalu. Obnovite bazu blokova samo ako ste sigurni da su točni datum i vrijeme na vašem računalu.</translation>
-    </message>
-    <message>
-        <source>The transaction amount is too small to send after the fee has been deducted</source>
-        <translation type="unfinished">Iznos transakcije je premalen za poslati nakon naknade</translation>
-    </message>
-    <message>
-        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
-        <translation type="unfinished">Ovo je eksperimentalna verzija za testiranje - koristite je na vlastitu odgovornost - ne koristite je za rudarenje ili trgovačke primjene</translation>
-    </message>
-    <message>
-        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
-        <translation type="unfinished">Ovo je transakcijska naknada koju možete odbaciti ako je ostatak manji od "prašine" (sićušnih iznosa) po ovoj stopi</translation>
-    </message>
-    <message>
-        <source>This is the transaction fee you may pay when fee estimates are not available.</source>
-        <translation type="unfinished">Ovo je transakcijska naknada koju ćete možda platiti kada su nedostupne procjene naknada.</translation>
-    </message>
-    <message>
-        <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
-        <translation type="unfinished">Ukupna duljina stringa verzije mreže (%i) prelazi maksimalnu duljinu (%i). Smanjite broj ili veličinu komentara o korisničkom agentu (uacomments).</translation>
-    </message>
-    <message>
-        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
-        <translation type="unfinished">Ne mogu se ponovo odigrati blokovi. Morat ćete ponovo složiti bazu koristeći -reindex-chainstate.</translation>
+        <source>Warning: Dumpfile wallet format &quot;%s&quot; does not match command line specified format &quot;%s&quot;.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Warning: Private keys detected in wallet {%s} with disabled private keys</source>
@@ -3041,12 +5120,20 @@
         <translation type="unfinished">-maxmempool mora biti barem %d MB</translation>
     </message>
     <message>
-        <source>Cannot resolve -%s address: '%s'</source>
-        <translation type="unfinished">Ne može se razriješiti adresa -%s: '%s'</translation>
+        <source>A fatal internal error occurred, see debug.log for details</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot write to data directory '%s'; check permissions.</source>
-        <translation type="unfinished">Nije moguće pisati u podatkovnu mapu '%s'; provjerite dozvole.</translation>
+        <source>Cannot resolve -%s address: &apos;%s&apos;</source>
+        <translation type="unfinished">Ne može se razriješiti adresa -%s: &apos;%s&apos;</translation>
+    </message>
+    <message>
+        <source>Cannot set -peerblockfilters without -blockfilterindex.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot write to data directory &apos;%s&apos;; check permissions.</source>
+        <translation type="unfinished">Nije moguće pisati u podatkovnu mapu &apos;%s&apos;; provjerite dozvole.</translation>
     </message>
     <message>
         <source>Change index out of range</source>
@@ -3055,6 +5142,10 @@
     <message>
         <source>Config setting for %s only applied on %s network when in [%s] section.</source>
         <translation type="unfinished">Konfiguriranje postavki za %s primijenjeno je samo na %s mreži u odjeljku [%s].</translation>
+    </message>
+    <message>
+        <source>Copyright (C) %i-%i</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -3069,12 +5160,24 @@
         <translation type="unfinished">Nije moguće pročitati asmap datoteku %s</translation>
     </message>
     <message>
+        <source>Disk space is too low!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Do you want to rebuild the block database now?</source>
         <translation type="unfinished">Želite li sada obnoviti bazu blokova?</translation>
     </message>
     <message>
         <source>Done loading</source>
         <translation type="unfinished">Učitavanje gotovo</translation>
+    </message>
+    <message>
+        <source>Dump file %s does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error creating %s</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error initializing block database</source>
@@ -3113,12 +5216,52 @@
         <translation type="unfinished">Greška kod iščitanja baze. Zatvara se klijent.</translation>
     </message>
     <message>
+        <source>Error reading next record from wallet database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Error upgrading chainstate database</source>
         <translation type="unfinished">Greška kod ažuriranja baze stanja lanca</translation>
     </message>
     <message>
+        <source>Error: Couldn&apos;t create cursor into database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Error: Disk space is low for %s</source>
         <translation type="unfinished">Pogreška: Malo diskovnog prostora za %s</translation>
+    </message>
+    <message>
+        <source>Error: Dumpfile checksum does not match. Computed %s, expected %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Got key that was not hex: %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Got value that was not hex: %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Keypool ran out, please call keypoolrefill first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Missing checksum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: No %s addresses available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Unable to parse version %u as a uint32_t</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Unable to write record to new wallet</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Failed to listen on any port. Use -listen=0 if you want this.</source>
@@ -3127,6 +5270,22 @@
     <message>
         <source>Failed to rescan the wallet during initialization</source>
         <translation type="unfinished">Neuspješno ponovo skeniranje novčanika tijekom inicijalizacije</translation>
+    </message>
+    <message>
+        <source>Failed to verify database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fee rate (%s) is lower than the minimum fee rate setting (%s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ignoring duplicate -wallet %s.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Importing...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
@@ -3141,40 +5300,64 @@
         <translation type="unfinished">Nedovoljna sredstva</translation>
     </message>
     <message>
-        <source>Invalid -onion address or hostname: '%s'</source>
-        <translation type="unfinished">Neispravna -onion adresa ili ime računala: '%s'</translation>
+        <source>Invalid -i2psam address or hostname: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid -proxy address or hostname: '%s'</source>
-        <translation type="unfinished">Neispravna -proxy adresa ili ime računala: '%s'</translation>
+        <source>Invalid -onion address or hostname: &apos;%s&apos;</source>
+        <translation type="unfinished">Neispravna -onion adresa ili ime računala: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid P2P permission: '%s'</source>
-        <translation type="unfinished">Nevaljana dozvola za P2P: '%s'</translation>
+        <source>Invalid -proxy address or hostname: &apos;%s&apos;</source>
+        <translation type="unfinished">Neispravna -proxy adresa ili ime računala: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -%s=&lt;amount&gt;: '%s'</source>
-        <translation type="unfinished">Neispravan iznos za  -%s=&lt;amount&gt;: '%s'</translation>
+        <source>Invalid P2P permission: &apos;%s&apos;</source>
+        <translation type="unfinished">Nevaljana dozvola za P2P: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -discardfee=&lt;amount&gt;: '%s'</source>
-        <translation type="unfinished">Neispravan iznos za -discardfee=&lt;amount&gt;: '%s'</translation>
+        <source>Invalid amount for -%s=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished">Neispravan iznos za  -%s=&lt;amount&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
-        <translation type="unfinished">Neispravan iznos za -fallbackfee=&lt;amount&gt;: '%s'</translation>
+        <source>Invalid amount for -discardfee=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished">Neispravan iznos za -discardfee=&lt;amount&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
-        <translation type="unfinished">Neispravan iznos za -paytxfee=&lt;amount&gt;: '%s' (mora biti barem %s)</translation>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished">Neispravan iznos za -fallbackfee=&lt;amount&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid netmask specified in -whitelist: '%s'</source>
-        <translation type="unfinished">Neispravna mrežna maska zadana u -whitelist: '%s'</translation>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least %s)</source>
+        <translation type="unfinished">Neispravan iznos za -paytxfee=&lt;amount&gt;: &apos;%s&apos; (mora biti barem %s)</translation>
     </message>
     <message>
-        <source>Need to specify a port with -whitebind: '%s'</source>
-        <translation type="unfinished">Treba zadati port pomoću -whitebind: '%s'</translation>
+        <source>Invalid netmask specified in -whitelist: &apos;%s&apos;</source>
+        <translation type="unfinished">Neispravna mrežna maska zadana u -whitelist: &apos;%s&apos;</translation>
+    </message>
+    <message>
+        <source>Loading P2P addresses...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading banlist...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading block index...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Need to specify a port with -whitebind: &apos;%s&apos;</source>
+        <translation type="unfinished">Treba zadati port pomoću -whitebind: &apos;%s&apos;</translation>
+    </message>
+    <message>
+        <source>No proxy server specified. Use -proxy=&lt;ip&gt; or -proxy=&lt;ip:port&gt;.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Not enough file descriptors available.</source>
@@ -3185,12 +5368,44 @@
         <translation type="unfinished">Obrezivanje (prune) ne može biti postavljeno na negativnu vrijednost.</translation>
     </message>
     <message>
+        <source>Prune mode is incompatible with -coinstatsindex.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Prune mode is incompatible with -txindex.</source>
         <translation type="unfinished">Način obreživanja (pruning) nekompatibilan je s parametrom -txindex.</translation>
     </message>
     <message>
+        <source>Pruning blockstore...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
         <translation type="unfinished">Smanjuje se -maxconnections sa %d na %d zbog sustavnih ograničenja.</translation>
+    </message>
+    <message>
+        <source>Replaying blocks...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rescanning...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLiteDatabase: Failed to execute statement to verify database: %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLiteDatabase: Failed to prepare statement to verify database: %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLiteDatabase: Failed to read database verification error: %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SQLiteDatabase: Unexpected application id. Expected %u, got %u</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Section [%s] is not recognized.</source>
@@ -3201,24 +5416,32 @@
         <translation type="unfinished">Potpisivanje transakcije neuspješno</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" does not exist</source>
-        <translation type="unfinished">Zadan -walletdir "%s" ne postoji</translation>
+        <source>Specified -walletdir &quot;%s&quot; does not exist</source>
+        <translation type="unfinished">Zadan -walletdir &quot;%s&quot; ne postoji</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" is a relative path</source>
-        <translation type="unfinished">Zadan -walletdir "%s" je relativan put</translation>
+        <source>Specified -walletdir &quot;%s&quot; is a relative path</source>
+        <translation type="unfinished">Zadan -walletdir &quot;%s&quot; je relativan put</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" is not a directory</source>
-        <translation type="unfinished">Zadan -walletdir "%s" nije mapa</translation>
+        <source>Specified -walletdir &quot;%s&quot; is not a directory</source>
+        <translation type="unfinished">Zadan -walletdir &quot;%s&quot; nije mapa</translation>
     </message>
     <message>
-        <source>Specified blocks directory "%s" does not exist.</source>
-        <translation type="unfinished">Zadana mapa blokova "%s" ne postoji.</translation>
+        <source>Specified blocks directory &quot;%s&quot; does not exist.</source>
+        <translation type="unfinished">Zadana mapa blokova &quot;%s&quot; ne postoji.</translation>
+    </message>
+    <message>
+        <source>Starting network threads...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The source code is available from %s.</source>
         <translation type="unfinished">Izvorni kod je dostupan na %s.</translation>
+    </message>
+    <message>
+        <source>The specified config file %s does not exist</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The transaction amount is too small to pay the fee</source>
@@ -3257,6 +5480,10 @@
         <translation type="unfinished">Transakcija mora imati barem jednog primatelja</translation>
     </message>
     <message>
+        <source>Transaction needs a change address, but we can&apos;t generate it. %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Transaction too large</source>
         <translation type="unfinished">Transakcija prevelika</translation>
     </message>
@@ -3269,8 +5496,8 @@
         <translation type="unfinished">Ne može se povezati na %s na ovom računalu.  %s je vjerojatno već pokrenut.</translation>
     </message>
     <message>
-        <source>Unable to create the PID file '%s': %s</source>
-        <translation type="unfinished">Nije moguće stvoriti PID datoteku '%s': %s</translation>
+        <source>Unable to create the PID file &apos;%s&apos;: %s</source>
+        <translation type="unfinished">Nije moguće stvoriti PID datoteku &apos;%s&apos;: %s</translation>
     </message>
     <message>
         <source>Unable to generate initial keys</source>
@@ -3281,6 +5508,10 @@
         <translation type="unfinished">Ne mogu se generirati ključevi</translation>
     </message>
     <message>
+        <source>Unable to open %s for writing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unable to start HTTP server. See debug log for details.</source>
         <translation type="unfinished">Ne može se pokrenuti HTTP server. Vidite debug.log za više detalja.</translation>
     </message>
@@ -3289,16 +5520,20 @@
         <translation type="unfinished">Nepoznata vrijednost parametra -blockfilterindex %s.</translation>
     </message>
     <message>
-        <source>Unknown address type '%s'</source>
-        <translation type="unfinished">Nepoznat tip adrese '%s'</translation>
+        <source>Unknown address type &apos;%s&apos;</source>
+        <translation type="unfinished">Nepoznat tip adrese &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Unknown change type '%s'</source>
-        <translation type="unfinished">Nepoznat tip adrese za vraćanje ostatka '%s'</translation>
+        <source>Unknown change type &apos;%s&apos;</source>
+        <translation type="unfinished">Nepoznat tip adrese za vraćanje ostatka &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Unknown network specified in -onlynet: '%s'</source>
-        <translation type="unfinished">Nepoznata mreža zadana kod -onlynet: '%s'</translation>
+        <source>Unknown network specified in -onlynet: &apos;%s&apos;</source>
+        <translation type="unfinished">Nepoznata mreža zadana kod -onlynet: &apos;%s&apos;</translation>
+    </message>
+    <message>
+        <source>Unknown new rules activated (versionbit %i)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Unsupported logging category %s=%s.</source>
@@ -3314,11 +5549,110 @@
     </message>
     <message>
         <source>User Agent comment (%s) contains unsafe characters.</source>
-        <translation type="unfinished">Komentar pod "Korisnički agent" (%s) sadrži nesigurne znakove.</translation>
+        <translation type="unfinished">Komentar pod &quot;Korisnički agent&quot; (%s) sadrži nesigurne znakove.</translation>
+    </message>
+    <message>
+        <source>Verifying blocks...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Verifying wallet(s)...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Wallet needed to be rewritten: restart %s to complete</source>
         <translation type="unfinished">Novčanik je trebao prepravak: ponovo pokrenite %s</translation>
+    </message>
+</context>
+<context>
+    <name>sin-core</name>
+    <message>
+        <source>The %s developers</source>
+        <translation type="unfinished">Ekipa %s</translation>
+    </message>
+    <message>
+        <source>%s corrupt. Try using the wallet tool sin-wallet to salvage or restoring a backup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
+        <translation type="unfinished">-maxtxfee je postavljen preveliko. Naknade ove veličine će biti plaćene na individualnoj transakciji.</translation>
+    </message>
+    <message>
+        <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
+        <translation type="unfinished">Ne može ponuditi specifične veze i dati addrman da traži izlazne veze istovremeno.</translation>
+    </message>
+    <message>
+        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
+        <translation type="unfinished">Greška kod iščitanja %s! Svi ključevi su ispravno učitani, ali transakcijski podaci ili zapisi u adresaru mogu biti nepotpuni ili netočni.</translation>
+    </message>
+    <message>
+        <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>
+        <translation type="unfinished">Neuspješno procjenjivanje naknada. Fallbackfee je isključena. Pričekajte nekoliko blokova ili uključite -fallbackfee.</translation>
+    </message>
+    <message>
+        <source>More than one onion bind address is provided. Using %s for the automatically created Tor onion service.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
+        <translation type="unfinished">Molimo vas da doprinijete programu %s ako ga smatrate korisnim. Posjetite %s za više informacija.</translation>
+    </message>
+    <message>
+        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
+        <translation type="unfinished">Obrezivanje postavljeno ispod minimuma od %d MiB. Molim koristite veći broj.</translation>
+    </message>
+    <message>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <translation type="unfinished">Obrezivanje: zadnja sinkronizacija novčanika ide dalje od obrezivanih podataka. Morate koristiti -reindex (ponovo preuzeti cijeli lanac blokova u slučaju obrezivanog čvora)</translation>
+    </message>
+    <message>
+        <source>SQLiteDatabase: Unknown sqlite wallet schema version %d. Only version %d is supported</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The block database contains a block which appears to be from the future. This may be due to your computer&apos;s date and time being set incorrectly. Only rebuild the block database if you are sure that your computer&apos;s date and time are correct</source>
+        <translation type="unfinished">Baza blokova sadrži blok koji je naizgled iz budućnosti. Može to biti posljedica krivo namještenog datuma i vremena na vašem računalu. Obnovite bazu blokova samo ako ste sigurni da su točni datum i vrijeme na vašem računalu.</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation type="unfinished">Iznos transakcije je premalen za poslati nakon naknade</translation>
+    </message>
+    <message>
+        <source>This error could occur if this wallet was not shutdown cleanly and was last loaded using a build with a newer version of Berkeley DB. If so, please use the software that last loaded this wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
+        <translation type="unfinished">Ovo je eksperimentalna verzija za testiranje - koristite je na vlastitu odgovornost - ne koristite je za rudarenje ili trgovačke primjene</translation>
+    </message>
+    <message>
+        <source>This is the maximum transaction fee you pay (in addition to the normal fee) to prioritize partial spend avoidance over regular coin selection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
+        <translation type="unfinished">Ovo je transakcijska naknada koju možete odbaciti ako je ostatak manji od &quot;prašine&quot; (sićušnih iznosa) po ovoj stopi</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may pay when fee estimates are not available.</source>
+        <translation type="unfinished">Ovo je transakcijska naknada koju ćete možda platiti kada su nedostupne procjene naknada.</translation>
+    </message>
+    <message>
+        <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
+        <translation type="unfinished">Ukupna duljina stringa verzije mreže (%i) prelazi maksimalnu duljinu (%i). Smanjite broj ili veličinu komentara o korisničkom agentu (uacomments).</translation>
+    </message>
+    <message>
+        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
+        <translation type="unfinished">Ne mogu se ponovo odigrati blokovi. Morat ćete ponovo složiti bazu koristeći -reindex-chainstate.</translation>
+    </message>
+    <message>
+        <source>Unknown wallet file format &quot;%s&quot; provided. Please provide one of &quot;bdb&quot; or &quot;sqlite&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Witness data for blocks after height %d requires validation. Please restart with -reindex.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

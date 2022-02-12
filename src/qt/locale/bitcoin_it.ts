@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="it">
+<TS version="2.0" language="it">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -1953,11 +1953,11 @@ Verifica se la tua password di configurazione del nodo è corretta, quindi ripro
         <source>Number of blocks left</source>
         <translation>Numero di blocchi mancanti</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Unknown…</source>
         <translation>Sconosciuto...</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>calculating…</source>
         <translation>calcolando...</translation>
     </message>
@@ -2498,7 +2498,7 @@ Per specificare più URL separarli con una barra verticale &quot;|&quot;.</trans
         <source>Copy to Clipboard</source>
         <translation>Copia negli Appunti</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Save…</source>
         <translation>Salva...</translation>
     </message>
@@ -3661,7 +3661,7 @@ Per ulteriori informazioni sull&apos;utilizzo di questa console, digitare %6.
         <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
         <translation>Una commissione troppo bassa potrebbe risultare in una transazione che non si conferma mai (vedi i suggerimenti)</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
         <translation>(Commissione intelligente non ancora inizializzata. Normalmente richiede un&apos;attesa di alcuni blocchi...)</translation>
     </message>
@@ -4201,9 +4201,9 @@ Per ulteriori informazioni sull&apos;utilizzo di questa console, digitare %6.
         <source>Stake:</source>
         <translation>Stake:</translation>
     </message>
-    <message>
-        <source>0.000&#x2009;000&#x2009;00 SIN</source>
-        <translation>0.000&#x2009;000&#x2009;00 SIN</translation>
+    <message utf8="true">
+        <source>0.000 000 00 SIN</source>
+        <translation>0.000 000 00 SIN</translation>
     </message>
     <message>
         <source>Staking</source>

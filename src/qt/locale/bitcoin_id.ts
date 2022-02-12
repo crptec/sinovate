@@ -1,4 +1,6 @@
-<TS version="2.1" language="id">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="id">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -70,11 +72,6 @@
         <translation type="unfinished">Berikut ini adalah alamat-alamat SIN Anda yang digunakan untuk mengirimkan pembayaran. Selalu periksa jumlah dan alamat penerima sebelum mengirimkan koin-koin.</translation>
     </message>
     <message>
-        <source>These are your SIN addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.
-Signing is only possible with addresses of the type 'legacy'.</source>
-        <translation type="unfinished">Berikut ini adalah alamat-alamat SINmu untuk menerima pembayaran. Gunakan tombol 'Buat alamat penerima baru' di tab menerima untuk membuat alamat baru. Tanda tangan hanya bisa digunakan dengan tipe alamat 'warisan'</translation>
-    </message>
-    <message>
         <source>&amp;Copy Address</source>
         <translation type="unfinished">&amp;Salin Alamat</translation>
     </message>
@@ -104,6 +101,11 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Exporting Failed</source>
         <translation type="unfinished">Gagal Mengekspor</translation>
     </message>
+    <message>
+        <source>These are your SIN addresses for receiving payments. Use the &apos;Receive&apos; button in the My Wallet tab to create new addresses.
+Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AddressTableModel</name>
@@ -114,6 +116,10 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>(no label)</source>
         <translation type="unfinished">(tidak ada label)</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -179,10 +185,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Masukan passphrase lama dan passphrase baru ke dompet</translation>
     </message>
     <message>
-        <source>Remember that encrypting your wallet cannot fully protect your SINs from being stolen by malware infecting your computer.</source>
-        <translation type="unfinished">Mengenkripsi dompet Anda tidak dapat sepenuhnya melindungi SIN Anda dari pencurian oleh malware yang menginfeksi komputer Anda.</translation>
-    </message>
-    <message>
         <source>Wallet to be encrypted</source>
         <translation type="unfinished">Dompet yang akan dienkripsi</translation>
     </message>
@@ -226,6 +228,10 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Warning: The Caps Lock key is on!</source>
         <translation type="unfinished">Peringatan: Tombol Caps Lock aktif!</translation>
     </message>
+    <message>
+        <source>Remember that encrypting your wallet cannot fully protect your sins from being stolen by malware infecting your computer.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BanTableModel</name>
@@ -233,9 +239,13 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Banned Until</source>
         <translation type="unfinished">Di banned sampai</translation>
     </message>
+    <message>
+        <source>IP/Netmask</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
-    <name>SINApplication</name>
+    <name>BitcoinApplication</name>
     <message>
         <source>Runaway exception</source>
         <translation type="unfinished">Pengecualian pelarian</translation>
@@ -254,149 +264,75 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
 </context>
 <context>
-    <name>QObject</name>
+    <name>BitcoinGUI</name>
     <message>
-        <source>Error: Specified data directory "%1" does not exist.</source>
-        <translation type="unfinished">Kesalahan: Direktori data yang ditentukan "%1" tidak ada.</translation>
-    </message>
-    <message>
-        <source>Error: Cannot parse configuration file: %1.</source>
-        <translation type="unfinished">Kesalahan: Tidak dapat mengurai file konfigurasi : %1.</translation>
-    </message>
-    <message>
-        <source>Error: %1</source>
-        <translation type="unfinished">Kesalahan: %1</translation>
-    </message>
-    <message>
-        <source>Error initializing settings: %1</source>
-        <translation type="unfinished">Kesalahan menginisialisasi pengaturan: %1</translation>
-    </message>
-    <message>
-        <source>%1 didn't yet exit safely…</source>
-        <translation type="unfinished">%1 masih belum keluar secara aman...</translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished">tidak diketahui</translation>
-    </message>
-    <message>
-        <source>Amount</source>
-        <translation type="unfinished">Jumlah</translation>
-    </message>
-    <message>
-        <source>Enter a SIN address (e.g. %1)</source>
-        <translation type="unfinished">Masukkan alamat SIN (contoh %1)</translation>
-    </message>
-    <message>
-        <source>Unroutable</source>
-        <translation type="unfinished">Tidak dapat dirutekan</translation>
-    </message>
-    <message>
-        <source>Inbound</source>
-        <translation type="unfinished">masuk</translation>
-    </message>
-    <message>
-        <source>Outbound</source>
-        <translation type="unfinished">keluar</translation>
-    </message>
-    <message>
-        <source>Full Relay</source>
-        <translation type="unfinished">Relay Penuh</translation>
-    </message>
-    <message>
-        <source>Block Relay</source>
-        <translation type="unfinished">Blok Relay</translation>
-    </message>
-    <message>
-        <source>Feeler</source>
-        <translation type="unfinished">Pengintai</translation>
-    </message>
-    <message>
-        <source>Address Fetch</source>
-        <translation type="unfinished">Ambil Alamat</translation>
-    </message>
-    <message>
-        <source>%1 h</source>
-        <translation type="unfinished">%1 Jam</translation>
-    </message>
-    <message>
-        <source>%1 m</source>
-        <translation type="unfinished">%1 menit</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="unfinished">Tidak ada</translation>
-    </message>
-    <message>
-        <source>N/A</source>
-        <translation type="unfinished">T/S</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n second(s)</source>
-        <translation>
-            <numerusform>%ndetik</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n minute(s)</source>
-        <translation>
-            <numerusform>%n menit</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n hour(s)</source>
-        <translation type="unfinished">
-            <numerusform>%njam</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n day(s)</source>
-        <translation type="unfinished">
-            <numerusform>%n hari</numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <source>%n week(s)</source>
-        <translation type="unfinished">
-            <numerusform>%nminggu</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 and %2</source>
-        <translation type="unfinished">%1 dan %2</translation>
-    </message>
-    <message numerus="yes">
-        <source>%n year(s)</source>
-        <translation type="unfinished">
-            <numerusform>%n tahun</numerusform>
-        </translation>
-    </message>
-    </context>
-<context>
-    <name>SINGUI</name>
-    <message>
-        <source>&amp;Overview</source>
-        <translation>&amp;Kilasan</translation>
+        <source> &amp;My Wallet</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Show general overview of wallet</source>
-        <translation>Tampilkan gambaran umum dompet Anda</translation>
+        <translation type="unfinished">Tampilkan gambaran umum dompet Anda</translation>
     </message>
     <message>
-        <source>&amp;Transactions</source>
-        <translation>&amp;Transaksi</translation>
+        <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> &amp;Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send coins to a SIN address</source>
+        <translation type="unfinished">Kirim koin ke alamat SIN</translation>
+    </message>
+    <message>
+        <source> &amp;Receive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Request payments (generates QR codes and sin: URIs)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Staki&amp;ng</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> St&amp;atistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> &amp;Transactions
+</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Browse transaction history</source>
-        <translation>Lihat riwayat transaksi</translation>
+        <translation type="unfinished">Lihat riwayat transaksi</translation>
+    </message>
+    <message>
+        <source> &amp;InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Browse Infinitynodes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation>K&amp;eluar</translation>
+        <translation type="unfinished">K&amp;eluar</translation>
     </message>
     <message>
         <source>Quit application</source>
-        <translation>Keluar dari aplikasi</translation>
+        <translation type="unfinished">Keluar dari aplikasi</translation>
     </message>
     <message>
         <source>&amp;About %1</source>
@@ -408,214 +344,95 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>About &amp;Qt</source>
-        <translation>Mengenai &amp;Qt</translation>
+        <translation type="unfinished">Mengenai &amp;Qt</translation>
     </message>
     <message>
         <source>Show information about Qt</source>
-        <translation>Tampilkan informasi mengenai Qt</translation>
+        <translation type="unfinished">Tampilkan informasi mengenai Qt</translation>
+    </message>
+    <message>
+        <source>&amp;Options...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Modify configuration options for %1</source>
         <translation type="unfinished">Pengubahan opsi konfigurasi untuk %1</translation>
     </message>
     <message>
-        <source>Create a new wallet</source>
-        <translation type="unfinished">Bikin dompet baru</translation>
-    </message>
-    <message>
-        <source>Network activity disabled.</source>
-        <extracomment>A substring of the tooltip.</extracomment>
-        <translation type="unfinished">Aktivitas jaringan dinonaktifkan.</translation>
-    </message>
-    <message>
-        <source>Proxy is &lt;b&gt;enabled&lt;/b&gt;: %1</source>
-        <translation type="unfinished">Proxy di &lt;b&gt;aktifkan&lt;/b&gt;: %1</translation>
-    </message>
-    <message>
-        <source>Send coins to a SIN address</source>
-        <translation>Kirim koin ke alamat SIN</translation>
-    </message>
-    <message>
-        <source>Backup wallet to another location</source>
-        <translation>Cadangkan dompet ke lokasi lain</translation>
-    </message>
-    <message>
-        <source>Change the passphrase used for wallet encryption</source>
-        <translation>Ubah kata kunci yang digunakan untuk enkripsi dompet</translation>
-    </message>
-    <message>
-        <source>&amp;Send</source>
-        <translation>&amp;Kirim</translation>
-    </message>
-    <message>
-        <source>&amp;Receive</source>
-        <translation>&amp;Menerima</translation>
-    </message>
-    <message>
-        <source>&amp;Options…</source>
-        <translation type="unfinished">&amp;Pilihan...</translation>
-    </message>
-    <message>
         <source>&amp;Show / Hide</source>
-        <translation>&amp;Tampilkan / Sembunyikan</translation>
+        <translation type="unfinished">&amp;Tampilkan / Sembunyikan</translation>
     </message>
     <message>
         <source>Show or hide the main Window</source>
-        <translation>Tampilkan atau sembunyikan jendela utama</translation>
+        <translation type="unfinished">Tampilkan atau sembunyikan jendela utama</translation>
     </message>
     <message>
-        <source>&amp;Encrypt Wallet…</source>
-        <translation type="unfinished">&amp;Enkripsi wallet...</translation>
+        <source>&amp;Encrypt Wallet...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Encrypt the private keys that belong to your wallet</source>
-        <translation>Enkripsi private key yang dimiliki dompet Anda</translation>
+        <translation type="unfinished">Enkripsi private key yang dimiliki dompet Anda</translation>
     </message>
     <message>
-        <source>&amp;Backup Wallet…</source>
-        <translation type="unfinished">&amp;Cadangkan Dompet...</translation>
+        <source>&amp;Backup Wallet...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Change Passphrase…</source>
-        <translation type="unfinished">&amp;Ganti kata sandi...</translation>
+        <source>Backup wallet to another location</source>
+        <translation type="unfinished">Cadangkan dompet ke lokasi lain</translation>
     </message>
     <message>
-        <source>Sign &amp;message…</source>
-        <translation type="unfinished">Tanda tangani dan kirim pessan...</translation>
+        <source>&amp;Change Passphrase...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change the passphrase used for wallet encryption</source>
+        <translation type="unfinished">Ubah kata kunci yang digunakan untuk enkripsi dompet</translation>
+    </message>
+    <message>
+        <source>&amp;Unlock Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlock wallet</source>
+        <translation type="unfinished">Buka dompet</translation>
+    </message>
+    <message>
+        <source>&amp;Lock Wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lock wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sign &amp;message...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Sign messages with your SIN addresses to prove you own them</source>
-        <translation>Tanda tangani sebuah pesan menggunakan alamat SIN Anda untuk membuktikan bahwa Anda adalah pemiliknya</translation>
+        <translation type="unfinished">Tanda tangani sebuah pesan menggunakan alamat SIN Anda untuk membuktikan bahwa Anda adalah pemiliknya</translation>
     </message>
     <message>
-        <source>&amp;Verify message…</source>
-        <translation type="unfinished">&amp;Verifikasi pesan...</translation>
+        <source>&amp;Verify message...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Verify messages to ensure they were signed with specified SIN addresses</source>
-        <translation>Verifikasi pesan untuk memastikan bahwa pesan tersebut ditanda tangani oleh suatu alamat SIN tertentu</translation>
+        <translation type="unfinished">Verifikasi pesan untuk memastikan bahwa pesan tersebut ditanda tangani oleh suatu alamat SIN tertentu</translation>
     </message>
     <message>
-        <source>&amp;Load PSBT from file…</source>
-        <translation type="unfinished">&amp;Muat PSBT dari file...</translation>
-    </message>
-    <message>
-        <source>Load PSBT from clipboard…</source>
-        <translation type="unfinished">Muat PSBT dari clipboard...</translation>
-    </message>
-    <message>
-        <source>Open &amp;URI…</source>
-        <translation type="unfinished">Buka &amp;URI...</translation>
-    </message>
-    <message>
-        <source>Close Wallet…</source>
-        <translation type="unfinished">Tutup Dompet...</translation>
-    </message>
-    <message>
-        <source>Create Wallet…</source>
-        <translation type="unfinished">Bikin dompet...</translation>
-    </message>
-    <message>
-        <source>Close All Wallets…</source>
-        <translation type="unfinished">Tutup semua dompet...</translation>
-    </message>
-    <message>
-        <source>&amp;File</source>
-        <translation>&amp;Berkas</translation>
-    </message>
-    <message>
-        <source>&amp;Settings</source>
-        <translation>&amp;Pengaturan</translation>
-    </message>
-    <message>
-        <source>&amp;Help</source>
-        <translation>&amp;Bantuan</translation>
-    </message>
-    <message>
-        <source>Tabs toolbar</source>
-        <translation>Baris tab</translation>
-    </message>
-    <message>
-        <source>Syncing Headers (%1%)…</source>
-        <translation type="unfinished">Singkronisasi Header (%1%)...</translation>
-    </message>
-    <message>
-        <source>Synchronizing with network…</source>
-        <translation type="unfinished">Mensinkronisasi dengan jaringan</translation>
-    </message>
-    <message>
-        <source>Indexing blocks on disk…</source>
-        <translation type="unfinished">Mengindeks blok pada disk...</translation>
-    </message>
-    <message>
-        <source>Processing blocks on disk…</source>
-        <translation type="unfinished">Memproses blok pada disk ...</translation>
-    </message>
-    <message>
-        <source>Reindexing blocks on disk…</source>
-        <translation type="unfinished">Mengindex ulang blok di pada disk...</translation>
-    </message>
-    <message>
-        <source>Connecting to peers…</source>
-        <translation type="unfinished">Menghubungkan ke peers...</translation>
-    </message>
-    <message>
-        <source>Request payments (generates QR codes and SIN: URIs)</source>
-        <translation type="unfinished">Permintaan pembayaran (membuat kode QR dan SIN: URIs)</translation>
-    </message>
-    <message>
-        <source>Show the list of used sending addresses and labels</source>
-        <translation type="unfinished">Tampilkan daftar alamat dan label yang terkirim</translation>
-    </message>
-    <message>
-        <source>Show the list of used receiving addresses and labels</source>
-        <translation type="unfinished">Tampilkan daftar alamat dan label yang diterima</translation>
-    </message>
-    <message>
-        <source>&amp;Command-line options</source>
-        <translation type="unfinished">&amp;pilihan Command-line</translation>
-    </message>
-    <message numerus="yes">
-        <source>Processed %n block(s) of transaction history.</source>
-        <translation>
-            <numerusform>%nblok riwayat transaksi yang diproses.</numerusform>
-        </translation>
-    </message>
-    <message>
-        <source>%1 behind</source>
-        <translation>kurang %1</translation>
-    </message>
-    <message>
-        <source>Catching up…</source>
-        <translation type="unfinished">Menyusul...</translation>
-    </message>
-    <message>
-        <source>Last received block was generated %1 ago.</source>
-        <translation>Blok terakhir yang diterima %1 lalu.</translation>
-    </message>
-    <message>
-        <source>Transactions after this will not yet be visible.</source>
-        <translation>Transaksi setelah ini belum akan terlihat.</translation>
-    </message>
-    <message>
-        <source>Error</source>
-        <translation>Terjadi sebuah kesalahan</translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation>Peringatan</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation>Informasi</translation>
-    </message>
-    <message>
-        <source>Up to date</source>
-        <translation>Terbaru</translation>
+        <source>&amp;Load PSBT from file...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Load Partially Signed SIN Transaction</source>
         <translation type="unfinished">Muat transaksi SIN yang ditandatangani seperapat</translation>
+    </message>
+    <message>
+        <source>Load PSBT from clipboard...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Load Partially Signed SIN Transaction from clipboard</source>
@@ -634,12 +451,24 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Address &amp;Pengirim</translation>
     </message>
     <message>
+        <source>Show the list of used sending addresses and labels</source>
+        <translation type="unfinished">Tampilkan daftar alamat dan label yang terkirim</translation>
+    </message>
+    <message>
         <source>&amp;Receiving addresses</source>
         <translation type="unfinished">Address &amp;Penerima</translation>
     </message>
     <message>
-        <source>Open a SIN: URI</source>
-        <translation type="unfinished">Buka URI SIN:</translation>
+        <source>Show the list of used receiving addresses and labels</source>
+        <translation type="unfinished">Tampilkan daftar alamat dan label yang diterima</translation>
+    </message>
+    <message>
+        <source>Open &amp;URI...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open a sin: URI</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Open Wallet</source>
@@ -650,24 +479,36 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Buka sebuah wallet</translation>
     </message>
     <message>
+        <source>Close Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Close wallet</source>
         <translation type="unfinished">Tutup wallet</translation>
+    </message>
+    <message>
+        <source>Create Wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create a new wallet</source>
+        <translation type="unfinished">Bikin dompet baru</translation>
+    </message>
+    <message>
+        <source>Close All Wallets...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Close all wallets</source>
         <translation type="unfinished">Tutup semua dompet</translation>
     </message>
     <message>
+        <source>&amp;Command-line options</source>
+        <translation type="unfinished">&amp;pilihan Command-line</translation>
+    </message>
+    <message>
         <source>Show the %1 help message to get a list with possible SIN command-line options</source>
         <translation type="unfinished">Tampilkan %1 pesan bantuan untuk mendapatkan daftar opsi baris perintah SIN yang memungkinkan</translation>
-    </message>
-    <message>
-        <source>&amp;Mask values</source>
-        <translation type="unfinished">&amp;Nilai masker</translation>
-    </message>
-    <message>
-        <source>Mask the values in the Overview tab</source>
-        <translation type="unfinished">Mask nilai yang ada di tab Overview</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -678,6 +519,14 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Tidak ada wallet tersedia</translation>
     </message>
     <message>
+        <source>&amp;File</source>
+        <translation type="unfinished">&amp;Berkas</translation>
+    </message>
+    <message>
+        <source>&amp;Settings</source>
+        <translation type="unfinished">&amp;Pengaturan</translation>
+    </message>
+    <message>
         <source>&amp;Window</source>
         <translation type="unfinished">&amp;Jendela</translation>
     </message>
@@ -686,28 +535,81 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Minimalkan</translation>
     </message>
     <message>
+        <source>Zoom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Main Window</source>
         <translation type="unfinished">Jendela Utama</translation>
+    </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation type="unfinished">&amp;Bantuan</translation>
+    </message>
+    <message>
+        <source>Tabs toolbar</source>
+        <translation type="unfinished">Baris tab</translation>
+    </message>
+    <message>
+        <source>Wallet:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BETELGEUSE
+v%1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Options Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open SetUP Wizard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Console</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>%1 client</source>
         <translation type="unfinished">%1 klien</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to SIN network.</source>
-        <extracomment>A substring of the tooltip.</extracomment>
+        <source>%n active connection(s) to SIN network</source>
         <translation type="unfinished">
-            <numerusform>%n koneksi yang aktif ke jaringan SIN</numerusform>
+            <numerusform></numerusform>
         </translation>
     </message>
     <message>
+        <source>Click to disable network activity.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Network activity disabled.</source>
+        <extracomment>A substring of the tooltip.</extracomment>
+        <translation type="unfinished">Aktivitas jaringan dinonaktifkan.</translation>
+    </message>
+    <message>
         <source>Click for more actions.</source>
-        <extracomment>A substring of the tooltip. "More actions" are available via the context menu.</extracomment>
         <translation type="unfinished">Klik untuk tindakan lainnya</translation>
+    </message>
+    <message numerus="yes">
+        <source>Connected Peers : %n</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
         <source>Show Peers tab</source>
-        <extracomment>A context menu item. The "Peers tab" is an element of the "Node window".</extracomment>
+        <extracomment>A context menu item. The &quot;Peers tab&quot; is an element of the &quot;Node window&quot;.</extracomment>
         <translation type="unfinished">Tampilkan tab Rekan</translation>
     </message>
     <message>
@@ -721,12 +623,74 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">aktifkan aktivitas jaringan</translation>
     </message>
     <message>
+        <source>Syncing Headers (%1%)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synchronizing with network...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Indexing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Processing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reindexing blocks on disk...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting to peers...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>Processed %n block(s) of transaction history.</source>
+        <translation type="unfinished">
+            <numerusform>%nblok riwayat transaksi yang diproses.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Up to date</source>
+        <translation type="unfinished">Terbaru</translation>
+    </message>
+    <message>
+        <source>%1 behind</source>
+        <translation type="unfinished">kurang %1</translation>
+    </message>
+    <message>
+        <source>Catching up...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last received block was generated %1 ago.</source>
+        <translation type="unfinished">Blok terakhir yang diterima %1 lalu.</translation>
+    </message>
+    <message>
+        <source>Transactions after this will not yet be visible.</source>
+        <translation type="unfinished">Transaksi setelah ini belum akan terlihat.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished">Terjadi sebuah kesalahan</translation>
+    </message>
+    <message>
         <source>Error: %1</source>
         <translation type="unfinished">Kesalahan: %1</translation>
     </message>
     <message>
+        <source>Warning</source>
+        <translation type="unfinished">Peringatan</translation>
+    </message>
+    <message>
         <source>Warning: %1</source>
         <translation type="unfinished">Peringatan: %1</translation>
+    </message>
+    <message>
+        <source>Information</source>
+        <translation type="unfinished">Informasi</translation>
     </message>
     <message>
         <source>Date: %1
@@ -741,10 +705,20 @@ Signing is only possible with addresses of the type 'legacy'.</source>
 </translation>
     </message>
     <message>
+        <source>Wallet: %1
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Type: %1
 </source>
         <translation type="unfinished">Tipe: %1
 </translation>
+    </message>
+    <message>
+        <source>Label: %1
+</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Address: %1
@@ -754,11 +728,15 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Sent transaction</source>
-        <translation>Transaksi terkirim</translation>
+        <translation type="unfinished">Transaksi terkirim</translation>
     </message>
     <message>
         <source>Incoming transaction</source>
-        <translation>Transaksi diterima</translation>
+        <translation type="unfinished">Transaksi diterima</translation>
+    </message>
+    <message>
+        <source>Private key &lt;b&gt;disabled&lt;/b&gt;</source>
+        <translation type="unfinished">Private key &lt;b&gt;non aktif&lt;/b&gt;</translation>
     </message>
     <message>
         <source>HD key generation is &lt;b&gt;enabled&lt;/b&gt;</source>
@@ -769,27 +747,68 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Pembuatan kunci HD &lt;b&gt;dinonaktifkan&lt;/b&gt;</translation>
     </message>
     <message>
-        <source>Private key &lt;b&gt;disabled&lt;/b&gt;</source>
-        <translation type="unfinished">Private key &lt;b&gt;non aktif&lt;/b&gt;</translation>
-    </message>
-    <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
-        <translation>Dompet saat ini &lt;b&gt;terenkripsi&lt;/b&gt; dan &lt;b&gt;terbuka&lt;/b&gt;</translation>
+        <translation type="unfinished">Dompet saat ini &lt;b&gt;terenkripsi&lt;/b&gt; dan &lt;b&gt;terbuka&lt;/b&gt;</translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
-        <translation>Dompet saat ini &lt;b&gt;terenkripsi&lt;/b&gt; dan &lt;b&gt;terkunci&lt;/b&gt;</translation>
+        <translation type="unfinished">Dompet saat ini &lt;b&gt;terenkripsi&lt;/b&gt; dan &lt;b&gt;terkunci&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Proxy is &lt;b&gt;enabled&lt;/b&gt;: %1</source>
+        <translation type="unfinished">Proxy di &lt;b&gt;aktifkan&lt;/b&gt;: %1</translation>
+    </message>
+    <message>
+        <source>Not staking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation type="unfinished">
+            <numerusform>%ndetik</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n menit</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation type="unfinished">
+            <numerusform>%njam</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n hari</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Staking.&lt;br&gt;Your weight is %1&lt;br&gt;Network weight is %2&lt;br&gt;Expected time to earn reward is %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because wallet is offline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because wallet is syncing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because you don&apos;t have mature coins</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not staking because wallet is locked</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Original message:</source>
         <translation type="unfinished">Pesan original:</translation>
-    </message>
-</context>
-<context>
-    <name>UnitDisplayStatusBarControl</name>
-    <message>
-        <source>Unit to show amounts in. Click to select another unit.</source>
-        <translation type="unfinished">Unit untuk menunjukkan jumlah. Klik untuk memilih unit lain.</translation>
     </message>
 </context>
 <context>
@@ -934,13 +953,21 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>(change)</source>
         <translation type="unfinished">(kembalian)</translation>
     </message>
+    <message>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tree mode</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateWalletActivity</name>
-    <message>
-        <source>Creating Wallet &lt;b&gt;%1&lt;/b&gt;…</source>
-        <translation type="unfinished">Membuat Dompet &lt;b&gt;%1&lt;/b&gt;...</translation>
-    </message>
     <message>
         <source>Create wallet failed</source>
         <translation type="unfinished">Pembuatan dompet gagal</translation>
@@ -950,50 +977,12 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Peringatan membuat dompet</translation>
     </message>
     <message>
-        <source>Can't list signers</source>
+        <source>Can&apos;t list signers</source>
         <translation type="unfinished">Tidak dapat mencantumkan penandatangan</translation>
     </message>
-</context>
-<context>
-    <name>OpenWalletActivity</name>
     <message>
-        <source>Open wallet failed</source>
-        <translation type="unfinished">Gagal membuka wallet</translation>
-    </message>
-    <message>
-        <source>Open wallet warning</source>
-        <translation type="unfinished">Peringatan membuka wallet</translation>
-    </message>
-    <message>
-        <source>default wallet</source>
-        <translation type="unfinished">wallet default</translation>
-    </message>
-    <message>
-        <source>Opening Wallet &lt;b&gt;%1&lt;/b&gt;…</source>
-        <translation type="unfinished">Membuka Wallet &lt;b&gt;%1&lt;/b&gt;...</translation>
-    </message>
-</context>
-<context>
-    <name>WalletController</name>
-    <message>
-        <source>Close wallet</source>
-        <translation type="unfinished">Tutup wallet</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to close the wallet &lt;i&gt;%1&lt;/i&gt;?</source>
-        <translation type="unfinished">Apakah anda yakin ingin menutup dompet &lt;i&gt;%1&lt;/i&gt;?</translation>
-    </message>
-    <message>
-        <source>Closing the wallet for too long can result in having to resync the entire chain if pruning is enabled.</source>
-        <translation type="unfinished">Menutup dompet terlalu lama dapat menyebabkan harus menyinkron ulang seluruh rantai jika pemangkasan diaktifkan.</translation>
-    </message>
-    <message>
-        <source>Close all wallets</source>
-        <translation type="unfinished">Tutup semua dompet</translation>
-    </message>
-    <message>
-        <source>Are you sure you wish to close all wallets?</source>
-        <translation type="unfinished">Apakah anda yakin ingin menutup seluruh dompet ?</translation>
+        <source>Creating Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1064,7 +1053,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Compiled without external signing support (required for external signing)</source>
-        <extracomment>"External signing" means using devices such as hardware wallets.</extracomment>
+        <extracomment>&quot;External signing&quot; means using devices such as hardware wallets.</extracomment>
         <translation type="unfinished">Dikompilasi tanpa dukungan penandatanganan eksternal (diperlukan untuk penandatanganan eksternal)</translation>
     </message>
 </context>
@@ -1099,16 +1088,16 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Ubah alamat pengirim</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid SIN address.</source>
-        <translation type="unfinished">Alamat yang dimasukkan "%1" bukanlah alamat SIN yang valid.</translation>
+        <source>The entered address &quot;%1&quot; is not a valid SIN address.</source>
+        <translation type="unfinished">Alamat yang dimasukkan &quot;%1&quot; bukanlah alamat SIN yang valid.</translation>
     </message>
     <message>
-        <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
-        <translation type="unfinished">Alamat "%1" sudah ada sebagai alamat penerimaan dengan label "%2" sehingga tidak bisa ditambah sebagai alamat pengiriman.</translation>
+        <source>Address &quot;%1&quot; already exists as a receiving address with label &quot;%2&quot; and so cannot be added as a sending address.</source>
+        <translation type="unfinished">Alamat &quot;%1&quot; sudah ada sebagai alamat penerimaan dengan label &quot;%2&quot; sehingga tidak bisa ditambah sebagai alamat pengiriman.</translation>
     </message>
     <message>
-        <source>The entered address "%1" is already in the address book with label "%2".</source>
-        <translation type="unfinished">Alamat "%1" yang dimasukkan sudah ada di dalam buku alamat dengan label "%2".</translation>
+        <source>The entered address &quot;%1&quot; is already in the address book with label &quot;%2&quot;.</source>
+        <translation type="unfinished">Alamat &quot;%1&quot; yang dimasukkan sudah ada di dalam buku alamat dengan label &quot;%2&quot;.</translation>
     </message>
     <message>
         <source>Could not unlock wallet.</source>
@@ -1117,6 +1106,121 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>New key generation failed.</source>
         <translation type="unfinished">Pembuatan kunci baru gagal.</translation>
+    </message>
+    <message>
+        <source>&amp;Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FaqPage</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulir</translation>
+    </message>
+    <message>
+        <source>Frequently Asked Questions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close FAQ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1) What is  SINOVATE?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2) What is an InfinityNode?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3) Multi-Tiered InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4) What is Proof of Stake?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5) What are the Specs and Block Rewards?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6) Where can I get support and more detailed information?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is SINOVATE?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SINOVATE is a state of the art innovative public Blockchain focused on decentralized cloud solutions to overcome scalability, decentralization, and security challenges. We are ready to adapt, evolve, and sustain our relevance in a continuously changing environment. The goal is to launch innovations combined with a user-friendly platform to integrate into daily life. Our team is committed to transparency, accountability, and honesty. Combining both the PoW chain security and PoS chain security through the usage of hybrid proofs and PoB for InfinityNode notarization as an additional Byzantine-Fault-Tolerant (BFT) chain-based algorithm gives the SINOVATE Blockchain the highest, academically proven level of on-chain security. IDS provides high-speed decentralized cloud storage. Leveraging thousands of InfinityNodes that do not require high user fees and enforce network-wide security protocols give users power and control over their private data. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SINOVATE did not have an ICO. There was no pre-sale of coins, and no coins were pre-mined. &lt;/p&gt;&lt;p&gt;Since its inception in September 2018, the SINOVATE project has strived to deliver innovative solutions in the blockchain space. A complete democratic solution was created by respecting and taking on board opinions from the community. Ultimately, the community is the most critical aspect of any blockchain project. It is vital for all members of the community to feel welcome and appreciated.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SINOVATE has a different perspective on how to utilize blockchain technology to improve private and corporate parties.&lt;/p&gt;&lt;p&gt;The goal is to create a blockchain platform in which the community&apos;s needs are accommodated while learning from past mistakes and misfortune. SINOVATE is committed to transparency, accountability, and honesty as they strive to solve existing problems within the blockchain technology space. As succinctly put by the slogan; create, build, and innovate.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is an InfinityNode?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;InfinityNodes are a first of its kind of burn-collateralized nodes that receive monetary incentives for running their hardware and hosting files. They are the backbone of the IDS network. Like other Blockchains work, the main SINOVATE chain relies upon nodes dispersed across the globe without concern for borders or jurisdiction. Each node hosts a copy of the main SIN Blockchain. InfinityNodes use a custom deterministic reward algorithm secured by Schnorr signatures for node validation. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;They provide bespoke functions such as controlling inflation and storing data that regular nodes cannot deliver. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Deterministic InfinityNodes are superior to Dash legacy masternodes or any other service nodes.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;1. Schnorr based Multi-Signature signing scheme (MuSig) &lt;/p&gt;&lt;p&gt;2. Provably fair and openly verifiable fully deterministic node rewards &lt;/p&gt;&lt;p&gt;3. Inflation control with a burn-to-run node ecosystem &lt;/p&gt;&lt;p&gt;4. Fully on-chain node registration and servicing &lt;/p&gt;&lt;p&gt;5. Decentralized Autonomous Organisation (DAO) with node democracy &lt;/p&gt;&lt;p&gt;6. Node incentives ensure sustainability&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multi-Tiered InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An InfinityNode is an improved version of a conventional masternode implemented by the DASH cryptocurrency. There are still many similarities between the two. Going forward SINOVATE InfinityNodes will differentiate entirely from the DASH masternode code, and SINOVATE will become the first of its kind, a pure InfinityNode 1.0 Platform.There are three different tiers of InfinityNode available for users of the SINOVATE network. It is described as an evolution of previously implemented masternode technology by other blockchain projects. Each tier or layer provides different functions, but they all increase the overall decentralization and stability of the network. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Each tier requires different collateral in order to create the InfinityNode: &lt;/p&gt;&lt;p&gt;1. 100,000 SIN coins for Mini SIN&lt;/p&gt;&lt;p&gt;2. 500,000 SIN coins for Mid SIN &lt;/p&gt;&lt;p&gt;3. 1,000,000 SIN coins for Big SIN &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SIN coins used to create InfinityNodes are burnt and sent to the unspendable SIN wallet address below for full transparency.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SinBurnAddress123456789SuqaXbx3AMC&lt;br/&gt;&lt;br/&gt;For the installation guides, please visit &lt;a href=&quot;https://docs.sinovate.io/#/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;https://docs.sinovate.io/#/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What is Proof of Stake?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Proof of Stake, or PoS, is a consensus algorithm that helps secure the SINOVATE blockchain and rewards participants. Anyone with coins in their wallet can start staking, which grants a chance at winning rewards on successfully proposed blocks. All of this is seamlessly taken care of by the wallet backend, so once you have activated staking, you are good to go.&lt;/p&gt;&lt;p&gt;Coins will be staked automatically after 14400 blocks, and stake rewards can be spent after 1440 blocks. This is done to ensure fair participation and offers higher security from a chain perspective.&lt;/p&gt;&lt;p&gt;Anyone with coins can start staking. Staking grants a chance at winning rewards on successfully proposed blocks. To start Stake, click on the Staking &amp;quot;switch button&amp;quot; and keep the wallet running.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What are the Specs and Block Rewards?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name: SINOVATE&lt;/p&gt;&lt;p&gt;Ticker: SIN&lt;/p&gt;&lt;p&gt;Proof-of-Work Algorithm: X25X &lt;/p&gt;&lt;p&gt;Proof-of-Stake Algorithm: PoS4&lt;/p&gt;&lt;p&gt;Collateralized Nodes: Deterministic InfinityNodes&lt;/p&gt;&lt;p&gt;Block Rewards: PoS 50 SIN, PoW 12.5 SIN &amp;amp; InfinityNodes tiered rewards&lt;/p&gt;&lt;p&gt;Block Time: 1 minute&lt;/p&gt;&lt;p&gt;Current Blockchain Size: 2.8 GB&lt;/p&gt;&lt;p&gt;Difficulty Retargeting Algo: LWMA&lt;/p&gt;&lt;p&gt;DAO Governance: RSV Revolving Sovereignty Votes&lt;/p&gt;&lt;p&gt;51% Attack Solution: Deterministically signed chain tips and 55 blocks finality&lt;/p&gt;&lt;p&gt;InfinityNodes Collateral: 100K-500K-1000K (three-tiers)&lt;/p&gt;&lt;p&gt;Max Supply: Yearly Deflating Supply with Proof-of-Burn (uncapped)&lt;/p&gt;&lt;p&gt;Premine: No&lt;/p&gt;&lt;p&gt;P2P Port: 20970&lt;/p&gt;&lt;p&gt;RPC Port: 20971&lt;/p&gt;&lt;p&gt;TPS: No segwit 1120 tx/s (theoretical), segwit-only 2240 tx/s (theoretical)&lt;/p&gt;&lt;p&gt;Treasury: 10% skim of each block subsidy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>What are the Specifications and Block Rewards?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can get continuous support through our &lt;a href=&quot;https://discordapp.com/invite/CWbnW5y&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Discord&lt;/span&gt;&lt;/a&gt; support channel.&lt;/p&gt;&lt;p&gt;For more detailed information, you can visit the &lt;a href=&quot;https://sinovate.io/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;sinovate.io&lt;/span&gt;&lt;/a&gt; website. You can also check out our &lt;a href=&quot;https://sinovate.io/sin-whitepaper/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Whitepaper&lt;/span&gt;&lt;/a&gt; and &lt;a href=&quot;https://sinovate.io/SINOVATE_litepaper.pdf&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;Litepaper&lt;/span&gt;&lt;/a&gt; documents.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1140,6 +1244,577 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>Cannot create data directory here.</source>
         <translation>Tidak bisa membuat direktori data disini.</translation>
+    </message>
+</context>
+<context>
+    <name>HelpMessageDialog</name>
+    <message>
+        <source>version</source>
+        <translation type="unfinished">versi</translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">Tentang %1</translation>
+    </message>
+    <message>
+        <source>Command-line options</source>
+        <translation type="unfinished">Pilihan Command-line</translation>
+    </message>
+</context>
+<context>
+    <name>InfinitynodeList</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulir</translation>
+    </message>
+    <message>
+        <source>InfinityNodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by owner address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Status&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expired</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Incomplete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="unfinished">Tidak diketahui</translation>
+    </message>
+    <message>
+        <source>Filter by IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by peer address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by burn tx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Node Tier&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MINI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BIG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter by backup addres</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner address/Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Begin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expire</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Peer address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Burn Tx ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node tier</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Next reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backup address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blockcount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes Ready:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes Expired:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nodes Incomplete:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right click on the table header to hide / show the columns.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right click IP address to check node stats (55 updatemeta confirmations to appear in the list.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1-Click Node setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Enter password&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Email:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>big APY % NaN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MID Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>spacer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MINI Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mini APY % NaN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0.00 SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BIG Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>100 000 SIN Burn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 000 000 SIN Burn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>500 000 SIN Burn</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mid APY % NaN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter email/pass to create a new user or login with existing one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start over</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pending Invoice:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>START</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create new BurnTx or migrate (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select DIN hosting billing cycle (optional)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1-Click setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pay pending invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>pic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#11</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice ID:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>#12</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit https://setup.sinovate.io</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check node status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check ALL nodes status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Ya</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Tidak</translation>
+    </message>
+    <message>
+        <source>DIN node must be in Ready status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node status check timeout:
+Check if your Node Setup password is correct, then try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Login required</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You didn&apos;t pass the funds check. Please review.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maintenance Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>We are sorry, internet connection issue or system maintenance. Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order placed successfully. Order ID #%d Invoice ID #%d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm Invoice Payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pending Invoice Payment finished, please wait for confirmations.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error getting new wallet address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR getnewaddress: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please Unlock Wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>In order to make payments, please unlock your wallet and retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR sendtoaddress: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error calling RPC gettransaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR gettransaction: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order cancelled or refunded, creating a new order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice amount %f SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice paid, waiting for confirmation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to pay </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Press Reset Order button to cancel node setup process, or Continue setUP button to resume.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlocking wallet is required to make the payments.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Paying invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Payment finished, please wait until platform confirms payment to proceed to node creation.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice paid with balance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maturing, please wait...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Failed to prepare burn transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preparing burn transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error calling RPC getrawtransaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error RPC obtaining owner address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR get owner address: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sending burn transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: Failed to create burn transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finishing node setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node setup finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node setup failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeupdatemeta: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR: infinitynodeupdatemeta </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeburnfund: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeburnfund: Unknown response</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ERROR infinitynodeburnfund: Unexpected error </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There is an order ongoing (#%d). Press &apos;Continue&apos; or &apos;Reset&apos; order.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue setUP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a node Tier and then follow below steps for setup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a node Tier and press &apos;START&apos; to verify if you meet the prerequisites</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;Create new&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking funds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Funds available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> : Not enough funds to pay invoice amount. (you have </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> , need </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> : Not enough amount for UpdateMeta operation (you have </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> , you need </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> : Not enough funds (you have </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node Setup password is not stored. Please enter nodeSetup password and retry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Balance : </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Monthly</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Semiannually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Annually</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1180,8 +1855,8 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Dompet juga akan disimpan di direktori ini.</translation>
     </message>
     <message>
-        <source>Error: Specified data directory "%1" cannot be created.</source>
-        <translation type="unfinished">Kesalahan: Direktori data "%1" tidak dapat dibuat.</translation>
+        <source>Error: Specified data directory &quot;%1&quot; cannot be created.</source>
+        <translation type="unfinished">Kesalahan: Direktori data &quot;%1&quot; tidak dapat dibuat.</translation>
     </message>
     <message>
         <source>Error</source>
@@ -1231,27 +1906,25 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Use a custom data directory:</source>
         <translation>Gunakan direktori pilihan Anda:</translation>
     </message>
-</context>
-<context>
-    <name>HelpMessageDialog</name>
     <message>
-        <source>version</source>
-        <translation type="unfinished">versi</translation>
+        <source>User Interface language:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>About %1</source>
-        <translation type="unfinished">Tentang %1</translation>
+        <source>As this is the first time the program is launched, you can choose a theme. You can also change this setting later in the Options/Display menu.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Command-line options</source>
-        <translation type="unfinished">Pilihan Command-line</translation>
+        <source>Dark Blue Theme</source>
+        <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>ShutdownWindow</name>
     <message>
-        <source>Do not shut down the computer until this window disappears.</source>
-        <translation type="unfinished">Kamu tidak dapat mematikan komputer sebelum jendela ini tertutup sendiri.</translation>
+        <source>Dark Theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light Theme</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1261,22 +1934,14 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Formulir</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the SIN network, as detailed below.</source>
-        <translation type="unfinished">Transaksi-transaksi terkini mungkin belum terlihat dan oleh karenanya, saldo dompet Anda mungkin tidak tepat. Informasi ini akan akurat ketika dompet Anda tersinkronisasi dengan jaringan SIN, seperti rincian berikut.</translation>
-    </message>
-    <message>
-        <source>Attempting to spend SINs that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation type="unfinished">Usaha untuk menggunakan SIN yang dipengaruhi oleh transaksi yang belum terlihat tidak akan diterima oleh jaringan.</translation>
-    </message>
-    <message>
         <source>Number of blocks left</source>
         <translation type="unfinished">Jumlah blok tersisa</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Unknown…</source>
         <translation type="unfinished">Tidak diketahui...</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>calculating…</source>
         <translation type="unfinished">menghitung...</translation>
     </message>
@@ -1301,25 +1966,56 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Sembunyikan</translation>
     </message>
     <message>
-        <source>Esc</source>
-        <translation type="unfinished">Keluar</translation>
-    </message>
-    <message>
         <source>%1 is currently syncing.  It will download headers and blocks from peers and validate them until reaching the tip of the block chain.</source>
         <translation type="unfinished">%1 menyinkronkan. Program ini akan mengunduh header dan blok dari rekan dan memvalidasi sampai blok terbaru.</translation>
     </message>
     <message>
-        <source>Unknown. Syncing Headers (%1, %2%)…</source>
-        <translation type="unfinished">Tidak diketahui. Sinkronisasi Header (%1, %2%)...</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet&apos;s balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Sinovate Blockchain, as detailed below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Attempting to spend SIN that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown. Syncing Headers (%1, %2%)...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>OpenURIDialog</name>
     <message>
-        <source>Open SIN URI</source>
-        <translation type="unfinished">Buka URI SIN:</translation>
+        <source>Open sin URI</source>
+        <translation type="unfinished"></translation>
     </message>
-    </context>
+    <message>
+        <source>URI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OpenWalletActivity</name>
+    <message>
+        <source>Open wallet failed</source>
+        <translation type="unfinished">Gagal membuka wallet</translation>
+    </message>
+    <message>
+        <source>Open wallet warning</source>
+        <translation type="unfinished">Peringatan membuka wallet</translation>
+    </message>
+    <message>
+        <source>default wallet</source>
+        <translation type="unfinished">wallet default</translation>
+    </message>
+    <message>
+        <source>Opening Wallet &lt;b&gt;%1&lt;/b&gt;...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 <context>
     <name>OptionsDialog</name>
     <message>
@@ -1337,10 +2033,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>&amp;Start %1 on system login</source>
         <translation type="unfinished">Mulai %1 ketika masuk ke &amp;sistem</translation>
-    </message>
-    <message>
-        <source>Enabling pruning significantly reduces the disk space required to store transactions. All blocks are still fully validated. Reverting this setting requires re-downloading the entire blockchain.</source>
-        <translation type="unfinished">Mengaktifkan pemangkasan secara signifikan mengurangi ruang disk yang diperlukan untuk menyimpan transaksi. Semua blok masih sepenuhnya divalidasi. Mengembalikan pengaturan ini membutuhkan pengunduhan ulang seluruh blockchain.</translation>
     </message>
     <message>
         <source>Size of &amp;database cache</source>
@@ -1369,10 +2061,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
         <translation type="unfinished">Buka file konfigurasi %1 dari direktori kerja.</translation>
-    </message>
-    <message>
-        <source>Open Configuration File</source>
-        <translation type="unfinished">Buka Berkas Konfigurasi</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -1475,10 +2163,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation>&amp;Jendela</translation>
     </message>
     <message>
-        <source>Show the icon in the system tray.</source>
-        <translation type="unfinished">Tampilkan ikon pada tray sistem.</translation>
-    </message>
-    <message>
         <source>&amp;Show tray icon</source>
         <translation type="unfinished">&amp;Tampilkan ikon tray</translation>
     </message>
@@ -1519,22 +2203,6 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Ingin menunjukkan cara pengaturan koin atau tidak.</translation>
     </message>
     <message>
-        <source>Connect to the SIN network through a separate SOCKS5 proxy for Tor onion services.</source>
-        <translation type="unfinished">Hubungkan kepada SIN network menggunakan proxy SOCKS5 yang terpisah untuk servis Tor onion</translation>
-    </message>
-    <message>
-        <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor onion services:</source>
-        <translation type="unfinished">Gunakan proxy SOCKS&amp;5 terpisah untuk mencapai peers menggunakan servis Tor onion:</translation>
-    </message>
-    <message>
-        <source>&amp;Third party transaction URLs</source>
-        <translation type="unfinished">&amp;URL transaksi pihak ketiga</translation>
-    </message>
-    <message>
-        <source>Monospaced font in the Overview tab:</source>
-        <translation type="unfinished">Font spasi tunggal di tab Ringkasan: </translation>
-    </message>
-    <message>
         <source>Options set in this dialog are overridden by the command line or in the configuration file:</source>
         <translation type="unfinished">Set opsi pengaturan pada jendela dialog ini tertutup oleh baris perintah atau dalam konfigurasi file:</translation>
     </message>
@@ -1548,7 +2216,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
     </message>
     <message>
         <source>Compiled without external signing support (required for external signing)</source>
-        <extracomment>"External signing" means using devices such as hardware wallets.</extracomment>
+        <extracomment>&quot;External signing&quot; means using devices such as hardware wallets.</extracomment>
         <translation type="unfinished">Dikompilasi tanpa dukungan penandatanganan eksternal (diperlukan untuk penandatanganan eksternal)</translation>
     </message>
     <message>
@@ -1595,6 +2263,62 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>The supplied proxy address is invalid.</source>
         <translation>Alamat proxy yang diisi tidak valid.</translation>
     </message>
+    <message>
+        <source>(0 = auto, &lt;0 = leave that many cores free)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disables some advanced features but all blocks will still be fully validated. Reverting this setting requires re-downloading the entire blockchain. Actual disk usage may be somewhat higher.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Port:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IPv4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IPv6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect to the SIN network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use separate SOCKS&amp;5 proxy to reach peers via Tor hidden services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide the icon from the system tray.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Third party transaction URLs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Interface &amp;style:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Configuration File </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm wallet restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to restart your wallet?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OverviewPage</name>
@@ -1615,48 +2339,16 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Tersedia:</translation>
     </message>
     <message>
-        <source>Your current spendable balance</source>
-        <translation>Jumlah yang Anda bisa keluarkan sekarang</translation>
-    </message>
-    <message>
         <source>Pending:</source>
         <translation type="unfinished">Ditunda</translation>
-    </message>
-    <message>
-        <source>Total of transactions that have yet to be confirmed, and do not yet count toward the spendable balance</source>
-        <translation>Jumlah keseluruhan transaksi yang belum dikonfirmasi, dan belum saatnya dihitung sebagai pengeluaran saldo yang telah dibelanjakan.</translation>
     </message>
     <message>
         <source>Immature:</source>
         <translation>Terlalu Muda:</translation>
     </message>
     <message>
-        <source>Mined balance that has not yet matured</source>
-        <translation>Saldo ditambang yang masih terlalu muda</translation>
-    </message>
-    <message>
-        <source>Balances</source>
-        <translation type="unfinished">Saldo:</translation>
-    </message>
-    <message>
-        <source>Total:</source>
-        <translation>Jumlah:</translation>
-    </message>
-    <message>
-        <source>Your current total balance</source>
-        <translation>Jumlah saldo Anda sekarang</translation>
-    </message>
-    <message>
         <source>Your current balance in watch-only addresses</source>
         <translation type="unfinished">Saldomu di alamat hanya lihat</translation>
-    </message>
-    <message>
-        <source>Spendable:</source>
-        <translation type="unfinished">Bisa digunakan:</translation>
-    </message>
-    <message>
-        <source>Recent transactions</source>
-        <translation type="unfinished">Transaksi-transaksi terkini</translation>
     </message>
     <message>
         <source>Unconfirmed transactions to watch-only addresses</source>
@@ -1674,6 +2366,102 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Privacy mode activated for the Overview tab. To unmask the values, uncheck Settings-&gt;Mask values.</source>
         <translation type="unfinished">Mode privasi diaktivasi untuk tab Overview. Untuk mengunmask nilai-nilai, hapus centang yang ada di Settings&gt;Mask values.</translation>
     </message>
+    <message>
+        <source>Value USD :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value BTC :</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Send</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Receive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RecentTransactions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Tanggal</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">Tipe</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation type="unfinished">Jumlah</translation>
+    </message>
+    <message>
+        <source>ROADMAP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WALLET</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DISCORD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EXCHANGES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FAQ</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DOCS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WEB TOOL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EXPLORER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LITEPAPER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value EUR: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0.00000000 EUR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Available EUR: </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PSBTOperationsDialog</name>
@@ -1685,7 +2473,7 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Copy to Clipboard</source>
         <translation type="unfinished">Copy ke Clipboard</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Save…</source>
         <translation type="unfinished">Simpan...</translation>
     </message>
@@ -1786,6 +2574,18 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <source>Transaction status is unknown.</source>
         <translation type="unfinished">Status transaksi tidak diketahui.</translation>
     </message>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Broadcast Tx</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transaction has %1 unsigned inputs.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PaymentServer</name>
@@ -1794,20 +2594,12 @@ Signing is only possible with addresses of the type 'legacy'.</source>
         <translation type="unfinished">Terjadi kesalahan pada permintaan pembayaran</translation>
     </message>
     <message>
-        <source>Cannot start SIN: click-to-pay handler</source>
-        <translation type="unfinished">Tidak bisa memulai SIN: handler click-to-pay</translation>
-    </message>
-    <message>
         <source>URI handling</source>
         <translation type="unfinished">Pengelolaan URI</translation>
     </message>
     <message>
-        <source>'SIN://' is not a valid URI. Use 'SIN:' instead.</source>
-        <translation type="unfinished">'SIN://' bukanlah alamat URI yang valid. Silakan gunakan 'SIN:'.</translation>
-    </message>
-    <message>
         <source>Cannot process payment request because BIP70 is not supported.
-Due to widespread security flaws in BIP70 it's strongly recommended that any merchant instructions to switch wallets be ignored.
+Due to widespread security flaws in BIP70 it&apos;s strongly recommended that any merchant instructions to switch wallets be ignored.
 If you are receiving this error you should request the merchant provide a BIP21 compatible URI.</source>
         <translation type="unfinished">Tidak dapat memproses permintaan pembayaran disebabkan BIP70 tidak didukung. 
 Akibat celah keamanan yang meluas di BIP70, sangat disarankan agar mengabaikan petunjuk pedagang apa pun untuk beralih dompet. 
@@ -1821,12 +2613,20 @@ Jika Anda menerima kesalahan ini, Anda harus meminta pedagang untuk memberikan U
         <source>Payment request file handling</source>
         <translation type="unfinished">Pengelolaan file permintaan pembayaran</translation>
     </message>
+    <message>
+        <source>Cannot start sin: click-to-pay handler</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;sin://&apos; is not a valid URI. Use &apos;sin:&apos; instead.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PeerTableModel</name>
     <message>
         <source>User Agent</source>
-        <extracomment>Title of Peers Table column which contains the peer's User Agent string.</extracomment>
+        <extracomment>Title of Peers Table column which contains the peer&apos;s User Agent string.</extracomment>
         <translation type="unfinished">Agen Pengguna
 
 </translation>
@@ -1848,7 +2648,7 @@ Jika Anda menerima kesalahan ini, Anda harus meminta pedagang untuk memberikan U
     </message>
     <message>
         <source>Type</source>
-        <extracomment>Title of Peers Table column which describes the type of peer connection. The "type" describes why the connection exists.</extracomment>
+        <extracomment>Title of Peers Table column which describes the type of peer connection. The &quot;type&quot; describes why the connection exists.</extracomment>
         <translation type="unfinished">Tipe</translation>
     </message>
     <message>
@@ -1856,13 +2656,242 @@ Jika Anda menerima kesalahan ini, Anda harus meminta pedagang untuk memberikan U
         <extracomment>Title of Peers Table column which states the network the peer connected through.</extracomment>
         <translation type="unfinished">Jaringan</translation>
     </message>
+    <message>
+        <source>Peer</source>
+        <extracomment>Title of Peers Table column which contains a unique number used to identify a connection.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ping</source>
+        <extracomment>Title of Peers Table column which indicates the current latency of the connection with the peer.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Error: Specified data directory &quot;%1&quot; does not exist.</source>
+        <translation type="unfinished">Kesalahan: Direktori data yang ditentukan &quot;%1&quot; tidak ada.</translation>
+    </message>
+    <message>
+        <source>Error: Cannot parse configuration file: %1.</source>
+        <translation type="unfinished">Kesalahan: Tidak dapat mengurai file konfigurasi : %1.</translation>
+    </message>
+    <message>
+        <source>Error: %1</source>
+        <translation type="unfinished">Kesalahan: %1</translation>
+    </message>
+    <message>
+        <source>Error initializing settings: %1</source>
+        <translation type="unfinished">Kesalahan menginisialisasi pengaturan: %1</translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished">tidak diketahui</translation>
+    </message>
+    <message>
+        <source>Amount</source>
+        <translation type="unfinished">Jumlah</translation>
+    </message>
+    <message>
+        <source>Enter a SIN address (e.g. %1)</source>
+        <translation type="unfinished">Masukkan alamat SIN (contoh %1)</translation>
+    </message>
+    <message>
+        <source>Unroutable</source>
+        <translation type="unfinished">Tidak dapat dirutekan</translation>
+    </message>
+    <message>
+        <source>Inbound</source>
+        <translation type="unfinished">masuk</translation>
+    </message>
+    <message>
+        <source>Outbound</source>
+        <translation type="unfinished">keluar</translation>
+    </message>
+    <message>
+        <source>Full Relay</source>
+        <translation type="unfinished">Relay Penuh</translation>
+    </message>
+    <message>
+        <source>Block Relay</source>
+        <translation type="unfinished">Blok Relay</translation>
+    </message>
+    <message>
+        <source>Feeler</source>
+        <translation type="unfinished">Pengintai</translation>
+    </message>
+    <message>
+        <source>Address Fetch</source>
+        <translation type="unfinished">Ambil Alamat</translation>
+    </message>
+    <message>
+        <source>%1 h</source>
+        <translation type="unfinished">%1 Jam</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <translation type="unfinished">%1 menit</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished">Tidak ada</translation>
+    </message>
+    <message>
+        <source>N/A</source>
+        <translation type="unfinished">T/S</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n second(s)</source>
+        <translation>
+            <numerusform>%ndetik</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n minute(s)</source>
+        <translation>
+            <numerusform>%n menit</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n hour(s)</source>
+        <translation type="unfinished">
+            <numerusform>%njam</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n day(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n hari</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n week(s)</source>
+        <translation type="unfinished">
+            <numerusform>%nminggu</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 and %2</source>
+        <translation type="unfinished">%1 dan %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n year(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n tahun</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>%1 didn&apos;t yet exit safely...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unit to show amounts in. Click to select another unit.</source>
+        <translation type="unfinished">Unit untuk menunjukkan jumlah. Klik untuk memilih unit lain.</translation>
+    </message>
+    <message>
+        <source>Internal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manual</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 kB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Blog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Docs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Buy Sinovate Coin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Block Explorer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate Discord Channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sinovate Roadmap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visit Sinovate WebTool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download Latest Sinovate Wallets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sinovate LitePaper</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open FAQ Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Light blue theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark blue theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No wallet has been loaded.
+Go to File &gt; Open Wallet to load a wallet.
+- OR -</source>
+        <translation type="unfinished">Tidak ada dompet yang dimuat.
+Pergi ke File &gt; Open Wallet untuk memuat dompet.
+- ATAU -</translation>
+    </message>
+    <message>
+        <source>Create a new wallet</source>
+        <translation type="unfinished">Bikin dompet baru</translation>
+    </message>
 </context>
 <context>
     <name>QRImageWidget</name>
-    <message>
-        <source>&amp;Save Image…</source>
-        <translation type="unfinished">&amp;Simpan Gambar...</translation>
-    </message>
     <message>
         <source>&amp;Copy Image</source>
         <translation type="unfinished">&amp;Salin Gambar</translation>
@@ -1888,6 +2917,45 @@ Jika Anda menerima kesalahan ini, Anda harus meminta pedagang untuk memberikan U
         <extracomment>Expanded name of the PNG file format. See https://en.wikipedia.org/wiki/Portable_Network_Graphics</extracomment>
         <translation type="unfinished">Gambar PNG</translation>
     </message>
+    <message>
+        <source>&amp;Save Image...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QSwitchControl</name>
+    <message>
+        <source>Don&apos;t show this again</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirm Staking!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;h2&gt;WARNING!&lt;/h2&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When the &lt;b&gt;Staking&lt;/b&gt; button is turned on, all the available coins will start staking and will not be available for 14400 blocks (~10 days)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If some coins are not intended for staking, &lt;b&gt;first go to INPUTS in SEND Tab and lock some of the inputs!&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Ya</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Tidak</translation>
+    </message>
 </context>
 <context>
     <name>RPCConsole</name>
@@ -1908,12 +2976,12 @@ Jika Anda menerima kesalahan ini, Anda harus meminta pedagang untuk memberikan U
         <translation type="unfinished">Umum</translation>
     </message>
     <message>
-        <source>To specify a non-default location of the data directory use the '%1' option.</source>
-        <translation type="unfinished">Untuk menentukan lokasi direktori data yang tidak standar gunakan opsi '%1'.</translation>
+        <source>To specify a non-default location of the data directory use the &apos;%1&apos; option.</source>
+        <translation type="unfinished">Untuk menentukan lokasi direktori data yang tidak standar gunakan opsi &apos;%1&apos;.</translation>
     </message>
     <message>
-        <source>To specify a non-default location of the blocks directory use the '%1' option.</source>
-        <translation type="unfinished">Untuk menentukan lokasi direktori block non-default, gunakan opsi '%1'.</translation>
+        <source>To specify a non-default location of the blocks directory use the &apos;%1&apos; option.</source>
+        <translation type="unfinished">Untuk menentukan lokasi direktori block non-default, gunakan opsi &apos;%1&apos;.</translation>
     </message>
     <message>
         <source>Startup time</source>
@@ -2223,11 +3291,6 @@ Untuk informasi lebih lanjut tentang menggunakan konsol ini, ketik %6.
 %7PERINGATAN: Scammers telah aktif, memberitahu pengguna untuk mengetik perintah di sini, mencuri isi dompet mereka. Jangan gunakan konsol ini tanpa sepenuhnya memahami konsekuensi dari suatu perintah.%8</translation>
     </message>
     <message>
-        <source>Executing…</source>
-        <extracomment>A console message indicating an entered command is currently being executed.</extracomment>
-        <translation type="unfinished">Melaksanakan…</translation>
-    </message>
-    <message>
         <source>Yes</source>
         <translation type="unfinished">Ya</translation>
     </message>
@@ -2255,6 +3318,62 @@ Untuk informasi lebih lanjut tentang menggunakan konsol ini, ketik %6.
         <source>Unknown</source>
         <translation type="unfinished">Tidak diketahui</translation>
     </message>
+    <message>
+        <source>Datadir</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Blocksdir</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Memory Pool</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>High bandwidth BIP152 compact block relay: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl++</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+=</source>
+        <extracomment>Secondary shortcut to increase the RPC console font size.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+-</source>
+        <extracomment>Main shortcut to decrease the RPC console font size.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+_</source>
+        <extracomment>Secondary shortcut to decrease the RPC console font size.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Executing command using &quot;%1&quot; wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Executing...</source>
+        <extracomment>A console message indicating an entered command is currently being executed.</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(peer: %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>via %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ReceiveCoinsDialog</name>
@@ -2265,10 +3384,6 @@ Untuk informasi lebih lanjut tentang menggunakan konsol ini, ketik %6.
     <message>
         <source>&amp;Message:</source>
         <translation type="unfinished">&amp;Pesan:</translation>
-    </message>
-    <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the SIN network.</source>
-        <translation type="unfinished">Pesan opsional untuk dilampirkan ke permintaan pembayaran, yang akan ditampilkan ketika permintaan dibuka. Catatan: Pesan tidak akan dikirim dengan pembayaran melalui jaringan SIN.</translation>
     </message>
     <message>
         <source>An optional label to associate with the new receiving address.</source>
@@ -2291,19 +3406,7 @@ Untuk informasi lebih lanjut tentang menggunakan konsol ini, ketik %6.
         <translation type="unfinished">Pesan opsional yang dilampirkan di permintaan pembayaran dan dapat ditampilkan ke pengirim.</translation>
     </message>
     <message>
-        <source>&amp;Create new receiving address</source>
-        <translation type="unfinished">&amp;Create alamat penerima baru</translation>
-    </message>
-    <message>
-        <source>Clear all fields of the form.</source>
-        <translation type="unfinished">Hapus informasi dari form.</translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="unfinished">Hapus</translation>
-    </message>
-    <message>
-        <source>Native segwit addresses (aka Bech32 or BIP-173) reduce your transaction fees later on and offer better protection against typos, but old wallets don't support them. When unchecked, an address compatible with older wallets will be created instead.</source>
+        <source>Native segwit addresses (aka Bech32 or BIP-173) reduce your transaction fees later on and offer better protection against typos, but old wallets don&apos;t support them. When unchecked, an address compatible with older wallets will be created instead.</source>
         <translation type="unfinished">Alamat segwit asli (alias Bech32 atau BIP-173) akan mengurangi biaya transaksi anda nantinya dan menawarkan perlindungan yang lebih baik terhadap kesalahan pengetikan, tetapi dompet lama tidak mendukungnya. Ketika tidak dicentang, alamat yang kompatibel dengan dompet lama akan dibuat sebagai gantinya.</translation>
     </message>
     <message>
@@ -2358,44 +3461,32 @@ Untuk informasi lebih lanjut tentang menggunakan konsol ini, ketik %6.
         <source>Could not generate new %1 address</source>
         <translation type="unfinished">Tidak dapat membuat alamat %1 baru</translation>
     </message>
+    <message>
+        <source>Request payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Sinovate network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Batal</translation>
+    </message>
+    <message>
+        <source>S&amp;ubmit</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ReceiveRequestDialog</name>
     <message>
-        <source>Request payment to …</source>
-        <translation type="unfinished">Minta pembayaran ke ...</translation>
-    </message>
-    <message>
         <source>Address:</source>
         <translation type="unfinished">Alamat:</translation>
-    </message>
-    <message>
-        <source>Amount:</source>
-        <translation type="unfinished">Jumlah:</translation>
-    </message>
-    <message>
-        <source>Message:</source>
-        <translation type="unfinished">Pesan:</translation>
-    </message>
-    <message>
-        <source>Copy &amp;URI</source>
-        <translation type="unfinished">Salin &amp;URI</translation>
-    </message>
-    <message>
-        <source>Copy &amp;Address</source>
-        <translation type="unfinished">Salin &amp;Alamat</translation>
-    </message>
-    <message>
-        <source>&amp;Verify</source>
-        <translation type="unfinished">&amp;periksa</translation>
-    </message>
-    <message>
-        <source>Verify this address on e.g. a hardware wallet screen</source>
-        <translation type="unfinished">Periksa alamat ini misalnya pada layar dompet perangkat keras</translation>
-    </message>
-    <message>
-        <source>&amp;Save Image…</source>
-        <translation type="unfinished">&amp;Simpan Gambar...</translation>
     </message>
     <message>
         <source>Payment information</source>
@@ -2404,6 +3495,38 @@ Untuk informasi lebih lanjut tentang menggunakan konsol ini, ketik %6.
     <message>
         <source>Request payment to %1</source>
         <translation type="unfinished">Minta pembayaran ke %1</translation>
+    </message>
+    <message>
+        <source>QR Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>QR image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Address</source>
+        <translation type="unfinished">Alamat</translation>
+    </message>
+    <message>
+        <source>Ge&amp;t New Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Request Payment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear &amp;All</source>
+        <translation type="unfinished">Hapus &amp;Semua</translation>
     </message>
 </context>
 <context>
@@ -2431,6 +3554,10 @@ Untuk informasi lebih lanjut tentang menggunakan konsol ini, ketik %6.
     <message>
         <source>Requested</source>
         <translation type="unfinished">Diminta</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2492,18 +3619,6 @@ Untuk informasi lebih lanjut tentang menggunakan konsol ini, ketik %6.
         <translation type="unfinished">Peringatan: Perkiraan biaya saat ini tidak memungkinkan.</translation>
     </message>
     <message>
-        <source>Hide</source>
-        <translation type="unfinished">Sembunyikan</translation>
-    </message>
-    <message>
-        <source>Recommended:</source>
-        <translation type="unfinished">Disarankan</translation>
-    </message>
-    <message>
-        <source>Custom:</source>
-        <translation type="unfinished">Khusus</translation>
-    </message>
-    <message>
         <source>Send to multiple recipients at once</source>
         <translation>Kirim ke beberapa penerima sekaligus</translation>
     </message>
@@ -2516,34 +3631,10 @@ Untuk informasi lebih lanjut tentang menggunakan konsol ini, ketik %6.
         <translation type="unfinished">Hapus informasi dari form.</translation>
     </message>
     <message>
-        <source>Inputs…</source>
-        <translation type="unfinished">Masukan...</translation>
-    </message>
-    <message>
-        <source>Choose…</source>
-        <translation type="unfinished">Pilih...</translation>
-    </message>
-    <message>
-        <source>Hide transaction fee settings</source>
-        <translation type="unfinished">Sembunyikan pengaturan biaya transaksi</translation>
-    </message>
-    <message>
-        <source>Specify a custom fee per kB (1,000 bytes) of the transaction's virtual size.
-
-Note:  Since the fee is calculated on a per-byte basis, a fee rate of "100 satoshis per kvB" for a transaction size of 500 virtual bytes (half of 1 kvB) would ultimately yield a fee of only 50 satoshis.</source>
-        <translation type="unfinished">Tentukan biaya khusus per kB (1.000 byte) dari ukuran virtual transaksi. 
-
-Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi per kvB" untuk ukuran transaksi 500 byte virtual (setengah dari 1 kvB) pada akhirnya akan menghasilkan biaya hanya 50 satoshi. </translation>
-    </message>
-    <message>
-        <source>When there is less transaction volume than space in the blocks, miners as well as relaying nodes may enforce a minimum fee. Paying only this minimum fee is just fine, but be aware that this can result in a never confirming transaction once there is more demand for SIN transactions than the network can process.</source>
-        <translation type="unfinished">Ketika volume transaksi lebih sedikit daripada ruang di blok, penambang serta simpul yang menyiarkanikan dapat memberlakukan biaya minimum. Anda boleh hanya membayar biaya minimum, tetapi perlu diketahui bahwa ini dapat menghasilkan transaksi yang tidak pernah dikonfirmasi setelah ada lebih banyak permintaan untuk transaksi SIN daripada yang dapat diproses jaringan.</translation>
-    </message>
-    <message>
         <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
         <translation type="unfinished">Biaya yang terlalu rendah dapat menyebabkan transaksi tidak terkonfirmasi (baca tooltip)</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
         <translation type="unfinished">(Biaya pintar belum dimulai. Ini biasanya membutuhkan beberapa blok…) </translation>
     </message>
@@ -2556,7 +3647,7 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <translation type="unfinished">Izinkan Replace-By-Fee</translation>
     </message>
     <message>
-        <source>With Replace-By-Fee (BIP-125) you can increase a transaction's fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
+        <source>With Replace-By-Fee (BIP-125) you can increase a transaction&apos;s fee after it is sent. Without this, a higher fee may be recommended to compensate for increased transaction delay risk.</source>
         <translation type="unfinished">Dengan Replace-By-Fee (BIP-125) Anda dapat menambah biaya transaksi setelah dikirim. Tanpa ini, biaya yang lebih tinggi dapat direkomendasikan untuk mengkompensasi peningkatan risiko keterlambatan transaksi.</translation>
     </message>
     <message>
@@ -2609,7 +3700,7 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
     </message>
     <message>
         <source>Sign on device</source>
-        <extracomment>"device" usually means a hardware wallet</extracomment>
+        <extracomment>&quot;device&quot; usually means a hardware wallet</extracomment>
         <translation type="unfinished">Masuk ke perangkat</translation>
     </message>
     <message>
@@ -2618,7 +3709,7 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
     </message>
     <message>
         <source>Set external signer script path in Options -&gt; Wallet</source>
-        <extracomment>"External signer" means using devices such as hardware wallets.</extracomment>
+        <extracomment>&quot;External signer&quot; means using devices such as hardware wallets.</extracomment>
         <translation type="unfinished">Setel jalur skrip penanda tangan eksternal di Opsi -&gt; Dompet</translation>
     </message>
     <message>
@@ -2630,12 +3721,12 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <translation type="unfinished">Membuat sebagian tertanda transaksi SIN (PSBT) untuk digunakan dengan contoh dompet offline %1, atau dompet yang kompatibel dengan PSBT</translation>
     </message>
     <message>
-        <source> from wallet '%1'</source>
-        <translation type="unfinished">dari dompet '%1'</translation>
+        <source> from wallet &apos;%1&apos;</source>
+        <translation type="unfinished">dari dompet &apos;%1&apos;</translation>
     </message>
     <message>
-        <source>%1 to '%2'</source>
-        <translation type="unfinished">%1 ke '%2'</translation>
+        <source>%1 to &apos;%2&apos;</source>
+        <translation type="unfinished">%1 ke &apos;%2&apos;</translation>
     </message>
     <message>
         <source>%1 to %2</source>
@@ -2648,10 +3739,6 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
     <message>
         <source>Are you sure you want to send?</source>
         <translation type="unfinished">Apakah anda yakin ingin mengirimkan?</translation>
-    </message>
-    <message>
-        <source>To review recipient list click "Show Details…"</source>
-        <translation type="unfinished">Untuk meninjau daftar penerima, klik "Tampilkan Detail ..."</translation>
     </message>
     <message>
         <source>Create Unsigned</source>
@@ -2667,12 +3754,12 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
     </message>
     <message>
         <source>External signer not found</source>
-        <extracomment>"External signer" means using devices such as hardware wallets.</extracomment>
+        <extracomment>&quot;External signer&quot; means using devices such as hardware wallets.</extracomment>
         <translation type="unfinished">penandatangan eksternal tidak ditemukan</translation>
     </message>
     <message>
         <source>External signer failure</source>
-        <extracomment>"External signer" means using devices such as hardware wallets.</extracomment>
+        <extracomment>&quot;External signer&quot; means using devices such as hardware wallets.</extracomment>
         <translation type="unfinished">penandatangan eksternal gagal</translation>
     </message>
     <message>
@@ -2782,6 +3869,50 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <source>(no label)</source>
         <translation type="unfinished">(tidak ada label)</translation>
     </message>
+    <message>
+        <source>Inputs...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bytes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dust:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recommended</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If the custom fee is set to 1000 satoshis and the transaction is only 250 bytes, then &quot;per kilobyte&quot; only pays 250 satoshis in fee, while &quot;total at least&quot; pays 1000 satoshis. For transactions bigger than a kilobyte both pay by kilobyte.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>per kilobyte</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>When there is less transaction volume than space in the blocks, miners as well as relaying nodes may enforce a minimum fee. Paying only this minimum fee is just fine, but be aware that this can result in a never confirming transaction once there is more demand for sin transactions than the network can process.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please, review your transaction proposal. This will produce a Partially Signed SIN Transaction (PSBT) which you can save or copy and then sign with e.g. an offline %1 wallet, or a PSBT-compatible hardware wallet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To review recipient list click &quot;Show Details...&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The total exceeds your balance when the %1 transaction fee is included.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SendCoinsEntry</name>
@@ -2798,10 +3929,6 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <translation type="unfinished">Pilih alamat yang telah digunakan sebelumnya</translation>
     </message>
     <message>
-        <source>The SIN address to send the payment to</source>
-        <translation type="unfinished">Alamat SIN untuk mengirim pembayaran</translation>
-    </message>
-    <message>
         <source>Paste address from clipboard</source>
         <translation>Tempel alamat dari salinan</translation>
     </message>
@@ -2816,10 +3943,6 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
     <message>
         <source>The amount to send in the selected unit</source>
         <translation type="unfinished">Jumlah yang ingin dikirim dalam unit yang dipilih</translation>
-    </message>
-    <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less SINs than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation type="unfinished">Biaya akan diambil dari jumlah yang dikirim. Penerima akan menerima SIN lebih sedikit daripada yang di masukkan di bidang jumlah. Jika ada beberapa penerima, biaya dibagi rata.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -2846,16 +3969,43 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <translation type="unfinished">Masukkan label untuk alamat ini untuk dimasukan dalam daftar alamat yang pernah digunakan</translation>
     </message>
     <message>
-        <source>A message that was attached to the SIN: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the SIN network.</source>
-        <translation type="unfinished">Pesan yang dilampirkan ke SIN: URI yang akan disimpan dengan transaksi untuk referensi Anda. Catatan: Pesan ini tidak akan dikirim melalui jaringan SIN.</translation>
-    </message>
-    <message>
         <source>Pay To:</source>
         <translation type="unfinished">Kirim Ke:</translation>
     </message>
     <message>
         <source>Memo:</source>
         <translation type="unfinished">Catatan Peringatan:</translation>
+    </message>
+    <message>
+        <source>A message that was attached to the sin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Sin network.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less sin than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The SIN address to send the payment to&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShutdownWindow</name>
+    <message>
+        <source>Do not shut down the computer until this window disappears.</source>
+        <translation type="unfinished">Kamu tidak dapat mematikan komputer sebelum jendela ini tertutup sendiri.</translation>
+    </message>
+    <message>
+        <source>%1 is shutting down...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2867,10 +4017,6 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
     <message>
         <source>&amp;Sign Message</source>
         <translation>&amp;Tandakan Pesan</translation>
-    </message>
-    <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive SINs sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation type="unfinished">Anda dapat menandatangani pesan / perjanjian dengan alamat Anda untuk membuktikan bahwa Anda dapat menerima SIN yang dikirimkan kepada mereka. Berhati-hatilah untuk tidak menandatangani apa pun yang samar-samar atau acak, karena serangan phishing mungkin mencoba menipu Anda untuk menandatangani identitas Anda kepada mereka. Hanya tandatangani pernyataan terperinci yang Anda setujui.</translation>
     </message>
     <message>
         <source>The SIN address to sign the message with</source>
@@ -2921,7 +4067,7 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <translation>&amp;Verifikasi Pesan</translation>
     </message>
     <message>
-        <source>Enter the receiver's address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
+        <source>Enter the receiver&apos;s address, message (ensure you copy line breaks, spaces, tabs, etc. exactly) and signature below to verify the message. Be careful not to read more into the signature than what is in the signed message itself, to avoid being tricked by a man-in-the-middle attack. Note that this only proves the signing party receives with the address, it cannot prove sendership of any transaction!</source>
         <translation type="unfinished">Masukkan alamat penerima, pesan (pastikan Anda menyalin persis jeda baris, spasi, tab, dll) dan tanda tangan di bawah untuk memverifikasi pesan. Berhati-hatilah untuk tidak memberi informasi lebih ke tanda tangan daripada apa yang ada dalam pesan yang ditandatangani itu sendiri, untuk menghindari dikelabui oleh serangan man-in-the-middle. Perhatikan bahwa ini hanya membuktikan pihak penandatangan menerima dengan alamat, tapi tidak dapat membuktikan pengiriman dari transaksi apa pun!</translation>
     </message>
     <message>
@@ -2949,8 +4095,8 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <translation>Hapus semua bidang verifikasi pesan</translation>
     </message>
     <message>
-        <source>Click "Sign Message" to generate signature</source>
-        <translation type="unfinished">Klik "Sign Message" untuk menghasilkan tanda tangan</translation>
+        <source>Click &quot;Sign Message&quot; to generate signature</source>
+        <translation type="unfinished">Klik &quot;Sign Message&quot; untuk menghasilkan tanda tangan</translation>
     </message>
     <message>
         <source>The entered address is invalid.</source>
@@ -3003,6 +4149,207 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
     <message>
         <source>Message verified.</source>
         <translation type="unfinished">Pesan diverifikasi.</translation>
+    </message>
+    <message>
+        <source>Alt+A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can sign messages/agreements with your addresses to prove you can receive sins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StakePage</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulir</translation>
+    </message>
+    <message>
+        <source>Coins will be staked automatically after 14400 blocks (~10 days), and stake rewards can be spent after 1440 blocks (~1 day). This is done to ensure fair participation and offers higher security from a chain perspective.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your current spendable balance</source>
+        <translation type="unfinished">Jumlah yang Anda bisa keluarkan sekarang</translation>
+    </message>
+    <message>
+        <source>Staking assets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stake:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <source>0.000 000 00 SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Staking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block reward:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3052.5 SIN/Block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Network weight:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expected annualized ROI:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>7.9 %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stake records</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatsPage</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished">Formulir</translation>
+    </message>
+    <message>
+        <source>0.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>POW DIFFICULTY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NETWORK HASHRATE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOCK HEIGHT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOCKCHAIN STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0/0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PRICE IN BTC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CIRCULATING SUPPLY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BLOCK REWARD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3478.75 SIN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MINI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>APY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL NODES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BIG</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INFINITYNODE STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL SUPPLY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BURNT FEES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL BURNT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EMISSION STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>BURNT NODES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOTAL ADDRESSES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>00000</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOP 50</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>00000000</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TOP 10</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ADDRESS STATS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ACTIVE ADDRESSES</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TrafficGraphWidget</name>
+    <message>
+        <source>kB/s</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3159,6 +4506,50 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <source>false</source>
         <translation type="unfinished">salah</translation>
     </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN Reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Debit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Total debit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN rewards must mature %1 blocks before they can be spent. When the miner generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another miner mines a block within a few seconds of the current miner doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other miners block.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN rewards must mature %1 blocks before they can be spent. When the staker generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another staker stakes a block within a few seconds of the current staker doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other stakers block.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to &quot;not accepted&quot; and it won&apos;t be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TransactionDescDialog</name>
@@ -3267,6 +4658,30 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <source>Amount removed from or added to balance.</source>
         <translation type="unfinished">Jumlah dihapus dari atau ditambahkan ke saldo.</translation>
     </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Confirming (%1 of %2 recommended confirmations)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Burn for service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>(n/a)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TransactionView</name>
@@ -3323,56 +4738,11 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <translation type="unfinished">Jumlah min</translation>
     </message>
     <message>
-        <source>Range…</source>
-        <translation type="unfinished">Jarak...</translation>
-    </message>
-    <message>
-        <source>&amp;Copy address</source>
-        <translation type="unfinished">&amp;Salin alamat</translation>
-    </message>
-    <message>
-        <source>Copy &amp;label</source>
-        <translation type="unfinished">Salin &amp;label</translation>
-    </message>
-    <message>
-        <source>Copy &amp;amount</source>
-        <translation type="unfinished">Salin &amp;jumlah</translation>
-    </message>
-    <message>
-        <source>Copy transaction &amp;ID</source>
-        <translation type="unfinished">salin transaksi &amp;ID</translation>
-    </message>
-    <message>
-        <source>Copy &amp;raw transaction</source>
-        <translation type="unfinished">salin &amp;transaksi mentah</translation>
-    </message>
-    <message>
-        <source>Copy full transaction &amp;details</source>
-        <translation type="unfinished">salin seluruh transaksi &amp;detail</translation>
-    </message>
-    <message>
-        <source>&amp;Show transaction details</source>
-        <translation type="unfinished">&amp;Tampilkan detail transaski</translation>
-    </message>
-    <message>
-        <source>Increase transaction &amp;fee</source>
-        <translation type="unfinished">Naikkan biaya transaksi</translation>
-    </message>
-    <message>
-        <source>A&amp;bandon transaction</source>
-        <translation type="unfinished">A&amp;batalkan transaksi</translation>
-    </message>
-    <message>
-        <source>&amp;Edit address label</source>
-        <translation type="unfinished">&amp;Ubah label alamat</translation>
-    </message>
-    <message>
         <source>Export Transaction History</source>
         <translation type="unfinished">Ekspor Riwayat Transaksi</translation>
     </message>
     <message>
         <source>Comma separated file</source>
-        <extracomment>Expanded name of the CSV file format. See https://en.wikipedia.org/wiki/Comma-separated_values</extracomment>
         <translation type="unfinished">dipisahkan dengan koma</translation>
     </message>
     <message>
@@ -3419,20 +4789,92 @@ Catatan: Karena biaya dihitung berdasarkan per byte, tarif biaya "100 satoshi pe
         <source>to</source>
         <translation type="unfinished">untuk</translation>
     </message>
-</context>
-<context>
-    <name>WalletFrame</name>
     <message>
-        <source>No wallet has been loaded.
-Go to File &gt; Open Wallet to load a wallet.
-- OR -</source>
-        <translation type="unfinished">Tidak ada dompet yang dimuat.
-Pergi ke File &gt; Open Wallet untuk memuat dompet.
-- ATAU -</translation>
+        <source>Range...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Create a new wallet</source>
-        <translation type="unfinished">Bikin dompet baru</translation>
+        <source>Minted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DIN reward</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Burn for service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Abandon transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Increase transaction fee</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy amount</source>
+        <translation type="unfinished">Salin Jumlah</translation>
+    </message>
+    <message>
+        <source>Copy transaction ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy raw transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy full transaction details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit address label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show transaction details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>WalletController</name>
+    <message>
+        <source>Close wallet</source>
+        <translation type="unfinished">Tutup wallet</translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to close the wallet &lt;i&gt;%1&lt;/i&gt;?</source>
+        <translation type="unfinished">Apakah anda yakin ingin menutup dompet &lt;i&gt;%1&lt;/i&gt;?</translation>
+    </message>
+    <message>
+        <source>Closing the wallet for too long can result in having to resync the entire chain if pruning is enabled.</source>
+        <translation type="unfinished">Menutup dompet terlalu lama dapat menyebabkan harus menyinkron ulang seluruh rantai jika pemangkasan diaktifkan.</translation>
+    </message>
+    <message>
+        <source>Close all wallets</source>
+        <translation type="unfinished">Tutup semua dompet</translation>
+    </message>
+    <message>
+        <source>Are you sure you wish to close all wallets?</source>
+        <translation type="unfinished">Apakah anda yakin ingin menutup seluruh dompet ?</translation>
     </message>
 </context>
 <context>
@@ -3478,7 +4920,7 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Konfirmasi biaya tambahan</translation>
     </message>
     <message>
-        <source>Can't draft transaction.</source>
+        <source>Can&apos;t draft transaction.</source>
         <translation type="unfinished">Tidak dapat membuat konsep transaksi.</translation>
     </message>
     <message>
@@ -3486,7 +4928,7 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">PSBT disalin</translation>
     </message>
     <message>
-        <source>Can't sign transaction.</source>
+        <source>Can&apos;t sign transaction.</source>
         <translation type="unfinished">Tidak dapat menandatangani transaksi.</translation>
     </message>
     <message>
@@ -3494,7 +4936,7 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Tidak dapat melakukan transaksi</translation>
     </message>
     <message>
-        <source>Can't display address</source>
+        <source>Can&apos;t display address</source>
         <translation type="unfinished">Tidak dapat menampilkan alamat</translation>
     </message>
     <message>
@@ -3567,15 +5009,7 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
     </message>
 </context>
 <context>
-    <name>SIN-core</name>
-    <message>
-        <source>The %s developers</source>
-        <translation type="unfinished">Pengembang %s</translation>
-    </message>
-    <message>
-        <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
-        <translation type="unfinished">-maxtxfee disetel sangat tinggi! Biaya sebesar ini bisa dibayar dengan 1 transaksi.</translation>
-    </message>
+    <name>bitcoin-core</name>
     <message>
         <source>Cannot downgrade wallet from version %i to version %i. Wallet version unchanged.</source>
         <translation type="unfinished">Tidak dapat menurunkan versi dompet dari versi %ike versi %i. Versi dompet tidak berubah. </translation>
@@ -3583,10 +5017,6 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
     <message>
         <source>Cannot obtain a lock on data directory %s. %s is probably already running.</source>
         <translation type="unfinished">Tidak dapat memperoleh kunci pada direktori data %s. %s mungkin sudah berjalan.</translation>
-    </message>
-    <message>
-        <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
-        <translation type="unfinished">Tidak bisa menyediakan koneksi-koneksi spesifik dan memiliki addrman untuk mencari koneksi-koneksi yang terbuka di sama.</translation>
     </message>
     <message>
         <source>Cannot upgrade a non HD split wallet from version %i to version %i without upgrading to support pre-split keypool. Please use version %i or no version specified.</source>
@@ -3597,40 +5027,32 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Didistribusikan di bawah lisensi perangkat lunak MIT, lihat berkas terlampir %s atau %s</translation>
     </message>
     <message>
-        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
-        <translation type="unfinished">Kesalahan membaca %s! Semua kunci dibaca dengan benar, tetapi data transaksi atau entri buku alamat mungkin hilang atau salah.</translation>
+        <source>Error: Dumpfile format record is incorrect. Got &quot;%s&quot;, expected &quot;format&quot;.</source>
+        <translation type="unfinished">Kesalahan: Rekaman pengenal dumpfile salah. Mendapat &quot;%s&quot;, diharapkan &quot;format&quot;. </translation>
     </message>
     <message>
-        <source>Error: Dumpfile format record is incorrect. Got "%s", expected "format".</source>
-        <translation type="unfinished">Kesalahan: Rekaman pengenal dumpfile salah. Mendapat "%s", diharapkan "format". </translation>
+        <source>Error: Dumpfile identifier record is incorrect. Got &quot;%s&quot;, expected &quot;%s&quot;.</source>
+        <translation type="unfinished">Kesalahan: Rekaman pengenal dumpfile salah. Mendapat &quot;%s&quot;, diharapkan &quot;%s&quot;. </translation>
     </message>
     <message>
-        <source>Error: Dumpfile identifier record is incorrect. Got "%s", expected "%s".</source>
-        <translation type="unfinished">Kesalahan: Rekaman pengenal dumpfile salah. Mendapat "%s", diharapkan "%s". </translation>
+        <source>Error: Dumpfile version is not supported. This version of sin-wallet only supports version 1 dumpfiles. Got dumpfile with version %s</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error: Dumpfile version is not supported. This version of SIN-wallet only supports version 1 dumpfiles. Got dumpfile with version %s</source>
-        <translation type="unfinished">Kesalahan: Versi Dumpfile tidak didukung. Versi dompet SIN ini hanya mendukung dumpfile versi 1. Dumpfile yang didapat adalah versi %s</translation>
-    </message>
-    <message>
-        <source>Error: Legacy wallets only support the "legacy", "p2sh-segwit", and "bech32" address types</source>
-        <translation type="unfinished">Kesalahan: Dompet lama hanya mendukung jenis alamat "warisan", "p2sh-segwit", dan "bech32"</translation>
+        <source>Error: Legacy wallets only support the &quot;legacy&quot;, &quot;p2sh-segwit&quot;, and &quot;bech32&quot; address types</source>
+        <translation type="unfinished">Kesalahan: Dompet lama hanya mendukung jenis alamat &quot;warisan&quot;, &quot;p2sh-segwit&quot;, dan &quot;bech32&quot;</translation>
     </message>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation type="unfinished">Kesalahan: Mendengarkan koneksi yang masuk gagal (dengarkan kesalahan yang dikembalikan %s)</translation>
     </message>
     <message>
-        <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>
-        <translation type="unfinished">Estimasi biaya gagal. Biaya fallback dimatikan. Tunggu beberapa blocks atau nyalakan -fallbackfee</translation>
-    </message>
-    <message>
         <source>File %s already exists. If you are sure this is what you want, move it out of the way first.</source>
         <translation type="unfinished">File %s sudah ada. Jika Anda yakin ini yang Anda inginkan, singkirkan dulu. </translation>
     </message>
     <message>
-        <source>More than one onion bind address is provided. Using %s for the automatically created Tor onion service.</source>
-        <translation type="unfinished">Lebih dari satu alamat Onion Bind tersedia. Menggunakan %s untuk membuat Tor onion secara otomatis.</translation>
+        <source>Invalid amount for -maxtxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least the minrelay fee of %s to prevent stuck transactions)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>No dump file provided. To use createfromdump, -dumpfile=&lt;filename&gt; must be provided.</source>
@@ -3645,68 +5067,12 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Tidak ada format file dompet yang tersedia. Untuk menggunakan createfromdump, -format=&lt;format&gt;harus tersedia. </translation>
     </message>
     <message>
-        <source>Please check that your computer's date and time are correct! If your clock is wrong, %s will not work properly.</source>
+        <source>Please check that your computer&apos;s date and time are correct! If your clock is wrong, %s will not work properly.</source>
         <translation type="unfinished">Periksa apakah tanggal dan waktu komputer anda benar! Jika jam anda salah, %s tidak akan berfungsi dengan baik.</translation>
     </message>
     <message>
-        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
-        <translation type="unfinished">Silakan berkontribusi jika %s berguna. Kunjungi %s untuk informasi lebih lanjut tentang perangkat lunak.</translation>
-    </message>
-    <message>
-        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
-        <translation type="unfinished">Pemangkasan dikonfigurasikan di bawah minimum dari %d MiB. Harap gunakan angka yang lebih tinggi.</translation>
-    </message>
-    <message>
-        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
-        <translation type="unfinished">Pemangkasan: sinkronisasi dompet terakhir melampaui data yang sudah dipangkas. Anda perlu -reindex (unduh seluruh blockchain lagi jika terjadi node pemangkasan)</translation>
-    </message>
-    <message>
-        <source>SQLiteDatabase: Unknown sqlite wallet schema version %d. Only version %d is supported</source>
-        <translation type="unfinished">SQLiteDatabase: Versi skema dompet sqlite tidak diketahui %d. Hanya versi %d yang didukung</translation>
-    </message>
-    <message>
-        <source>The block database contains a block which appears to be from the future. This may be due to your computer's date and time being set incorrectly. Only rebuild the block database if you are sure that your computer's date and time are correct</source>
-        <translation type="unfinished">Blok basis data berisi blok yang tampaknya berasal dari masa depan. Ini mungkin karena tanggal dan waktu komputer anda diatur secara tidak benar. Bangun kembali blok basis data jika anda yakin tanggal dan waktu komputer anda benar</translation>
-    </message>
-    <message>
-        <source>The transaction amount is too small to send after the fee has been deducted</source>
-        <translation type="unfinished">Jumlah transaksi terlalu kecil untuk dikirim setelah biaya dikurangi</translation>
-    </message>
-    <message>
-        <source>This error could occur if this wallet was not shutdown cleanly and was last loaded using a build with a newer version of Berkeley DB. If so, please use the software that last loaded this wallet</source>
-        <translation type="unfinished">Kesalahan ini dapat terjadi jika dompet ini tidak dimatikan dengan bersih dan terakhir dimuat menggunakan build dengan versi Berkeley DB yang lebih baru. Jika demikian, silakan gunakan perangkat lunak yang terakhir memuat dompet ini</translation>
-    </message>
-    <message>
-        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
-        <translation type="unfinished">Ini adalah uji coba pra-rilis - gunakan dengan risiko anda sendiri - jangan digunakan untuk aplikasi penambangan atau penjual</translation>
-    </message>
-    <message>
-        <source>This is the maximum transaction fee you pay (in addition to the normal fee) to prioritize partial spend avoidance over regular coin selection.</source>
-        <translation type="unfinished">Ini adalah biaya transaksi maksimum yang Anda bayarkan (selain biaya normal) untuk memprioritaskan penghindaran pengeluaran sebagian daripada pemilihan koin biasa.</translation>
-    </message>
-    <message>
-        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
-        <translation type="unfinished">Ini adalah biaya transaksi, kamu boleh menutup kalau uang kembali lebih kecil daripada debu di level ini</translation>
-    </message>
-    <message>
-        <source>This is the transaction fee you may pay when fee estimates are not available.</source>
-        <translation type="unfinished">Ini adalah biaya transaksi, kamu boleh membayar saat estimasi biaya tidak tersedia</translation>
-    </message>
-    <message>
-        <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
-        <translation type="unfinished">Panjang total dari versi string jaringan (%i) melewati panjang maximum (%i). Kurangi nomornya atau besar dari uacomments</translation>
-    </message>
-    <message>
-        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
-        <translation type="unfinished">Tidak bisa mengulang blocks. Kamu harus membuat ulang database menggunakan -reindex-chainstate</translation>
-    </message>
-    <message>
-        <source>Unknown wallet file format "%s" provided. Please provide one of "bdb" or "sqlite".</source>
-        <translation type="unfinished">Format berkas dompet tidak dikenal "%s" tersedia. Berikan salah satu dari "bdb" atau "sqlite". </translation>
-    </message>
-    <message>
-        <source>Warning: Dumpfile wallet format "%s" does not match command line specified format "%s".</source>
-        <translation type="unfinished">Peringatan: Dumpfile dompet format "%s" tidak cocok dengan format baris perintah yang ditentukan "%s". </translation>
+        <source>Warning: Dumpfile wallet format &quot;%s&quot; does not match command line specified format &quot;%s&quot;.</source>
+        <translation type="unfinished">Peringatan: Dumpfile dompet format &quot;%s&quot; tidak cocok dengan format baris perintah yang ditentukan &quot;%s&quot;. </translation>
     </message>
     <message>
         <source>Warning: Private keys detected in wallet {%s} with disabled private keys</source>
@@ -3715,10 +5081,6 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
     <message>
         <source>Warning: We do not appear to fully agree with our peers! You may need to upgrade, or other nodes may need to upgrade.</source>
         <translation type="unfinished">Peringatan: Kami tampaknya tidak sepenuhnya setuju dengan peers kami! Anda mungkin perlu memutakhirkan, atau nodes lain mungkin perlu dimutakhirkan.</translation>
-    </message>
-    <message>
-        <source>Witness data for blocks after height %d requires validation. Please restart with -reindex.</source>
-        <translation type="unfinished">Menyaksikan data untuk blok setelah ketinggian %d membutuhkan validasi. Harap mengulang kembali dengan -reindex. </translation>
     </message>
     <message>
         <source>You need to rebuild the database using -reindex to go back to unpruned mode.  This will redownload the entire blockchain</source>
@@ -3737,16 +5099,16 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Terjadi kesalahan internal yang fatal, lihat debug.log untuk mengetahui detailnya</translation>
     </message>
     <message>
-        <source>Cannot resolve -%s address: '%s'</source>
-        <translation type="unfinished">Tidak bisa menyelesaikan -%s alamat: '%s'</translation>
+        <source>Cannot resolve -%s address: &apos;%s&apos;</source>
+        <translation type="unfinished">Tidak bisa menyelesaikan -%s alamat: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>Cannot set -peerblockfilters without -blockfilterindex.</source>
         <translation type="unfinished">Tidak dapat menyetel -peerblockfilters tanpa -blockfilterindex.</translation>
     </message>
     <message>
-        <source>Cannot write to data directory '%s'; check permissions.</source>
-        <translation type="unfinished">Tidak dapat menulis ke direktori data '%s'; periksa izinnya.</translation>
+        <source>Cannot write to data directory &apos;%s&apos;; check permissions.</source>
+        <translation type="unfinished">Tidak dapat menulis ke direktori data &apos;%s&apos;; periksa izinnya.</translation>
     </message>
     <message>
         <source>Change index out of range</source>
@@ -3755,6 +5117,10 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
     <message>
         <source>Config setting for %s only applied on %s network when in [%s] section.</source>
         <translation type="unfinished">Setting konfigurasi untuk %s hanya di terapkan di %s jaringan ketika ada di [%s] bagian.</translation>
+    </message>
+    <message>
+        <source>Copyright (C) %i-%i</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Corrupted block database detected</source>
@@ -3833,7 +5199,7 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Kesalahan memutakhirkan basis data chainstate</translation>
     </message>
     <message>
-        <source>Error: Couldn't create cursor into database</source>
+        <source>Error: Couldn&apos;t create cursor into database</source>
         <translation type="unfinished">Kesalahan: Tidak dapat membuat kursor ke basis data</translation>
     </message>
     <message>
@@ -3893,8 +5259,8 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Mengabaikan duplikat -dompet %s.</translation>
     </message>
     <message>
-        <source>Importing…</source>
-        <translation type="unfinished">mengimpor...</translation>
+        <source>Importing...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Incorrect or no genesis block found. Wrong datadir for network?</source>
@@ -3909,56 +5275,60 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Saldo tidak mencukupi</translation>
     </message>
     <message>
-        <source>Invalid -i2psam address or hostname: '%s'</source>
-        <translation type="unfinished">Alamat -i2psam atau nama host tidak valid: '%s'</translation>
+        <source>Invalid -i2psam address or hostname: &apos;%s&apos;</source>
+        <translation type="unfinished">Alamat -i2psam atau nama host tidak valid: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid -onion address or hostname: '%s'</source>
-        <translation type="unfinished">Alamat -onion atau hostname tidak valid: '%s'</translation>
+        <source>Invalid -onion address or hostname: &apos;%s&apos;</source>
+        <translation type="unfinished">Alamat -onion atau hostname tidak valid: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid -proxy address or hostname: '%s'</source>
-        <translation type="unfinished">Alamat proxy atau hostname tidak valid: '%s'</translation>
+        <source>Invalid -proxy address or hostname: &apos;%s&apos;</source>
+        <translation type="unfinished">Alamat proxy atau hostname tidak valid: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid P2P permission: '%s'</source>
-        <translation type="unfinished">Izin P2P yang tidak sah: '%s'</translation>
+        <source>Invalid P2P permission: &apos;%s&apos;</source>
+        <translation type="unfinished">Izin P2P yang tidak sah: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -discardfee=&lt;amount&gt;: '%s'</source>
-        <translation type="unfinished">Jumlah yang tidak benar untuk -discardfee-&lt;amount&gt;: '%s'</translation>
+        <source>Invalid amount for -%s=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: '%s'</source>
-        <translation type="unfinished">Jumlah yang tidak saf untuk -fallbackfee=&lt;amount&gt;: '%s'</translation>
+        <source>Invalid amount for -discardfee=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished">Jumlah yang tidak benar untuk -discardfee-&lt;amount&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid amount for -paytxfee=&lt;amount&gt;: '%s' (must be at least %s)</source>
-        <translation type="unfinished">Jumlah yang tidak sah untuk -paytxfee=&lt;amount&gt;: '%s' (Paling sedikit harus %s)</translation>
+        <source>Invalid amount for -fallbackfee=&lt;amount&gt;: &apos;%s&apos;</source>
+        <translation type="unfinished">Jumlah yang tidak saf untuk -fallbackfee=&lt;amount&gt;: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Invalid netmask specified in -whitelist: '%s'</source>
-        <translation type="unfinished">Netmask tidak valid yang ditentukan di -whitelist: '%s'</translation>
+        <source>Invalid amount for -paytxfee=&lt;amount&gt;: &apos;%s&apos; (must be at least %s)</source>
+        <translation type="unfinished">Jumlah yang tidak sah untuk -paytxfee=&lt;amount&gt;: &apos;%s&apos; (Paling sedikit harus %s)</translation>
     </message>
     <message>
-        <source>Loading P2P addresses…</source>
-        <translation type="unfinished">Memuat alamat P2P....</translation>
+        <source>Invalid netmask specified in -whitelist: &apos;%s&apos;</source>
+        <translation type="unfinished">Netmask tidak valid yang ditentukan di -whitelist: &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Loading banlist…</source>
-        <translation type="unfinished">Memuat daftar larangan..</translation>
+        <source>Loading P2P addresses...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Loading block index…</source>
-        <translation type="unfinished">Memuat indeks blok...</translation>
+        <source>Loading banlist...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Loading wallet…</source>
-        <translation type="unfinished">Memuat dompet...</translation>
+        <source>Loading block index...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Need to specify a port with -whitebind: '%s'</source>
-        <translation type="unfinished">Perlu menentukan port dengan -whitebind: '%s'</translation>
+        <source>Loading wallet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Need to specify a port with -whitebind: &apos;%s&apos;</source>
+        <translation type="unfinished">Perlu menentukan port dengan -whitebind: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>No proxy server specified. Use -proxy=&lt;ip&gt; or -proxy=&lt;ip:port&gt;.</source>
@@ -3981,20 +5351,20 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Mode prune tidak kompatibel dengan -txindex</translation>
     </message>
     <message>
-        <source>Pruning blockstore…</source>
-        <translation type="unfinished">Memangkas blockstore...</translation>
+        <source>Pruning blockstore...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Reducing -maxconnections from %d to %d, because of system limitations.</source>
         <translation type="unfinished">Mengurangi -maxconnections dari %d ke %d, karena limitasi sistem.</translation>
     </message>
     <message>
-        <source>Replaying blocks…</source>
-        <translation type="unfinished">Memutar ulang blok ...</translation>
+        <source>Replaying blocks...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rescanning…</source>
-        <translation type="unfinished">Memindai ulang...</translation>
+        <source>Rescanning...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>SQLiteDatabase: Failed to execute statement to verify database: %s</source>
@@ -4021,24 +5391,24 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Tandatangani transaksi tergagal</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" does not exist</source>
-        <translation type="unfinished">-walletdir yang sudah dispesifikasi "%s" tidak ada.</translation>
+        <source>Specified -walletdir &quot;%s&quot; does not exist</source>
+        <translation type="unfinished">-walletdir yang sudah dispesifikasi &quot;%s&quot; tidak ada.</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" is a relative path</source>
-        <translation type="unfinished">-walletdir yang dispesifikasi "%s" adalah jalur yang relatif</translation>
+        <source>Specified -walletdir &quot;%s&quot; is a relative path</source>
+        <translation type="unfinished">-walletdir yang dispesifikasi &quot;%s&quot; adalah jalur yang relatif</translation>
     </message>
     <message>
-        <source>Specified -walletdir "%s" is not a directory</source>
-        <translation type="unfinished">-walletdir yang dispesifikasi "%s" bukan direktori</translation>
+        <source>Specified -walletdir &quot;%s&quot; is not a directory</source>
+        <translation type="unfinished">-walletdir yang dispesifikasi &quot;%s&quot; bukan direktori</translation>
     </message>
     <message>
-        <source>Specified blocks directory "%s" does not exist.</source>
-        <translation type="unfinished">Blocks yang ditentukan directori "%s" tidak ada.</translation>
+        <source>Specified blocks directory &quot;%s&quot; does not exist.</source>
+        <translation type="unfinished">Blocks yang ditentukan directori &quot;%s&quot; tidak ada.</translation>
     </message>
     <message>
-        <source>Starting network threads…</source>
-        <translation type="unfinished">Memulai rangkaian jaringan ...</translation>
+        <source>Starting network threads...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>The source code is available from %s.</source>
@@ -4085,7 +5455,7 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Transaksi harus mempunyai paling tidak satu penerima</translation>
     </message>
     <message>
-        <source>Transaction needs a change address, but we can't generate it. %s</source>
+        <source>Transaction needs a change address, but we can&apos;t generate it. %s</source>
         <translation type="unfinished">Transaksi memerlukan alamat perubahan, tetapi kami tidak dapat membuatnya. %s</translation>
     </message>
     <message>
@@ -4101,8 +5471,8 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Tidak dapat mengikat ke %s di komputer ini. %s mungkin sudah berjalan.</translation>
     </message>
     <message>
-        <source>Unable to create the PID file '%s': %s</source>
-        <translation type="unfinished">Tidak dapat membuat berkas PID '%s': %s</translation>
+        <source>Unable to create the PID file &apos;%s&apos;: %s</source>
+        <translation type="unfinished">Tidak dapat membuat berkas PID &apos;%s&apos;: %s</translation>
     </message>
     <message>
         <source>Unable to generate initial keys</source>
@@ -4125,16 +5495,16 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Jumlah -blockfilterindex yang tidak diketahui %s</translation>
     </message>
     <message>
-        <source>Unknown address type '%s'</source>
-        <translation type="unfinished">Tipe alamat yang tidak diketahui '%s'</translation>
+        <source>Unknown address type &apos;%s&apos;</source>
+        <translation type="unfinished">Tipe alamat yang tidak diketahui &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Unknown change type '%s'</source>
-        <translation type="unfinished">Tipe ganti yang tidak diketahui '%s'</translation>
+        <source>Unknown change type &apos;%s&apos;</source>
+        <translation type="unfinished">Tipe ganti yang tidak diketahui &apos;%s&apos;</translation>
     </message>
     <message>
-        <source>Unknown network specified in -onlynet: '%s'</source>
-        <translation type="unfinished">Jaringan tidak diketahui yang ditentukan dalam -onlynet: '%s'</translation>
+        <source>Unknown network specified in -onlynet: &apos;%s&apos;</source>
+        <translation type="unfinished">Jaringan tidak diketahui yang ditentukan dalam -onlynet: &apos;%s&apos;</translation>
     </message>
     <message>
         <source>Unknown new rules activated (versionbit %i)</source>
@@ -4157,16 +5527,107 @@ Pergi ke File &gt; Open Wallet untuk memuat dompet.
         <translation type="unfinished">Komentar Agen Pengguna (%s) berisi karakter yang tidak aman.</translation>
     </message>
     <message>
-        <source>Verifying blocks…</source>
-        <translation type="unfinished">Menferifikasi blok...</translation>
+        <source>Verifying blocks...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Verifying wallet(s)…</source>
-        <translation type="unfinished">Memverifikasi dompet...</translation>
+        <source>Verifying wallet(s)...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Wallet needed to be rewritten: restart %s to complete</source>
         <translation type="unfinished">Dompet harus ditulis ulang: mulai ulang %s untuk menyelesaikan</translation>
+    </message>
+</context>
+<context>
+    <name>sin-core</name>
+    <message>
+        <source>The %s developers</source>
+        <translation type="unfinished">Pengembang %s</translation>
+    </message>
+    <message>
+        <source>%s corrupt. Try using the wallet tool sin-wallet to salvage or restoring a backup.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>-maxtxfee is set very high! Fees this large could be paid on a single transaction.</source>
+        <translation type="unfinished">-maxtxfee disetel sangat tinggi! Biaya sebesar ini bisa dibayar dengan 1 transaksi.</translation>
+    </message>
+    <message>
+        <source>Cannot provide specific connections and have addrman find outgoing connections at the same.</source>
+        <translation type="unfinished">Tidak bisa menyediakan koneksi-koneksi spesifik dan memiliki addrman untuk mencari koneksi-koneksi yang terbuka di sama.</translation>
+    </message>
+    <message>
+        <source>Error reading %s! All keys read correctly, but transaction data or address book entries might be missing or incorrect.</source>
+        <translation type="unfinished">Kesalahan membaca %s! Semua kunci dibaca dengan benar, tetapi data transaksi atau entri buku alamat mungkin hilang atau salah.</translation>
+    </message>
+    <message>
+        <source>Fee estimation failed. Fallbackfee is disabled. Wait a few blocks or enable -fallbackfee.</source>
+        <translation type="unfinished">Estimasi biaya gagal. Biaya fallback dimatikan. Tunggu beberapa blocks atau nyalakan -fallbackfee</translation>
+    </message>
+    <message>
+        <source>More than one onion bind address is provided. Using %s for the automatically created Tor onion service.</source>
+        <translation type="unfinished">Lebih dari satu alamat Onion Bind tersedia. Menggunakan %s untuk membuat Tor onion secara otomatis.</translation>
+    </message>
+    <message>
+        <source>Please contribute if you find %s useful. Visit %s for further information about the software.</source>
+        <translation type="unfinished">Silakan berkontribusi jika %s berguna. Kunjungi %s untuk informasi lebih lanjut tentang perangkat lunak.</translation>
+    </message>
+    <message>
+        <source>Prune configured below the minimum of %d MiB.  Please use a higher number.</source>
+        <translation type="unfinished">Pemangkasan dikonfigurasikan di bawah minimum dari %d MiB. Harap gunakan angka yang lebih tinggi.</translation>
+    </message>
+    <message>
+        <source>Prune: last wallet synchronisation goes beyond pruned data. You need to -reindex (download the whole blockchain again in case of pruned node)</source>
+        <translation type="unfinished">Pemangkasan: sinkronisasi dompet terakhir melampaui data yang sudah dipangkas. Anda perlu -reindex (unduh seluruh blockchain lagi jika terjadi node pemangkasan)</translation>
+    </message>
+    <message>
+        <source>SQLiteDatabase: Unknown sqlite wallet schema version %d. Only version %d is supported</source>
+        <translation type="unfinished">SQLiteDatabase: Versi skema dompet sqlite tidak diketahui %d. Hanya versi %d yang didukung</translation>
+    </message>
+    <message>
+        <source>The block database contains a block which appears to be from the future. This may be due to your computer&apos;s date and time being set incorrectly. Only rebuild the block database if you are sure that your computer&apos;s date and time are correct</source>
+        <translation type="unfinished">Blok basis data berisi blok yang tampaknya berasal dari masa depan. Ini mungkin karena tanggal dan waktu komputer anda diatur secara tidak benar. Bangun kembali blok basis data jika anda yakin tanggal dan waktu komputer anda benar</translation>
+    </message>
+    <message>
+        <source>The transaction amount is too small to send after the fee has been deducted</source>
+        <translation type="unfinished">Jumlah transaksi terlalu kecil untuk dikirim setelah biaya dikurangi</translation>
+    </message>
+    <message>
+        <source>This error could occur if this wallet was not shutdown cleanly and was last loaded using a build with a newer version of Berkeley DB. If so, please use the software that last loaded this wallet</source>
+        <translation type="unfinished">Kesalahan ini dapat terjadi jika dompet ini tidak dimatikan dengan bersih dan terakhir dimuat menggunakan build dengan versi Berkeley DB yang lebih baru. Jika demikian, silakan gunakan perangkat lunak yang terakhir memuat dompet ini</translation>
+    </message>
+    <message>
+        <source>This is a pre-release test build - use at your own risk - do not use for mining or merchant applications</source>
+        <translation type="unfinished">Ini adalah uji coba pra-rilis - gunakan dengan risiko anda sendiri - jangan digunakan untuk aplikasi penambangan atau penjual</translation>
+    </message>
+    <message>
+        <source>This is the maximum transaction fee you pay (in addition to the normal fee) to prioritize partial spend avoidance over regular coin selection.</source>
+        <translation type="unfinished">Ini adalah biaya transaksi maksimum yang Anda bayarkan (selain biaya normal) untuk memprioritaskan penghindaran pengeluaran sebagian daripada pemilihan koin biasa.</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may discard if change is smaller than dust at this level</source>
+        <translation type="unfinished">Ini adalah biaya transaksi, kamu boleh menutup kalau uang kembali lebih kecil daripada debu di level ini</translation>
+    </message>
+    <message>
+        <source>This is the transaction fee you may pay when fee estimates are not available.</source>
+        <translation type="unfinished">Ini adalah biaya transaksi, kamu boleh membayar saat estimasi biaya tidak tersedia</translation>
+    </message>
+    <message>
+        <source>Total length of network version string (%i) exceeds maximum length (%i). Reduce the number or size of uacomments.</source>
+        <translation type="unfinished">Panjang total dari versi string jaringan (%i) melewati panjang maximum (%i). Kurangi nomornya atau besar dari uacomments</translation>
+    </message>
+    <message>
+        <source>Unable to replay blocks. You will need to rebuild the database using -reindex-chainstate.</source>
+        <translation type="unfinished">Tidak bisa mengulang blocks. Kamu harus membuat ulang database menggunakan -reindex-chainstate</translation>
+    </message>
+    <message>
+        <source>Unknown wallet file format &quot;%s&quot; provided. Please provide one of &quot;bdb&quot; or &quot;sqlite&quot;.</source>
+        <translation type="unfinished">Format berkas dompet tidak dikenal &quot;%s&quot; tersedia. Berikan salah satu dari &quot;bdb&quot; atau &quot;sqlite&quot;. </translation>
+    </message>
+    <message>
+        <source>Witness data for blocks after height %d requires validation. Please restart with -reindex.</source>
+        <translation type="unfinished">Menyaksikan data untuk blok setelah ketinggian %d membutuhkan validasi. Harap mengulang kembali dengan -reindex. </translation>
     </message>
 </context>
 </TS>
