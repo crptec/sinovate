@@ -1821,15 +1821,15 @@ Verifique se sua senha de configuração do nó está correta e tente novamente.
     </message>
     <message>
         <source>Monthly</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensal</translation>
     </message>
     <message>
         <source>Semiannually</source>
-        <translation type="unfinished"></translation>
+        <translation>Semenstral</translation>
     </message>
     <message>
         <source>Annually</source>
-        <translation type="unfinished"></translation>
+        <translation>Anual</translation>
     </message>
 </context>
 <context>
@@ -1940,7 +1940,7 @@ Verifique se sua senha de configuração do nó está correta e tente novamente.
     </message>
     <message>
         <source>User Interface language:</source>
-        <translation>&amp;Idioma da interface:</translation>
+        <translation>Idioma da interface:</translation>
     </message>
 </context>
 <context>
@@ -2644,7 +2644,7 @@ If you are receiving this error you should request the merchant provide a BIP21 
     <message>
         <source>Peer</source>
         <extracomment>Title of Peers Table column which contains a unique number used to identify a connection.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Nó</translation>
     </message>
     <message>
         <source>Address</source>
@@ -2844,47 +2844,47 @@ If you are receiving this error you should request the merchant provide a BIP21 
     </message>
     <message>
         <source>Unit to show amounts in. Click to select another unit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unidade para mostrar os valores. Clique para selecionar outra unidade.</translation>
     </message>
     <message>
         <source>Visit Sinovate Blog</source>
-        <translation type="unfinished"></translation>
+        <translation>Visite Blog Sinovate</translation>
     </message>
     <message>
         <source>Visit Sinovate Docs</source>
-        <translation type="unfinished"></translation>
+        <translation>Visite Documentação Sinovate</translation>
     </message>
     <message>
         <source>Buy Sinovate Coin</source>
-        <translation type="unfinished"></translation>
+        <translation>Compre moedas Sinovate</translation>
     </message>
     <message>
         <source>Visit Sinovate Block Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Visite Block Explorer Sinovate</translation>
     </message>
     <message>
         <source>Visit Sinovate Discord Channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Visite Canal Discord Sinovate</translation>
     </message>
     <message>
         <source>Sinovate Roadmap</source>
-        <translation type="unfinished"></translation>
+        <translation>Roadmap Sinovate</translation>
     </message>
     <message>
         <source>Visit Sinovate WebTool</source>
-        <translation type="unfinished"></translation>
+        <translation>Visite WebTool Sinovate</translation>
     </message>
     <message>
         <source>Download Latest Sinovate Wallets</source>
-        <translation type="unfinished"></translation>
+        <translation>Baixar wallet Sinovate atuais</translation>
     </message>
     <message>
         <source>Sinovate LitePaper</source>
-        <translation type="unfinished"></translation>
+        <translation>Litepaper Sinovate</translation>
     </message>
     <message>
         <source>Open FAQ Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir Perguntas Frequentes</translation>
     </message>
     <message>
         <source>Light blue theme</source>
@@ -2902,7 +2902,9 @@ If you are receiving this error you should request the merchant provide a BIP21 
         <source>No wallet has been loaded.
 Go to File &gt; Open Wallet to load a wallet.
 - OR -</source>
-        <translation type="unfinished"></translation>
+        <translation>Nenhuma carteira foi carregada.
+Vá para Arquivo &gt; Abrir Carteira para carregar uma carteira.
+- OU -</translation>
     </message>
     <message>
         <source>Create a new wallet</source>
@@ -3381,7 +3383,7 @@ Para mais informações sobre a utilização desse console. digite %6.
     </message>
     <message>
         <source>Ban for</source>
-        <translation type="unfinished"></translation>
+        <translation>Banir para</translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -3389,7 +3391,7 @@ Para mais informações sobre a utilização desse console. digite %6.
     </message>
     <message>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Nunca</translation>
     </message>
 </context>
 <context>
