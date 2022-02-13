@@ -656,6 +656,15 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
                 nLILLastStmSize = nLIL;
             }
         }
+
+        //After working on copies, take lock back, update structures, gracefully leave lock and exit
+        {
+            LOCK(cs);
+            mapStatementBIG = copyMapStatementBIG;
+            mapStatementMID = copyMapStatementMID;
+            mapStatementLIL = copyMapStatementLIL;
+
+        }
         return true;
     }
     return false;
