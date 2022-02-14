@@ -233,14 +233,6 @@ width: 200px;
            </column>
            <column>
             <property name="text">
-             <string>Next reward</string>
-            </property>
-            <property name="textAlignment">
-             <set>AlignLeading|AlignVCenter</set>
-            </property>
-           </column>
-           <column>
-            <property name="text">
              <string>Locked</string>
             </property>
             <property name="textAlignment">
