@@ -24,6 +24,7 @@
 #include <wallet/load.h>
 #include <wallet/rpcwallet.h>
 #include <wallet/wallet.h>
+#include <miner.h>
 
 //proof-of-stake
 #include <pos/posminer.h>
@@ -502,6 +503,15 @@ public:
         return m_wallet->GetOnchainDataInfo();
     }
 
+     bool getWalletUnlockStakingOnly() override
+    {
+        return m_wallet->m_wallet_unlock_staking_only;
+    }
+    void setWalletUnlockStakingOnly(bool unlock) override
+    {
+        m_wallet->m_wallet_unlock_staking_only = unlock;
+    }
+    
     void setEnabledStaking(bool enabled) override
     {
         m_wallet->m_enabled_staking = enabled;

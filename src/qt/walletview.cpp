@@ -176,6 +176,9 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
 
         // Ask for passphrase if needed
         connect(_walletModel, SIGNAL(requireUnlock()), this, SLOT(unlockWallet()));
+        connect(stakePage, SIGNAL(requireUnlock(bool)), this, SLOT(unlockWallet(bool)));
+        connect(_walletModel, &WalletModel::encryptionStatusChanged, stakePage, &StakePage::updateEncryptionStatus);
+        
         // Show progress dialog
         connect(_walletModel, &WalletModel::showProgress, this, &WalletView::showProgress);
     }
@@ -394,16 +397,21 @@ void WalletView::changePassphrase()
     dlg.exec();
 }
 
-void WalletView::unlockWallet()
+void WalletView::unlockWallet(bool fromMenu)
 {
     if(!walletModel)
         return;
     // Unlock wallet when requested by wallet model
     if (walletModel->getEncryptionStatus() == WalletModel::Locked)
     {
-        AskPassphraseDialog dlg(AskPassphraseDialog::Unlock, this);
+        AskPassphraseDialog::Mode mode = fromMenu ?
+            AskPassphraseDialog::UnlockStaking : AskPassphraseDialog::Unlock;
+        AskPassphraseDialog dlg(mode, this);
         dlg.setModel(walletModel);
         dlg.exec();
+
+        if(sender() == stakePage)
+            stakePage->updateEncryptionStatus();
     }
 }
 
@@ -414,7 +422,6 @@ void WalletView::lockWallet()
 
     walletModel->setWalletLocked(true);
 }
-
 
 void WalletView::usedSendingAddresses()
 {

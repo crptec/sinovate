@@ -21,6 +21,7 @@
 #include <tuple>
 #include <utility>
 #include <vector>
+#include <atomic>
 
 class CCoinControl;
 class CFeeRate;
@@ -282,6 +283,12 @@ public:
     //! Get last coin stake search interval
     virtual int64_t getLastStakeTime() = 0;
 
+    //! Get wallet unlock for staking only
+    virtual bool getWalletUnlockStakingOnly() = 0;
+
+    //! Set wallet unlock for staking only
+    virtual void setWalletUnlockStakingOnly(bool unlock) = 0;
+
     //! Get name of current stake wallet
     virtual std::string getStakeWallet() = 0;
 
@@ -443,6 +450,11 @@ std::unique_ptr<Wallet> MakeWallet(const std::shared_ptr<CWallet>& wallet);
 //! Return implementation of ChainClient interface for a wallet client. This
 //! function will be undefined in builds where ENABLE_WALLET is false.
 std::unique_ptr<WalletClient> MakeWalletClient(Chain& chain, ArgsManager& args);
+
+// optional setting to unlock wallet for staking only
+// serves to disable the trivial sendmoney when OS account compromised
+// provides no real security
+std::atomic<bool> m_wallet_unlock_staking_only{false};
 
 } // namespace interfaces
 

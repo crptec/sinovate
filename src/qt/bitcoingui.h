@@ -56,6 +56,7 @@ class QComboBox;
 class QDateTime;
 class QProgressBar;
 class QProgressDialog;
+class QTimer;
 QT_END_NAMESPACE
 
 namespace GUIUtil {
@@ -131,7 +132,8 @@ private:
     QLabel* progressBarLabel = nullptr;
     GUIUtil::ClickableProgressBar* progressBar = nullptr;
     QProgressDialog* progressDialog = nullptr;
-    QLabel *labelStakingIcon = nullptr;
+    QLabel* labelStakingIcon = nullptr;
+    QTimer* timerStakingIcon = nullptr;
 
 
     QMenuBar* appMenuBar = nullptr;
