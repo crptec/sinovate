@@ -202,6 +202,10 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const PlatformStyle *_platformSty
 
         updateStakingIcon();
     }
+    else
+    {
+        labelStakingIcon->setVisible(false);
+    }
 #endif // ENABLE_WALLET
 
     // Progress bar and label for blocks download
@@ -1502,12 +1506,12 @@ void BitcoinGUI::setEncryptionStatus(WalletModel *walletModel)
         labelWalletEncryptionIcon->show();
         if(walletModel->getWalletUnlockStakingOnly())
         {
-            labelWalletEncryptionIcon->setPixmap(platformStyle->MultiStatesIcon(":/icons/lock_staking").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+            labelWalletEncryptionIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/lock_staking").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
             labelWalletEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>unlocked for staking only</b>"));
         }
         else
         {
-            labelWalletEncryptionIcon->setPixmap(platformStyle->MultiStatesIcon(":/icons/lock_open").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+            labelWalletEncryptionIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/lock_open").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
             labelWalletEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>unlocked</b>"));
         }
         encryptWalletAction->setChecked(true);
@@ -1518,7 +1522,7 @@ void BitcoinGUI::setEncryptionStatus(WalletModel *walletModel)
         break;
     case WalletModel::Locked:
         labelWalletEncryptionIcon->show();
-        labelWalletEncryptionIcon->setPixmap(platformStyle->MultiStatesIcon(":/icons/lock_closed").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
+        labelWalletEncryptionIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/lock_closed").pixmap(STATUSBAR_ICONSIZE,STATUSBAR_ICONSIZE));
         labelWalletEncryptionIcon->setToolTip(tr("Wallet is <b>encrypted</b> and currently <b>locked</b>"));
         encryptWalletAction->setChecked(true);
         changePassphraseAction->setEnabled(true);
@@ -1605,7 +1609,7 @@ void BitcoinGUI::updateStakingIcon()
     WalletView * const walletView = walletFrame ? walletFrame->currentWalletView() : 0;
     if (!walletView) {
         // Not staking because wallet is closed
-        labelStakingIcon->setPixmap(platformStyle->MultiStatesIcon(":/icons/staking_off").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelStakingIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/staking_off").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
         labelStakingIcon->setToolTip(tr("Not staking"));
         return;
     }
@@ -1644,12 +1648,12 @@ void BitcoinGUI::updateStakingIcon()
         nWeight /= COIN;
         nNetworkWeight /= COIN;
 
-        labelStakingIcon->setPixmap(platformStyle->MultiStatesIcon(":/icons/staking_on").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelStakingIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/staking_on").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
         labelStakingIcon->setToolTip(tr("Staking.<br>Your weight is %1<br>Network weight is %2<br>Expected time to earn reward is %3").arg(nWeight).arg(nNetworkWeight).arg(text));
     }
     else
     {
-        labelStakingIcon->setPixmap(platformStyle->MultiStatesIcon(":/icons/staking_off").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
+        labelStakingIcon->setPixmap(platformStyle->SingleColorIcon(":/icons/staking_off").pixmap(STATUSBAR_ICONSIZE, STATUSBAR_ICONSIZE));
 
         if (m_node.getNodeCount(ConnectionDirection::Both) == 0)
             labelStakingIcon->setToolTip(tr("Not staking because wallet is offline"));
