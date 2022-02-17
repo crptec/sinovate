@@ -451,11 +451,6 @@ std::unique_ptr<Wallet> MakeWallet(const std::shared_ptr<CWallet>& wallet);
 //! function will be undefined in builds where ENABLE_WALLET is false.
 std::unique_ptr<WalletClient> MakeWalletClient(Chain& chain, ArgsManager& args);
 
-// optional setting to unlock wallet for staking only
-// serves to disable the trivial sendmoney when OS account compromised
-// provides no real security
-std::atomic<bool> m_wallet_unlock_staking_only{false};
-
 } // namespace interfaces
 
 #endif // BITCOIN_INTERFACES_WALLET_H
