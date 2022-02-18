@@ -46,6 +46,7 @@ void StatsPage::getStatistics()
         m_ui->difficultyValueLabel->setText(s.difficulty);
         m_ui->lastPriceValueLabel->setText(QString::number(s.lastPrice, 'f', 8) + QString(" BTC"));
         m_ui->heightValueLabel->setText(heightValue);
+        m_ui->blockRewardValue->setText(s.blockReward + " SIN");
 
 
         // Set ADDRESS STATS strings

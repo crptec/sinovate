@@ -384,6 +384,7 @@ void ClientModel::onResult(QNetworkReply* reply)
         m_sinStats.blockcount = dataObject.value("blockcount").toVariant().toString();
         m_sinStats.hashrate = dataObject.value("hashrate").toVariant().toString();
         m_sinStats.difficulty = dataObject.value("difficulty").toVariant().toString();
+        m_sinStats.blockReward = dataObject.value("BlockReward").toVariant().toString();
         m_sinStats.lastPrice = dataObject.value("lastPrice").toDouble();
         m_sinStats.usdPrice = dataObject.value("usdPrice").toDouble();
         m_sinStats.eurPrice = dataObject.value("eurPrice").toDouble();
