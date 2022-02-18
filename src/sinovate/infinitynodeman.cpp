@@ -522,62 +522,41 @@ bool CInfinitynodeMan::GetInfinitynodeInfo(const COutPoint& outpoint, infinityno
 
 bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
 {
+    LOCK(cs);
     if (nHeight < Params().GetConsensus().nInfinityNodeGenesisStatement) {
-        {
-            LOCK(cs);
-            mapStatementLIL.clear();
-            mapStatementMID.clear();
-            mapStatementBIG.clear();
-        }
+        mapStatementLIL.clear();
+        mapStatementMID.clear();
+        mapStatementBIG.clear();
         return true;
     }
 
     int nBIG = 0, nMID = 0, nLIL = 0;
 
     if (nHeight == Params().GetConsensus().nInfinityNodeGenesisStatement) {
-        std::map<COutPoint, CInfinitynode> copyMapInfinitynodes;
-        {
-            LOCK(cs);
-            mapStatementLIL.clear();
-            mapStatementMID.clear();
-            mapStatementBIG.clear();
-            copyMapInfinitynodes = mapInfinitynodes;
-        }
+        mapStatementLIL.clear();
+        mapStatementMID.clear();
+        mapStatementBIG.clear();
         //calcul number of nodes at nHeight
-        for (auto& infpair : copyMapInfinitynodes) {
+        for (auto& infpair : mapInfinitynodes) {
             if (infpair.second.getHeight() < nHeight && nHeight <= infpair.second.getExpireHeight()) {
                 if (infpair.second.getSINType() == 10) nBIG++;
                 if (infpair.second.getSINType() == 5) nMID++;
                 if (infpair.second.getSINType() == 1) nLIL++;
             }
         }
-        {
-            LOCK(cs);
-            mapStatementBIG.insert(mapStatementBIG.begin(), make_pair(nHeight, nBIG));
-            mapStatementMID.insert(mapStatementMID.begin(), make_pair(nHeight, nMID));
-            mapStatementLIL.insert(mapStatementLIL.begin(), make_pair(nHeight, nLIL));
-        }
 
+        mapStatementBIG.insert(mapStatementBIG.begin(), make_pair(nHeight, nBIG));
+        mapStatementMID.insert(mapStatementMID.begin(), make_pair(nHeight, nMID));
+        mapStatementLIL.insert(mapStatementLIL.begin(), make_pair(nHeight, nLIL));
         return true;
     }
 
     if (nHeight > Params().GetConsensus().nInfinityNodeGenesisStatement) {
-        std::map<COutPoint, CInfinitynode> copyMapInfinitynodes;
-        std::map<int, int> copyMapStatementBIG;
-        std::map<int, int> copyMapStatementMID;
-        std::map<int, int> copyMapStatementLIL;
-        {
-            LOCK(cs);
-            copyMapStatementBIG = mapStatementBIG;
-            copyMapStatementMID = mapStatementMID;
-            copyMapStatementLIL = mapStatementLIL;
-            copyMapInfinitynodes = mapInfinitynodes;
-        }
         int nextHeight = nHeight + 1;
 
-        std::map<int, int>::iterator itBIG = copyMapStatementBIG.upper_bound(nextHeight);
-        std::map<int, int>::iterator itMID = copyMapStatementMID.upper_bound(nextHeight);
-        std::map<int, int>::iterator itLIL = copyMapStatementLIL.upper_bound(nextHeight);
+        std::map<int, int>::iterator itBIG = mapStatementBIG.upper_bound(nextHeight);
+        std::map<int, int>::iterator itMID = mapStatementMID.upper_bound(nextHeight);
+        std::map<int, int>::iterator itLIL = mapStatementLIL.upper_bound(nextHeight);
 
         std::map<int, int>::iterator itLastBIG = --itBIG;
         std::map<int, int>::iterator itLastMID = --itMID;
@@ -600,7 +579,7 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
         int nBIGHeight = 0, nMIDHeight = 0, nLILHeight = 0;
 
         //calcul number of nodes at nHeight
-        for (auto& infpair : copyMapInfinitynodes) {
+        for (auto& infpair : mapInfinitynodes) {
             if (infpair.second.getSINType() == 10 && infpair.second.getHeight() < itLastBIG->first && itLastBIG->first <= infpair.second.getExpireHeight()) nBIG++;
             if (infpair.second.getSINType() == 5 && infpair.second.getHeight() < itLastMID->first && itLastMID->first <= infpair.second.getExpireHeight()) nMID++;
             if (infpair.second.getSINType() == 1 && infpair.second.getHeight() < itLastLIL->first && itLastLIL->first <= infpair.second.getExpireHeight()) nLIL++;
@@ -620,9 +599,9 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
 
         //begin of network, so not at end of Stm
 
-        if (itLastBIG->second == 0 || itLastBIG->second == 1) copyMapStatementBIG.insert(itBIG, make_pair(nHeight, nBIGHeight));
-        if (itLastMID->second == 0 || itLastMID->second == 1) copyMapStatementMID.insert(itMID, make_pair(nHeight, nMIDHeight));
-        if (itLastLIL->second == 0 || itLastLIL->second == 1) copyMapStatementLIL.insert(itLIL, make_pair(nHeight, nLILHeight));
+        if (itLastBIG->second == 0 || itLastBIG->second == 1) mapStatementBIG.insert(itBIG, make_pair(nHeight, nBIGHeight));
+        if (itLastMID->second == 0 || itLastMID->second == 1) mapStatementMID.insert(itMID, make_pair(nHeight, nMIDHeight));
+        if (itLastLIL->second == 0 || itLastLIL->second == 1) mapStatementLIL.insert(itLIL, make_pair(nHeight, nLILHeight));
 
         //end of Stm
         if (nEndOfStmBIG == 0 || nEndOfStmMID == 0 || nEndOfStmLIL == 0 ||
@@ -631,10 +610,9 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
            (nEndOfStmBIG > 0 && nEndOfStmBIG <= Params().MaxReorganizationDepth())
           ) {
 
-
             if (nEndOfStmBIG == 0) {
                 itLastBIG->second = nBIG;
-                copyMapStatementBIG.insert(itBIG, make_pair(nextHeight, nBIGNextStm));
+                mapStatementBIG.insert(itBIG, make_pair(nextHeight, nBIGNextStm));
             } else if(nEndOfStmBIG > 0 && nEndOfStmBIG <= Params().MaxReorganizationDepth()) {
                 itLastBIG->second = nBIG;
                 nBIGLastStmSize = nBIG;
@@ -642,7 +620,7 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
 
             if (nEndOfStmMID == 0) {
                 itLastMID->second = nMID;
-                copyMapStatementMID.insert(itMID, make_pair(nextHeight, nMIDNextStm));
+                mapStatementMID.insert(itMID, make_pair(nextHeight, nMIDNextStm));
             } else if(nEndOfStmMID > 0 && nEndOfStmMID <= Params().MaxReorganizationDepth()) {
                 itLastMID->second = nMID;
                 nMIDLastStmSize = nMID;
@@ -650,21 +628,13 @@ bool CInfinitynodeMan::calculStatementOnValidation(int nHeight)
 
             if (nEndOfStmLIL == 0) {
                 itLastLIL->second = nLIL;
-                copyMapStatementLIL.insert(itLIL, make_pair(nextHeight, nLILNextStm));
+                mapStatementLIL.insert(itLIL, make_pair(nextHeight, nLILNextStm));
             } else if(nEndOfStmLIL > 0 && nEndOfStmLIL <= Params().MaxReorganizationDepth()){
                 itLastLIL->second = nLIL;
                 nLILLastStmSize = nLIL;
             }
         }
 
-        //After working on copies, take lock back, update structures, gracefully leave lock and exit
-        {
-            LOCK(cs);
-            mapStatementBIG = copyMapStatementBIG;
-            mapStatementMID = copyMapStatementMID;
-            mapStatementLIL = copyMapStatementLIL;
-
-        }
         return true;
     }
     return false;
