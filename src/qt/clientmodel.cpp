@@ -385,6 +385,9 @@ void ClientModel::onResult(QNetworkReply* reply)
         m_sinStats.hashrate = dataObject.value("hashrate").toVariant().toString();
         m_sinStats.difficulty = dataObject.value("difficulty").toVariant().toString();
         m_sinStats.blockReward = dataObject.value("BlockReward").toVariant().toString();
+        m_sinStats.bigApy = dataObject.value("BigAPY").toVariant().toString();
+        m_sinStats.midApy = dataObject.value("MidAPY").toVariant().toString();
+        m_sinStats.miniApy = dataObject.value("MiniAPY").toVariant().toString();
         m_sinStats.lastPrice = dataObject.value("lastPrice").toDouble();
         m_sinStats.usdPrice = dataObject.value("usdPrice").toDouble();
         m_sinStats.eurPrice = dataObject.value("eurPrice").toDouble();

@@ -51,6 +51,9 @@ struct SINStatsStruct {
     QString hashrate = "";
     QString difficulty = "";
     QString blockReward = "";
+    QString bigApy = "";
+    QString midApy = "";
+    QString miniApy = "";
     double lastPrice = 0.0;
     double usdPrice = 0.0;
     double eurPrice = 0.0;
