@@ -64,7 +64,7 @@ struct AssumeutxoData;
 
 /** Default for -minrelaytxfee, minimum relay fee for transactions */
 //>SIN
-static const unsigned int DEFAULT_MIN_RELAY_TX_FEE = 1000;
+static const unsigned int DEFAULT_MIN_RELAY_TX_FEE = 2000000;
 extern bool fInfinityNode;
 extern std::atomic<int> nRawBlockCount;
 extern bool fInfinitynodeRelay;
