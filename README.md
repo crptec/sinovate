@@ -27,13 +27,13 @@ X25X is  GPU mineable and ensures **ASIC, FPGA and QUANTUM resistance**,  solidi
 
 |Specification| Value |
 |--|--|
-|Block Reward  | **3052.5 SIN** |
-|Block Time  | **2 Minutes** |
+|Block Reward  | **1581.1 SIN** |
+|Block Time  | **60 seconds PoW & PoS hybrid** |
 |Block Fee  | **10%** |
 |Difficulty Retargeting Algo | **LWMA** | 
-|Max Transactions Per Second  | **533 tx/s** |
-|Total Supply  | **Always Less than 800 million SIN infinitely** |
-|Max Block Size  | **16 MB** |
+|Max Transactions Per Second  | **4000+ tx/s with full SegWit address transactions** |
+|Total Supply  | **Proof-of-brun based self-regulated supply** |
+|Max Block Size  | **64 MB** |
 |SINOVATE legacy address start with  | **S** |
 |InfinityNode Port  | **20970** |
 |<small>BIG</small>  Node Requirement  | **1.000.000 SIN** |
