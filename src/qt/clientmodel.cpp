@@ -320,7 +320,6 @@ static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_
         Q_ARG(SynchronizationState, sync_state));
     assert(invoked);
     nLastUpdateNotification = now;
-    if (sync_state == SynchronizationState::POST_INIT) nLastUpdateNotification = GetTimeMillis();
 }
 
 void ClientModel::subscribeToCoreSignals()
