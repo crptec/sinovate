@@ -1,10 +1,7 @@
 # ![SINOVATE Logo](https://raw.githubusercontent.com/SINOVATEblockchain/SIN-core/master/docs/assets/img/sin_background.png)
 
 
-**SINOVATE (SIN)** is an open-source state of the art digital cryptocurrency. We create and build
-innovative blockchain services for individuals, developers, and enterprises. 
-Big Data solutions, Deterministic Infinity Nodes, Decentralized Cloud (dCloud),
-proof-of-integrity, proof-of-inheritance, and inflation-control are some of the resolutions presented to the crypto space.
+**SINOVATE (SIN)** is an open-source state of the art community-driven digital cryptocurrency. We build innovative blockchain solutions for individuals, developers, and enterprises. Incorruptible Data Storage (IDS) provides decentralized cloud storage, leveraging thousands of Infinity Nodes, with guaranteed low cost and high security.
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/SINOVATEblockchain/SIN-core?label=release&style=flat-square)[![HitCount](http://hits.dwyl.com/SINOVATEblockchain/SIN-core.svg)](http://hits.dwyl.com/SINOVATEblockchain/SIN-core)<a href="https://discord.gg/WnRExsx"><img src="https://discordapp.com/api/guilds/494460434691391509/embed.png" alt="Discord server" /></a> <a href="https://twitter.com/intent/follow?screen_name=SinovateChain"><img src="https://img.shields.io/twitter/follow/SinovateChain.svg?style=social&logo=twitter" alt="follow on Twitter"></a>
 
