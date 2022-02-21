@@ -108,10 +108,10 @@ public:
         consensus.nINActivationHeight = 170000; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
         consensus.nINEnforcementHeight = 178000; // Enforcement of IN payments
         consensus.nDINActivationHeight = 550000; // Activation of DIN 1.0 payments, and new dev fee address.
-        consensus.nINMetaUpdateChangeHeight=9999999; // Activation newmethod updatemetadata. Sinovate mainnet The same as POS4
-        consensus.nINMetaUpdateCachedNextBlock=9999999; // Activation new method with cached next block. Sinovate mainnet The same as POS4
-        consensus.nTxFeeHeight=9999999; // Check burn tx fee and amount. Sinovate mainnet The same as POS4
-        consensus.nINPOSExpireBlocksForkHeight=9999999; // Change node timelife. Sinovate mainnet The same as POS4
+        consensus.nINMetaUpdateChangeHeight=900000; // Activation newmethod updatemetadata. Sinovate mainnet The same as POS4
+        consensus.nINMetaUpdateCachedNextBlock=900000; // Activation new method with cached next block. Sinovate mainnet The same as POS4
+        consensus.nTxFeeHeight=900000; // Check burn tx fee and amount. Sinovate mainnet The same as POS4
+        consensus.nINPOSExpireBlocksForkHeight=900000; // Change node timelife. Sinovate mainnet The same as POS4
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 170000;
@@ -125,7 +125,7 @@ public:
         nDeltaChangeHeight = 617000;
 
         // proof-of-stake: activation and params
-        consensus.nStartPoSHeight = 9999999;
+        consensus.nStartPoSHeight = 900000;
         consensus.nStakeMinDepth = 14400;
         consensus.posLimit = uint256S("0000000000001fffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.fPoSNoRetargeting = false;
