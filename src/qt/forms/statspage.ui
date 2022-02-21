@@ -309,7 +309,7 @@ font-size: 20px;
 </string>
               </property>
               <property name="text">
-               <string>0</string>
+               <string>Loading ...</string>
               </property>
               <property name="indent">
                <number>-1</number>
@@ -412,14 +412,14 @@ font-size: 20px;
              </widget>
             </item>
             <item row="15" column="1" alignment="Qt::AlignBottom">
-             <widget class="QLabel" name="label_13">
+             <widget class="QLabel" name="blockRewardValue">
               <property name="styleSheet">
                <string notr="true">margin-top: 25px;
 font-size: 20px;
 </string>
               </property>
               <property name="text">
-               <string>3478.75 SIN</string>
+               <string>0 SIN</string>
               </property>
              </widget>
             </item>

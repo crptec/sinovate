@@ -2063,17 +2063,9 @@ void InfinitynodeList::getStatistics()
         QLocale l = QLocale(QLocale::English);
 
           // Set INFINITY NODE STATS strings
-        int bigRoiDays = (365/(1000000/((720/s.inf_online_big)*1752)))*100-100;
-        int midRoiDays = (365/(500000/((720/s.inf_online_mid)*838)))*100-100;
-        int lilRoiDays = (365/(100000/((720/s.inf_online_lil)*560)))*100-100;
-
-        QString bigROIString = QString::number(bigRoiDays, 'f', 0);
-        QString midROIString = QString::number(midRoiDays, 'f', 0);
-        QString lilROIString = QString::number(lilRoiDays, 'f', 0);
-
-        ui->bigRoiLabel->setText("APY " + bigROIString + "%");
-        ui->midRoiLabel->setText("APY " + midROIString + "%");
-        ui->miniRoiLabel->setText("APY " + lilROIString + "%");
+        ui->bigRoiLabel->setText("APY " + s.bigApy + "%");
+        ui->midRoiLabel->setText("APY " + s.midApy + "%");
+        ui->miniRoiLabel->setText("APY " + s.miniApy + "%");
     }
     else
     {

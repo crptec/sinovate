@@ -1,8 +1,11 @@
 - **Introduction**
 - [What is SINOVATE?](/)
-- **Infinity Nodes (DIN)**
+- **InfinityNodes (DIN)**
+- [Understanding InfinityNodes](understandinginfinitynodes)
 - [DIN Manual VPS Configuration](din_manual_vps_configuration_setup)
-- [In-Wallet 1-Click setUP GUIDE](inwallet_1click_guide)
+- [Desktop In-Wallet 1-Click setUP Guide](inwallet_1click_guide)
+- [Mobile Wallet: Infinitynode SetUp](mobile_wallet_infinitynode_setup)
+- [Pecunia Infinity Node Hosting Guide](pecunianodesetup)
 - [DIN 1-Click setUP Migration GUIDE](din_setup_migration_guide)
 - [DIN 1-Click setUP Tips & Help](din_setup_tips_and_help)
 - [DIN Manual VPS Troubleshooting](din_vps_setup_troubleshoot)
@@ -14,6 +17,7 @@
 - [WebTool](sin_webtool_guide)
 - [X25X Pow GPU Mining](X25X-PoW-GPU-Mining)
 - [Coin control](Coincontrolenable)
+- [Video Guides](video_guides)
 - [F.A.Q.](faq)
 - **Whitepapers**
 - [Whitepaper Light](https://sinovate.io/SINOVATE_litepaper.pdf)

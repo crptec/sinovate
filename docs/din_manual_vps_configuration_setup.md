@@ -209,13 +209,13 @@ infinitynodeburnfund [YourAddress] [Amount 1M / 500K / 100K] [YourBackupAddress]
 
 <br>
   
-**Send 3 SINs to DIN Node address.**
 
 ![](assets/img/send3sin.png)
 
   <br>
   
-
+**Send 3 SINs to DIN Node address.**
+<br>
 ![](https://lh3.googleusercontent.com/7ntvMjgCOelzwj3UFkSlPJEUyEBkR-hYLgWlIW0uJwZMQ57_iFzL4KGo1lM6cYHGzSe6xYwlnGEp-EMCBsVvd7T5T1b8z4lwv5aepYdYSBjsW_MT7UWWyNQXyoywmLaUm43wTTUm)
   <br>
 
@@ -226,7 +226,7 @@ Please wait for 2 confirmations!
 ![](assets/img/misc/din-setup-guide24.png)
   
 <br>
-
+Send 25 SIN to your Owner address.
 Please wait for 2 confirmations!
 
   
@@ -244,11 +244,11 @@ Remember, using the new keypair requires you to update the infinitynodeprivkey i
  <br>
   
 
-![](https://lh5.googleusercontent.com/kVl_Xf6DoFAMYHBFpWxfWP20Ff3eXVo7gobwSDD6QvQnxSJKtHQOCzal6VZ3-JbGWiVdEz5fOBjJiZ9-ZtBC0ri5bgwGw8zhuJY6Y5a0stv7XJLa6MIc_Jx8uy-31g8rqDbLOQmx)
+![](assets/img/infinity_nodes/updatemeta1.png)
 
 <br>
 
-![](https://lh4.googleusercontent.com/Uj_Ai81h0KrKMP03WiYqepdxBbb67GreIu93ZtsFsOHk82dH4s1A5omtMqZvq6ywbQuUheDAhZCxtt0yTNTJJpc6jB2ehVT5uEsyQaySA6NT0FRT4N56zfsP_JsfmJZ8KHtPVSEv)  
+![](assets/img/infinity_nodes/updatemeta2.png)  
 
 <br>
   
