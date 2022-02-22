@@ -10,7 +10,7 @@
 ``rm -rf ~/.sin/{blocks,chainstate,debug.log,mnpayments.dat,mncache.dat,banlist.dat,peers.dat,netfulfilled.dat,governance.dat,fee_estimates.dat}``
 
 ## download latest bootstrap archive
-``wget -O ~/bootstrap.zip https://github.com/SINOVATEblockchain/sinovate/releases/latest/download/bootstrap.zip``
+``wget -O ~/bootstrap.zip https://service.sinovate.io/mainnet/latest/bootstrap.zip``
 
 ## unzip the bootstrap archive
 ``unzip ~/bootstrap.zip``
