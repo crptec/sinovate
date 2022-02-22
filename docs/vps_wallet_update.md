@@ -10,7 +10,7 @@
 ``rm -rf ~/.sin/{blocks,chainstate,debug.log,mnpayments.dat,mncache.dat,banlist.dat,peers.dat,netfulfilled.dat,governance.dat,fee_estimates.dat}``
 
 ## download latest bootstrap archive
-``wget -O ~/bootstrap.zip https://github.com/SINOVATEblockchain/SIN-core/releases/latest/download/bootstrap.zip``
+``wget -O ~/bootstrap.zip https://github.com/SINOVATEblockchain/sinovate/releases/latest/download/bootstrap.zip``
 
 ## unzip the bootstrap archive
 ``unzip ~/bootstrap.zip``
@@ -22,7 +22,7 @@
 ``rm -rf ~/{bootstrap,bootstrap.zip}``
 
 ## Update Latest Wallet
-``wget -O daemon.tar.gz https://github.com/SINOVATEblockchain/SIN-core/releases/latest/download/daemon.tar.gz``
+``wget -O daemon.tar.gz https://github.com/SINOVATEblockchain/sinovate/releases/latest/download/daemon.tar.gz``
 ``tar -xzvf daemon.tar.gz``
 ## Check Version
 ``./sin-cli -version``
