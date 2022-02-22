@@ -7,7 +7,7 @@ Please follow the instructions for setting up a Deterministic Infinity Node usin
   
 
 
-> 1. Upon opening your core SINOVATE wallet, click the "setUP" icon on the lower left side. (You can download the core wallet here https://github.com/SINOVATEblockchain/sinovate/releases)
+> 1. Upon opening your core SINOVATE wallet, click the "setUP" icon on the lower left side. (You can download the core wallet here  https://github.com/SINOVATEblockchain/sinovate/releases)
 
 
 
