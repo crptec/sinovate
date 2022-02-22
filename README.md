@@ -41,12 +41,6 @@ SINOVATE (SIN) combines its brand new **X25X Proof of Work (PoW)** algorithm wit
 |<small>MINI</small>   Node Requirement  | **100.000 SIN** |
 
 
-# Roadmap
-https://sinovate.io/roadmap/
-
-
-
-
 
 ## Codebase History
 
