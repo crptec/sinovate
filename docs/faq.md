@@ -23,7 +23,7 @@ With this "BurnTx" you will have, you can start Infinity node, and they will pro
 **Why my node do not have rewards or blocks count stuck, stopped?**
 The nodes are made to protect the blockchain, deliver calculated data and support blockchain with server hardware to peers; every day, hackers try to attack the chain, and because of this, rewards can be lost. We fix and improve blockchain code every day. If your server hardware is acceptable to deliver data in time, it is possible that the node was attacked and got stuck; the node simply needs to be restarted or re-synched. Many blockchain updates have already been released, and more will come with anti-attack improvements and fixes. 
 
-**With the release of triple-security hybrid consensus, all the future attacks will have no effect**
+**With the release of triple-security hybrid consensus, all the future attacks will have no effect!**
 
 **My node status seems OK, but I do not have rewards !**
 Please make sure your wallet is the latest version and has the actual block count.
