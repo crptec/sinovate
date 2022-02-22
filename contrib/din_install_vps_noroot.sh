@@ -21,7 +21,7 @@ COIN_CLI="/home/$NODEUSER/sin-cli"
 ##
 CONFIG_FILE='sin.conf'
 # need to change for new codebase
-COIN_REPO='https://github.com/SINOVATEblockchain/SIN-core/releases/latest/download/daemon.tar.gz'
+COIN_REPO='https://github.com/SINOVATEblockchain/sinovate/releases/latest/download/daemon.tar.gz'
 #
 
 # + bootstrap
