@@ -3,7 +3,6 @@
 ![](assets/img/transactiontoohigh/005.png) ![](assets/img/transactiontoohigh/006.png)
 
 Transaction too high error is a standard miners limit error first introduced with the Bitcoin core wallet.
-![](assets/img/transactiontoohigh/000.png)
 
 For example, many small transactions hit the blockchain limit error when a wallet has too many transactions (inputs) from mining, nodes, staking, or any received transactions.
 In that case, please use the Coin Control feature.
