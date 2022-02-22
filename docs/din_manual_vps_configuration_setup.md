@@ -1,4 +1,4 @@
-# DIN Manual VPS Configuration Setup : For SINOVATE Mainnet
+# SINOVATE InfinityNodes Manual VPS Configuration Setup:
 
 **An Ubuntu 18.04 VPS with 1 Cpu and  1GB MB Ram is needed.**
   
