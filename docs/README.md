@@ -68,9 +68,10 @@ https://sinovate.io/roadmap/
 
 --   BETELGEUSE Mainnet was created on March 31, 2022
 -   Forked Bitcoin v22.0
--   Added 4th generation proof-of-stake algorithm, PoS4
+-   Added 4th generation actual decentralized proof-of-stake algorithm, PoS4
 -   Added 4000 tx/s with complete SegWit address transactions
 -   Added triple security hybrid consensus with PoW, PoS and LockReward
+-   Added blockchain trilemma solution for decentralization, scalability and security
 
 
 
