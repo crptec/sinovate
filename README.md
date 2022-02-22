@@ -4,7 +4,7 @@
 
 **SINOVATE (SIN)** is an open-source state-of-the-art digital cryptocurrency. 
 We build innovative blockchain cloud services for individuals, developers, and enterprises. 
-Decentralized cloud (dCloud), SINCORD messenger,proof-of-integrity, proof-of-inheritance, and blockchain-based file transfer protocol, bFTP are some solutions for the crypto space.
+Decentralized cloud (dCloud), **SINCORD** messenger, proof-of-integrity, proof-of-inheritance, and blockchain-based file transfer protocol **bFTP** are some solutions for the crypto space.
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/SINOVATEblockchain/SIN-core?label=release&style=flat-square)[![HitCount](http://hits.dwyl.com/SINOVATEblockchain/SIN-core.svg)](http://hits.dwyl.com/SINOVATEblockchain/SIN-core)<a href="https://discord.gg/WnRExsx"><img src="https://discordapp.com/api/guilds/494460434691391509/embed.png" alt="Discord server" /></a> <a href="https://twitter.com/intent/follow?screen_name=SinovateChain"><img src="https://img.shields.io/twitter/follow/SinovateChain.svg?style=social&logo=twitter" alt="follow on Twitter"></a>
 
@@ -74,7 +74,8 @@ SINOVATE (SIN) combines its brand new **X25X Proof of Work (PoW)** algorithm wit
 # Roadmap
 https://sinovate.io/roadmap/
 
-
+# Documents
+https://docs.sinovate.io/
 
 # Community Contributions
 
