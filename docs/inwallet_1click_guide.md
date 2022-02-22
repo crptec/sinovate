@@ -2,12 +2,12 @@ Please follow the instructions for setting up a Deterministic Infinity Node usin
 
 **Please go to INPUT (coin control), select all inputs, and send them all to your own address before clicking on the 1-click setUP START button**
 
-> **Create new address inside core wallet and send all coins to this address** click File > Receiving addresses > New
+> **Create new address inside core wallet and send all coins to this address** click My Wallet> RECEIVE > Get new address.
 
   
 
 
-> 1. Upon opening your core SINOVATE wallet, click the "setUP" icon on the upper right side. (You can download the core wallet here https://github.com/SINOVATEblockchain/SIN-core/releases)
+> 1. Upon opening your core SINOVATE wallet, click the "setUP" icon on the lower left side. (You can download the core wallet here https://github.com/SINOVATEblockchain/sinovate/releases)
 
 
 
@@ -27,7 +27,7 @@ Please follow the instructions for setting up a Deterministic Infinity Node usin
 
   
 
->  4. Once determined, select your preferred payment plan from the drop-down menu. Annually plan is the most profitable price per month.
+>  4. Once determined, select your preferred payment plan from the drop-down menu. Annually paid contract plans are the most economical per month at $2.99 monthly if paid in full at $35.88 (SIN only payment). The monthly contract price is $4.79. The SIN price paid for hosting is equivalent to the USD price of the contract.
 
    :warning: **Please make sure to have enough extra funds for the hosting!**
 
@@ -47,15 +47,15 @@ Please follow the instructions for setting up a Deterministic Infinity Node usin
 
   
 
-> Do not close wallet till you see "Finished" - SINOVATE setUP is now complete. Depending on block confirmation speed, invoice payment, and the SIN coin burning process will automatically take between 3 and 10 minutes, up to 55 blocks.
+> Do not close wallet till you see "Finished." 
 
   
 
 ![Image for post](assets/img/misc/in_wallet_setup_05.png)
 
-  
+  - SINOVATE infinitynode setUP is now complete. The block confirmation speed, invoice payment, and the SIN coin burning process will take between 3 and 10 minutes. The node will appear on the infinitynodes tab after 55 blocks.
 
-Check the transactions History of your wallet. Your node will automatically be up and running in around 10 to 15 minutes after the confirmations.
+
 
   
 
