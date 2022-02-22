@@ -2,27 +2,25 @@
 - [What is SINOVATE?](/)
 - **InfinityNodes (DIN)**
 - [Understanding InfinityNodes](understandinginfinitynodes)
-- [DIN Manual VPS Configuration](din_manual_vps_configuration_setup)
-- [Desktop In-Wallet 1-Click setUP Guide](inwallet_1click_guide)
-- [Mobile Wallet: Infinitynode SetUp](mobile_wallet_infinitynode_setup)
-- [Pecunia Infinity Node Hosting Guide](pecunianodesetup)
+- [Desktop 1-Click InfinityNode setUP](inwallet_1click_guide)
+- [InfinityNode Manual VPS setup](din_manual_vps_configuration_setup)
+- [Mobile Wallet InfinitNnode setUP](mobile_wallet_infinitynode_setup)
+- [Pecunia InfinityNode Hosting Guide](pecunianodesetup)
 - [DIN 1-Click setUP Migration GUIDE](din_setup_migration_guide)
-- [DIN 1-Click setUP Tips & Help](din_setup_tips_and_help)
-- [DIN Manual VPS Troubleshooting](din_vps_setup_troubleshoot)
-
 - **Tutorials & Guides**
 - [Bootstrap](bootstrap)
-- [SUQA Coins Conflict](suqa_conflict)
 - [Wallet Upgrade](wallet_upgrade)
 - [WebTool](sin_webtool_guide)
-- [X25X Pow GPU Mining](X25X-PoW-GPU-Mining)
-- [Coin control](Coincontrolenable)
+- [GPU Mining X25X Algo](X25X-PoW-GPU-Mining)
 - [Video Guides](video_guides)
 - [F.A.Q.](faq)
 - **Whitepapers**
 - [Whitepaper Light](https://sinovate.io/SINOVATE_litepaper.pdf)
 - [X25X PoW Algorithm Whitepaper](https://sinovate.io/x25x.pdf)
 - **Troubleshooting**
+- [DIN 1-Click setUP Tips & Help](din_setup_tips_and_help)
+- [DIN Manual VPS Troubleshooting](din_vps_setup_troubleshoot)
+- [Coin Control](Coincontrolenable)
 - [Transaction too large](transactiontoohigh)
 - **Links**
 - [![Home ](https://icongr.am/feather/home.svg?size=16&color=808080)Sinovate Home](https://www.sinovate.io)
