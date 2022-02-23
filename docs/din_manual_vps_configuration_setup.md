@@ -1,278 +1,221 @@
-# SINOVATE InfinityNodes Manual VPS Configuration Setup:
+# [SINOVATE InfinityNodes Manual VPS Configuration Setup:](https://docs.sinovate.io/#/din_manual_vps_configuration_setup?id=sinovate-infinitynodes-manual-vps-configuration-setup)
 
-**An Ubuntu 18.04 VPS with 1 Cpu and  1GB MB Ram is needed.**
-  
-<br>
-Download putty or any SSH client program of your choice [https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html.)
+An Ubuntu 18.04 VPS with 1 Cpu, 10GB free disk space and 1GB MB Ram is needed.
 
-<br>
-  
+Download putty or any SSH client program of your choice
 
-> **Enter your IP information for the new VPS and click on the `` Open `` Button.**
+[https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 
-<br>
-<br>
+![](assets/img/misc/manual_vps/din-setup-guide01.png)
 
-![](https://lh3.googleusercontent.com/IE_vYDIEvnK6jfShZ7Vunke7cxwzPyBQDZebD3WF7B8D367gycEusFnxiVBRF91eFpib-LFhx8tsg2BQjP3sUBBg2bz40RjGxIRBRnusRtN3XawkCNa-GQpEa8oONEalFvM3Qumn)
+Enter your IP information for the new VPS and click on the Open Button.
 
-<br>
-  
+Enter your username as root and enter the password given to you.
 
-> Enter your username as ``root`` and enter the password given to you.  
 Some VPS providers may ask you to change your temporary password immediately.
 
-<br>
-
-![](https://lh4.googleusercontent.com/vlShobe_0C-5xj1pQnyvnGPOd4D67X2DlQRvjtxE7ful4BnpphBosNdSDWRIkA1fn3HAGRfKbGLS2DJRKxMtUJQOsNt2vHR3ik3uVdhxpALsyRGIGTEnn4ViKSns8rIx5MsuemvU)
-
-  <br>
-  
+![](assets/img/misc/manual_vps/din-setup-guide02.png)
   
 
-![](https://lh5.googleusercontent.com/JfPUiLtMpliPotEHTCjxP9qnxyj5-TszcLSqBEapuwRWLoMiE1RCth19b8a5pBVI2nrQNrXJFfasZUAY5P_hynlj-PxD8im_kLRIQTLjvjhOdd4j5Mp55GDAk2S7fWEw4JTC7aHq)
+Enter the following command to download the installation script. Please enter the code as a single line:
 
-  
-  <br>
-  
-  
-
-> Enter the following command to download the installation script. Please enter the code as a single line.
-```bash
 wget -q https://github.com/SINOVATEblockchain/sinovate/releases/latest/download/din_install_vps_noroot.sh
-```
-  
-  <br>
-  
-
-![](assets/img/misc/din-setup-guide04.png)
 
   
-  
 
-> Enter the code below for authorization after the script is downloaded.
+Enter this command to make the script executable:
 
-  
-```bash
-chmod +x  din_install_vps_noroot.sh
-```
-  
-  
-
-![](assets/img/misc/din-setup-guide05.png)
+chmod +x din_install_vps_noroot.sh
 
   
-  
 
-> Enter the code below to run the script.
+Enter the code below to run the script:
 
-  
-  
-```bash
 ./din_install_vps_noroot.sh
-```
+
+![](assets/img/misc/manual_vps/din-setup-guide03.png)
   
+Setup will ask for a username. You can enter a username, or just press enter for the user sinovate
+
+![](assets/img/misc/manual_vps/din-setup-guide04.png)
   
-  
+At this stage, the installation will ask you to enter a password for the new user. Please choose a strong password and do not share it with anyone. The script disables root user VPS access for security.
 
-![](assets/img/misc/din-setup-guide06.png)
+  ![](assets/img/misc/manual_vps/din-setup-guide05.png)
 
-> Setup will ask for a username. If you hit enter, it will name the default sinovate.  
-In our example, we used the name testuser1.
+Further there will be preparatory procedures: creating a swap file if necessary, updating and installing the necessary packages on the vps, downloading sinovate binary files, creation of private keys. The next step is to ask for confirmation to download and install bootstrap for faster node deployment. This will take some time depending on your network bandwidth:
 
-  
+![](assets/img/misc/manual_vps/din-setup-guide06.png)
 
-![](https://lh4.googleusercontent.com/CBmhWTL98vX4hl2W5ToyEM5XhisbOttfdX3nQFMd6zgbkjPLxgYcapedC2bWHfyLAV9lgyKxI9C-nuzSFwXaBZBiaobbf53VPRYkkfnXiHOmDeRYU6iW2jHppQsiDUl0ZDvl_Ufu)
+![](assets/img/misc/manual_vps/din-setup-guide07.png)  
 
-  <br>
-    
-> At this stage, the installation will ask you to enter a password for the new user. Please choose a strong password and do not share it with anyone.  
-  
-> The script disables root user VPS access for security.
+When the installation is completed, an information screen like the one below appears.
 
-<br>
-  
+Please save the given keys and address information. You can do this by choosing with the mouse. PuTTY and similar programs also copy the selected area to the clipboard. This information will be required in the later stages of the installation:
 
-![](https://lh5.googleusercontent.com/1DYyM9XutnrpEN1brhbZhC58ncumEunkdWpQFuFTMVQ_dLu3jmok6VOfifcwT5lFJvk0L8-6AIoHRWfq5dAN4ffQq9YcpEieMLq0VSFt30tR0rzHkO7_DkdKih_ULy8ovQAO6c5y)
 
-  <br>
 
-![](https://lh3.googleusercontent.com/hSXi1G6pwxgos6u7kmEhoFUORBE_6EQHnQsaZUIn6pvRGJCOsJVGe8YmFzI2vMryyG7bAco2wRqj069gkWoJL1JMXfh1xSHXrSWG1QeUydpaTU8VEnHAmD40lMBEyy-JPTFsFgmo)  
-  
-  <br>
-  
-> It is completed in 5-10 minutes after the installation starts. Please be patient.
+  ![](assets/img/misc/manual_vps/din-setup-guide08.png)
 
-  
+Then you need to log in to vps on behalf of the created new user (by default: sinovate), the root user will be blocked for security. To do this, type “exit” and log in again:
 
-![](https://lh6.googleusercontent.com/5ojbTwMOVqLszlVEI2Xl5gR7k52DVKIdTmdLwQvT1RaTTkm0slXwA6w2CfZUMJ-V8UBoPZTNEQ6ICM8hwHWbZ4McHkF9tArRapdSJg0Q-On-tVIaWaY7YQNq37S1NF4MNtOH8dui)
 
-  <br>
 
-> At this stage, the SIN daemon runs automatically for the first time.  
-Also, the private key given by VPS is imported to the address given by VPS.
+  ![](assets/img/misc/manual_vps/din-setup-guide09.png)
 
-![](https://lh4.googleusercontent.com/KZw4L5Z8xd7jFE9PUkk0XX-uQOzf5GgyjmxkJ7wGtuTBTMRmxUhLzQ9UyK5WLAtsmpKsBSO0w5UD9xFWeIdRX3UgwH7ddxCiYi0qSLg874mXqgjY2yPDcglEdxC6n628-wiTQ4WS)
+Type
 
-  <br>
-  
-> When the installation is completed, an information screen like the one below appears.  
-  
-  <br>
-  
-> Please save the given keys and address information. You can do this by choosing with the mouse. PuTTY and similar programs also copy the selected area to the clipboard. This information will be required in the later stages of the installation.
+./sin-cli getblockcount
 
+to track the sync progress
+
+
+
+![](assets/img/misc/manual_vps/din-setup-guide10.png)
   
 
-![](https://lh5.googleusercontent.com/F_aurcOEBKQvoVHgJAJuDmkNGAVgq1VIBRLrEIaq53TU0mrI3c7T4FM0MVF7vLhht-rzdcFXCD7dB_X68fRDrHZRowmSocYqlcj53job2hU02FnMtj9kwKfxrSwM9qnkOhKUYzYD)
-
-<br>  
-
-![](https://lh4.googleusercontent.com/VtXV5A4V3S5ScoO2jdbsP_AqTXrnXcJ7Z_xJX0P6oEQ86rGfdOx6IZSKOgQ9dPnwgdO_EJk7v4E-N0Qw2sSaWuT0qjPY-yVvFot55_w0xA5aTZC7pZEha1kc7RckbITdMRqi9qh1)
-
-<br>
-  
-```bash
-reboot
-```
-  
-  <br>
-
-> Return to your control wallet and create a new receiving address.  
-In our example, BIG D.I.N. we will create.
-
-![](https://lh4.googleusercontent.com/Ez_HbBZAoLN0ZeodFVdN9_v8OpHpUPEGSVFsQUdoX2hCQM8XxYg2Ing_19QBPMD_TfOlg3oHzNRIqLAtC6CllbxhBmHPR4WNPESEgDDMkK7TvxsU9yZof3v9v_gLDyzP4zQ8UQhw)
-
-  <br>
-
-![](https://lh4.googleusercontent.com/VZjeoQuGmoF72vwMTljy3TJQUVtEC9upj-mblc9ZIjpnlRBiJnLto1URof5uKttyIHTgStNA6-sY6TcpKvdsSMaqezn7eU5GQXE1PPRx9Nx5dQN5ZHmd4auSMKoME3nR2IeThnc8)
-
-  <br>
-
-> Copy the new address you create and send it exactly 1 000 000 SIN to this address.  
-
-|Type DIN     | Amount      | 
-|----------|--------------|
-|BIG DIN|1 000 000 for|
-|MID DIN| 500 000 for|
-|MINI DIN| 100 000 for|
-
-You should send.
-     
+If the result is “Rescanning…” then wait 2-3 minutes:
 
 
-![](https://lh4.googleusercontent.com/1kmD68GdwNwGUPieLK-94xDeEW6dt3ImKib0ZdL09sl-9F0jjzUecQG2kWYpQn2kJQ-kbAv-LuhizKjYzWJOfl6aRhthQc-LMwHQ-1WL6C8cixVGjgazI5ncqSZwyxXTp8T_ef5d)
+  ![](assets/img/misc/manual_vps/din-setup-guide11.png)
 
-   <br>
+When the result is in the form of a number, it means that synchronization is in progress. You can find out the current block in the explorer [https://explorer.sinovate.io](https://explorer.sinovate.io)
 
-> Please wait for 2 confirmations!
 
-  
- <br>
-  
 
-![](https://lh4.googleusercontent.com/7c-j71N5XCcdpRGD8He_pnQGlVN8wVWKJjoYqu05ymMYU1mgKdL9RsWEPaKXCf5j2lnN6Z76LBEcOaRVMVteQ-tttScfvd6eNKM1yBjbOqZoqZaXZ2aABW9GUCFug-1_G0sNpUwD)
-
-<br>  
-
-walletpassphrase [passphrase] [timeout]
+![](assets/img/misc/manual_vps/din-setup-guide12.png)
+If there are no errors, then type “exit” to close the window.
 
   
 
-![](https://lh3.googleusercontent.com/nWW7RtXnYJahewiiHVsnec3IRQg2otk8hzLS2PYKXIbH-eLrSyAyHdUbkmGHUSBtl7Zq1FCbqsfdvczMuoPtdd4K6VxMrumtQ6gCiIILwJ4ALkQ6Jt9TId6G4o6dAxWUrNpmr0BV)
+Return to your desktop wallet. If the wallet is locked with a password, then it must be unlocked:
 
-  
-  <br>
 
-```bash
-infinitynodeburnfund [YourAddress] [Amount 1M / 500K / 100K] [YourBackupAddress]
-```
-<br>
 
-> :information_source:
-> YourBackupAddress will let the node owner change the receiving address of the node if the user node gets in the hands of malicious actors.
-  
-  <br>
+![](assets/img/misc/manual_vps/din-setup-guide13.png)
 
-![](https://lh3.googleusercontent.com/ziXM81BBEJm5UNE616GVJp97yphj6OWUAH-cAK-jHPOLtBPtVngkg2RMkU6Gj43d6Sma45akLybz-2rB4XMBSTgOuz6C5iOJ0keP38DCIZefnH1T-1d9sv2nUs5wL6WyP2H0HcWf)
 
-  <br>
 
-![](https://lh5.googleusercontent.com/xDTY2qdwg4YNusxTaJCdZ9uYw_H9tgwYAegtdZMbtxt3a5jz_Sm7MkX2H7uGMxwOixx-GSROEOsrc6QFLtsLG-MbZ-xhNurG5Ku5mbR09Ur2xXZRbEUppwICbBqif6yKmLgHingX)
+![](assets/img/misc/manual_vps/din-setup-guide14.png)
+or you can do it from the console:
 
-  <br>
 
-![](https://lh4.googleusercontent.com/kRDvCICKRA45NxYBbhPbIE7bJ92FxokmqN1ysXxiBnC3poPYPRWihfcPRAbUFzb1U22Pp_OjsDwuHGeHS8HJJLo5Z4cv8sKYQ8wbgaYxqleVbWs-tceMqYYWlgA_hmP9yJzSltS2)
 
-  <br>
+![](assets/img/misc/manual_vps/din-setup-guide15.png)
+type
 
-![](https://lh4.googleusercontent.com/PrFINr0C-L-exsHOVWgfoYyL-7XzYm8rfNnmNVQnpclbu30xOX3DYQaEeO6UkDm-L2c6BkJpUpnVjQPtwVVgnl0VuL3h09vGcWVQ_3qjW_2unHNLRU2Dj5gwh6AS6Mjr5_hAHtWc)
+walletpassphrase “your password” 1000
 
-<br>
-  
+to unlock for 1000 sec.
 
-![](assets/img/send3sin.png)
 
-  <br>
-  
-**Send 3 SINs to DIN Node address.**
-<br>
-![](https://lh3.googleusercontent.com/7ntvMjgCOelzwj3UFkSlPJEUyEBkR-hYLgWlIW0uJwZMQ57_iFzL4KGo1lM6cYHGzSe6xYwlnGEp-EMCBsVvd7T5T1b8z4lwv5aepYdYSBjsW_MT7UWWyNQXyoywmLaUm43wTTUm)
-  <br>
+![](assets/img/misc/manual_vps/din-setup-guide16.png)
 
-Please wait for 2 confirmations!
 
-<br>
+  ![](assets/img/misc/manual_vps/din-setup-guide17.png)
 
-![](assets/img/misc/din-setup-guide24.png)
-  
-<br>
-Send 25 SIN to your Owner address.
-Please wait for 2 confirmations!
+Send 5 coins to the node address (in our example it is SkF1qwTpw3Z87gD1MiTvKS2vctUtiHLPp1), in wallet interface MyWallet -> Send:
 
-  
-  
-```bash
-infinitynodeupdatemeta [Owner address] [node PublicKey] [node IP]:20970 [first 16 characters of BurnFundTx]
-```
 
-<br>
 
-> :warning: **Please do not use the information generated by keypair on the VPS twice.***
- If you think something is wrong, go back to VPS and create a new keypair with the command ``` ./sin-cli infinitynode keypair```. Repeat the processes on this keypair.
-Remember, using the new keypair requires you to update the infinitynodeprivkey info in your sin.conf file on the VPS and restart the daemon.
- 
- <br>
+  ![](assets/img/misc/manual_vps/din-setup-guide18.png)
+
+Next, create a backup address (for example backupmini-01) for creating a DIN-node, in wallet interface MyWallet -> Receive, button at the bottom:
+
+
+
+![](assets/img/misc/manual_vps/din-setup-guide19.png)
+
+
+
+![](assets/img/misc/manual_vps/din-setup-guide20.png)
   
 
-![](assets/img/infinity_nodes/updatemeta1.png)
+Copy and save the backup address, for example in notepad, it will come in handy later:
 
-<br>
 
-![](assets/img/infinity_nodes/updatemeta2.png)  
-
-<br>
+![](assets/img/misc/manual_vps/din-setup-guide21.png)
   
-![](https://lh3.googleusercontent.com/G1SJ9fWetyv2x7hBYXWIf5UTPODdVgY4G95UhIMkETZAVWD_e5XtqNcL_7vFBib4OazyeHqe_Sph9T6O2FmZGD86CPzwAIWFIkmYE__hPIdtVWK23CVHlKQaU6wzTmfTn3wsClUk)
 
-<br>
+Create an address for the DIN-node that will receive rewards, for example mini-01 (same button “Request Payment”):
 
-**Wait for 55 confirmations for DIN nodes to show up**
 
-<br>
+  ![](assets/img/misc/manual_vps/din-setup-guide22.png)
 
-On vps Enter the command 
+Also copy and save this address:
 
-```bash
+
+
+![](assets/img/misc/manual_vps/din-setup-guide23.png)
+  
+
+Send the required number of coins to this address:
+
+Big DIN: 1000000
+
+Mid DIN: 500000
+
+Mini DIN: 100000
+
++25 coins to activate the DIN-node. In our case it is 100025 coins:
+
+
+  ![](assets/img/misc/manual_vps/din-setup-guide24.png)
+
+We are waiting for 6 confirmations and proceed to the step of burning the coins of the node. In the console we type the following command:
+
+infinitynodeburnfund [YourOwnerAddress] [Amount 1000000/500000/100000] [YourBackupAddress]
+
+  
+
+For our example:
+
+infinitynodeburnfund STBksfDCPA8UnhEKWzXgmy78XDoaGqNJAu 100000 SaA7VubiKwMjNjiceMXPZHijwEyNTJRbz7
+
+
+  ![](assets/img/misc/manual_vps/din-setup-guide25.png)
+
+The result will be the following:
+
+
+
+![](assets/img/misc/manual_vps/din-setup-guide26.png)
+
+We are interested in BURNTX, copy and save it. Select the first 16 characters.
+
+Waiting for 6 confirmations.
+
+  
+
+Next, we will form a command to update the metadata and launch the DIN-node. In general, the command looks like this:
+
+infinitynodeupdatemeta [YourOwnerAddress] [node PublicKey] [node IP] [first 16 characters of BurnFundTx]
+
+  
+
+In our example it is (the data that was previously saved):
+
+infinitynodeupdatemeta STBksfDCPA8UnhEKWzXgmy78XDoaGqNJAu AkuukYEUIu5ZplPp2AzrrleXsua8zsCUjV5z7ZtnizFN 65.21.178.201 c0c754f490a7c7e5
+
+  
+
+If node IP is ipv6 then it must be enclosed in square brackets.
+
+  
+
+Enter the command to activate our node in the console:
+
+
+
+![](assets/img/misc/manual_vps/din-setup-guide27.png)
+
+
+
+![](assets/img/misc/manual_vps/din-setup-guide28.png)
+Wait for 55 confirmations for the DIN-node to appear in the list of InfinityNodes in the desktop wallet.
+
+  
+
+To monitor the state of the DIN-node on your vps, enter the command:
+
 ./sin-cli infinitynode mypeerinfo
-```
-
-<br>
-
-If you are not getting an error and it still doesn't appear, on the console enter the `` infinitynode build-list`` command and wait.
-
-:warning: This command will scan the entire chain from the beginning. In the meantime, your wallet may not respond. This process can take a few hours, depending on the number of transactions in your wallet. Please be patient.
-
-<br>
-  
-
-**Congratulations. Your Deterministic Infinity Node is ready!**
