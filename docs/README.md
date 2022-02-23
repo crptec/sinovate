@@ -25,7 +25,7 @@ SINOVATE (SIN) combines its brand new **X25X Proof of Work (PoW)** algorithm wit
 
 |Specification| Value |
 |--|--|
-|Block Rewards  | **1575 + 50 for PoS and 1575 + 12.5 for PoW** |
+|Block Rewards  | **1575 InfinityNodes + 50 PoS and 1575 InfinityNodes + 12.5 PoW** |
 |Block Time  | **60 seconds PoS & 60 seconds PoW hybrid-consensus** |
 |Block Fee  | **10%** |
 |Difficulty Retargeting Algo | **LWMA** | 
