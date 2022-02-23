@@ -6,7 +6,7 @@ Download putty or any SSH client program of your choice
 
 [https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 
-![](assets/img/misc/manual_vps/din-setup-guide01.png)
+![](assets/img/manual_vps/din-setup-guide01.png)
 
 Enter your IP information for the new VPS and click on the Open Button.
 
@@ -14,7 +14,7 @@ Enter your username as root and enter the password given to you.
 
 Some VPS providers may ask you to change your temporary password immediately.
 
-![](assets/img/misc/manual_vps/din-setup-guide02.png)
+![](assets/img/manual_vps/din-setup-guide02.png)
   
 
 Enter the following command to download the installation script. Please enter the code as a single line:
@@ -33,21 +33,21 @@ Enter the code below to run the script:
 
 ./din_install_vps_noroot.sh
 
-![](assets/img/misc/manual_vps/din-setup-guide03.png)
+![](assets/img/manual_vps/din-setup-guide03.png)
   
 Setup will ask for a username. You can enter a username, or just press enter for the user sinovate
 
-![](assets/img/misc/manual_vps/din-setup-guide04.png)
+![](assets/img/manual_vps/din-setup-guide04.png)
   
 At this stage, the installation will ask you to enter a password for the new user. Please choose a strong password and do not share it with anyone. The script disables root user VPS access for security.
 
-  ![](assets/img/misc/manual_vps/din-setup-guide05.png)
+  ![](assets/img/manual_vps/din-setup-guide05.png)
 
 Further there will be preparatory procedures: creating a swap file if necessary, updating and installing the necessary packages on the vps, downloading sinovate binary files, creation of private keys. The next step is to ask for confirmation to download and install bootstrap for faster node deployment. This will take some time depending on your network bandwidth:
 
-![](assets/img/misc/manual_vps/din-setup-guide06.png)
+![](assets/img/manual_vps/din-setup-guide06.png)
 
-![](assets/img/misc/manual_vps/din-setup-guide07.png)  
+![](assets/img/manual_vps/din-setup-guide07.png)  
 
 When the installation is completed, an information screen like the one below appears.
 
@@ -55,13 +55,13 @@ Please save the given keys and address information. You can do this by choosing 
 
 
 
-  ![](assets/img/misc/manual_vps/din-setup-guide08.png)
+  ![](assets/img/manual_vps/din-setup-guide08.png)
 
 Then you need to log in to vps on behalf of the created new user (by default: sinovate), the root user will be blocked for security. To do this, type “exit” and log in again:
 
 
 
-  ![](assets/img/misc/manual_vps/din-setup-guide09.png)
+  ![](assets/img/manual_vps/din-setup-guide09.png)
 
 Type
 
@@ -71,19 +71,19 @@ to track the sync progress
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide10.png)
+![](assets/img/manual_vps/din-setup-guide10.png)
   
 
 If the result is “Rescanning…” then wait 2-3 minutes:
 
 
-  ![](assets/img/misc/manual_vps/din-setup-guide11.png)
+  ![](assets/img/manual_vps/din-setup-guide11.png)
 
 When the result is in the form of a number, it means that synchronization is in progress. You can find out the current block in the explorer [https://explorer.sinovate.io](https://explorer.sinovate.io)
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide12.png)
+![](assets/img/manual_vps/din-setup-guide12.png)
 If there are no errors, then type “exit” to close the window.
 
   
@@ -92,16 +92,16 @@ Return to your desktop wallet. If the wallet is locked with a password, then it 
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide13.png)
+![](assets/img/manual_vps/din-setup-guide13.png)
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide14.png)
+![](assets/img/manual_vps/din-setup-guide14.png)
 or you can do it from the console:
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide15.png)
+![](assets/img/manual_vps/din-setup-guide15.png)
 type
 
 walletpassphrase “your password” 1000
@@ -109,44 +109,44 @@ walletpassphrase “your password” 1000
 to unlock for 1000 sec.
 
 
-![](assets/img/misc/manual_vps/din-setup-guide16.png)
+![](assets/img/manual_vps/din-setup-guide16.png)
 
 
-  ![](assets/img/misc/manual_vps/din-setup-guide17.png)
+  ![](assets/img/manual_vps/din-setup-guide17.png)
 
 Send 5 coins to the node address (in our example it is SkF1qwTpw3Z87gD1MiTvKS2vctUtiHLPp1), in wallet interface MyWallet -> Send:
 
 
 
-  ![](assets/img/misc/manual_vps/din-setup-guide18.png)
+  ![](assets/img/manual_vps/din-setup-guide18.png)
 
 Next, create a backup address (for example backupmini-01) for creating a DIN-node, in wallet interface MyWallet -> Receive, button at the bottom:
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide19.png)
+![](assets/img/manual_vps/din-setup-guide19.png)
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide20.png)
+![](assets/img/manual_vps/din-setup-guide20.png)
   
 
 Copy and save the backup address, for example in notepad, it will come in handy later:
 
 
-![](assets/img/misc/manual_vps/din-setup-guide21.png)
+![](assets/img/manual_vps/din-setup-guide21.png)
   
 
 Create an address for the DIN-node that will receive rewards, for example mini-01 (same button “Request Payment”):
 
 
-  ![](assets/img/misc/manual_vps/din-setup-guide22.png)
+  ![](assets/img/manual_vps/din-setup-guide22.png)
 
 Also copy and save this address:
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide23.png)
+![](assets/img/manual_vps/din-setup-guide23.png)
   
 
 Send the required number of coins to this address:
@@ -160,7 +160,7 @@ Mini DIN: 100000
 +25 coins to activate the DIN-node. In our case it is 100025 coins:
 
 
-  ![](assets/img/misc/manual_vps/din-setup-guide24.png)
+  ![](assets/img/manual_vps/din-setup-guide24.png)
 
 We are waiting for 6 confirmations and proceed to the step of burning the coins of the node. In the console we type the following command:
 
@@ -173,13 +173,13 @@ For our example:
 infinitynodeburnfund STBksfDCPA8UnhEKWzXgmy78XDoaGqNJAu 100000 SaA7VubiKwMjNjiceMXPZHijwEyNTJRbz7
 
 
-  ![](assets/img/misc/manual_vps/din-setup-guide25.png)
+  ![](assets/img/manual_vps/din-setup-guide25.png)
 
 The result will be the following:
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide26.png)
+![](assets/img/manual_vps/din-setup-guide26.png)
 
 We are interested in BURNTX, copy and save it. Select the first 16 characters.
 
@@ -207,11 +207,11 @@ Enter the command to activate our node in the console:
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide27.png)
+![](assets/img/manual_vps/din-setup-guide27.png)
 
 
 
-![](assets/img/misc/manual_vps/din-setup-guide28.png)
+![](assets/img/manual_vps/din-setup-guide28.png)
 Wait for 55 confirmations for the DIN-node to appear in the list of InfinityNodes in the desktop wallet.
 
   
