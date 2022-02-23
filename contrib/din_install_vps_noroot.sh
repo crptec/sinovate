@@ -20,9 +20,7 @@ COIN_DAEMON="/home/$NODEUSER/sind"
 COIN_CLI="/home/$NODEUSER/sin-cli"
 ##
 CONFIG_FILE='sin.conf'
-# need to change for new codebase
 COIN_REPO='https://github.com/SINOVATEblockchain/sinovate/releases/latest/download/daemon.tar.gz'
-#
 
 # + bootstrap
 BS_REMOTE="https://service.sinovate.io/mainnet/latest/bootstrap.zip"
@@ -165,16 +163,16 @@ rpcport=20961
   ADDRESS=$(echo "$KEYPAIR" | awk '/Address/{print $2}')
 
   # need to uncomment for new codebase, because now wallet do not autocreate
-  #  $CLITMP createwallet wallet >/dev/null 2>&1 &&\
-  $CLITMP importprivkey $COINKEY >/dev/null 2>&1
+  $CLITMP createwallet wallet >/dev/null 2>&1 &&\
+    $CLITMP importprivkey $COINKEY >/dev/null 2>&1
 
   $CLITMP stop >/dev/null 2>&1
   while [ "$(pgrep -f $NODE_TMPDIR)" ]; do sleep 0.2; done
 
-  mv -f $NODE_TMPDIR/wallet.dat $CONFIGFOLDER >/dev/null 2>&1
+  #  mv -f $NODE_TMPDIR/wallet.dat $CONFIGFOLDER >/dev/null 2>&1
 
   # need to uncomment for new codebase, variant 1
-  #  mv -f $NODE_TMPDIR/wallet/wallet.dat $CONFIGFOLDER >/dev/null 2>&1
+  mv -f $NODE_TMPDIR/wallet/wallet.dat $CONFIGFOLDER >/dev/null 2>&1
 
   # need to uncomment for new codebase, variant 2
   #  mkdir -p $CONFIGFOLDER/wallets/main >/dev/null 2>&1
@@ -336,7 +334,7 @@ libprotobuf-dev protobuf-compiler mc unzip bash-completion"
 function important_information() {
   echo
   echo -e "${G}!!! PLEASE SAVE THIS INFORMATION !!!${NC}"
-  echo -e "================================================================================================================================"
+  printf '%*s' $(tput cols) | tr " " "="
   echo -e "${G}$COIN_NAME${NC} D.I.N. is up and running listening on port ${R}$COIN_PORT${NC}."
   echo -e "Configuration file is: ${R}$CONFIGFOLDER/$CONFIG_FILE${NC}"
   echo -e "Start: ${R}systemctl start $COIN_NAME.service${NC}"
@@ -346,12 +344,12 @@ function important_information() {
   echo -e "D.I.N. NODE PUBLICKEY is: ${R}$PUBLICKEY${NC}"
   echo -e "D.I.N. NODE ADDRESS is: ${R}$ADDRESS${NC}"
   echo -e "Please check ${G}$COIN_NAME${NC} is running with the following command: ${R}systemctl status $COIN_NAME.service${NC}"
-  echo -e "================================================================================================================================"
+  printf '%*s' $(tput cols) | tr " " "="
   echo -e "${G}!!! PLEASE SAVE THIS INFORMATION !!!${NC}"
   echo
   echo "Quick help:"
-  echo "1. send 5 coins to $ADDRESS"
-  echo "2. send 1000025/500025/100025 coins to OwnerAddress, тake it from your desktop wallet"
+  echo "1. send 3 coins to $ADDRESS"
+  echo "2. send 1000025/500025/100025 coins to OwnerAddress, you can get it in your desktop wallet"
   echo "3. wait for 6 confirmations"
   echo -e "4. ${G}infinitynodeburnfund OwnerAddress 1000000/500000/100000 BackupAddress${NC}"
   echo "5. wait for 6 confirmations"
