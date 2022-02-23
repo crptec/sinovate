@@ -72,7 +72,7 @@ Your wallet.dat file can be either in the wallets directory or in the SIN home d
 *Shut down the wallet. Backup wallet.dat and Remove all old files and folders. 
 
 
-Download the latest version of MAC Wallet at [https://github.com/SINOVATEblockchain/SIN-core/releases](https://github.com/SINOVATEblockchain/SIN-core/releases)
+Download the latest version of MAC Wallet at [https://github.com/SINOVATEblockchain/sinovate/releases](https://github.com/SINOVATEblockchain/sinovate/releases)
  
 
 ![run6](assets/img/misc/mac_backup06.png)
@@ -102,7 +102,7 @@ sudo systemctl stop sinovate.service
 
 **3- update Latest Wallet** 
 ```bash
-wget -O daemon.tar.gz https://github.com/SINOVATEblockchain/SIN-core/releases/latest/download/daemon.tar.gz
+wget -O daemon.tar.gz https://github.com/SINOVATEblockchain/sinovate/releases/latest/download/daemon.tar.gz
 
 tar -xzvf daemon.tar.gz
 ```
