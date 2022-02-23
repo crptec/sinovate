@@ -57,7 +57,7 @@ SINOVATE (SIN) combines its brand new **X25X Proof of Work (PoW)** algorithm wit
 -   Added in-wallet 1-click InfinityNode node setUP
 
 
---   BETELGEUSE Mainnet was created on March 31, 2022
+--   BETELGEUSE Mainnet release on March 31, 2022
 -   Forked Bitcoin v22.0
 -   Added 4th generation actual decentralized proof-of-stake algorithm, PoS4
 -   Added 4000 tx/s with complete SegWit address transactions
