@@ -418,19 +418,19 @@ void InfinitynodeList::updateDINList()
                 ui->dinTable->setItem(k, 7, new QTableWidgetItem(strNodeType) );
                 bool flocked = mapLockRewardHeight.find(sPeerAddress) != mapLockRewardHeight.end();
                 if(flocked) {
-                    ui->dinTable->setItem(k, 8, new QTableWidgetItem(QString::number(mapLockRewardHeight[sPeerAddress])));
-                    ui->dinTable->setItem(k, 9, new QTableWidgetItem(QString(QString::fromStdString(tr("Yes").toStdString()))));
+                    //ui->dinTable->setItem(k, 8, new QTableWidgetItem(QString::number(mapLockRewardHeight[sPeerAddress])));
+                    ui->dinTable->setItem(k, 8, new QTableWidgetItem(QString(QString::fromStdString(tr("Yes").toStdString()))));
                 } else {
-                    ui->dinTable->setItem(k, 8, new QTableWidgetItem(QString(QString::fromStdString(""))));
-                    ui->dinTable->setItem(k, 9, new QTableWidgetItem(QString(QString::fromStdString(tr("No").toStdString()))));
+                    //ui->dinTable->setItem(k, 8, new QTableWidgetItem(QString(QString::fromStdString(""))));
+                    ui->dinTable->setItem(k, 8, new QTableWidgetItem(QString(QString::fromStdString(tr("No").toStdString()))));
                 }
-                ui->dinTable->setItem(k,10, new QTableWidgetItem(QString(QString::fromStdString(pair.second))));
+                ui->dinTable->setItem(k,9, new QTableWidgetItem(QString(QString::fromStdString(pair.second))));
 
                 // node status column info from cached map
                 if (nodeSetupNodeInfoCache.find(strPeerAddress) != nodeSetupNodeInfoCache.end() ) {
                     pair_nodestatus pairStatus = nodeSetupNodeInfoCache[strPeerAddress];
-                    ui->dinTable->setItem(k, 11, new QTableWidgetItem(pairStatus.first));
-                    ui->dinTable->setItem(k, 12, new QTableWidgetItem(pairStatus.second));
+                    ui->dinTable->setItem(k, 10, new QTableWidgetItem(pairStatus.first));
+                    ui->dinTable->setItem(k, 11, new QTableWidgetItem(pairStatus.second));
                 }
 
                 if (status == tr("Incomplete").toStdString()) {
@@ -509,7 +509,7 @@ bool InfinitynodeList::filterNodeRow( int nRow )    {
         return false;
     }
 
-    if (ui->searchBackupAddr->text() != "" && !ui->dinTable->item(nRow, 10)->text().contains(ui->searchBackupAddr->text(), Qt::CaseInsensitive) )  {
+    if (ui->searchBackupAddr->text() != "" && !ui->dinTable->item(nRow, 9)->text().contains(ui->searchBackupAddr->text(), Qt::CaseInsensitive) )  {
 //LogPrintf("filterNodeRow backup addr %d, %s \n", nRow, ui->dinTable->item(nRow, 10)->text().toStdString());
         return false;
     }
@@ -550,8 +550,8 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
     else    {
         QString email, pass, strError;
         int clientId = nodeSetupGetClientId( email, pass, true );
+        ui->dinTable->setItem(nSelectedRow, 10, new QTableWidgetItem(tr("Loading...")));
         ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(tr("Loading...")));
-        ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem(tr("Loading...")));
         int serviceId = nodeSetupGetServiceForNodeAddress( strAddress );
         if (serviceId <= 0)   {     // retry load nodes' service data
             if (clientId>0 && pass != "") {
@@ -567,8 +567,8 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
                     int blockCount = obj["Blockcount"].toInt();
                     QString strBlockCount = QString::number(blockCount);
                     QString peerInfo = obj["MyPeerInfo"].toString();
-                    ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(strBlockCount));
-                    ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem(peerInfo));
+                    ui->dinTable->setItem(nSelectedRow, 10, new QTableWidgetItem(strBlockCount));
+                    ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(peerInfo));
 
                     if (nodeSetupNodeInfoCache.find(strAddress) != nodeSetupNodeInfoCache.end() ) {   // replace cache value
                         nodeSetupNodeInfoCache[strAddress] = std::make_pair(strBlockCount, peerInfo);
@@ -582,8 +582,8 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
                         msg.setText(tr("Node status check timeout:\nCheck if your Node Setup password is correct, then try again."));
                         msg.exec();
                     }
-                    ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(tr("Error 1")));
-                    ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem(""));
+                    ui->dinTable->setItem(nSelectedRow, 10, new QTableWidgetItem(tr("Error 1")));
+                    ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(""));
                 }
             }
             else    {
@@ -591,8 +591,8 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
                     msg.setText("Only for SetUP hosted nodes\nCould not recover node's client ID\nPlease log in with your user email and password in the Node SetUP tab");
                     msg.exec();
                 }
-                ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(tr("Error 2")));
-                ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem(""));
+                ui->dinTable->setItem(nSelectedRow, 10, new QTableWidgetItem(tr("Error 2")));
+                ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(""));
             }
         }
         else    {
@@ -600,8 +600,8 @@ void InfinitynodeList::nodeSetupCheckDINNode(int nSelectedRow, bool bShowMsg )  
                 msg.setText("Only for SetUP hosted nodes\nCould not recover node's service ID\nPlease log in with your user email and password in the Node SetUP tab");
                 msg.exec();
             }
-            ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(tr("Login required")));
-            ui->dinTable->setItem(nSelectedRow, 12, new QTableWidgetItem(""));
+            ui->dinTable->setItem(nSelectedRow, 10, new QTableWidgetItem(tr("Login required")));
+            ui->dinTable->setItem(nSelectedRow, 11, new QTableWidgetItem(""));
         }
     }
 }
