@@ -8,6 +8,9 @@
 wget -q --show-progress --no-check-certificate https://github.com/SINOVATEblockchain/sinovate/releases/latest/download/download_bootstrap.sh -O download_bootstrap.sh
 ```
 ```
+chmod +x download_bootstrap.sh
+```
+```
 sudo systemctl stop sinovate.service
 ```
 ```
