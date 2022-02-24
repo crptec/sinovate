@@ -10,6 +10,7 @@
 - **Tutorials & Guides**
 - [Bootstrap](bootstrap)
 - [Wallet Upgrade](wallet_upgrade)
+- [Node Update Guide](node_update_guide)
 - [WebTool](sin_webtool_guide)
 - [GPU Mining X25X Algo](X25X-PoW-GPU-Mining)
 - [Video Guides](video_guides)
