@@ -1132,14 +1132,14 @@ void ThreadCheckInfinityNode(CConnman& connman)
     {
         std::this_thread::sleep_for(1000ms);
         nTickDIN++;
-        if (nTickDIN % 60 == 0) {
-            //
-            if (fInfinityNode && infinitynodePeer.nState != INFINITYNODE_PEER_STARTED)
+        //only for DIN node
+        if (fInfinityNode && nTickDIN % 60 == 0) {
+            if (infinitynodePeer.nState != INFINITYNODE_PEER_STARTED)
             {
                 infinitynodePeer.ManageState(connman);
             }
 
-            //check RegisterInfo and sendTx
+            
             if (infnodeman.isReachedLastBlock()) {
                 bool checkRegister = infWalletAccess.RegisterLROnchain();
             }
