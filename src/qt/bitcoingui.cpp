@@ -1351,12 +1351,6 @@ void BitcoinGUI::message(const QString& title, QString message, unsigned int sty
 
 void BitcoinGUI::changeEvent(QEvent *e)
 {
-    if (e->type() == QEvent::PaletteChange) {
-        overviewAction->setIcon(platformStyle->MultiStatesIcon(QStringLiteral(":/icons/overview")));
-        sendCoinsAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/send")));
-        receiveCoinsAction->setIcon(platformStyle->SingleColorIcon(QStringLiteral(":/icons/receiving_addresses")));
-        historyAction->setIcon(platformStyle->MultiStatesIcon(QStringLiteral(":/icons/history")));
-    }
 
     QMainWindow::changeEvent(e);
 
@@ -1755,13 +1749,6 @@ void UnitDisplayStatusBarControl::mousePressEvent(QMouseEvent *event)
 
 void UnitDisplayStatusBarControl::changeEvent(QEvent* e)
 {
-    if (e->type() == QEvent::PaletteChange) {
-        QString style = QString("QLabel { color : %1 }").arg(m_platform_style->SingleColor().name());
-        if (style != styleSheet()) {
-            setStyleSheet(style);
-        }
-    }
-
     QLabel::changeEvent(e);
 }
 
