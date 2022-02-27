@@ -121,8 +121,8 @@ bool CInfWalletAccess::RegisterLROnchain()
     CAmount nFeeRequired;
     CAmount curBalance = pwallet->GetAvailableBalance();
 
-    CAmount nAmountRegister = 0.001 * COIN;
-    CAmount nAmountToSelect = 0.05 * COIN;
+    CAmount nAmountRegister = 0.05 * COIN;
+    CAmount nAmountToSelect = 0.2 * COIN;
 
     CScript nodeScript = GetScriptForDestination(nodeDest);
 

@@ -3,24 +3,23 @@
 ![](assets/img/transactiontoohigh/005.png) ![](assets/img/transactiontoohigh/006.png)
 
 Transaction too high error is a standard miners limit error first introduced with the Bitcoin core wallet.
-![](assets/img/transactiontoohigh/000.png)
 
-For example, you try to burn coins or send all wallet balance, and many small transactions hit the blockchain limit error.
+For example, many small transactions hit the blockchain limit error when a wallet has too many transactions (inputs) from mining, nodes, staking, or any received transactions.
 In that case, please use the Coin Control feature.
 
 
-create a new Receiving address
+Create a new Receiving address. Go to "My Wallet" > "RECEIVE" > " Get new address".
 
 ![](assets/img/transactiontoohigh/002.png)
 ![](assets/img/transactiontoohigh/003.png)
 
-please select and copy it with a right mouse click
+Please select and copy with a right mouse click.
 
-select several addresses from [Coin control](Coincontrolenable) > Coin Selection window
+Select several addresses from [INPUTS (Coin control)]> Coin Selection window
 
 ![](assets/img/transactiontoohigh/004.png)
 
-and try to send several times to generated from previous step address
+and send several times to the recently generated address
 
 ![](assets/img/transactiontoohigh/001.png)
 

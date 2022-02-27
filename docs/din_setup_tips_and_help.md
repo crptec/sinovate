@@ -9,7 +9,7 @@
 
 <br>
 
-![](https://lh6.googleusercontent.com/ug9ysrymKrOa11XI_gRBGtK72_4HVh_Q5xn6HgyrraCRqvHMlkXXpgipIaUt7efo6F9TL8h_M479bgPrv8j5FSI-NGnyqyGnlnkcs5KmswrR_Kbi-GV97rVbM1ynh6h7o3cJlbO8)
+![Image for post](assets/img/misc/in_wallet_setup_04.png)
 
 <br>  
 

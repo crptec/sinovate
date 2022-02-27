@@ -594,7 +594,7 @@ void OverviewPage::on_toolButtonRoadmap_clicked() {
 }
 
 void OverviewPage::on_toolButtonWallet_clicked() {
-    QDesktopServices::openUrl(QUrl("https://github.com/SINOVATEblockchain/SIN-core/releases", QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl("https://github.com/SINOVATEblockchain/sinovate/releases", QUrl::TolerantMode));
 }
 
 void OverviewPage::on_toolButtonWebTool_clicked() {

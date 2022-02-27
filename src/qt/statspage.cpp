@@ -46,6 +46,7 @@ void StatsPage::getStatistics()
         m_ui->difficultyValueLabel->setText(s.difficulty);
         m_ui->lastPriceValueLabel->setText(QString::number(s.lastPrice, 'f', 8) + QString(" BTC"));
         m_ui->heightValueLabel->setText(heightValue);
+        m_ui->blockRewardValue->setText(s.blockReward + " SIN");
 
 
         // Set ADDRESS STATS strings
@@ -68,25 +69,7 @@ void StatsPage::getStatistics()
         m_ui->circulationSupplyValueLabel->setText(l.toString(supplyNumber)+ " SIN");
 
         // Set INFINITY NODE STATS strings
-        int bigRoiDays = 1000000/((720/s.inf_online_big)*1752);
-        int midRoiDays = 500000/((720/s.inf_online_mid)*838);
-        int lilRoiDays = 100000/((720/s.inf_online_lil)*560);
-
-        //++
-        int bigRoiDaysPercent = (365/(1000000/((720/s.inf_online_big)*1752)))*100-100;
-        int midRoiDaysPercent = (365/(500000/((720/s.inf_online_mid)*838)))*100-100;
-        int lilRoiDaysPercent = (365/(100000/((720/s.inf_online_lil)*560)))*100-100;
-
-        QString bigROIStringPercent = QString::number(bigRoiDaysPercent, 'f', 0);
-        QString midROIStringPercent = QString::number(midRoiDaysPercent, 'f', 0);
-        QString lilROIStringPercent = QString::number(lilRoiDaysPercent, 'f', 0);
-        //--
-
-        QString bigROIString = "APY: " + QString::number(bigRoiDays) + " days" ;
-        QString midROIString = "APY: " + QString::number(midRoiDays) + " days";
-        QString lilROIString = "APY: " + QString::number(lilRoiDays) + " days";
         QString totalNodesString = QString::number(s.inf_online_big + s.inf_online_mid + s.inf_online_lil);
-
         QString bigString = QString::number(s.inf_online_big);
         QString midString = QString::number(s.inf_online_mid);
         QString lilString = QString::number(s.inf_online_lil);
@@ -94,9 +77,9 @@ void StatsPage::getStatistics()
         m_ui->midValueLabel->setText(midString);
         m_ui->lilValueLabel->setText(lilString);
         m_ui->totalValueLabel->setText(totalNodesString);
-        m_ui->bigRoiLabel->setText(bigROIStringPercent + "%");
-        m_ui->midRoiLabel->setText(midROIStringPercent + "%");
-        m_ui->miniRoiLabel->setText(lilROIStringPercent + "%");
+        m_ui->bigRoiLabel->setText(s.bigApy + "%");
+        m_ui->midRoiLabel->setText(s.midApy + "%");
+        m_ui->miniRoiLabel->setText(s.miniApy + "%");
     }
     else
     {
@@ -120,5 +103,9 @@ void StatsPage::getStatistics()
         m_ui->midValueLabel->setText(noValue);
         m_ui->lilValueLabel->setText(noValue);
         m_ui->totalValueLabel->setText(noValue);
+
+        m_ui->bigRoiLabel->setText(noValue);
+        m_ui->midRoiLabel->setText(noValue);
+        m_ui->miniRoiLabel->setText(noValue);
     }
 }
