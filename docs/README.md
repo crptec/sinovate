@@ -1,4 +1,20 @@
 
+# SINOVATE Blockchain Documentation
+
+### Please spear some moment to read the following for your own protection!
+
+-   The SIN docs website provides documentation on different aspects of SINOVATE use. Following these guides does not make the SINOVATE liable for any encountered issues.
+-   Every document furnishes protection information depending on the platform and app used; it doesn't mean you'll be 100% safe after following the documentation. Please research for potential conditions that may happen.
+-   **DO NOT** use a daily computer for Staking or InfinityNodes!
+-   You're responsible for your protection. The possibilities of being hacked are high even after following these manuals to access funds using a daily computer if malware gets affected.
+-   **ALWAYS** do make backups of your private keys and wallet.dat files. Any wallet.dat or private keys must be backed up securely on an external USB flash storage of any kind.
+-   **NEVER** share your private keys with anyone. SINOVATE team never asks for your private keys. If you share your private keys with others, you give them control of your SIN.
+-   Transactions cannot be stopped, reversed, or canceled. Always check as many times as possible that the address you are sending is the correct address.
+-   SINOVATE is an open-source software, and it is free to use, copy and share, but this also provides as-is with no warranty.
+-   **Remember**, these protection recommendations are our thoughts; they're not supposed to comprise a definite direction on safety.
+-   Likewise, the user is entirely accountable for safety; please always consider every stage observed and stay safe.
+
+# What is SINOVATE?
 
 **SINOVATE (SIN)** is an open-source state-of-the-art digital cryptocurrency. 
 We build innovative blockchain cloud services for individuals, developers, and enterprises. 
