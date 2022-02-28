@@ -1,7 +1,7 @@
 
 # SINOVATE Blockchain Documentation
 
-### Please spear some moment to read the following for your own protection!
+### Please read the following for your own protection!
 
 -   The SIN docs website provides documentation on different aspects of SINOVATE use. Following these guides does not make the SINOVATE liable for any encountered issues.
 -   Every document furnishes protection information depending on the platform and app used; it doesn't mean you'll be 100% safe after following the documentation. Please research for potential conditions that may happen.
