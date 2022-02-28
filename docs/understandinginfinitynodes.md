@@ -1,4 +1,3 @@
-## *Understanding of the InfinityNode Technology*
 
   
 
