@@ -181,4 +181,4 @@ This menu shows every incoming and outgoing SIN transaction that has happened.
 
   In this menu, the display shows essential real-time blockchain statistics pulled from https://explorer.sinovate.io/.
 
-**![](https://lh5.googleusercontent.com/UdtxYHLZNMWZCiK0EnTaI9BFKhSWXGtgRreKV0iAB9micIJ9stzmKORRVItkLQWIz3VgEmPdiPG3aTHtj08GgVLN-FRh7kaRYB4jgIT6kcKexqbkk6I1uavbN5W8qSA-89bhktBf)**
+![](https://lh5.googleusercontent.com/UdtxYHLZNMWZCiK0EnTaI9BFKhSWXGtgRreKV0iAB9micIJ9stzmKORRVItkLQWIz3VgEmPdiPG3aTHtj08GgVLN-FRh7kaRYB4jgIT6kcKexqbkk6I1uavbN5W8qSA-89bhktBf)
