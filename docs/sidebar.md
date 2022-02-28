@@ -1,7 +1,7 @@
 - **Introduction**
 - [What is SINOVATE?](/)
 - **SINOVATE Wallet**
-- [Desktop QT Wallet](desktopqtwallet)
+- [Desktop QT Wallet](desktopqtwallet) 
 
 - **InfinityNodes (DIN)**
 - [Understanding InfinityNodes](understandinginfinitynodes)
