@@ -1,9 +1,25 @@
-SINOVATE Desktop QT Wallet Tutorial
+**SINOVATE Desktop QT Wallet Tutorial**
 
-  # Home Menu
+
+**Primary SIN wallet functionalities**
+
+On the left side, there are fundamental operations such as:
+
+-   Home (General layout with useful links and balances)
+ 
+-   My Wallet (Send and Receive)
     
-
-The home page shows essential balances and valuable links for SINOVATE.
+-   Staking (Staking info and choice to stake)
+    
+-   InfinityNodes (Possibility to set up a node with 1-click setUP and detailed information of the node)
+    
+-   Transactions (Detailed and complete SIN transactions history)
+    
+-   Statistics (SIN statistics info pulled from the explorer.sinovate.io)
+ 
+# Home Menu
+   
+The "Home" page shows essential balances and valuable links for SINOVATE.
 
 ![](https://lh3.googleusercontent.com/Peo8tqUY3PYVLXPHWKnUyd5MKE6FHLXtI3-sD83lwCoMKlAG3IUxF0QeiWhXwrtzUPZAYfjLRz8aaPzMsqq_cw_DxmT4iPczq9XHE16L8ptg-b3bZ0YDBfEkv8NHaesH7thtFI6Q)
 
@@ -12,7 +28,7 @@ The home page shows essential balances and valuable links for SINOVATE.
   # My Wallet Menu
     
 
-My Wallet page shows the following:
+"My Wallet" page shows the following:
 
 ![](https://lh6.googleusercontent.com/Sdw7b5W4t-pyFkrukBPJ_-GMWDD_OeeVxENQQaRJ4Z2hZB09lLBVftNgPvJaj76eKt1DKAmqRsJ3p2ok1IFm86Vgi5ZXBb7GzMCcyqjDKo597EvPwpnZKu9D0VfNMQzT52jLytnF)
 
@@ -34,45 +50,28 @@ My Wallet page shows the following:
 
 **Recent SIN Transactions**
 
-Incoming and outgoing transactions are shown here, including coins from staking, mining, Infinity Nodes, and dCloud transactions.
+Incoming and outgoing transactions are shown here, including coins from staking, mining, InfinityNodes, and dCloud transactions.
 
   
 
-**Primary SIN wallet functionalities**
-
-On the left side, there are fundamental operations such as:
-
--   My Wallet (Send and Receive)
-    
--   Staking (Staking info and choice to stake)
-    
--   InfinityNodes (Possibility to set up a node with 1-click setUP and detailed information of the node)
-    
--   Transactions (Detailed and complete SIN transactions history)
-    
--   Statistics (SIN statistics info pulled from the explorer.sinovate.io)
-    
 
 
 
+ **SEND Button**
 
+On the "SEND" menu, there are easy-to-use essential functions. 
 
+**Pay to:** This is the address to send SIN (Only SIN addresses work)
 
- **SEND**
+**Label:** it is a label to remember the SIN address (optional)
 
-On the SEND menu, there are easy-to-use essential functions. 
-
-Pay to: This is the address to send SIN (Only SIN addresses will work)
-
-Label: it is a label to remember the SIN address (optional)
-
-Amount: This is the amount of SIN to Send.
+**Amount:** This is the amount of SIN to Send.
 
 Once the required areas are covered, click on the "SEND" button to send the SIN coins to the address entered above.
 ![](https://lh4.googleusercontent.com/cmzZaHryrIfJi4mmgVj7oxl4yqE2u3eITfHtgi5_Bhu3M_FK5_v5YJS-gGQRVLQb3tiCHTsiIqLPmL6d1obRZc6Np5bjYmKqslbVCQGjSAr5ATnjzXw5pts_xaOFIPblNJl9c49I)
   
 
-**Receive**
+**RECEIVE Button**
 
 This is where SIN wallet addresses are and for generating new ones.
 
@@ -88,16 +87,16 @@ To obtain the deposit address, click on "Get New Address," and you'll see the ad
 
 Please encrypt your wallet before making a backup that authorizes the backup to be encrypted.
 
-For this, Go to Settings -> Encrypt wallet for encryption.
+For this, Go to **Settings -> Encrypt** wallet for encryption.
 
   
   
 
-After that, enter the password for the wallet. You must remember the password to access your SIN funds as there's no way to recover your SIN without it.
+After that, enter the password for the wallet. You must remember the password to access your SIN funds as **there is no way to recover** your SIN without it.
 
   
 
-Note: The wallet does not restart after encrypting, but encryption is ready for use.
+**Note:** The wallet does not restart after encrypting, but encryption is ready for use.
 
 ## Unlock your Wallet
 
@@ -105,7 +104,7 @@ To unlock the wallet for any use, go to Settings > Unlock Wallet.
 
 To unlock the wallet for only staking, follow the below procedure.
 
-NOTE: If the wallet is unlocked for only staking, the Staking menu Stake button must also be clicked to activate staking.
+**Note:** If the wallet is unlocked for only staking, the Staking menu Stake button must also be clicked to activate staking.
 
   
 
@@ -115,7 +114,7 @@ We highly recommend creating a backup after wallet encryption.
 
   
 
-For backup access, go to File/Backup Wallet, choose a folder and enter a name for your backup.
+For backup access, go to **File/Backup Wallet,** choose a folder and enter a name for your backup.
 
 After entering the backup's name, click on save to back up the wallet successfully.
 
