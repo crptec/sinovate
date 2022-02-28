@@ -153,7 +153,7 @@ On SIN core Betelgeuse 0.22x, the console tab can be accessed from the bottom le
 
 The console tab is handy; although it's mostly for advanced users, it is a potent tool and can perform actions that aren't possible using the graphical user interface.
 
-This document [https://docs.sinovates.io/commands/](https://docs.qtum.site/en/commands/) explains how to use the console tab in an obvious way.
+This document [https://docs.sinovates.io/commands/](https://docs.sinovates.io/commands/) explains how to use the console tab in an obvious way.
 
   
   
