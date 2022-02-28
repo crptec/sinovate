@@ -1,5 +1,5 @@
 
-# SINOVATE Blockchain Documentation
+# SINOVATE Blockchain Documentation Hub
 
    **Please read the following for your own protection!**
 
