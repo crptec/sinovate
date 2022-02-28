@@ -1,7 +1,7 @@
 
 # SINOVATE Blockchain Documentation
 
-### Please read the following for your own protection!
+   **Please read the following for your own protection!**
 
 -   The SIN docs website provides documentation on different aspects of SINOVATE use. Following these guides does not make the SINOVATE liable for any encountered issues.
 -   Every document furnishes protection information depending on the platform and app used; it doesn't mean you'll be 100% safe after following the documentation. Please research for potential conditions that may happen.
@@ -14,7 +14,6 @@
 -   **Remember**, these protection recommendations are our thoughts; they're not supposed to comprise a definite direction on safety.
 -   Likewise, the user is entirely accountable for safety; please always consider every stage observed and stay safe.
 
-# What is SINOVATE?
 
 **SINOVATE (SIN)** is an open-source state-of-the-art digital cryptocurrency. 
 We build innovative blockchain cloud services for individuals, developers, and enterprises. 
