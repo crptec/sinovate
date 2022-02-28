@@ -33,7 +33,7 @@ Download the latest version of Windows Wallet at [https://github.com/SINOVATEblo
  
  Replace the sin-qt.exe file in the compressed file you downloaded with the sin-qt.exe file you are currently using.
 
-:warning: Important Notic. Please pay attention!! :warning: :
+:warning: Important Notice. Please pay attention!! :warning: :
 
 - Close the wallet
 - Back up
