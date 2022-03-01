@@ -89,7 +89,9 @@ Please encrypt your wallet before making a backup that authorizes the backup to 
 
 For this, Go to **Settings -> Encrypt** wallet for encryption.
 
-  
+![](assets/img/qtwallet/encryptwallet1.png)
+
+![](assets/img/qtwallet/encryptwallet2.png)
   
 
 After that, enter the password for the wallet. You must remember the password to access your SIN funds as **there is no way to recover** your SIN without it.
@@ -117,6 +119,11 @@ We highly recommend creating a backup after wallet encryption.
 For backup access, go to **File/Backup Wallet,** choose a folder and enter a name for your backup.
 
 After entering the backup's name, click on save to back up the wallet successfully.
+
+![](assets/img/qtwallet/backupwallet1.png) 
+
+![](assets/img/qtwallet/backupwallet2.png) 
+
 
  
 
