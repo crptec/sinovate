@@ -21,7 +21,7 @@ On the left side, there are fundamental operations such as:
    
 The "Home" page shows essential balances and valuable links for SINOVATE.
 
-![](https://lh3.googleusercontent.com/Peo8tqUY3PYVLXPHWKnUyd5MKE6FHLXtI3-sD83lwCoMKlAG3IUxF0QeiWhXwrtzUPZAYfjLRz8aaPzMsqq_cw_DxmT4iPczq9XHE16L8ptg-b3bZ0YDBfEkv8NHaesH7thtFI6Q)
+![](assets/img/qtwallet/home.png)
 
   
 
@@ -30,7 +30,7 @@ The "Home" page shows essential balances and valuable links for SINOVATE.
 
 "My Wallet" page shows the following:
 
-![](https://lh6.googleusercontent.com/Sdw7b5W4t-pyFkrukBPJ_-GMWDD_OeeVxENQQaRJ4Z2hZB09lLBVftNgPvJaj76eKt1DKAmqRsJ3p2ok1IFm86Vgi5ZXBb7GzMCcyqjDKo597EvPwpnZKu9D0VfNMQzT52jLytnF)
+![](assets/img/qtwallet/mywallet.png)
 
   
 
@@ -68,7 +68,7 @@ On the "SEND" menu, there are easy-to-use essential functions.
 **Amount:** This is the amount of SIN to Send.
 
 Once the required areas are covered, click on the "SEND" button to send the SIN coins to the address entered above.
-![](https://lh4.googleusercontent.com/cmzZaHryrIfJi4mmgVj7oxl4yqE2u3eITfHtgi5_Bhu3M_FK5_v5YJS-gGQRVLQb3tiCHTsiIqLPmL6d1obRZc6Np5bjYmKqslbVCQGjSAr5ATnjzXw5pts_xaOFIPblNJl9c49I)
+![](assets/img/qtwallet/sencoins.png)
   
 
 **RECEIVE Button**
@@ -77,7 +77,7 @@ This is where SIN wallet addresses are and for generating new ones.
 
 It is helpful for receiving payments from more than one sender and enables tracking of each transaction.
 
-![](https://lh5.googleusercontent.com/FUTOutRNgE8F0Njaw2EzFZIHSxIQxF2qWUc4p6NIslAfgXHiI_JD7TwOKpOtL5F-IFfikPcnwfcd_OmREfqdrxlYF0Cmry4Z0b-VIAWL37h3DCRXUXsteDozok0MqI8y7VCvv8Ml)
+![](assets/img/qtwallet/receive.png)
 
 To obtain the deposit address, click on "Get New Address," and you'll see the address and URI are refreshed. Copy the address.
 
@@ -131,12 +131,12 @@ For staking to take place, it is required to:
     
 3.  Keep the wallet open at all times; otherwise, it is not possible to stake it even if the coins are matured.
     
-![](https://lh5.googleusercontent.com/Aincl1i2iHTJ-G1mDrFAoxKgNUZzGSBTPnhl8URESQggf2X_x9kTc34E7aYLw1vHFijFU7IbSqj5_l4TzULdBO_4nXEOlqR4jYN8Wkug19TR1UFDnZUDTNx_vNTiJEKH5HVyZHO9)
+![](assets/img/qtwallet/staking.png)
   
 
 First, select the "Staking" menu to show the Staking page. Next, click the Stake button on the right. After reading the warning, click Yes and enter the passphrase, tick "unlock for staking only" box for staking activation.
 
- ![](https://lh3.googleusercontent.com/6aDd9-PGH5YpQHOEcELlyOIpqMDGHspSPz4QpWlqvu8kH-MiR_fawnh1S7p4Qp2AzbpGu3RYfZcAGa_CzqJksCSIfcYiGqAefF2UobHFLXfy7rAY3l7UGmLyteS9AbeDr_VxRKuR) 
+ ![](assets/img/qtwallet/warningstaking.png)
 
 **IMPORTANT:** The Staking menu Stake button must be turned on for staking activation. The wallet must be online 24/7 for the staking to work.
 
@@ -160,12 +160,12 @@ This document [https://docs.sinovates.io/commands/](https://docs.sinovates.io/co
   # InfinityNodes Menu
 
   InfinityNodes menu provides real-time infinitynode node information.
-  ![](https://lh6.googleusercontent.com/9DpeVqrWXIfPIiKcN-HuYj9bZGsUhZ_Sv2NPyXOPknt93q3Gu6_n6ZsUGrGCxzFzQIXMOW0LdeXHIjrfM350EVIrbeu0EL2hFkT3cH5O1xY577t1x1g4jCVMXpOHMquSY7iyJcg_)
+  ![](assets/img/qtwallet/infinitynodes.png)
   
   
   It also allows creating an infinitynode with a 1-click setUP.
   
-  ![](https://lh5.googleusercontent.com/_L3krValK2eYIk3toMZ18CEZaTpBkPVFyPGmiE_oP33AqsL5pmOOvcrpCcveIVPMPl2B1JqVWoQq_wBYEjkcXgJ-bDp1clOKu9o3xeRo2jfg7wpU5zTDyrnT6E0t9PTYqLsbfdVr)
+  ![](assets/img/qtwallet/1clicksetup.png)
   
   
 
@@ -173,7 +173,7 @@ This document [https://docs.sinovates.io/commands/](https://docs.sinovates.io/co
 
 This menu shows every incoming and outgoing SIN transaction that has happened.
 
-![](https://lh6.googleusercontent.com/XVY5rOFL9a3TFhwT7dMgvUl2q4Rf3wOBNl_jbe-1Hibid0-BmWP1w5eKppDmgN3FooOLhlga7ryx-AHvCOaMm5QURsfR9RBMXN6MBnaMyM_bKg3NSuDxw55itYLnMt4E-J8MnUEH)
+![](assets/img/qtwallet/transactions.png)
 
   
 
@@ -181,4 +181,4 @@ This menu shows every incoming and outgoing SIN transaction that has happened.
 
   In this menu, the display shows essential real-time blockchain statistics pulled from https://explorer.sinovate.io/.
 
-![](https://lh5.googleusercontent.com/UdtxYHLZNMWZCiK0EnTaI9BFKhSWXGtgRreKV0iAB9micIJ9stzmKORRVItkLQWIz3VgEmPdiPG3aTHtj08GgVLN-FRh7kaRYB4jgIT6kcKexqbkk6I1uavbN5W8qSA-89bhktBf)
+![](assets/img/qtwallet/statistics.png)
