@@ -1,4 +1,4 @@
-# ![SINOVATE Logo](docs/assets/img/sin_background.png)
+# ![SINOVATE Logo](https://github.com/SINOVATEblockchain/docs/blob/main/assets/img/sin_background.png)
 
 
 
