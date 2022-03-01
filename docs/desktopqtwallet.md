@@ -154,10 +154,13 @@ First, select the "Staking" menu to show the Staking page. Next, click the Stake
 
 On SIN core Betelgeuse 0.22x, the console tab can be accessed from the bottom left console icon, as shown here:
 
-  
+![](assets/img/qtwallet/console1.png)  
   
 
 The console tab is handy; although it's mostly for advanced users, it is a potent tool and can perform actions that aren't possible using the graphical user interface.
+
+
+![](assets/img/qtwallet/console2.png) 
 
 This document [https://docs.sinovates.io/commands/](https://docs.sinovates.io/commands/) explains how to use the console tab in an obvious way.
 
