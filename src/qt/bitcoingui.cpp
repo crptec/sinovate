@@ -1597,7 +1597,7 @@ void BitcoinGUI::toggleHidden()
 #ifdef ENABLE_WALLET
 void BitcoinGUI::updateStakingIcon()
 {
-    if(m_node.shutdownRequested() || !clientModel || clientModel->fBatchProcessingMode)
+    if(m_node.shutdownRequested() || !clientModel)
         return;
 
     WalletView * const walletView = walletFrame ? walletFrame->currentWalletView() : 0;
