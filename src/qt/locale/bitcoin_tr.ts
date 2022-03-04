@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="tr">
+<TS version="2.1" language="tr">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -237,11 +237,11 @@ Cüzdan kilidini aç.</translation>
     </message>
     <message>
         <source>Serves to disable the trivial sendmoney when OS account compromised. Provides no real security.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hesap tehlikeye girdiğinde önemsiz para göndermeyi devre dışı bırakmaya yarar. Gerçek bir güvenlik sağlamaz.</translation>
     </message>
     <message>
         <source>For staking only.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sadece staking için.</translation>
     </message>
 </context>
 <context>
@@ -827,7 +827,7 @@ v%1</translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked for staking only&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Cüzdan &lt;b&gt;şifrelidir&lt;/b&gt; ve şu anda &lt;b&gt;yalnızca stake için açılmıştır&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1955,7 +1955,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>Number of blocks left</source>
         <translation>Kalan blok sayısı</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>calculating…</source>
         <translation>hesaplanıyor...</translation>
     </message>
@@ -1995,7 +1995,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>%1 is currently syncing.  It will download headers and blocks from peers and validate them until reaching the tip of the block chain.</source>
         <translation>%1 şu anda eşitleniyor. Akranlardan başlıkları ve blokları indirecek ve blok zincirinin ucuna ulaşana kadar bunları doğrulayacaktır.</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Unknown…</source>
         <translation>Bilinmeyen…</translation>
     </message>
@@ -2082,7 +2082,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
     </message>
     <message>
         <source>Open the %1 configuration file from the working directory.</source>
-        <translation>Çalışma dizininden %1  yapılandırma dosyasını aç.</translation>
+        <translation>Çalışma dizininden %1&#xa0; yapılandırma dosyasını aç.</translation>
     </message>
     <message>
         <source>Reset all client options to default.</source>
@@ -2503,7 +2503,7 @@ Düğüm Kurulum parolanızın doğru olup olmadığını kontrol edin, ardında
         <source>Copy to Clipboard</source>
         <translation>Panoya kopyala</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Save…</source>
         <translation>Kaydet...</translation>
     </message>
@@ -3820,7 +3820,7 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <source>Custom</source>
         <translation>Özel</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
         <translation>(Akıllı ücret henüz başlatılmadı. Bu genellikle birkaç blok sürer…)</translation>
     </message>
@@ -4204,9 +4204,9 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
         <source>Stake:</source>
         <translation>Stake:</translation>
     </message>
-    <message utf8="true">
-        <source>0.000 000 00 SIN</source>
-        <translation>0.000 000 00 SIN</translation>
+    <message>
+        <source>0.000&#x2009;000&#x2009;00 SIN</source>
+        <translation>0.000&#x2009;000&#x2009;00 SIN</translation>
     </message>
     <message>
         <source>Staking</source>
@@ -4371,11 +4371,11 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
     </message>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Yükleniyor...</translation>
     </message>
     <message>
         <source>0 SIN</source>
-        <translation type="unfinished">3478.75 SIN {0 ?}</translation>
+        <translation>0 SIN</translation>
     </message>
 </context>
 <context>
