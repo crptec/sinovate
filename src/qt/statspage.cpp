@@ -60,7 +60,7 @@ void StatsPage::getStatistics()
         // Set BURNT COIN STATS strings
         int supplyNumber = s.supply;
         int feeNumber = s.burnFee - s.burnNode;
-        int burntNumber = s.burnFee;
+        unsigned int burntNumber = s.burnFee;
 
         m_ui->feeValueLabel->setText(l.toString(feeNumber)+ " SIN");
         m_ui->nodesValueLabel->setText(l.toString(s.burnNode)+ " SIN");

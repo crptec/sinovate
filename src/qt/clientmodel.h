@@ -63,7 +63,7 @@ struct SINStatsStruct {
     QString explorerActiveAddresses = "";
     double supply = 0.0;
     double burnFee = 0.0;
-    int burnNode = 0;
+    unsigned int burnNode = 0;
     int burnNodeInt = 0;
     double inf_online_big = 0.0;
     double inf_online_mid = 0.0;
