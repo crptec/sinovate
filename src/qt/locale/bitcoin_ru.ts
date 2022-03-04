@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru">
+<TS version="2.1" language="ru">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -234,11 +234,11 @@ Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
     </message>
     <message>
         <source>Serves to disable the trivial sendmoney when OS account compromised. Provides no real security.</source>
-        <translation type="unfinished"></translation>
+        <translation>Служит для отключения тривиальной отправки денег при компрометации учетной записи ОС. Не обеспечивает реальной безопасности.</translation>
     </message>
     <message>
         <source>For staking only.</source>
-        <translation type="unfinished"></translation>
+        <translation>Только для Стейкинга</translation>
     </message>
 </context>
 <context>
@@ -261,7 +261,7 @@ Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
     <message>
         <source>A fatal error occurred. %1 can no longer continue safely and will quit.</source>
         <translation>Произошла критическая ошибка. %1 больше не может продолжать безопасную работу и будет закрыт.
- </translation>
+&#xa0;</translation>
     </message>
     <message>
         <source>Internal error</source>
@@ -840,7 +840,7 @@ v%1</translation>
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked for staking only&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Кошелек &lt;b&gt;зашифрован&lt;/b&gt; и в настоящее время &lt;b&gt;разблокирован только для Стейкинга&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1216,7 +1216,7 @@ v%1</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An InfinityNode is an improved version of a conventional masternode implemented by the DASH cryptocurrency. There are still many similarities between the two. Going forward SINOVATE InfinityNodes will differentiate entirely from the DASH masternode code, and SINOVATE will become the first of its kind, a pure InfinityNode 1.0 Platform.There are three different tiers of InfinityNode available for users of the SINOVATE network. It is described as an evolution of previously implemented masternode technology by other blockchain projects. Each tier or layer provides different functions, but they all increase the overall decentralization and stability of the network. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Each tier requires different collateral in order to create the InfinityNode: &lt;/p&gt;&lt;p&gt;1. 100,000 SIN coins for Mini SIN&lt;/p&gt;&lt;p&gt;2. 500,000 SIN coins for Mid SIN &lt;/p&gt;&lt;p&gt;3. 1,000,000 SIN coins for Big SIN &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SIN coins used to create InfinityNodes are burnt and sent to the unspendable SIN wallet address below for full transparency.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SinBurnAddress123456789SuqaXbx3AMC&lt;br/&gt;&lt;br/&gt;For the installation guides, please visit &lt;a href=&quot;https://docs.sinovate.io/#/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;https://docs.sinovate.io/#/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Инфинити Ноды это улучшенная версия обычной мастерноды, реализованная с помощью криптовалюты DASH. Между ними все еще много общего. В будущем SINOVATE Инфинити Ноды будут полностью отличаться от кода мастерноды DASH, и SINOVATE станет первой в своем роде чистой платформой Инфинити Ноды 1.0. Пользователям сети SINOVATE доступны три различных уровня Инфинити Нод. Он описывается как эволюция ранее реализованной технологии мастернод другими блокчейн-проектами. Каждый уровень предоставляет разные функции, но все они повышают общую децентрализацию и стабильность сети. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Каждый уровень требует различного обеспечения для создания Инфинити Ноды: &lt;/p&gt;&lt;p&gt;1. 100 000 монет SIN для Мини&lt;/p&gt;&lt;p&gt;2. 500 000 монет SIN для Средней&lt;/p&gt;&lt;p&gt;3. 1 000 000 монет SIN для Большой &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Монеты SIN, используемые для создания Инфинити Нод, сжигаются и отправляются на указанный ниже адрес кошелька SIN, который нельзя потратить, для полной прозрачности.&lt;/p&gt;&lt; p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SinBurnAddress123456789SuqaXbx3AMC&lt;br/&gt;&lt;br/&gt;Руководства по установке см. на странице &lt;a href=&quot;https://docs.sinomate.io/#/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;https://docs.sinovate.io/#/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Инфинити Ноды это улучшенная версия обычной мастерноды, реализованная с помощью криптовалюты DASH. Между ними все еще много общего. В будущем SINOVATE Инфинити Ноды будут полностью отличаться от кода мастерноды DASH, и SINOVATE станет первой в своем роде чистой платформой Инфинити Ноды 1.0. Пользователям сети SINOVATE доступны три различных уровня Инфинити Нод. Он описывается как эволюция ранее реализованной технологии мастернод другими блокчейн-проектами. Каждый уровень предоставляет разные функции, но все они повышают общую децентрализацию и стабильность сети. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Каждый уровень требует различного обеспечения для создания Инфинити Ноды: &lt;/p&gt;&lt;p&gt;1. 100 000 монет SIN для Мини&lt;/p&gt;&lt;p&gt;2. 500 000 монет SIN для Средней&lt;/p&gt;&lt;p&gt;3. 1&#xa0;000&#xa0;000 монет SIN для Большой &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Монеты SIN, используемые для создания Инфинити Нод, сжигаются и отправляются на указанный ниже адрес кошелька SIN, который нельзя потратить, для полной прозрачности.&lt;/p&gt;&lt; p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;SinBurnAddress123456789SuqaXbx3AMC&lt;br/&gt;&lt;br/&gt;Руководства по установке см. на странице &lt;a href=&quot;https://docs.sinomate.io/#/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d9ad0;&quot;&gt;https://docs.sinovate.io/#/&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>4-</source>
@@ -1240,7 +1240,7 @@ v%1</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name: SINOVATE&lt;/p&gt;&lt;p&gt;Ticker: SIN&lt;/p&gt;&lt;p&gt;Proof-of-Work Algorithm: X25X &lt;/p&gt;&lt;p&gt;Proof-of-Stake Algorithm: PoS4&lt;/p&gt;&lt;p&gt;Collateralized Nodes: Deterministic InfinityNodes&lt;/p&gt;&lt;p&gt;Block Rewards: PoS 50 SIN, PoW 12.5 SIN &amp;amp; InfinityNodes tiered rewards&lt;/p&gt;&lt;p&gt;Block Time: 1 minute&lt;/p&gt;&lt;p&gt;Current Blockchain Size: 2.8 GB&lt;/p&gt;&lt;p&gt;Difficulty Retargeting Algo: LWMA&lt;/p&gt;&lt;p&gt;DAO Governance: RSV Revolving Sovereignty Votes&lt;/p&gt;&lt;p&gt;51% Attack Solution: Deterministically signed chain tips and 55 blocks finality&lt;/p&gt;&lt;p&gt;InfinityNodes Collateral: 100K-500K-1000K (three-tiers)&lt;/p&gt;&lt;p&gt;Max Supply: Yearly Deflating Supply with Proof-of-Burn (uncapped)&lt;/p&gt;&lt;p&gt;Premine: No&lt;/p&gt;&lt;p&gt;P2P Port: 20970&lt;/p&gt;&lt;p&gt;RPC Port: 20971&lt;/p&gt;&lt;p&gt;TPS: No segwit 1120 tx/s (theoretical), segwit-only 2240 tx/s (theoretical)&lt;/p&gt;&lt;p&gt;Treasury: 10% skim of each block subsidy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Название: SINOVATE&lt;/p&gt;&lt;p&gt;Тикер: SIN&lt;/p&gt;&lt;p&gt;Алгоритм проверки работоспособности: X25X &lt;/p&gt;&lt;p&gt;Proof-of-Stake Алгоритм: PoS4&lt;/p&gt;&lt;p&gt;Collateralized Nodes: детерминированные узлы Инфинити Ноды&lt;/p&gt;&lt;p&gt;Награды за блок: PoS 50 SIN, PoW 12,5 SIN &amp;amp; Многоуровневые вознаграждения Инфинити Ноды&lt;/p&gt;&lt;p&gt;Время блока: 1 минута&lt;/p&gt;&lt;p&gt;Текущий размер блокчейна: 2,8 ГБ&lt;/p&gt;&lt;p&gt;Алгоритм ретаргетинга сложности: LWMA&lt;/p&gt;&lt;p&gt;Управление DAO: Система голосований RSV&lt;/p&gt;&lt;p&gt;Решение для атаки 51 %: детерминированно подписанные кончики цепей и окончательность 55 блоков&lt;/p&gt;&lt;p&gt;Уровни Инфинити Нод: 100–500–1000 тысяч (три уровня)&lt;/p&gt;&lt;p &gt;Максимальное количество монет: годовое предложение с дефляцией с Proof-of-Burn (Сжигание без ограничения)&lt;/p&gt;&lt;p&gt;Premine: нет&lt;/p&gt;&lt;p&gt;Порт P2P: 20970&lt;/p&gt;&lt;p&gt;Порт RPC: 20971&lt;/p&gt;&lt;p&gt; p&gt;&lt;p&gt;TPS: без SegWit 1120 транзакций/с (теоретическая), только SegWit 2240 транзакций/с (теоретическая)&lt;/p&gt;&lt;p&gt;Казначейство: 10 % субсидирования каждого блока&lt;/p&gt;&lt;/body &gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Название: SINOVATE&lt;/p&gt;&lt;p&gt;Тикер: SIN&lt;/p&gt;&lt;p&gt;Алгоритм проверки работоспособности: X25X &lt;/p&gt;&lt;p&gt;Proof-of-Stake Алгоритм: PoS4&lt;/p&gt;&lt;p&gt;Collateralized Nodes: детерминированные узлы Инфинити Ноды&lt;/p&gt;&lt;p&gt;Награды за блок: PoS 50 SIN, PoW 12,5 SIN &amp;amp; Многоуровневые вознаграждения Инфинити Ноды&lt;/p&gt;&lt;p&gt;Время блока: 1 минута&lt;/p&gt;&lt;p&gt;Текущий размер блокчейна: 2,8 ГБ&lt;/p&gt;&lt;p&gt;Алгоритм ретаргетинга сложности: LWMA&lt;/p&gt;&lt;p&gt;Управление DAO: Система голосований RSV&lt;/p&gt;&lt;p&gt;Решение для атаки 51&#xa0;%: детерминированно подписанные кончики цепей и окончательность 55&#xa0;блоков&lt;/p&gt;&lt;p&gt;Уровни Инфинити Нод: 100–500–1000&#xa0;тысяч (три уровня)&lt;/p&gt;&lt;p &gt;Максимальное количество монет: годовое предложение с дефляцией с Proof-of-Burn (Сжигание без ограничения)&lt;/p&gt;&lt;p&gt;Premine: нет&lt;/p&gt;&lt;p&gt;Порт P2P: 20970&lt;/p&gt;&lt;p&gt;Порт RPC: 20971&lt;/p&gt;&lt;p&gt; p&gt;&lt;p&gt;TPS: без SegWit 1120 транзакций/с (теоретическая), только SegWit 2240 транзакций/с (теоретическая)&lt;/p&gt;&lt;p&gt;Казначейство: 10&#xa0;% субсидирования каждого блока&lt;/p&gt;&lt;/body &gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>6-</source>
@@ -1974,11 +1974,11 @@ Check if your Node Setup password is correct, then try again.</source>
         <source>Number of blocks left</source>
         <translation>Количество оставшихся блоков</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Unknown…</source>
         <translation>Неизвестно...</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>calculating…</source>
         <translation>вычисляется...</translation>
     </message>
@@ -2518,7 +2518,7 @@ Check if your Node Setup password is correct, then try again.</source>
         <source>Copy to Clipboard</source>
         <translation>Скопировать в буфер обмена</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Save…</source>
         <translation>Сохранить...</translation>
     </message>
@@ -3692,7 +3692,7 @@ For more information on using this console, type %6.
         <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
         <translation>Слишком низкая комиссия может привести к невозможности подтверждения транзакции (см. подсказку)</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
         <translation>(Умная комиссия пока не инициализирована. Обычно для этого требуется несколько блоков...)</translation>
     </message>
@@ -4229,8 +4229,8 @@ For more information on using this console, type %6.
         <source>Stake:</source>
         <translation>Стейкинг:</translation>
     </message>
-    <message utf8="true">
-        <source>0.000 000 00 SIN</source>
+    <message>
+        <source>0.000&#x2009;000&#x2009;00 SIN</source>
         <translation></translation>
     </message>
     <message>
@@ -4390,11 +4390,11 @@ For more information on using this console, type %6.
     </message>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка...</translation>
     </message>
     <message>
         <source>0 SIN</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
