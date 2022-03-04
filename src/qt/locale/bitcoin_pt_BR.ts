@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="pt_BR">
+<TS version="2.1" language="pt_BR">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -235,11 +235,11 @@ A assinatura só é possível com endereços do tipo &apos;legacy&apos;.</transl
     </message>
     <message>
         <source>Serves to disable the trivial sendmoney when OS account compromised. Provides no real security.</source>
-        <translation type="unfinished"></translation>
+        <translation>Serve para desabilitar o envio smples de moedas quando a conta do Sistema Operacional é comprometida. Não oferece segurança real.</translation>
     </message>
     <message>
         <source>For staking only.</source>
-        <translation type="unfinished"></translation>
+        <translation>Somente para Staking.</translation>
     </message>
 </context>
 <context>
@@ -834,7 +834,7 @@ v%1
     </message>
     <message>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked for staking only&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Il Wallet está &lt;b&gt;crittografato&lt;/b&gt; e atualmente &lt;b&gt;desbloqueado somente para staking&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1965,11 +1965,11 @@ Verifique se sua senha de configuração do nó está correta e tente novamente.
         <source>Number of blocks left</source>
         <translation>Número de blocos restantes</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Unknown…</source>
         <translation>Desconhecido...</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>calculating…</source>
         <translation>calculando...</translation>
     </message>
@@ -2510,7 +2510,7 @@ Verifique se sua senha de configuração do nó está correta e tente novamente.
         <source>Copy to Clipboard</source>
         <translation>Copiar para Área de Transferência</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>Save…</source>
         <translation>Salvar...</translation>
     </message>
@@ -3673,7 +3673,7 @@ Para mais informações sobre a utilização desse console. digite %6.
         <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
         <translation>Uma taxa muito pequena pode resultar em uma transação nunca confirmada (leia a dica)</translation>
     </message>
-    <message utf8="true">
+    <message>
         <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
         <translation>(Smart fee não iniciado. Isso requer alguns blocos...)</translation>
     </message>
@@ -4213,9 +4213,9 @@ Para mais informações sobre a utilização desse console. digite %6.
         <source>Stake:</source>
         <translation>Stake:</translation>
     </message>
-    <message utf8="true">
-        <source>0.000 000 00 SIN</source>
-        <translation>0.000 000 00 SIN</translation>
+    <message>
+        <source>0.000&#x2009;000&#x2009;00 SIN</source>
+        <translation>0.000&#x2009;000&#x2009;00 SIN</translation>
     </message>
     <message>
         <source>Staking</source>
@@ -4378,11 +4378,11 @@ Para mais informações sobre a utilização desse console. digite %6.
     </message>
     <message>
         <source>Loading ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Carregando...</translation>
     </message>
     <message>
         <source>0 SIN</source>
-        <translation type="unfinished">3478.75 SIN {0 ?}</translation>
+        <translation>0 SIN</translation>
     </message>
 </context>
 <context>
