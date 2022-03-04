@@ -28,6 +28,7 @@ class CScript;
 namespace Consensus { struct Params; };
 
 static const bool DEFAULT_PRINTPRIORITY = false;
+static const bool DEFAULT_STAKE = true;
 
 struct CBlockTemplate
 {
@@ -211,5 +212,9 @@ int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParam
 
 /** Update an old GenerateCoinbaseCommitment from CreateNewBlock after the block txs have changed */
 void RegenerateCommitments(CBlock& block, ChainstateManager& chainman);
+
+/** Check if staking is enabled */
+bool CanStake();
+
 
 #endif // BITCOIN_MINER_H

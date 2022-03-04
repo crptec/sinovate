@@ -17,6 +17,8 @@
 #include <qt/transactionview.h>
 #include <amount.h>
 
+#include <miner.h>
+
 #include <QSortFilterProxyModel>
 
 Q_DECLARE_METATYPE(interfaces::WalletBalances)
@@ -33,7 +35,7 @@ StakePage::StakePage(const PlatformStyle *_platformStyle, QWidget *parent) :
     m_expectedAnnualROI(0)
 {
     ui->setupUi(this);
-    ui->checkStake->setEnabled(gArgs.GetBoolArg("-staking", true));
+    ui->checkStake->setEnabled(CanStake());
     transactionView = new TransactionView(platformStyle, this, true);
     ui->frameStakeRecords->layout()->addWidget(transactionView);
 }
@@ -183,8 +185,11 @@ void StakePage::updateEncryptionStatus()
         }
         break;
     case WalletModel::Locked:
-        bool checked = ui->checkStake->isChecked();
-        if(checked) ui->checkStake->onStatusChanged();
+        if(!walletModel->getWalletUnlockStakingOnly())
+        {
+            bool checked = ui->checkStake->isChecked();
+            if(checked) ui->checkStake->onStatusChanged();
+        }
         break;
     }
 }

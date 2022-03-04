@@ -7,6 +7,7 @@
 #include <qt/overviewpage.h>
 #include <qt/walletmodel.h>
 #include <qt/walletview.h>
+#include <wallet/wallet.h>
 
 #include <cassert>
 
@@ -264,9 +265,12 @@ void WalletFrame::changePassphrase()
 
 void WalletFrame::unlockWallet()
 {
+    QObject* object = sender();
+    QString objectName = object ? object->objectName() : "";
+    bool fromMenu = objectName == "unlockWalletAction";
     WalletView *walletView = currentWalletView();
     if (walletView)
-    walletView->unlockWallet();
+        walletView->unlockWallet(fromMenu);
 }
 
 void WalletFrame::lockWallet()
@@ -275,6 +279,7 @@ void WalletFrame::lockWallet()
     if (walletView)
     {
         walletView->lockWallet();
+        walletView->getWalletModel()->setWalletUnlockStakingOnly(false);
     }
 }
 

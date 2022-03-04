@@ -18,6 +18,7 @@
 #include <util/system.h>
 #include <util/threadnames.h>
 #include <validation.h>
+#include <wallet/wallet.h>
 //SIN
 #include <sinovate/infinitynodeman.h>
 //
@@ -290,7 +291,7 @@ static void BannedListChanged(ClientModel *clientmodel)
 }
 
 static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_state, interfaces::BlockTip tip, double verificationProgress, bool fHeader)
-{
+{   
     if (fHeader) {
         // cache best headers time and height to reduce future cs_main locks
         clientmodel->cachedBestHeaderHeight = tip.block_height;
@@ -319,6 +320,7 @@ static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_
         Q_ARG(bool, fHeader),
         Q_ARG(SynchronizationState, sync_state));
     assert(invoked);
+    
     nLastUpdateNotification = now;
 }
 

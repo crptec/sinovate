@@ -21,6 +21,7 @@
 #include <tuple>
 #include <utility>
 #include <vector>
+#include <atomic>
 
 class CCoinControl;
 class CFeeRate;
@@ -281,6 +282,12 @@ public:
 
     //! Get last coin stake search interval
     virtual int64_t getLastStakeTime() = 0;
+
+    //! Get wallet unlock for staking only
+    virtual bool getWalletUnlockStakingOnly() = 0;
+
+    //! Set wallet unlock for staking only
+    virtual void setWalletUnlockStakingOnly(bool unlock) = 0;
 
     //! Get name of current stake wallet
     virtual std::string getStakeWallet() = 0;

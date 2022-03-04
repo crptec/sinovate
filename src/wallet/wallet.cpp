@@ -2105,8 +2105,6 @@ uint64_t CWallet::GetStakeWeight()
         return nWeight;
     }
 
-    std::cout << "Weight is " << nWeight << std::endl;
-
     return nWeight;
 }
 
