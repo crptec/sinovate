@@ -179,12 +179,22 @@ Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../askpassphrasedialog.cpp" line="+55"/>
-        <source>Encrypt wallet</source>
+        <location line="+23"/>
+        <source>Serves to disable the trivial sendmoney when OS account compromised. Provides no real security.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
+        <source>For staking only.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../askpassphrasedialog.cpp" line="+59"/>
+        <source>Encrypt wallet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>This operation needs your wallet passphrase to unlock the wallet.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -199,7 +209,7 @@ Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+49"/>
         <source>Confirm wallet encryption</source>
         <translation type="unfinished"></translation>
     </message>
@@ -220,22 +230,22 @@ Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
     </message>
     <message>
         <location line="+11"/>
-        <location line="+44"/>
+        <location line="+52"/>
         <source>Wallet encrypted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-125"/>
+        <location line="-138"/>
         <source>Enter the new passphrase for the wallet.&lt;br/&gt;Please use a passphrase of &lt;b&gt;ten or more random characters&lt;/b&gt;, or &lt;b&gt;eight or more words&lt;/b&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+19"/>
         <source>Enter the old passphrase and new passphrase for the wallet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+60"/>
         <source>Wallet to be encrypted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -257,31 +267,31 @@ Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
     <message>
         <location line="+6"/>
         <location line="+8"/>
-        <location line="+32"/>
+        <location line="+40"/>
         <location line="+6"/>
         <source>Wallet encryption failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-53"/>
         <source>Wallet encryption failed due to an internal error. Your wallet was not encrypted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+8"/>
-        <location line="+38"/>
+        <location line="+46"/>
         <source>The supplied passphrases do not match.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-27"/>
-        <location line="+6"/>
+        <location line="-34"/>
+        <location line="+13"/>
         <source>Wallet unlock failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-5"/>
-        <location line="+20"/>
+        <location line="-12"/>
+        <location line="+27"/>
         <source>The passphrase entered for the wallet decryption was incorrect.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -291,7 +301,7 @@ Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+47"/>
         <location line="+33"/>
         <source>Warning: The Caps Lock key is on!</source>
         <translation type="unfinished"></translation>
@@ -336,7 +346,7 @@ Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+273"/>
+        <location filename="../bitcoingui.cpp" line="+278"/>
         <source> &amp;My Wallet</source>
         <translation type="unfinished"></translation>
     </message>
@@ -871,7 +881,7 @@ v%1
         <translation type="unfinished">Information</translation>
     </message>
     <message>
-        <location line="+105"/>
+        <location line="+99"/>
         <source>Date: %1
 </source>
         <translation type="unfinished"></translation>
@@ -932,12 +942,17 @@ v%1
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+24"/>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked for staking only&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</source>
         <translation type="unfinished">Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked&lt;/b&gt;</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</source>
         <translation type="unfinished">Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;locked&lt;/b&gt;</translation>
     </message>
@@ -948,7 +963,7 @@ v%1
     </message>
     <message>
         <location line="+53"/>
-        <location line="+52"/>
+        <location line="+54"/>
         <source>Not staking</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1592,7 +1607,7 @@ v%1
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../infinitynodelist.cpp" line="+471"/>
+        <location filename="../infinitynodelist.cpp" line="+487"/>
         <source>&lt;Status&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1680,12 +1695,12 @@ v%1
     </message>
     <message>
         <location line="+8"/>
-        <location line="+60"/>
+        <location line="+52"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-52"/>
+        <location line="-44"/>
         <source>IP</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1706,11 +1721,6 @@ v%1
     </message>
     <message>
         <location line="+5"/>
-        <source>Next reward</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
         <source>Locked</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1961,7 +1971,7 @@ v%1
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../infinitynodelist.cpp" line="-1195"/>
+        <location filename="../infinitynodelist.cpp" line="-1211"/>
         <source>Check node status</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1971,7 +1981,7 @@ v%1
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+277"/>
+        <location line="+293"/>
         <source>Yes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2288,12 +2298,12 @@ Check if your Node Setup password is correct, then try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+625"/>
+        <location line="+617"/>
         <source>Balance : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../infinitynodelist.h" line="+195"/>
+        <location filename="../infinitynodelist.h" line="+196"/>
         <source>Monthly</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3644,7 +3654,7 @@ If you are receiving this error you should request the merchant provide a BIP21 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../walletframe.cpp" line="+35"/>
+        <location filename="../walletframe.cpp" line="+36"/>
         <source>No wallet has been loaded.
 Go to File &gt; Open Wallet to load a wallet.
 - OR -</source>
@@ -5405,6 +5415,10 @@ For more information on using this console, type %6.
     </message>
     <message>
         <location line="+24"/>
+        <source>Loading ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+35"/>
         <location line="+46"/>
         <location line="+187"/>
@@ -5433,7 +5447,7 @@ For more information on using this console, type %6.
     </message>
     <message>
         <location line="+15"/>
-        <source>3478.75 SIN</source>
+        <source>0 SIN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6218,12 +6232,12 @@ For more information on using this console, type %6.
 <context>
     <name>WalletModel</name>
     <message>
-        <location filename="../walletmodel.cpp" line="+223"/>
+        <location filename="../walletmodel.cpp" line="+227"/>
         <source>Send Coins</source>
         <translation type="unfinished">Send Coins</translation>
     </message>
     <message>
-        <location line="+260"/>
+        <location line="+277"/>
         <location line="+52"/>
         <location line="+13"/>
         <location line="+5"/>
@@ -6314,7 +6328,7 @@ For more information on using this console, type %6.
         <translation type="unfinished">Export the data in the current tab to a file</translation>
     </message>
     <message>
-        <location line="+256"/>
+        <location line="+259"/>
         <location line="+9"/>
         <location line="+10"/>
         <source>Error</source>
@@ -6377,7 +6391,7 @@ For more information on using this console, type %6.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+57"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="pt_BR">
+<TS version="2.0" language="pt_BR">
 <context>
     <name>AddressBookPage</name>
     <message>
@@ -232,6 +232,14 @@ A assinatura só é possível com endereços do tipo &apos;legacy&apos;.</transl
     <message>
         <source>Remember that encrypting your wallet cannot fully protect your sins from being stolen by malware infecting your computer.</source>
         <translation>Lembre-se de que criptografar sua carteira não pode proteger totalmente seus sins de serem roubados por malware que infecta seu computador.</translation>
+    </message>
+    <message>
+        <source>Serves to disable the trivial sendmoney when OS account compromised. Provides no real security.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For staking only.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -824,6 +832,10 @@ v%1
         <source>Original message:</source>
         <translation>Mensagem original:</translation>
     </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked for staking only&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoinControlDialog</name>
@@ -1375,7 +1387,7 @@ v%1
     </message>
     <message>
         <source>Next reward</source>
-        <translation>Proxima recompensa</translation>
+        <translation type="obsolete">Proxima recompensa</translation>
     </message>
     <message>
         <source>Locked</source>
@@ -1953,11 +1965,11 @@ Verifique se sua senha de configuração do nó está correta e tente novamente.
         <source>Number of blocks left</source>
         <translation>Número de blocos restantes</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Unknown…</source>
         <translation>Desconhecido...</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>calculating…</source>
         <translation>calculando...</translation>
     </message>
@@ -2498,7 +2510,7 @@ Verifique se sua senha de configuração do nó está correta e tente novamente.
         <source>Copy to Clipboard</source>
         <translation>Copiar para Área de Transferência</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Save…</source>
         <translation>Salvar...</translation>
     </message>
@@ -3661,7 +3673,7 @@ Para mais informações sobre a utilização desse console. digite %6.
         <source>A too low fee might result in a never confirming transaction (read the tooltip)</source>
         <translation>Uma taxa muito pequena pode resultar em uma transação nunca confirmada (leia a dica)</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>(Smart fee not initialized yet. This usually takes a few blocks…)</source>
         <translation>(Smart fee não iniciado. Isso requer alguns blocos...)</translation>
     </message>
@@ -4201,9 +4213,9 @@ Para mais informações sobre a utilização desse console. digite %6.
         <source>Stake:</source>
         <translation>Stake:</translation>
     </message>
-    <message>
-        <source>0.000&#x2009;000&#x2009;00 SIN</source>
-        <translation>0.000&#x2009;000&#x2009;00 SIN</translation>
+    <message utf8="true">
+        <source>0.000 000 00 SIN</source>
+        <translation>0.000 000 00 SIN</translation>
     </message>
     <message>
         <source>Staking</source>
@@ -4290,7 +4302,7 @@ Para mais informações sobre a utilização desse console. digite %6.
     </message>
     <message>
         <source>3478.75 SIN</source>
-        <translation>3478.75 SIN</translation>
+        <translation type="obsolete">3478.75 SIN</translation>
     </message>
     <message>
         <source>MID</source>
@@ -4363,6 +4375,14 @@ Para mais informações sobre a utilização desse console. digite %6.
     <message>
         <source>ACTIVE ADDRESSES</source>
         <translation>ENDEREÇOS ATIVOS</translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 SIN</source>
+        <translation type="unfinished">3478.75 SIN {0 ?}</translation>
     </message>
 </context>
 <context>

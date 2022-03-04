@@ -234,6 +234,14 @@ Signing is only possible with addresses of the type &apos;legacy&apos;.</source>
         <source>Your wallet is now encrypted. </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Serves to disable the trivial sendmoney when OS account compromised. Provides no real security.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For staking only.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BanTableModel</name>
@@ -811,6 +819,10 @@ v%1
         <source>Original message:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked for staking only&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoinControlDialog</name>
@@ -1358,10 +1370,6 @@ v%1
     </message>
     <message>
         <source>Node tier</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Next reward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4257,10 +4265,6 @@ For more information on using this console, type %6.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>3478.75 SIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>MID</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4330,6 +4334,14 @@ For more information on using this console, type %6.
     </message>
     <message>
         <source>ACTIVE ADDRESSES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 SIN</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

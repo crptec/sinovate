@@ -235,6 +235,14 @@ Cüzdan kilidini aç.</translation>
         <source>Remember that encrypting your wallet cannot fully protect your sins from being stolen by malware infecting your computer.</source>
         <translation>Cüzdanınızı şifrelemenin, günahlarınızı bilgisayarınıza bulaşan kötü amaçlı yazılımlar tarafından çalınmaktan tam olarak koruyamayacağını unutmayın.</translation>
     </message>
+    <message>
+        <source>Serves to disable the trivial sendmoney when OS account compromised. Provides no real security.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>For staking only.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BanTableModel</name>
@@ -817,6 +825,10 @@ v%1</translation>
         <source>Home</source>
         <translation>Genel Bakış</translation>
     </message>
+    <message>
+        <source>Wallet is &lt;b&gt;encrypted&lt;/b&gt; and currently &lt;b&gt;unlocked for staking only&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoinControlDialog</name>
@@ -1370,7 +1382,7 @@ v%1</translation>
     </message>
     <message>
         <source>Next reward</source>
-        <translation>Sonraki ödül</translation>
+        <translation type="obsolete">Sonraki ödül</translation>
     </message>
     <message>
         <source>Locked</source>
@@ -4282,7 +4294,7 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
     </message>
     <message>
         <source>3478.75 SIN</source>
-        <translation>3478.75 SIN</translation>
+        <translation type="obsolete">3478.75 SIN</translation>
     </message>
     <message>
         <source>MID</source>
@@ -4356,6 +4368,14 @@ Bu konsolu kullanma hakkında daha fazla bilgi için %6 yazın.
     <message>
         <source>ACTIVE ADDRESSES</source>
         <translation>AKTİF ADRESLER</translation>
+    </message>
+    <message>
+        <source>Loading ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 SIN</source>
+        <translation type="unfinished">3478.75 SIN {0 ?}</translation>
     </message>
 </context>
 <context>
