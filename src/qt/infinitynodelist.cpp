@@ -1100,7 +1100,7 @@ LogPrintf("[nodeSetup] infinitynodeupdatemeta %s \n", cmd.str() );
                 UniValue jsonVal = nodeSetupCallRPC( cmd.str() );
 LogPrintf("[nodeSetup] infinitynodeupdatemeta SUCCESS \n" );
 
-                nodeSetupSendToAddress( strAddress, 3, NULL );  // send 1 coin as per recommendation to expedite the rewards
+                nodeSetupSendToAddress( strAddress, 50, NULL );  // send to node address
                 nodeSetupSetServiceForNodeAddress( strAddress, mServiceId); // store serviceid
                 // cleanup
                 nodeSetupResetOrderId();
