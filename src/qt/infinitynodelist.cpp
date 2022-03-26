@@ -686,9 +686,42 @@ void InfinitynodeList::on_btnSetup_clicked()
         nodeSetupEnableOrderUI(true, mOrderid, mInvoiceid);
         ui->labelMessage->setText(QString::fromStdString(strprintf(tr("Order placed successfully. Order ID #%d Invoice ID #%d").toStdString(), mOrderid, mInvoiceid)));
 
-        // get invoice data and do payment
-        QString strAmount, strStatus, paymentAddress;
-        strStatus = nodeSetupCheckInvoiceStatus();
+        // move prepare-burn sequence before invoice payment (requested by BEET Feb 22)
+        mBurnTx = nodeSetupGetBurnTx();
+        QString strSelectedBurnTx = ui->comboBurnTx->currentData().toString();
+        if (strSelectedBurnTx=="WAIT")  strSelectedBurnTx = "NEW";
+
+        if ( mBurnTx=="" && strSelectedBurnTx!="NEW")   {
+            mBurnTx = strSelectedBurnTx;
+            nodeSetupSetBurnTx(mBurnTx);
+        }
+
+        if ( mBurnTx!="" )   {   // skip to check burn tx
+            mBurnAddress = nodeSetupGetOwnerAddressFromBurnTx(mBurnTx);
+
+            if ( !burnSendTimer->isActive() )  {
+                burnSendTimer->start(20000);    // check every 20 secs
+            }
+            // amount necessary for updatemeta may be already spent, send again.
+            if (nodeSetupUnlockWallet()) {
+                mMetaTx = nodeSetupSendToAddress( mBurnAddress, NODESETUP_UPDATEMETA_AMOUNT , NULL );
+                nodeSetupStep( "setupWait", tr("Maturing, please wait...").toStdString());
+            }
+        }
+        else    {   // burn tx not made yet
+            mBurnAddress = nodeSetupGetNewAddress();
+            int nMasternodeBurn = nodeSetupGetBurnAmount();
+
+            if (nodeSetupUnlockWallet()) {
+                mBurnPrepareTx = nodeSetupSendToAddress( mBurnAddress, nMasternodeBurn, burnPrepareTimer );
+            }
+
+            if ( mBurnPrepareTx=="" )  {
+               ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
+               ui->labelMessage->setText(tr("ERROR: Failed to prepare burn transaction." ));
+            }
+            nodeSetupStep( "setupWait", tr("Preparing burn transaction").toStdString());
+        }
     }
     else    {
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
@@ -942,46 +975,9 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
         }
 
         invoiceTimer->stop();
+        nodeSetupStep( "setupOk", tr("Finishing node setup").toStdString());
 
-        QString strPrivateKey, strPublicKey, strDecodePublicKey, strAddress, strNodeIp;
-
-        mBurnTx = nodeSetupGetBurnTx();
-        QString strSelectedBurnTx = ui->comboBurnTx->currentData().toString();
-        if (strSelectedBurnTx=="WAIT")  strSelectedBurnTx = "NEW";
-
-//LogPrintf("nodeSetupCheckInvoiceStatus mBurnTx = %s, selected=%s \n", mBurnTx.toStdString(), strSelectedBurnTx.toStdString());
-
-        if ( mBurnTx=="" && strSelectedBurnTx!="NEW")   {
-            mBurnTx = strSelectedBurnTx;
-            nodeSetupSetBurnTx(mBurnTx);
-        }
-
-        if ( mBurnTx!="" )   {   // skip to check burn tx
-            mBurnAddress = nodeSetupGetOwnerAddressFromBurnTx(mBurnTx);
-
-            if ( !burnSendTimer->isActive() )  {
-                burnSendTimer->start(20000);    // check every 20 secs
-            }
-            // amount necessary for updatemeta may be already spent, send again.
-            if (nodeSetupUnlockWallet()) {
-                mMetaTx = nodeSetupSendToAddress( mBurnAddress, NODESETUP_UPDATEMETA_AMOUNT , NULL );
-                nodeSetupStep( "setupWait", tr("Maturing, please wait...").toStdString());
-            }
-        }
-        else    {   // burn tx not made yet
-            mBurnAddress = nodeSetupGetNewAddress();
-            int nMasternodeBurn = nodeSetupGetBurnAmount();
-
-            if (nodeSetupUnlockWallet()) {
-                mBurnPrepareTx = nodeSetupSendToAddress( mBurnAddress, nMasternodeBurn, burnPrepareTimer );
-            }
-
-            if ( mBurnPrepareTx=="" )  {
-               ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-               ui->labelMessage->setText(tr("ERROR: Failed to prepare burn transaction." ));
-            }
-            nodeSetupStep( "setupWait", tr("Preparing burn transaction").toStdString());
-        }
+        // move prepare-burn sequence before invoice payment (requested by BEET Feb 22)
     }
 
     return strStatus;
@@ -1079,7 +1075,6 @@ void InfinitynodeList::nodeSetupCheckBurnSendConfirmations()   {
     int numConfirms = objConfirms.get_int();
     int numConfirmsMeta = objConfirmsMeta.get_int();
     if ( numConfirms>NODESETUP_CONFIRMS && numConfirmsMeta>NODESETUP_CONFIRMS && pass != "" )    {
-        nodeSetupStep( "setupOk", tr("Finishing node setup").toStdString());
         burnSendTimer->stop();
 
         QJsonObject root = nodeSetupAPIInfo( mServiceId, clientId, email, pass, strError );
@@ -1110,6 +1105,10 @@ LogPrintf("[nodeSetup] infinitynodeupdatemeta SUCCESS \n" );
                 nodeSetupResetOrderId();
                 nodeSetupEnableOrderUI(false);
                 nodeSetupStep( "setupOk", tr("Node setup finished").toStdString());
+
+                // get invoice data and do payment
+                QString strAmount, strStatus, paymentAddress;
+                strStatus = nodeSetupCheckInvoiceStatus();
             }
             catch (const UniValue& objError)    {
                 QString str = nodeSetupGetRPCErrorMessage( objError );
@@ -1153,6 +1152,8 @@ QString InfinitynodeList::nodeSetupRPCBurnFund( QString collateralAddress, CAmou
         UniValue jsonVal = nodeSetupCallRPC( cmd.str() );
         if ( jsonVal.isStr() )       // some error happened, cannot continue
         {
+            LogPrintf("infinitynodeburnfund error 1\n");
+
             ui->labelMessage->setText(QString::fromStdString(tr("ERROR infinitynodeburnfund: ").toStdString()) + QString::fromStdString(jsonVal.get_str()));
         }
         else if ( jsonVal.isArray() ){
@@ -1161,22 +1162,28 @@ QString InfinitynodeList::nodeSetupRPCBurnFund( QString collateralAddress, CAmou
                 UniValue jsonObj = jsonArr[0].get_obj();
                 burnTx = QString::fromStdString(find_value(jsonObj, "BURNTX").get_str());
             }
+            else             LogPrintf("infinitynodeburnfund error 1bis\n");
         }
         else if ( jsonVal.isObject()) {
             burnTx = QString::fromStdString(find_value(jsonVal, "BURNTX").get_str());
         }
         else {
+            LogPrintf("infinitynodeburnfund error 2\n");
+
             ui->labelMessage->setStyleSheet("QLabel { font-size:14px;font-weight:bold;color: red}");
             ui->labelMessage->setText(QString::fromStdString(tr("ERROR infinitynodeburnfund: Unknown response").toStdString()));
         }
     }
     catch (const UniValue& objError)
     {
+        LogPrintf("infinitynodeburnfund error 3, %s \n", find_value(objError, "message").get_str());
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText( QString::fromStdString(find_value(objError, "message").get_str()) );
     }
     catch ( std::runtime_error e)
     {
+        LogPrintf("infinitynodeburnfund error 4\n");
+
         ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
         ui->labelMessage->setText(QString::fromStdString(tr("ERROR infinitynodeburnfund: Unexpected error ").toStdString()) + QString::fromStdString( e.what() ));
     }
