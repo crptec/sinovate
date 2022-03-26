@@ -195,6 +195,7 @@ InfinitynodeList::InfinitynodeList(const PlatformStyle *platformStyle, QWidget *
     NODESETUP_SUPPORT_URL = QString::fromStdString(gArgs.GetArg("-nodesetupsupporturl", baseURL + "/submitticket.php"));
     NODESETUP_PID = ( Params().NetworkIDString() == CBaseChainParams::TESTNET ) ? "1" : "22";
     NODESETUP_UPDATEMETA_AMOUNT = ( Params().NetworkIDString() == CBaseChainParams::TESTNET ) ? 5 : 25;
+    NODESETUP_MINERFEE_AMOUNT = 50;
     NODESETUP_CONFIRMS = 2;
     NODESETUP_REFRESHCOMBOS = 6;
     nodeSetup_RefreshCounter = NODESETUP_REFRESHCOMBOS;
@@ -1095,7 +1096,7 @@ LogPrintf("[nodeSetup] infinitynodeupdatemeta %s \n", cmd.str() );
                 UniValue jsonVal = nodeSetupCallRPC( cmd.str() );
 LogPrintf("[nodeSetup] infinitynodeupdatemeta SUCCESS \n" );
 
-                nodeSetupSendToAddress( strAddress, 3, NULL );  // send 1 coin as per recommendation to expedite the rewards
+                nodeSetupSendToAddress( strAddress, NODESETUP_MINERFEE_AMOUNT, NULL );  // send 1 coin as per recommendation to expedite the rewards
                 nodeSetupSetServiceForNodeAddress( strAddress, mServiceId); // store serviceid
                 // cleanup
                 nodeSetupResetOrderId();
@@ -1435,7 +1436,7 @@ bool InfinitynodeList::nodeSetupCheckFunds( CAmount invoiceAmount )   {
     CAmount curBalance =  wallet.getBalance();
     std::ostringstream stringStream;
     CAmount nNodeRequirement = nMasternodeBurn * COIN ;
-    CAmount nUpdateMetaRequirement = (NODESETUP_UPDATEMETA_AMOUNT + 1) * COIN ;
+    CAmount nUpdateMetaRequirement = (NODESETUP_UPDATEMETA_AMOUNT + NODESETUP_MINERFEE_AMOUNT + 1) * COIN ;
 
     if ( curBalance > invoiceAmount + nNodeRequirement + nUpdateMetaRequirement)  {
         nodeSetupStep( "setupOk", strChecking + " : " + tr("Funds available.").toStdString());
@@ -1452,7 +1453,7 @@ bool InfinitynodeList::nodeSetupCheckFunds( CAmount invoiceAmount )   {
         else if ( curBalance > nNodeRequirement  )  {
             QString strAvailable = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), (curBalance - nNodeRequirement) );
             QString strUpdateMeta = BitcoinUnits::floorHtmlWithUnit(walletModel->getOptionsModel()->getDisplayUnit(), nUpdateMetaRequirement );
-            stringStream << strChecking << tr(" : Not enough amount for UpdateMeta operation (you have ").toStdString() <<  strAvailable.toStdString() << tr(" , you need ").toStdString() << strUpdateMeta.toStdString() << " )";
+            stringStream << strChecking << tr(" : Not enough amount for UpdateMeta/Miner Fee (you have ").toStdString() <<  strAvailable.toStdString() << tr(" , you need ").toStdString() << strUpdateMeta.toStdString() << " )";
             std::string copyOfStr = stringStream.str();
             nodeSetupStep( "setupKo", copyOfStr);
         }
