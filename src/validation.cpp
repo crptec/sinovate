@@ -3927,7 +3927,7 @@ bool ChainstateManager::ProcessNewBlockHeaders(const std::vector<CBlockHeader>& 
             int nMaxReorgDepth = gArgs.GetArg("-maxreorg", Params().MaxReorganizationDepth());
             bool fGreaterThanMaxReorg = m_active_chainstate->m_chain.Height() - (pindex->nHeight) >= nMaxReorgDepth;
             if (fGreaterThanMaxReorg && !ActiveChainstate().IsInitialBlockDownload()) {
-                LogPrintf("ERROR: %s: forked chain older than max reorganization depth (height %d)\n", __func__, pindex->nHeight);
+                state.Error(strprintf("%s: forked chain older than max reorganization depth (height %d)\n", __func__, pindex->nHeight));
                 return false;
             }
             //<SIN
