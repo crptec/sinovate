@@ -132,6 +132,7 @@ IsMineResult IsMineInner(const LegacyScriptPubKeyMan& keystore, const CScript& s
         ret = std::max(ret, IsMineInner(keystore, GetScriptForDestination(PKHash(uint160(vSolutions[0]))), IsMineSigVersion::WITNESS_V0));
         break;
     }
+    case TxoutType::TX_CHECKLOCKTIMEVERIFY:
     case TxoutType::PUBKEYHASH:
         keyID = CKeyID(uint160(vSolutions[0]));
         if (!PermitsUncompressed(sigversion)) {

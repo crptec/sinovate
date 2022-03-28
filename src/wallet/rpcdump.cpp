@@ -887,6 +887,7 @@ static std::string RecurseImportData(const CScript& script, ImportData& import_d
         import_data.used_keys.emplace(pubkey.GetID(), false);
         return "";
     }
+    case TxoutType::TX_CHECKLOCKTIMEVERIFY:
     case TxoutType::PUBKEYHASH: {
         CKeyID id = CKeyID(uint160(solverdata[0]));
         import_data.used_keys[id] = true;
