@@ -914,7 +914,15 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
 
     nodeSetupAPIGetInvoice( mInvoiceid, strAmount, strStatus, paymentAddress, email, pass, strError );
 
+    LogPrintf("[nodeSetup] nodeSetupCheckInvoiceStatus %d, %s, %s, %s, %s \n", mInvoiceid, strAmount.toStdString(), strStatus.toStdString(),
+              paymentAddress.toStdString(), strError.toStdString() );
     CAmount invoiceAmount = strAmount.toDouble();
+
+    if ( strError != "" )  {
+        ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
+        ui->labelMessage->setText( strError );
+    }
+
     if ( strStatus == "Cancelled" || strStatus == "Refunded" )  {  // reset and call again
         nodeSetupStep( "setupWait", tr("Order cancelled or refunded, creating a new order").toStdString());
         invoiceTimer->stop();
@@ -976,7 +984,58 @@ QString InfinitynodeList::nodeSetupCheckInvoiceStatus()  {
         }
 
         invoiceTimer->stop();
-        nodeSetupStep( "setupOk", tr("Finishing node setup").toStdString());
+
+        QString email, pass, strError;
+        int clientId = nodeSetupGetClientId( email, pass, true);
+
+        QJsonObject root = nodeSetupAPIInfo( mServiceId, clientId, email, pass, strError );
+        if ( root.contains("PrivateKey") ) {
+            QString strPrivateKey = root["PrivateKey"].toString();
+            QString strPublicKey = root["PublicKey"].toString();
+            QString strDecodePublicKey = root["DecodePublicKey"].toString();
+            QString strAddress = root["Address"].toString();
+            QString strNodeIp = root["Nodeip"].toString();
+
+            nodeSetupTempIPInfo[mBurnTx.left(16)] = strNodeIp;
+            std::ostringstream cmd;
+
+            try {
+                cmd.str("");
+                cmd << "infinitynodeupdatemeta " << mBurnAddress.toUtf8().constData() << " " << strPublicKey.toUtf8().constData() << " " << strNodeIp.toUtf8().constData() << " " << mBurnTx.left(16).toUtf8().constData();
+LogPrintf("[nodeSetup] infinitynodeupdatemeta %s \n", cmd.str() );
+                UniValue jsonVal = nodeSetupCallRPC( cmd.str() );
+LogPrintf("[nodeSetup] infinitynodeupdatemeta SUCCESS \n" );
+
+                nodeSetupSendToAddress( strAddress, NODESETUP_MINERFEE_AMOUNT, NULL );  // send 1 coin as per recommendation to expedite the rewards
+                nodeSetupSetServiceForNodeAddress( strAddress, mServiceId); // store serviceid
+                // cleanup
+                nodeSetupResetOrderId();
+                nodeSetupSetBurnTx("");
+
+                nodeSetupLockWallet();
+                nodeSetupResetOrderId();
+                nodeSetupEnableOrderUI(false);
+                nodeSetupStep( "setupOk", tr("Node setup finished").toStdString());
+            }
+            catch (const UniValue& objError)    {
+                QString str = nodeSetupGetRPCErrorMessage( objError );
+                ui->labelMessage->setText( str ) ;
+                nodeSetupStep( "setupKo", tr("Node setup failed").toStdString());
+            }
+            catch ( std::runtime_error e)
+            {
+                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
+                ui->labelMessage->setText( QString::fromStdString(tr("ERROR infinitynodeupdatemeta: Unexpected error ").toStdString()) + QString::fromStdString( e.what() ));
+                nodeSetupStep( "setupKo", "Node setup failed");
+            }
+        }
+        else    {
+            LogPrintf("infinitynodeupdatemeta Error while obtaining node info \n");
+            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
+            ui->labelMessage->setText(tr("ERROR: infinitynodeupdatemeta "));
+            nodeSetupStep( "setupKo", tr("Node setup failed").toStdString());
+        }
+        nodeSetupLockWallet();
 
         // move prepare-burn sequence before invoice payment (requested by BEET Feb 22)
     }
@@ -1075,61 +1134,13 @@ void InfinitynodeList::nodeSetupCheckBurnSendConfirmations()   {
 
     int numConfirms = objConfirms.get_int();
     int numConfirmsMeta = objConfirmsMeta.get_int();
+    LogPrintf("nodeSetupCheckBurnSendConfirmations %d, %d \n", numConfirms, numConfirmsMeta);
     if ( numConfirms>NODESETUP_CONFIRMS && numConfirmsMeta>NODESETUP_CONFIRMS && pass != "" )    {
         burnSendTimer->stop();
 
-        QJsonObject root = nodeSetupAPIInfo( mServiceId, clientId, email, pass, strError );
-        if ( root.contains("PrivateKey") ) {
-            QString strPrivateKey = root["PrivateKey"].toString();
-            QString strPublicKey = root["PublicKey"].toString();
-            QString strDecodePublicKey = root["DecodePublicKey"].toString();
-            QString strAddress = root["Address"].toString();
-            QString strNodeIp = root["Nodeip"].toString();
-
-            nodeSetupTempIPInfo[mBurnTx.left(16)] = strNodeIp;
-            std::ostringstream cmd;
-
-            try {
-                cmd.str("");
-                cmd << "infinitynodeupdatemeta " << mBurnAddress.toUtf8().constData() << " " << strPublicKey.toUtf8().constData() << " " << strNodeIp.toUtf8().constData() << " " << mBurnTx.left(16).toUtf8().constData();
-LogPrintf("[nodeSetup] infinitynodeupdatemeta %s \n", cmd.str() );
-                UniValue jsonVal = nodeSetupCallRPC( cmd.str() );
-LogPrintf("[nodeSetup] infinitynodeupdatemeta SUCCESS \n" );
-
-                nodeSetupSendToAddress( strAddress, NODESETUP_MINERFEE_AMOUNT, NULL );  // send 1 coin as per recommendation to expedite the rewards
-                nodeSetupSetServiceForNodeAddress( strAddress, mServiceId); // store serviceid
-                // cleanup
-                nodeSetupResetOrderId();
-                nodeSetupSetBurnTx("");
-
-                nodeSetupLockWallet();
-                nodeSetupResetOrderId();
-                nodeSetupEnableOrderUI(false);
-                nodeSetupStep( "setupOk", tr("Node setup finished").toStdString());
-
-                // get invoice data and do payment
-                QString strAmount, strStatus, paymentAddress;
-                strStatus = nodeSetupCheckInvoiceStatus();
-            }
-            catch (const UniValue& objError)    {
-                QString str = nodeSetupGetRPCErrorMessage( objError );
-                ui->labelMessage->setText( str ) ;
-                nodeSetupStep( "setupKo", tr("Node setup failed").toStdString());
-            }
-            catch ( std::runtime_error e)
-            {
-                ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-                ui->labelMessage->setText( QString::fromStdString(tr("ERROR infinitynodeupdatemeta: Unexpected error ").toStdString()) + QString::fromStdString( e.what() ));
-                nodeSetupStep( "setupKo", "Node setup failed");
-            }
-        }
-        else    {
-            LogPrintf("infinitynodeupdatemeta Error while obtaining node info \n");
-            ui->labelMessage->setStyleSheet("QLabel { font-size:14px;color: red}");
-            ui->labelMessage->setText(tr("ERROR: infinitynodeupdatemeta "));
-            nodeSetupStep( "setupKo", tr("Node setup failed").toStdString());
-        }
-        nodeSetupLockWallet();
+        // get invoice data and do payment
+        QString strAmount, strStatus, paymentAddress;
+        strStatus = nodeSetupCheckInvoiceStatus();
     }
 }
 
@@ -1783,7 +1794,7 @@ QJsonObject InfinitynodeList::nodeSetupAPIInfo( int serviceid, int clientid, QSt
     url.setQuery( urlQuery );
 
     QNetworkRequest request( url );
-//LogPrintf("nodeSetup::Info -- %s\n", url.toString().toStdString());
+LogPrintf("nodeSetup::Info -- %s\n", url.toString().toStdString());
     QNetworkReply *reply = ConnectionManager->get(request);
     QEventLoop loop;
 
