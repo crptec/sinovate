@@ -290,17 +290,14 @@ bool ExtractDestination(const CScript& scriptPubKey, CTxDestination& addressRet)
         addressRet = PKHash(pubKey);
         return true;
     }
+//>SIN
+    case TxoutType::TX_CHECKLOCKTIMEVERIFY:
+    case TxoutType::TX_BURN_DATA:
+//<SIN
     case TxoutType::PUBKEYHASH: {
         addressRet = PKHash(uint160(vSolutions[0]));
         return true;
     }
-//>SIN
-    case TxoutType::TX_CHECKLOCKTIMEVERIFY:
-    case TxoutType::TX_BURN_DATA: {
-        addressRet = PKHash(uint160(vSolutions[0]));
-        return true;
-    }
-//<SIN
     case TxoutType::SCRIPTHASH: {
         addressRet = ScriptHash(uint160(vSolutions[0]));
         return true;

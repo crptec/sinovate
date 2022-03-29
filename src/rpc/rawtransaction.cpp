@@ -620,7 +620,7 @@ static RPCHelpMan decodescript()
             CScript segwitScr;
             if (which_type == TxoutType::PUBKEY) {
                 segwitScr = GetScriptForDestination(WitnessV0KeyHash(Hash160(solutions_data[0])));
-            } else if (which_type == TxoutType::PUBKEYHASH) {
+            } else if (which_type == TxoutType::PUBKEYHASH || which_type == TxoutType::TX_CHECKLOCKTIMEVERIFY) {
                 segwitScr = GetScriptForDestination(WitnessV0KeyHash(uint160{solutions_data[0]}));
             } else {
                 // Scripts that are not fit for P2WPKH are encoded as P2WSH.

@@ -1270,7 +1270,7 @@ std::unique_ptr<DescriptorImpl> InferScript(const CScript& script, ParseScriptCo
             return std::make_unique<PKDescriptor>(InferPubkey(pubkey, ctx, provider));
         }
     }
-    if (txntype == TxoutType::PUBKEYHASH && (ctx == ParseScriptContext::TOP || ctx == ParseScriptContext::P2SH || ctx == ParseScriptContext::P2WSH)) {
+    if ((txntype == TxoutType::PUBKEYHASH || txntype == TxoutType::TX_CHECKLOCKTIMEVERIFY) && (ctx == ParseScriptContext::TOP || ctx == ParseScriptContext::P2SH || ctx == ParseScriptContext::P2WSH)) {
         uint160 hash(data[0]);
         CKeyID keyid(hash);
         CPubKey pubkey;
