@@ -582,6 +582,7 @@ bool CWallet::CreateTransactionInternal(
 
     CMutableTransaction txNew; // The resulting transaction that we make
     txNew.nLockTime = GetLocktimeForNewTransaction(chain(), GetLastBlockHash(), GetLastBlockHeight());
+    bool fTimeLock = false;
 
     CoinSelectionParams coin_selection_params; // Parameters for coin selection, init with dummy
     coin_selection_params.m_avoid_partial_spends = coin_control.m_avoid_partial_spends;
@@ -691,6 +692,16 @@ bool CWallet::CreateTransactionInternal(
             return false;
         }
         txNew.vout.push_back(txout);
+
+        //Tx has TimeLock
+        if(!fTimeLock){
+            std::vector<std::vector<unsigned char>> vSolutions;
+            const CScript& prevScript = recipient.scriptPubKey;
+            TxoutType whichType = Solver(prevScript, vSolutions);
+            if(whichType == TxoutType::TX_CHECKLOCKTIMEVERIFY){
+                fTimeLock = true;
+            }
+        }
     }
 
     // Include the fees for things that aren't inputs, excluding the change output
@@ -742,7 +753,17 @@ bool CWallet::CreateTransactionInternal(
     // to avoid conflicting with other possible uses of nSequence,
     // and in the spirit of "smallest possible change from prior
     // behavior."
-    const uint32_t nSequence = coin_control.m_signal_bip125_rbf.value_or(m_signal_rbf) ? MAX_BIP125_RBF_SEQUENCE : (CTxIn::SEQUENCE_FINAL - 1);
+
+    if (fTimeLock && coin_control.m_signal_bip125_rbf.value_or(m_signal_rbf)) {
+        error = _("Timelock isn't compatible with RBF");
+        return false;
+    }
+
+    uint32_t nSequence = coin_control.m_signal_bip125_rbf.value_or(m_signal_rbf) ? MAX_BIP125_RBF_SEQUENCE : (CTxIn::SEQUENCE_FINAL - 1);
+    
+    //if Tx has TimeLock, force nSequence to NON FINAL
+    if(fTimeLock) nSequence = (uint32_t) (CTxIn::SEQUENCE_FINAL - 2);
+
     for (const auto& coin : selected_coins) {
         txNew.vin.push_back(CTxIn(coin.outpoint, CScript(), nSequence));
     }
