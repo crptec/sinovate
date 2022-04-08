@@ -268,6 +268,7 @@ extern const char *INFVERIFY;
 extern const char *INFCOMMITMENT;
 extern const char *INFLRMUSIG;
 extern const char *INFLRGROUP;
+extern const char *BFTPINIT;
 //<SIN
 }; // namespace NetMsgType
 

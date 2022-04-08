@@ -284,6 +284,11 @@ public:
 
     /** Implement NetEventsInterface */
     void InitializeNode(CNode* pnode) override;
+//>SIN
+    void InitializeBFTPNode(CNode* pnode) override;
+    bool ProcessBFTPMessages(CNode* pfrom, std::atomic<bool>& interrupt) override;
+    bool SendBFTPMessages(CNode* pto) override EXCLUSIVE_LOCKS_REQUIRED(pto->cs_sendProcessing);
+//<SIN
     void FinalizeNode(const CNode& node) override;
     bool ProcessMessages(CNode* pfrom, std::atomic<bool>& interrupt) override;
     bool SendMessages(CNode* pto) override EXCLUSIVE_LOCKS_REQUIRED(pto->cs_sendProcessing);
@@ -298,6 +303,10 @@ public:
     void Misbehaving(const NodeId pnode, const int howmuch, const std::string& message) override;
     void ProcessMessage(CNode& pfrom, const std::string& msg_type, CDataStream& vRecv,
                         const std::chrono::microseconds time_received, const std::atomic<bool>& interruptMsgProc) override;
+//>SIN
+    void ProcessBFTPMessage(CNode& pfrom, const std::string& msg_type, CDataStream& vRecv,
+                        const std::chrono::microseconds time_received, const std::atomic<bool>& interruptMsgProc) override;
+//<SIN
 
 private:
     void _RelayTransaction(const uint256& txid, const uint256& wtxid)
@@ -513,7 +522,9 @@ private:
     CTransactionRef FindTxForGetData(const CNode& peer, const GenTxid& gtxid, const std::chrono::seconds mempool_req, const std::chrono::seconds now) LOCKS_EXCLUDED(cs_main);
 
     void ProcessGetData(CNode& pfrom, Peer& peer, const std::atomic<bool>& interruptMsgProc) EXCLUSIVE_LOCKS_REQUIRED(peer.m_getdata_requests_mutex) LOCKS_EXCLUDED(::cs_main);
-
+//>SIN
+    void ProcessBFTPGetData(CNode& pfrom, Peer& peer, const std::atomic<bool>& interruptMsgProc) EXCLUSIVE_LOCKS_REQUIRED(peer.m_getdata_requests_mutex) LOCKS_EXCLUDED(::cs_main);
+//<SIN
     /** Process a new block. Perform any post-processing housekeeping */
     void ProcessBlock(CNode& node, const std::shared_ptr<const CBlock>& block, bool force_processing);
 
@@ -1129,6 +1140,42 @@ void PeerManagerImpl::InitializeNode(CNode *pnode)
         PushNodeVersion(*pnode, GetTime());
     }
 }
+
+//>SIN
+void PeerManagerImpl::InitializeBFTPNode(CNode *pnode)
+{
+    NodeId nodeid = pnode->GetId();
+    {
+        LOCK(cs_main);
+        mapNodeState.emplace_hint(mapNodeState.end(), std::piecewise_construct, std::forward_as_tuple(nodeid), std::forward_as_tuple(pnode->IsInboundConn()));
+        assert(m_txrequest.Count(nodeid) == 0);
+    }
+    {
+        PeerRef peer = std::make_shared<Peer>(nodeid);
+        LOCK(m_peer_mutex);
+        m_peer_map.emplace_hint(m_peer_map.end(), nodeid, std::move(peer));
+    }
+    if (!pnode->IsInboundConn()) {
+        //initialize BFTP message
+        ServiceFlags nLocalNodeServices = pnode->GetLocalServices();
+        uint64_t nonce = pnode->GetLocalNonce();
+        const int nNodeStartingHeight{m_best_height};
+        NodeId nodeid = pnode->GetId();
+        CAddress addr = pnode->addr;
+        CPubKey pubkey = pnode->GetMyPubKey();
+
+        CAddress addrYou = addr.IsRoutable() && !IsProxy(addr) && addr.IsAddrV1Compatible() ?
+                           addr :
+                           CAddress(CService(), addr.nServices);
+        CAddress addrMe = CAddress(CService(), nLocalNodeServices);
+        int64_t nTime = GetTime();
+        m_connman.PushMessage(pnode, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::BFTPINIT, PROTOCOL_VERSION, (uint64_t)nLocalNodeServices, nTime, addrYou, addrMe,
+            nonce, strSubVersion, nNodeStartingHeight, pubkey));
+        LogPrint(BCLog::NET, "sent bftp version message: version %d, blocks=%d, us=%s, peer=%d, nonce: %d, pubkey:%s\n", 
+	        PROTOCOL_VERSION, nNodeStartingHeight, addrMe.ToString(), nodeid, nonce, EncodeBase64(pubkey));
+    }
+}
+//<SIN
 
 void PeerManagerImpl::ReattemptInitialBroadcast(CScheduler& scheduler)
 {
@@ -1901,6 +1948,11 @@ CTransactionRef PeerManagerImpl::FindTxForGetData(const CNode& peer, const GenTx
     return {};
 }
 
+//>SIN
+void PeerManagerImpl::ProcessBFTPGetData(CNode& pfrom, Peer& peer, const std::atomic<bool>& interruptMsgProc)
+{
+}
+//<SIN
 void PeerManagerImpl::ProcessGetData(CNode& pfrom, Peer& peer, const std::atomic<bool>& interruptMsgProc)
 {
     AssertLockNotHeld(cs_main);
@@ -2525,6 +2577,96 @@ void PeerManagerImpl::ProcessBlock(CNode& node, const std::shared_ptr<const CBlo
         mapBlockSource.erase(block->GetHash());
     }
 }
+
+//>SIN
+void PeerManagerImpl::ProcessBFTPMessage(CNode& pfrom, const std::string& msg_type, CDataStream& vRecv,
+                                     const std::chrono::microseconds time_received,
+                                     const std::atomic<bool>& interruptMsgProc)
+{
+    PeerRef peer = GetPeerRef(pfrom.GetId());
+    if (peer == nullptr) return;
+
+    if (msg_type == NetMsgType::BFTPINIT) {
+        if (pfrom.nVersion != 0) {
+            LogPrint(BCLog::NET, "redundant version message from peer=%d\n", pfrom.GetId());
+            return;
+        }
+
+        int64_t nTime;
+        CAddress addrMe;
+        CAddress addrFrom;
+        uint64_t nNonce = 1;
+        uint64_t nServiceInt;
+        ServiceFlags nServices;
+        int nVersion;
+        std::string cleanSubVer;
+        int starting_height = -1;
+	    CPubKey cPubKey;
+
+        vRecv >> nVersion >> nServiceInt >> nTime >> addrMe;
+        if (nTime < 0) {
+            nTime = 0;
+        }
+        nServices = ServiceFlags(nServiceInt);
+        if (!pfrom.IsInboundConn())
+        {
+            m_addrman.SetServices(pfrom.addr, nServices);
+        }
+        if (nVersion < MIN_PEER_PROTO_VERSION) {
+            // disconnect from peers older than this proto version
+            LogPrint(BCLog::NET, "peer=%d using obsolete version %i; disconnecting\n", pfrom.GetId(), nVersion);
+            pfrom.fDisconnect = true;
+            return;
+        }
+        if (!vRecv.empty())
+            vRecv >> addrFrom >> nNonce;
+        if (!vRecv.empty()) {
+            std::string strSubVer;
+            vRecv >> LIMITED_STRING(strSubVer, MAX_SUBVERSION_LENGTH);
+            cleanSubVer = SanitizeString(strSubVer);
+        }
+        if (!vRecv.empty()) {
+            vRecv >> starting_height >> cPubKey;
+        }
+        // Disconnect if we connected to ourself
+        if (pfrom.IsInboundConn() && !m_connman.CheckIncomingNonce(nNonce))
+        {
+            LogPrintf("connected to self at %s, disconnecting\n", pfrom.addr.ToString());
+            pfrom.fDisconnect = true;
+            return;
+        }
+        pfrom.nServices = nServices;
+        pfrom.SetAddrLocal(addrMe);
+        {
+            LOCK(pfrom.cs_SubVer);
+            pfrom.cleanSubVer = cleanSubVer;
+        }
+        peer->m_starting_height = starting_height;
+        /*TODO: if can not set communication key, nDos = 30*/
+        pfrom.SetCommunicationKey(cPubKey);
+
+        LogPrint(BCLog::NET, "bFTP server peer=%d init message: nonce: %d, client PubKey: %s, common Key: %s\n", pfrom.GetId(),
+            nNonce, EncodeBase64(pfrom.GetCommunicationKey()), EncodeSecret(pfrom.GetEncryptionKey()));
+        return;
+    }
+
+    if (pfrom.nVersion == 0) {
+        // Must have a version message before anything else
+        LogPrint(BCLog::NET, "non-version message before version handshake. Message \"%s\" from peer=%d\n", SanitizeString(msg_type), pfrom.GetId());
+        return;
+    }
+
+/*
+    if (msg_type == NetMsgType::NOTFOUND) {
+        return;
+    }
+*/
+
+    // Ignore unknown commands for extensibility
+    LogPrint(BCLog::NET, "Unknown command \"%s\" from peer=%d\n", SanitizeString(msg_type), pfrom.GetId());
+    return;
+}
+//<SIN
 
 void PeerManagerImpl::ProcessMessage(CNode& pfrom, const std::string& msg_type, CDataStream& vRecv,
                                      const std::chrono::microseconds time_received,
@@ -4108,6 +4250,72 @@ bool PeerManagerImpl::MaybeDiscourageAndDisconnect(CNode& pnode, Peer& peer)
     return true;
 }
 
+//>SIN
+bool PeerManagerImpl::ProcessBFTPMessages(CNode* pfrom, std::atomic<bool>& interruptMsgProc)
+{
+    bool fMoreWork = false;
+
+    PeerRef peer = GetPeerRef(pfrom->GetId());
+    if (peer == nullptr) return false;
+
+    {
+        LOCK(peer->m_getdata_requests_mutex);
+        if (!peer->m_getdata_requests.empty()) {
+            ProcessBFTPGetData(*pfrom, *peer, interruptMsgProc);
+        }
+    }
+
+    if (pfrom->fDisconnect)
+        return false;
+
+    // this maintains the order of responses
+    // and prevents m_getdata_requests to grow unbounded
+    {
+        LOCK(peer->m_getdata_requests_mutex);
+        if (!peer->m_getdata_requests.empty()) return true;
+    }
+
+    // Don't bother if send buffer is too full to respond anyway
+    if (pfrom->fPauseSend) return false;
+
+    std::list<CNetMessage> msgs;
+    {
+        LOCK(pfrom->cs_vProcessMsg);
+        if (pfrom->vProcessMsg.empty()) return false;
+        // Just take one message
+        msgs.splice(msgs.begin(), pfrom->vProcessMsg, pfrom->vProcessMsg.begin());
+        pfrom->nProcessQueueSize -= msgs.front().m_raw_message_size;
+        pfrom->fPauseRecv = pfrom->nProcessQueueSize > m_connman.GetReceiveFloodSize();
+        fMoreWork = !pfrom->vProcessMsg.empty();
+    }
+    CNetMessage& msg(msgs.front());
+
+    if (gArgs.GetBoolArg("-capturemessages", false)) {
+        CaptureMessage(pfrom->addr, msg.m_command, MakeUCharSpan(msg.m_recv), /* incoming */ true);
+    }
+
+    msg.SetVersion(pfrom->GetCommonVersion());
+    const std::string& msg_type = msg.m_command;
+
+    // Message size
+    unsigned int nMessageSize = msg.m_message_size;
+    try {
+        ProcessBFTPMessage(*pfrom, msg_type, msg.m_recv, msg.m_time, interruptMsgProc);
+        if (interruptMsgProc) return false;
+        {
+            LOCK(peer->m_getdata_requests_mutex);
+            if (!peer->m_getdata_requests.empty()) fMoreWork = true;
+        }
+    } catch (const std::exception& e) {
+        LogPrint(BCLog::NET, "%s(%s, %u bytes): Exception '%s' (%s) caught\n", __func__, SanitizeString(msg_type), nMessageSize, e.what(), typeid(e).name());
+    } catch (...) {
+        LogPrint(BCLog::NET, "%s(%s, %u bytes): Unknown exception caught\n", __func__, SanitizeString(msg_type), nMessageSize);
+    }
+
+    return fMoreWork;
+}
+//<SIN
+
 bool PeerManagerImpl::ProcessMessages(CNode* pfrom, std::atomic<bool>& interruptMsgProc)
 {
     bool fMoreWork = false;
@@ -4535,6 +4743,13 @@ public:
     }
 };
 }
+
+//>SIN
+bool PeerManagerImpl::SendBFTPMessages(CNode* pto)
+{
+    return true;
+}
+//<SIN
 
 bool PeerManagerImpl::SendMessages(CNode* pto)
 {

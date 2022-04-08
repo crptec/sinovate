@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2019 The Bitcoin Core developers
 // Copyright (c) 2017 The Zcash developers
+// Copyright (c) 2021 The Sinovate developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -112,6 +113,11 @@ public:
      * This is expensive.
      */
     CPubKey GetPubKey() const;
+
+    /**
+     * Compute the private ECDH key from other PubKey
+     */
+    bool GetECDHKey(CKey& ecdhkey, const CPubKey& vchPubKey) const;
 
     /**
      * Create a DER-serialized signature.
