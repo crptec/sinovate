@@ -87,7 +87,11 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const interface
                 {
                     // Minted
                     sub.type = TransactionRecord::Minted;
-                    sub.credit = nNet;
+                    if (i == 3 || i == 4 || i == 5) {
+                        sub.type = TransactionRecord::DINReward;
+                    } else {
+                        sub.credit = nNet;
+                    }
                 }
 
                 parts.append(sub);
@@ -228,7 +232,7 @@ void TransactionRecord::updateStatus(const interfaces::WalletTxStatus& wtx, cons
         }
     }
     // For generated transactions, determine maturity
-    else if(type == TransactionRecord::Generated || type == TransactionRecord::Minted)
+    else if(type == TransactionRecord::Generated || type == TransactionRecord::Minted || type == TransactionRecord::DINReward)
     {
         if (wtx.blocks_to_maturity > 0)
         {

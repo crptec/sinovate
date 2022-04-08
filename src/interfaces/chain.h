@@ -7,6 +7,7 @@
 
 #include <primitives/transaction.h> // For CTransactionRef
 #include <util/settings.h>          // For util::SettingsValue
+#include <chain.h>                  // For CBlockIndex
 
 #include <functional>
 #include <memory>
@@ -117,6 +118,9 @@ public:
     //! Return whether node has the block and optionally return block metadata
     //! or contents.
     virtual bool findBlock(const uint256& hash, const FoundBlock& block={}) = 0;
+
+    //! Return pindex if node has the block
+    virtual const CBlockIndex* findIndex(const uint256& hash) = 0;
 
     //! Find first block in the chain with timestamp >= the given time
     //! and height >= than the given height, return false if there is no block
@@ -277,6 +281,9 @@ public:
     //! to be prepared to handle this by ignoring notifications about unknown
     //! removed transactions and already added new transactions.
     virtual void requestMempoolTransactions(Notifications& notifications) = 0;
+
+    //! Check if Taproot has activated
+    virtual bool isTaprootActive() const = 0;
 };
 
 //! Interface to let node manage chain clients (wallets, or maybe tools for

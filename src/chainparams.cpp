@@ -7,9 +7,9 @@
 
 #include <chainparamsseeds.h>
 #include <consensus/merkle.h>
+#include <deploymentinfo.h>
 #include <hash.h> // for signet block challenge hash
 #include <util/system.h>
-#include <versionbitsinfo.h>
 
 /** SIN specific */
 #include <chainparamsbrokenblocks.h>
@@ -80,8 +80,6 @@ public:
         // broken negative fee blocks
         brokenfeeblocksData = brokenfeeblocksDataMain;
 
-
-        // legacy Dash, needs refac
         consensus.nMasternodeBurnSINNODE_1 = 100000;
         consensus.nMasternodeBurnSINNODE_5 = 500000;
         consensus.nMasternodeBurnSINNODE_10 = 1000000;
@@ -103,14 +101,17 @@ public:
         consensus.nInfinityNodeLockRewardSigners=4; //in number
         consensus.nInfinityNodeLockRewardSINType=10; //in number
         consensus.nSchnorrActivationHeight = 1350000; // wait for active
-        consensus.nInfinityNodeExpireTime=262800;//720*365 days = 1 year
+        consensus.nInfinityNodeExpireBlocks=262800;//720*365 days = 1 year
+        consensus.nInfinityNodePOSExpireBlocks=525600;//1440*365 days = 1 year after POS
 
         /*Previously used as simple constants in validation */
         consensus.nINActivationHeight = 170000; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
         consensus.nINEnforcementHeight = 178000; // Enforcement of IN payments
         consensus.nDINActivationHeight = 550000; // Activation of DIN 1.0 payments, and new dev fee address.
-        consensus.nINMetaUpdateChangeHeight=9999999; // Activation newmethod updatemetadata. Sinovate mainnet The same as POS4
-        consensus.nINMetaUpdateCachedNextBlock=9999999; // Activation new method with cached next block. Sinovate mainnet The same as POS4
+        consensus.nINMetaUpdateChangeHeight=900000; // Activation newmethod updatemetadata. Sinovate mainnet The same as POS4
+        consensus.nINMetaUpdateCachedNextBlock=900000; // Activation new method with cached next block. Sinovate mainnet The same as POS4
+        consensus.nTxFeeHeight=900000; // Check burn tx fee and amount. Sinovate mainnet The same as POS4
+        consensus.nINPOSExpireBlocksForkHeight=900000; // Change node timelife. Sinovate mainnet The same as POS4
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 170000;
@@ -124,7 +125,7 @@ public:
         nDeltaChangeHeight = 617000;
 
         // proof-of-stake: activation and params
-        consensus.nStartPoSHeight = 9999999;
+        consensus.nStartPoSHeight = 900000;
         consensus.nStakeMinDepth = 14400;
         consensus.posLimit = uint256S("0000000000001fffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.fPoSNoRetargeting = false;
@@ -268,20 +269,23 @@ public:
         consensus.nInfinityNodeUpdateMeta=5;
         consensus.nInfinityNodeVoteValue=100;
         consensus.nInfinityNodeNotificationValue=1;
-        consensus.nInfinityNodeCallLockRewardDeepth=7;
+        consensus.nInfinityNodeCallLockRewardDeepth=10;
         consensus.nInfinityNodeCallLockRewardLoop=3; //in number of blocks
         consensus.nInfinityNodeLockRewardTop=10; //in number
         consensus.nInfinityNodeLockRewardSigners=3; //in number
         consensus.nInfinityNodeLockRewardSINType=10; //in number
         consensus.nSchnorrActivationHeight = 1350000; // wait for active
-        consensus.nInfinityNodeExpireTime=5040;//720*365 days = 1 year
+        consensus.nInfinityNodeExpireBlocks=5040;//720*7 days = 1 week
+        consensus.nInfinityNodePOSExpireBlocks=10080;//1440*14 days = 2 weeks after POS
 
         /*Previously used as simple constants in validation */
         consensus.nINActivationHeight = 100; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
         consensus.nINEnforcementHeight = 120; // Enforcement of IN payments
-        consensus.nDINActivationHeight = 2880; // Activation of DIN 1.0 payments, and new dev fee address.
-        consensus.nINMetaUpdateChangeHeight=3000;
-        consensus.nINMetaUpdateCachedNextBlock=3000;
+        consensus.nDINActivationHeight = 500; // Activation of DIN 1.0 payments, and new dev fee address.
+        consensus.nINMetaUpdateChangeHeight=500;
+        consensus.nINMetaUpdateCachedNextBlock=500;
+        consensus.nTxFeeHeight=650;
+        consensus.nINPOSExpireBlocksForkHeight=7000;// testnet param. same POS FH in mainnet
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 150;
@@ -291,7 +295,7 @@ public:
         consensus.lwmaAveragingWindow = 96;
 
         // IN reorg bounds have been parameterised
-        nMaxReorganizationDepth = 14; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
+        nMaxReorganizationDepth = 5; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
         nDeltaChangeHeight = 0;
 
         // proof-of-stake: activation and params
@@ -385,7 +389,7 @@ public:
         m_is_mockable_chain = false;
 
         // IN reorg bounds have been parameterised
-        nMaxReorganizationDepth = 14; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
+        nMaxReorganizationDepth = 7; // 55 at 2 minute block timespan is +/- 120 minutes/2h.
         nDeltaChangeHeight = 0;
 
         checkpointData = {
@@ -415,15 +419,15 @@ public:
             vSeeds.emplace_back("2a01:7c8:d005:390::5");
             vSeeds.emplace_back("v7ajjeirttkbnt32wpy3c6w3emwnfr3fkla7hpxcfokr3ysd3kqtzmqd.onion:38333");
 
-            consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000000019fd16269a");
-            consensus.defaultAssumeValid = uint256S("0x0000002a1de0f46379358c1fd09906f7ac59adf3712323ed90eb59e4c183c020"); // 9434
+            consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000008546553c03");
+            consensus.defaultAssumeValid = uint256S("0x000000187d4440e5bff91488b700a140441e089a8aaea707414982460edbfe54"); // 47200
             m_assumed_blockchain_size = 1;
             m_assumed_chain_state_size = 0;
             chainTxData = ChainTxData{
-                // Data from RPC: getchaintxstats 4096 0000002a1de0f46379358c1fd09906f7ac59adf3712323ed90eb59e4c183c020
-                /* nTime    */ 1603986000,
-                /* nTxCount */ 9582,
-                /* dTxRate  */ 0.00159272030651341,
+                // Data from RPC: getchaintxstats 4096 000000187d4440e5bff91488b700a140441e089a8aaea707414982460edbfe54
+                /* nTime    */ 1626696658,
+                /* nTxCount */ 387761,
+                /* dTxRate  */ 0.04035946932424404,
             };
         } else {
             const auto signet_challenge = args.GetArgs("-signetchallenge");
@@ -473,6 +477,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].min_activation_height = 0; // No activation delay
 
         consensus.nINMetaUpdateChangeHeight=0;
+        consensus.nTxFeeHeight=36270;
 
         // Activation of Taproot (BIPs 340-342)
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
@@ -547,7 +552,8 @@ public:
         consensus.nInfinityNodeLockRewardSigners=2; //in number
         consensus.nInfinityNodeLockRewardSINType=10; //in number
         consensus.nSchnorrActivationHeight = 1350000; // wait for active
-        consensus.nInfinityNodeExpireTime=262800;//720*365 days = 1 year
+        consensus.nInfinityNodeExpireBlocks=262800;//720*365 days = 1 year
+        consensus.nInfinityNodePOSExpireBlocks=525600;//1440*365 days = 1 year after POS
 
         /*Previously used as simple constants in validation */
         consensus.nINActivationHeight = 500; // Activation of IN payments, should also be the same as nInfinityNodeBeginHeight in primitives/block.cpp
@@ -555,6 +561,8 @@ public:
         consensus.nDINActivationHeight = 800; // Activation of DIN 1.0 payments, and new dev fee address.
         consensus.nINMetaUpdateChangeHeight=0; // can use last method on regnet
         consensus.nINMetaUpdateCachedNextBlock=0; // can use last method on regnet
+        consensus.nTxFeeHeight=1000;
+        consensus.nINPOSExpireBlocksForkHeight=1000;
 
         // height at which we fork to X25X
         consensus.nX25XForkHeight = 500;
@@ -626,11 +634,11 @@ public:
         pchMessageStart[1] = 0xbf;
         pchMessageStart[2] = 0xb5;
         pchMessageStart[3] = 0xda;
-        nDefaultPort = 20990;
+        nDefaultPort = 18444;
 //>SIN
         nBFTPPort=20993;
 //<SIN
-        nPruneAfterHeight = gArgs.GetBoolArg("-fastprune", false) ? 100 : 1000;
+        nPruneAfterHeight = args.GetBoolArg("-fastprune", false) ? 100 : 1000;
         m_assumed_blockchain_size = 0;
         m_assumed_chain_state_size = 0;
 
@@ -658,11 +666,11 @@ public:
         m_assumeutxo_data = MapAssumeutxo{
             {
                 110,
-                {uint256S("0x1ebbf5850204c0bdb15bf030f47c7fe91d45c44c712697e4509ba67adb01c618"), 110},
+                {AssumeutxoHash{uint256S("0x1ebbf5850204c0bdb15bf030f47c7fe91d45c44c712697e4509ba67adb01c618")}, 110},
             },
             {
-                210,
-                {uint256S("0x9c5ed99ef98544b34f8920b6d1802f72ac28ae6e2bd2bd4c316ff10c230df3f2"), 210},
+                200,
+                {AssumeutxoHash{uint256S("0x51c8d11d8b5c1de51543c579736e786aa2736206d1e11e627568029ce092cf62")}, 200},
             },
         };
 
@@ -765,10 +773,4 @@ void SelectParams(const std::string& network)
 {
     SelectBaseParams(network);
     globalChainParams = CreateChainParams(gArgs, network);
-}
-
-std::ostream& operator<<(std::ostream& o, const AssumeutxoData& aud)
-{
-    o << strprintf("AssumeutxoData(%s, %s)", aud.hash_serialized.ToString(), aud.nChainTx);
-    return o;
 }

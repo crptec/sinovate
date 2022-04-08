@@ -9,6 +9,17 @@
  */
 static CBrokenFeeBlocksData brokenfeeblocksDataMain = {
             {
+                {uint256S("0x68def9dc94549430e05c72894abe623a5f68ac370080b228c429c2a1bc17cfd4")},
+                {uint256S("0x881934065ab6f611d2c38dfadc22369161b2fba947ffb3c19016dde707229d4c")},
+                {uint256S("0x02f9464fd594f495768504e3be1a47ed40b2d45cd1e99c0421e981f8d0baff43")},
+                {uint256S("0x440a62589e568a142801bf6202909130c61ff591d1f06e195cecad25d77eab09")},
+                {uint256S("0x269bf34405e1a465fc0d0b9ffebd8c566e1e72591c45f4a94883cafeb9e6f0ce")},
+                {uint256S("0x34e2fbe5021233496378be871aa39a411caaed71722372b6ee20cfa36ac0b521")},
+                {uint256S("0xa34c225a5c2af158da44da6334a1e0e2718d03013062c928cb80ac8755e25fbc")},
+                {uint256S("0x41d67fd9f0320ee580ea53f6cd0a393ec31b4565d67eb2905bad8e006813e9e4")},
+                {uint256S("0xacff45fe49410191b4c2ca8181d28d3f709d68bc8faf818b549e3b2732f04be2")},
+                {uint256S("0x200b275253dbfadfc2bb06b0736d030c5e434ac92c6042e0ffc8e418d9b6820c")},
+                {uint256S("0x97419d7afd91a07de9d522790909dc8efd31167cb96c0d1aca4c6cff28435f0a")},
                 {uint256S("0x475ca717747eb2131acd7d83ee15d5417e3de2ab8114b265591921754cf01085")},
                 {uint256S("0x46208568e8730bb86232e796136d02023f44b265b112c939e19b723aaa133879")},
                 {uint256S("0xb236ea43bc0f9439fc46b688a7a13c6a6dee88c91a902843ec9e1ecc151b5d12")},

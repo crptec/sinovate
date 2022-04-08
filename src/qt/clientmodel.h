@@ -48,8 +48,12 @@ enum NumConnections {
 
 struct SINStatsStruct {
     QString blockcount = "";
-    double known_hashrate = 0.0;
+    QString hashrate = "";
     QString difficulty = "";
+    QString blockReward = "";
+    QString bigApy = "";
+    QString midApy = "";
+    QString miniApy = "";
     double lastPrice = 0.0;
     double usdPrice = 0.0;
     double eurPrice = 0.0;
@@ -59,7 +63,7 @@ struct SINStatsStruct {
     QString explorerActiveAddresses = "";
     double supply = 0.0;
     double burnFee = 0.0;
-    int burnNode = 0;
+    unsigned int burnNode = 0;
     int burnNodeInt = 0;
     double inf_online_big = 0.0;
     double inf_online_mid = 0.0;

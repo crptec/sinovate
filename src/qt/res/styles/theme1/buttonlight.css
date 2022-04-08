@@ -3,8 +3,8 @@ Button White CSS
 --------------------------------------------*/
 QPushButton {
     color: white; 
-    background: #004FFF;
-    border: 1px solid #004FFF;
+    background: rgba(0, 79, 255, .5);
+    border: 1px solid rgba(0, 79, 255, .5);
     border-radius: 12px;
     padding: 6px;
 }

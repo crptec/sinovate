@@ -67,17 +67,6 @@ bool Stake(const CBlockIndex* pindexPrev, CStakeInput* stakeInput, unsigned int 
  *                              (if nullptr, it will be searched in mapBlockIndex)
  * @return      bool            true if the block has a valid proof of stake
  */
-bool CheckProofOfStake(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev = nullptr);
-
-/*
- * GetStakeKernelHash   Return stake kernel of a block
- *
- * @param[out]  hashRet         hash of the kernel (set by this function)
- * @param[in]   block           block with the kernel to return
- * @param[in]   pindexPrev      index of the parent block
- *                              (if nullptr, it will be searched in mapBlockIndex)
- * @return      bool            false if kernel cannot be initialized, true otherwise
- */
-bool GetStakeKernelHash(uint256& hashRet, const CBlock& block, const CBlockIndex* pindexPrev = nullptr);
+bool CheckProofOfStake(const CBlock& block, BlockValidationState& state, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev = nullptr, CStakeInput* stakeInput = nullptr);
 
 #endif // SIN_POS_H

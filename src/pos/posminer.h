@@ -12,6 +12,7 @@
 #include <threadinterrupt.h>
 #include <node/context.h>
 #include <util/time.h>
+#include <validation.h>
 
 #include <stdint.h>
 
@@ -98,7 +99,10 @@ bool CreateCoinStake(CWallet* pwallet, const CBlockIndex* pindexPrev,
                     CMutableTransaction& txNew,
                     int64_t& nTxNewTime,
                     std::vector<CStakeableOutput>* availableCoins,
-                    CStakerStatus* pStakerStatus, CAmount nFees, CScript burnAddressScript);
+                    CStakerStatus* pStakerStatus,
+                    CAmount nFees, 
+                    CScript burnAddressScript,
+                    CChainState& chainstate);
 
 void InitStakerStatus();
 

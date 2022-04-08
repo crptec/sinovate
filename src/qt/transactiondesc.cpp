@@ -29,6 +29,8 @@
 #include <stdint.h>
 #include <string>
 
+#include <QLatin1String>
+
 class TransactionFormater
 {
 public:
@@ -104,14 +106,16 @@ QString TransactionDesc::FormatTxStatus(const interfaces::WalletTx& wtx, const i
     else
     {
         int nDepth = status.depth_in_main_chain;
-        if (nDepth < 0)
+        if (nDepth < 0) {
             return tr("conflicted with a transaction with %1 confirmations").arg(-nDepth);
-        else if (nDepth == 0)
-            return tr("0/unconfirmed, %1").arg((inMempool ? tr("in memory pool") : tr("not in memory pool"))) + (status.is_abandoned ? ", "+tr("abandoned") : "");
-        else if (nDepth < 6)
+        } else if (nDepth == 0) {
+            const QString abandoned{status.is_abandoned ? QLatin1String(", ") + tr("abandoned") : QString()};
+            return tr("0/unconfirmed, %1").arg(inMempool ? tr("in memory pool") : tr("not in memory pool")) + abandoned;
+        } else if (nDepth < 6) {
             return tr("%1/unconfirmed").arg(nDepth);
-        else
+        } else {
             return tr("%1 confirmations").arg(nDepth);
+        }
     }
 }
 
@@ -161,6 +165,7 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     CAmount nDebit = wtx.debit;
     CAmount nNet = nCredit - nDebit;
     std::string nodeMessage = "";
+    int idx = rec->getOutputIndex(); 
 
     strHTML += TransactionFormater::ItemNameColor(tr("Status")) + FormatTxStatus(wtx, status, inMempool, numBlocks);
     strHTML += "<br>";
@@ -172,11 +177,19 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     //
     if (wtx.is_coinbase)
     {
-        strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("Generated") + "<br>";
+        if (idx == 2 || idx == 3 || idx == 4) {
+            strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("DIN Reward") + "<br>";
+        } else {
+            strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("Generated") + "<br>";
+        }
     }
     if (wtx.is_coinstake)
     {
-        strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("Minted") + "<br>";
+        if (idx == 3 || idx == 4 || idx == 5) {
+            strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("DIN Reward") + "<br>";
+        } else {
+            strHTML += TransactionFormater::ItemNameColor(tr("Source")) + tr("Minted") + "<br>";
+        }
     }
     else if (wtx.value_map.count("from") && !wtx.value_map["from"].empty())
     {
@@ -246,7 +259,7 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     //
     if ((wtx.is_coinstake || wtx.is_coinbase) && nCredit == 0)
     {
-        if (wtx.is_coinbase) {
+        if (wtx.is_coinbase && (idx != 2 || idx != 3 || idx != 4)) {
             //
             // Coinbase
             //
@@ -260,7 +273,7 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
                 strHTML += "(" + tr("not accepted") + ")";
             strHTML += "<br>";
         }
-        if (wtx.is_coinstake) {
+        if (wtx.is_coinstake && (idx != 3 || idx != 4 || idx != 5)) {
             //
             // Coinstake
             //
@@ -419,13 +432,23 @@ QString TransactionDesc::toHTML(interfaces::Node& node, interfaces::Wallet& wall
     if (wtx.is_coinbase)
     {
         quint32 numBlocksToMaturity = COINBASE_MATURITY +  1;
-        strHTML += "<br>" + tr("Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        int idx = rec->getOutputIndex(); 
+        if (idx == 2 || idx == 3 || idx == 4) {
+            strHTML += "<br>" + tr("DIN rewards must mature %1 blocks before they can be spent. When the miner generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another miner mines a block within a few seconds of the current miner doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other miners block.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        } else {
+            strHTML += "<br>" + tr("Generated coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        }
     }
 
     if (wtx.is_coinstake)
     {
         quint32 numBlocksToMaturity = COINSTAKE_MATURITY +  1;
-        strHTML += "<br>" + tr("Minted coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        int idx = rec->getOutputIndex(); 
+        if (idx == 3 || idx == 4 || idx == 5) {
+            strHTML += "<br>" + tr("DIN rewards must mature %1 blocks before they can be spent. When the staker generated the block with your reward, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another staker stakes a block within a few seconds of the current staker doing it. Fortunately, as DIN rewards are deterministic, your payment will still be available in the other stakers block.").arg(QString::number(numBlocksToMaturity)) + "<br>";
+        } else {
+            strHTML += "<br>" + tr("Minted coins must mature %1 blocks before they can be spent. When you generated this block, it was broadcast to the network to be added to the block chain. If it fails to get into the chain, its state will change to \"not accepted\" and it won't be spendable. This may occasionally happen if another node generates a block within a few seconds of yours.").arg(QString::number(numBlocksToMaturity)) + "<br>";           
+        }
     }
 
     //

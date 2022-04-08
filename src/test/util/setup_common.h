@@ -135,13 +135,15 @@ struct TestChain100Setup : public RegTestingSetup {
      * @param input_signing_key  The key to spend the input_transaction
      * @param output_destination Where to send the output
      * @param output_amount      How much to send
+     * @param submit             Whether or not to submit to mempool
      */
     CMutableTransaction CreateValidMempoolTransaction(CTransactionRef input_transaction,
                                                       int input_vout,
                                                       int input_height,
                                                       CKey input_signing_key,
                                                       CScript output_destination,
-                                                      CAmount output_amount = CAmount(1 * COIN));
+                                                      CAmount output_amount = CAmount(1 * COIN),
+                                                      bool submit = true);
 
     ~TestChain100Setup();
 
@@ -175,12 +177,13 @@ struct TestMemPoolEntryHelper
     int64_t nTime;
     unsigned int nHeight;
     bool spendsCoinbase;
+    bool spendsCoinstake;
     unsigned int sigOpCost;
     LockPoints lp;
 
     TestMemPoolEntryHelper() :
         nFee(0), nTime(0), nHeight(1),
-        spendsCoinbase(false), sigOpCost(4) { }
+        spendsCoinbase(false), spendsCoinstake(false), sigOpCost(4) { }
 
     CTxMemPoolEntry FromTx(const CMutableTransaction& tx) const;
     CTxMemPoolEntry FromTx(const CTransactionRef& tx) const;
@@ -190,6 +193,7 @@ struct TestMemPoolEntryHelper
     TestMemPoolEntryHelper &Time(int64_t _time) { nTime = _time; return *this; }
     TestMemPoolEntryHelper &Height(unsigned int _height) { nHeight = _height; return *this; }
     TestMemPoolEntryHelper &SpendsCoinbase(bool _flag) { spendsCoinbase = _flag; return *this; }
+    TestMemPoolEntryHelper &SpendsCoinstake(bool _flag) { spendsCoinstake = _flag; return *this; }
     TestMemPoolEntryHelper &SigOpsCost(unsigned int _sigopsCost) { sigOpCost = _sigopsCost; return *this; }
 };
 

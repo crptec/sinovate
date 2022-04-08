@@ -6,6 +6,7 @@
 #define BITCOIN_INTERFACES_NODE_H
 
 #include <amount.h>     // For CAmount
+#include <external_signer.h>
 #include <net.h>        // For NodeId
 #include <net_types.h>  // For banmap_t
 #include <netaddress.h> // For Network
@@ -110,6 +111,9 @@ public:
     //! Disconnect node by id.
     virtual bool disconnectById(NodeId id) = 0;
 
+    //! List external signers
+    virtual std::vector<ExternalSigner> externalSigners() = 0;
+
     //! Get total bytes recv.
     virtual int64_t getTotalBytesRecv() = 0;
 
@@ -139,6 +143,9 @@ public:
 
     //! Is initial block download.
     virtual bool isInitialBlockDownload() = 0;
+
+    //! Is -addresstype set.
+    virtual bool isAddressTypeSet() = 0;
 
     //! Get reindex.
     virtual bool getReindex() = 0;
@@ -177,7 +184,7 @@ public:
     virtual uint64_t getNetworkStakeWeight() = 0;
 
     //! Get the estimated annual roi
-    virtual double getEstimatedAnnualROI() = 0;
+    virtual double getEstimatedAnnualROINode() = 0;
 
     //! Get wallet client.
     virtual WalletClient& walletClient() = 0;

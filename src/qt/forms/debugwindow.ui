@@ -489,12 +489,9 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>24</width>
-             <height>16</height>
+             <width>22</width>
+             <height>22</height>
             </size>
-           </property>
-           <property name="autoDefault">
-            <bool>false</bool>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -521,12 +518,9 @@
            </property>
            <property name="iconSize">
             <size>
-             <width>24</width>
-             <height>16</height>
+             <width>22</width>
+             <height>22</height>
             </size>
-           </property>
-           <property name="autoDefault">
-            <bool>false</bool>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -554,11 +548,14 @@
             <iconset resource="../bitcoin.qrc">
              <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
            </property>
+           <property name="iconSize">
+            <size>
+             <width>22</width>
+             <height>22</height>
+            </size>
+           </property>
            <property name="shortcut">
             <string notr="true">Ctrl+L</string>
-           </property>
-           <property name="autoDefault">
-            <bool>false</bool>
            </property>
            <property name="flat">
             <bool>true</bool>
@@ -923,6 +920,9 @@
              <property name="tabKeyNavigation">
               <bool>false</bool>
              </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
              <property name="textElideMode">
               <enum>Qt::ElideMiddle</enum>
              </property>
@@ -983,6 +983,9 @@
             <widget class="QTableView" name="banlistWidget">
              <property name="tabKeyNavigation">
               <bool>false</bool>
+             </property>
+             <property name="alternatingRowColors">
+              <bool>true</bool>
              </property>
              <property name="sortingEnabled">
               <bool>true</bool>
@@ -1055,7 +1058,7 @@
                 <x>0</x>
                 <y>0</y>
                 <width>266</width>
-                <height>378</height>
+                <height>518</height>
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,1">
@@ -1180,13 +1183,6 @@
                  </property>
                 </widget>
                </item>
-               <item row="4" column="0">
-                <widget class="QLabel" name="labelServices">
-                 <property name="text">
-                  <string>Services</string>
-                 </property>
-                </widget>
-               </item>
                <item row="5" column="1">
                 <widget class="QLabel" name="peerServices">
                  <property name="cursor">
@@ -1197,6 +1193,9 @@
                  </property>
                  <property name="textFormat">
                   <enum>Qt::PlainText</enum>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
                  </property>
                  <property name="textInteractionFlags">
                   <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
@@ -1624,6 +1623,13 @@
                   </size>
                  </property>
                 </spacer>
+               </item>
+               <item row="5" column="0">
+                <widget class="QLabel" name="labelServices">
+                 <property name="text">
+                  <string>Services</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>

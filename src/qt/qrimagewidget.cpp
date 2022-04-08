@@ -27,8 +27,8 @@ QRImageWidget::QRImageWidget(QWidget *parent):
     QLabel(parent), contextMenu(nullptr)
 {
     contextMenu = new QMenu(this);
-    contextMenu->addAction(tr("Save Image..."), this, &QRImageWidget::saveImage);
-    contextMenu->addAction(tr("Copy Image"), this, &QRImageWidget::copyImage);
+    contextMenu->addAction(tr("&Save Image..."), this, &QRImageWidget::saveImage);
+    contextMenu->addAction(tr("&Copy Image"), this, &QRImageWidget::copyImage);
 }
 
 bool QRImageWidget::setQR(const QString& data, const QString& text)
@@ -61,12 +61,13 @@ bool QRImageWidget::setQR(const QString& data, const QString& text)
     }
     QRcode_free(code);
 
-    const int qr_image_size = QR_IMAGE_SIZE + (text.isEmpty() ? 0 : 2 * QR_IMAGE_MARGIN);
+    const int qr_image_margin = text.isEmpty() ? 0 : QR_IMAGE_MARGIN;
+    const int qr_image_size = QR_IMAGE_SIZE + 2 * qr_image_margin;
     QImage qrAddrImage(qr_image_size, qr_image_size, QImage::Format_RGB32);
     qrAddrImage.fill(0xffffff);
     {
         QPainter painter(&qrAddrImage);
-        painter.drawImage(QR_IMAGE_MARGIN, 0, qrImage.scaled(QR_IMAGE_SIZE, QR_IMAGE_SIZE));
+        painter.drawImage(qr_image_margin, 0, qrImage.scaled(QR_IMAGE_SIZE, QR_IMAGE_SIZE));
 
         if (!text.isEmpty()) {
             QRect paddedRect = qrAddrImage.rect();
@@ -118,7 +119,9 @@ void QRImageWidget::saveImage()
         return;
     QString fn = GUIUtil::getSaveFileName(
         this, tr("Save QR Code"), QString(),
-        tr("PNG Image", "Name of PNG file format") + QLatin1String(" (*.png)"), nullptr);
+        /*: Expanded name of the PNG file format.
+            See https://en.wikipedia.org/wiki/Portable_Network_Graphics */
+        tr("PNG Image") + QLatin1String(" (*.png)"), nullptr);
     if (!fn.isEmpty())
     {
         exportImage().save(fn);

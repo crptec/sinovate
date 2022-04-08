@@ -86,14 +86,17 @@ private:
     std::vector<std::pair<int, QAction*>> contextDINColumnsActions;
     int64_t nTimeFilterUpdated;
     bool fFilterUpdated;
+    interfaces::WalletBalances m_balances;
 
     QLabel* labelPic[8];
     QLabel* labelTxt[8];
     int currentStep = 0;
 
 public Q_SLOTS:
+    bool isSynced();
     void updateDINList();
     bool filterNodeRow( int nRow );
+    void setBalance(const interfaces::WalletBalances& balances);
 
     // node setup functions
     void nodeSetupInitialize();
@@ -175,6 +178,7 @@ private:
     QString NODESETUP_SUPPORT_URL;
     QString NODESETUP_PID;
     int NODESETUP_UPDATEMETA_AMOUNT;
+    int NODESETUP_MINERFEE_AMOUNT;
     int NODESETUP_CONFIRMS;
     int NODESETUP_REFRESHCOMBOS;    // every N updateDINList cycles
     int nodeSetup_RefreshCounter;
@@ -190,7 +194,7 @@ private:
     QString mBurnTx;
     QString mMetaTx;
     QString mProductIds;
-    std::string billingOptions[3] = {"Monthly", "Semiannually", "Annually"};
+    std::string billingOptions[3] = {tr("Monthly").toStdString(), tr("Semiannually").toStdString(), tr("Annually").toStdString()};
     QAction *mCheckNodeAction;
     QAction *mCheckAllNodesAction;
     WalletModel::UnlockContext *pUnlockCtx = NULL;
@@ -210,6 +214,7 @@ private Q_SLOTS:
     void on_btnRestore_clicked();
     void getStatistics();
     void loadMotd();
+    void updateDisplayUnit();
 };
 
 #endif // FXTC_QT_INFINITYNODELIST_H

@@ -70,7 +70,7 @@ static RPCHelpMan infinitynode()
                     + "\nShow current statement of Infinitynode at Height\n"
                     + HelpExampleCli("infinitynode", "show-stm-at")
                     + "\nShow the candidates for Height\n"
-                    + HelpExampleCli("infinitynode", "show-candiate height")
+                    + HelpExampleCli("infinitynode", "show-candidate height")
                     + "\nShow informations about all infinitynodes of network.\n"
                     + HelpExampleCli("infinitynode", "show-infos")
                     + "\nShow metadata of all infinitynodes of network.\n"
@@ -200,15 +200,20 @@ static RPCHelpMan infinitynode()
 
         int nHeight = atoi(strFilter);
 
+        if (nHeight < Params().GetConsensus().nInfinityNodeGenesisStatement) {
+            strError = strprintf("nHeight must be higher than the Genesis Statement height (%s)", Params().GetConsensus().nInfinityNodeGenesisStatement);
+            throw JSONRPCError(RPC_INVALID_PARAMETER, strError);
+        }
+
         std::map<int, int> mapBIG = infnodeman.getStatementMap(10);
         std::map<int, int> mapMID = infnodeman.getStatementMap(5);
         std::map<int, int> mapLIL = infnodeman.getStatementMap(1);
 
         std::map<int,int>::iterator itBIG, itMID, itLIL;
 
-        itBIG = mapBIG.lower_bound(nHeight);
-        itMID = mapMID.lower_bound(nHeight);
-        itLIL = mapLIL.lower_bound(nHeight);
+        itBIG = mapBIG.upper_bound(nHeight);
+        itMID = mapMID.upper_bound(nHeight);
+        itLIL = mapLIL.upper_bound(nHeight);
 
         if(nHeight == Params().GetConsensus().nInfinityNodeGenesisStatement){
             std::ostringstream streamInfo;
@@ -257,9 +262,9 @@ static RPCHelpMan infinitynode()
 
         CInfinitynode infBIG, infMID, infLIL;
         LOCK(infnodeman.cs);
-        infnodeman.deterministicRewardAtHeight(nextHeight, 10, infBIG);
-        infnodeman.deterministicRewardAtHeight(nextHeight, 5, infMID);
-        infnodeman.deterministicRewardAtHeight(nextHeight, 1, infLIL);
+        infnodeman.deterministicRewardAtHeight_V2(nextHeight, 10, infBIG);
+        infnodeman.deterministicRewardAtHeight_V2(nextHeight, 5, infMID);
+        infnodeman.deterministicRewardAtHeight_V2(nextHeight, 1, infLIL);
 
         obj.pushKV("CandidateBIG: ", infBIG.getCollateralAddress());
         obj.pushKV("CandidateMID: ", infMID.getCollateralAddress());
@@ -366,10 +371,12 @@ static RPCHelpMan infinitynode()
 
     if (strCommand == "show-lockreward")
     {
+        NodeContext& node = EnsureAnyNodeContext(request.context);
+        ChainstateManager& chainman = EnsureAnyChainman(request.context);
         CBlockIndex* pindex = NULL;
         {
             LOCK(cs_main);
-            pindex = ::ChainActive().Tip();
+            pindex = chainman.ActiveChain().Tip();
         }
 
         int nBlockNumber = pindex->nHeight - 55 * 10;
@@ -471,8 +478,24 @@ static RPCHelpMan infinitynodeburnfund()
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid SIN address as SINBackupAddress");
 
     std::string strError;
-    std::vector<COutput> vPossibleCoins;
-    pwallet->AvailableCoins(vPossibleCoins, true, NULL, false);
+    int nMinDepth = 1;
+    int nMaxDepth = 9999999;
+    CAmount nMinimumAmount = 0;
+    CAmount nMaximumAmount = MAX_MONEY;
+    CAmount nMinimumSumAmount = MAX_MONEY;
+    uint64_t nMaximumCount = 0;
+    bool include_unsafe = true;
+
+    std::vector<COutput> vecOutputs;
+    {
+        CCoinControl cctl;
+        cctl.m_avoid_address_reuse = false;
+        cctl.m_min_depth = nMinDepth;
+        cctl.m_max_depth = nMaxDepth;
+        cctl.m_include_unsafe_inputs = include_unsafe;
+        LOCK(pwallet->cs_wallet);
+        pwallet->AvailableCoins(vecOutputs, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
+    }
 
     UniValue results(UniValue::VOBJ);
 
@@ -489,7 +512,7 @@ static RPCHelpMan infinitynodeburnfund()
     // Wallet comments
     std::set<CTxDestination> destinations;
     LOCK(pwallet->cs_wallet);
-    for (COutput& out : vPossibleCoins) {
+    for (COutput& out : vecOutputs) {
         CTxDestination addressCoin;
         const CScript& scriptPubKeyCoin = out.tx->tx->vout[out.i].scriptPubKey;
         bool fValidAddress = ExtractDestination(scriptPubKeyCoin, addressCoin);
@@ -582,6 +605,9 @@ static RPCHelpMan infinitynodeupdatemeta()
     if (!wallet) return NullUniValue;
     CWallet* const pwallet = wallet.get();
 
+    NodeContext& node = EnsureAnyNodeContext(request.context);
+    ChainstateManager& chainman = EnsureAnyChainman(request.context);
+
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
@@ -622,7 +648,7 @@ static RPCHelpMan infinitynodeupdatemeta()
 
     std::string metaID = strprintf("%s-%s", strOwnerAddress, burnfundTxID);
     CMetadata myMeta = infnodemeta.Find(metaID);
-    int nCurrentHeight = ::ChainActive().Height();
+    int nCurrentHeight = chainman.ActiveChain().Height();
     if(myMeta.getMetadataHeight() > 0 && nCurrentHeight < myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2){
         int nWait = myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2 - nCurrentHeight;
         std::string strError = strprintf("Error: Please wait %d blocks and try to update again.", nWait);
@@ -681,8 +707,24 @@ static RPCHelpMan infinitynodeupdatemeta()
     EnsureWalletIsUnlocked(*pwallet);
 
     std::string strError;
-    std::vector<COutput> vPossibleCoins;
-    pwallet->AvailableCoins(vPossibleCoins, true, NULL, false);
+    int nMinDepth = 1;
+    int nMaxDepth = 9999999;
+    CAmount nMinimumAmount = 0;
+    CAmount nMaximumAmount = MAX_MONEY;
+    CAmount nMinimumSumAmount = MAX_MONEY;
+    uint64_t nMaximumCount = 0;
+    bool include_unsafe = true;
+
+    std::vector<COutput> vecOutputs;
+    {
+        CCoinControl cctl;
+        cctl.m_avoid_address_reuse = false;
+        cctl.m_min_depth = nMinDepth;
+        cctl.m_max_depth = nMaxDepth;
+        cctl.m_include_unsafe_inputs = include_unsafe;
+        LOCK(pwallet->cs_wallet);
+        pwallet->AvailableCoins(vecOutputs, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
+    }
 
     // cMetadataAddress
     CTxDestination dest = DecodeDestination(Params().GetConsensus().cMetadataAddress);
@@ -693,7 +735,7 @@ static RPCHelpMan infinitynodeupdatemeta()
 
     std::ostringstream streamInfo;
 
-    for (COutput& out : vPossibleCoins) {
+    for (COutput& out : vecOutputs) {
         CTxDestination addressCoin;
         const CScript& scriptPubKeyCoin = out.tx->tx->vout[out.i].scriptPubKey;
         bool fValidAddress = ExtractDestination(scriptPubKeyCoin, addressCoin);
@@ -869,6 +911,10 @@ static RPCHelpMan infinitynodeupdatemeta_external()
 {
     UniValue results(UniValue::VOBJ);
 
+    NodeContext& node = EnsureAnyNodeContext(request.context);
+    ChainstateManager& chainman = EnsureAnyChainman(request.context);
+
+
     if(request.params[0].isNull()) {
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid inputs");
     }
@@ -907,7 +953,7 @@ static RPCHelpMan infinitynodeupdatemeta_external()
 
     std::string metaID = strprintf("%s-%s", strOwnerAddress, burnfundTxID);
     CMetadata myMeta = infnodemeta.Find(metaID);
-    int nCurrentHeight = ::ChainActive().Height();
+    int nCurrentHeight = chainman.ActiveChain().Height();
     if(myMeta.getMetadataHeight() > 0 && nCurrentHeight < myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2){
         int nWait = myMeta.getMetadataHeight() + Params().MaxReorganizationDepth() * 2 - nCurrentHeight;
         std::string strError = strprintf("Error: Please wait %d blocks and try to update again.", nWait);

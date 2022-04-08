@@ -61,7 +61,7 @@ src/qt/bitcoin-qt.includes
 .dirstamp
 .libs
 .*.swp
-*.*~*
+*~
 *.bak
 *.rej
 *.orig
@@ -94,8 +94,7 @@ src/qt/bitcoin-qt.includes
 Makefile
 !depends/Makefile
 src/qt/sin-qt
-Bitcoin-Qt.app
-background.tiff*
+Sin-Qt.app
 
 # Qt Creator
 Makefile.am.user
@@ -148,7 +147,6 @@ db4/
 
 osx_volname
 dist/
-*.background.tiff
 
 /guix-build-*
 

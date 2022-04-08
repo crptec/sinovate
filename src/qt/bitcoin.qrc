@@ -82,6 +82,10 @@
         <file alias="about_black">res/icons/about_black.png</file>
         <file alias="close">res/icons/close.png</file>
         <file alias="burn">res/icons/burn.png</file>
+        <file alias="theme1">res/icons/theme1.png</file>
+        <file alias="theme2">res/icons/theme2.png</file>
+        <file alias="theme3">res/icons/theme3.png</file>
+        
     </qresource>
     <qresource prefix="/movies">
         <file alias="spinner-000">res/movies/spinner-000.png</file>
@@ -141,6 +145,7 @@
         <file alias="buttondark">res/styles/theme1/buttondark.css</file>
         <file alias="buttonlight">res/styles/theme1/buttonlight.css</file>
         <file alias="buttongray">res/styles/theme1/buttongray.css</file>
+        <file alias="buttoncustom">res/styles/theme1/buttoncustom.css</file>
         <file alias="buttontransparent">res/styles/theme1/buttontransparent.css</file>
         <file alias="buttontransparentbordered">res/styles/theme1/buttontransparentbordered.css</file>
         <file alias="navbutton">res/styles/theme1/navbutton.css</file>
@@ -194,10 +199,13 @@
         <file alias="setupKo">res/styles/theme1/app-icons/ko.png</file>
         <file alias="setupWait">res/styles/theme1/app-icons/wait.gif</file>
         <file alias="bulb">res/styles/theme1/app-icons/bulb.png</file>
+        <file alias="eyeOn">res/styles/theme1/app-icons/eyeOn.png</file>
+        <file alias="eyeOff">res/styles/theme1/app-icons/eyeOff.png</file>
         
     </qresource>
     <qresource prefix="/styles/theme2">
         <file alias="app">res/styles/theme2/app.css</file>
+        <file alias="buttoncustom">res/styles/theme2/buttoncustom.css</file>
         <file alias="buttontransparent">res/styles/theme2/buttontransparent.css</file>
         <file alias="scrollbardark">res/styles/theme2/scrollbardark.css</file>
         <file alias="treeview">res/styles/theme2/treeview.css</file>
@@ -260,9 +268,12 @@
         <file alias="setupKo">res/styles/theme2/app-icons/ko.png</file>
         <file alias="setupWait">res/styles/theme2/app-icons/wait.gif</file>
         <file alias="bulb">res/styles/theme2/app-icons/bulb.png</file>
+        <file alias="eyeOn">res/styles/theme2/app-icons/eyeOn.png</file>
+        <file alias="eyeOff">res/styles/theme2/app-icons/eyeOff.png</file>
     </qresource>
     <qresource prefix="/styles/theme3">
         <file alias="app">res/styles/theme3/app.css</file>
+        <file alias="buttoncustom">res/styles/theme3/buttoncustom.css</file>
         <file alias="buttontransparent">res/styles/theme3/buttontransparent.css</file>
         <file alias="scrollbardark">res/styles/theme3/scrollbardark.css</file>
         <file alias="treeview">res/styles/theme3/treeview.css</file>

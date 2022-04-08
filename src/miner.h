@@ -28,6 +28,7 @@ class CScript;
 namespace Consensus { struct Params; };
 
 static const bool DEFAULT_PRINTPRIORITY = false;
+static const bool DEFAULT_STAKE = true;
 
 struct CBlockTemplate
 {
@@ -210,6 +211,10 @@ void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev, bool fProofOfStake = false);
 
 /** Update an old GenerateCoinbaseCommitment from CreateNewBlock after the block txs have changed */
-void RegenerateCommitments(CBlock& block, CBlockIndex* prev_block);
+void RegenerateCommitments(CBlock& block, ChainstateManager& chainman);
+
+/** Check if staking is enabled */
+bool CanStake();
+
 
 #endif // BITCOIN_MINER_H

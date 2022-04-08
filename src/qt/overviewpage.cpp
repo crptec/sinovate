@@ -120,7 +120,7 @@ public:
             }
             QRect watchonlyRect(typeRect.right() + MARGIN, mainRect.top() + topMargin, DECORATION_SIZE, DECORATION_SIZE);
             iconWatchonly.paint(painter, watchonlyRect);
-            //address_rect_min_width += 5 + watchonlyRect.width();
+            //addressRect.setLeft(addressRect.left() + watchonlyRect.width() + 5);
         }
 
         int addressMargin = watchOnly ? MARGIN + 20 : MARGIN;
@@ -167,6 +167,8 @@ public:
 
         QRect amountRect(addressRect.right() + MARGIN, addressRect.top(), AMOUNT_WIDTH, TX_SIZE);
         painter->drawText(amountRect, Qt::AlignRight|Qt::AlignVCenter, amountText);
+        // 0.4*date_bounding_rect.width() is used to visually distinguish a date from an amount.
+        //const int minimum_width = 1.4 * date_bounding_rect.width() + amount_bounding_rect.width();
 
         painter->restore();
     }
@@ -200,6 +202,7 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     ui(new Ui::OverviewPage),
     clientModel(nullptr),
     walletModel(nullptr),
+    m_platform_style{platformStyle},
     txdelegate(new TxViewDelegate(platformStyle, this))
 {
     ui->setupUi(this);
@@ -209,53 +212,53 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     ui->toolButtonBlog->setIconSize(QSize(64, 64));
     ui->toolButtonBlog->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/blog_white",PlatformStyle::NavBar));
    
-    ui->toolButtonBlog->setStatusTip(tr("Visit Sinovate Blog"));
+    ui->toolButtonBlog->setStatusTip(QObject::tr("Visit Sinovate Blog"));
 
     ui->toolButtonDocs->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonDocs->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/docs_white",PlatformStyle::NavBar));
     ui->toolButtonDocs->setIconSize(QSize(64, 64));
-    ui->toolButtonDocs->setStatusTip(tr("Visit Sinovate Docs"));
+    ui->toolButtonDocs->setStatusTip(QObject::tr("Visit Sinovate Docs"));
 
     
     ui->toolButtonExchanges->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonExchanges->setIconSize(QSize(64, 64));
     ui->toolButtonExchanges->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/cmc_white",PlatformStyle::NavBar));
-    ui->toolButtonExchanges->setStatusTip(tr("Buy Sinovate Coin"));
+    ui->toolButtonExchanges->setStatusTip(QObject::tr("Buy Sinovate Coin"));
 
     ui->toolButtonExplorer->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonExplorer->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/explorer_white",PlatformStyle::NavBar));
     ui->toolButtonExplorer->setIconSize(QSize(64, 64));
-    ui->toolButtonExplorer->setStatusTip(tr("Visit Sinovate Block Explorer"));
+    ui->toolButtonExplorer->setStatusTip(QObject::tr("Visit Sinovate Block Explorer"));
 
     ui->toolButtonDiscord->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonDiscord->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/discord_white",PlatformStyle::NavBar));
     ui->toolButtonDiscord->setIconSize(QSize(64, 64));
-    ui->toolButtonDiscord->setStatusTip(tr("Visit Sinovate Discord Channel"));
+    ui->toolButtonDiscord->setStatusTip(QObject::tr("Visit Sinovate Discord Channel"));
 
     ui->toolButtonRoadmap->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonRoadmap->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/roadmap_white",PlatformStyle::NavBar));
     ui->toolButtonRoadmap->setIconSize(QSize(64, 64));
-    ui->toolButtonRoadmap->setStatusTip(tr("Sinovate Roadmap"));
+    ui->toolButtonRoadmap->setStatusTip(QObject::tr("Sinovate Roadmap"));
 
     ui->toolButtonWebTool->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonWebTool->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/webtool_white",PlatformStyle::NavBar));
     ui->toolButtonWebTool->setIconSize(QSize(64, 64));
-    ui->toolButtonWebTool->setStatusTip(tr("Visit Sinovate WebTool"));
+    ui->toolButtonWebTool->setStatusTip(QObject::tr("Visit Sinovate WebTool"));
 
     ui->toolButtonWallet->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonWallet->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/mywallet",PlatformStyle::NavBar));
     ui->toolButtonWallet->setIconSize(QSize(64, 64));
-    ui->toolButtonWallet->setStatusTip(tr("Download Latest Sinovate Wallets"));
+    ui->toolButtonWallet->setStatusTip(QObject::tr("Download Latest Sinovate Wallets"));
 
     ui->toolButtonWhitePaper->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonWhitePaper->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/whitepaper_white",PlatformStyle::NavBar));
     ui->toolButtonWhitePaper->setIconSize(QSize(64, 64));
-    ui->toolButtonWhitePaper->setStatusTip(tr("Sinovate LitePaper"));
+    ui->toolButtonWhitePaper->setStatusTip(QObject::tr("Sinovate LitePaper"));
 
     ui->toolButtonFaq->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButtonFaq->setIcon(platformStyle->MultiStatesIcon(":/styles/theme2/app-icons/faq_white",PlatformStyle::NavBar));
     ui->toolButtonFaq->setIconSize(QSize(64, 64));
-    ui->toolButtonFaq->setStatusTip(tr("Open FAQ Page"));
+    ui->toolButtonFaq->setStatusTip(QObject::tr("Open FAQ Page"));
 
     // Set stylesheet
     SetObjectStyleSheet(ui->labelWalletStatus, StyleSheetNames::ButtonTransparent);
@@ -292,8 +295,8 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
 
     // start with displaying the "out of sync" warnings
     showOutOfSyncWarning(true);
-    connect(ui->labelWalletStatus, &QPushButton::clicked, this, &OverviewPage::handleOutOfSyncWarningClicks);
-    connect(ui->labelTransactionsStatus, &QPushButton::clicked, this, &OverviewPage::handleOutOfSyncWarningClicks);
+    connect(ui->labelWalletStatus, &QPushButton::clicked, this, &OverviewPage::outOfSyncWarningClicked);
+    connect(ui->labelTransactionsStatus, &QPushButton::clicked, this, &OverviewPage::outOfSyncWarningClicked);
 
     // Price Stats
     m_timer = new QTimer(this);
@@ -301,11 +304,6 @@ OverviewPage::OverviewPage(const PlatformStyle *platformStyle, QWidget *parent) 
     m_timer->start(30000);
     getStatistics();
     // --
-}
-
-void OverviewPage::handleOutOfSyncWarningClicks()
-{
-    Q_EMIT outOfSyncWarningClicked();
 }
 
 void OverviewPage::setPrivacy(bool privacy)
@@ -477,6 +475,17 @@ void OverviewPage::setWalletModel(WalletModel *model)
     updateDisplayUnit();
 }
 
+void OverviewPage::changeEvent(QEvent* e)
+{
+    if (e->type() == QEvent::PaletteChange) {
+        QIcon icon = m_platform_style->SingleColorIcon(QStringLiteral(":/icons/warning"));
+        ui->labelTransactionsStatus->setIcon(icon);
+        ui->labelWalletStatus->setIcon(icon);
+    }
+
+    QWidget::changeEvent(e);
+}
+
 void OverviewPage::updateDisplayUnit()
 {
     if(walletModel && walletModel->getOptionsModel())
@@ -585,7 +594,7 @@ void OverviewPage::on_toolButtonRoadmap_clicked() {
 }
 
 void OverviewPage::on_toolButtonWallet_clicked() {
-    QDesktopServices::openUrl(QUrl("https://github.com/SINOVATEblockchain/SIN-core/releases", QUrl::TolerantMode));
+    QDesktopServices::openUrl(QUrl("https://github.com/SINOVATEblockchain/sinovate/releases", QUrl::TolerantMode));
 }
 
 void OverviewPage::on_toolButtonWebTool_clicked() {

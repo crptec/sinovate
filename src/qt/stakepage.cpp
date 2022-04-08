@@ -17,6 +17,8 @@
 #include <qt/transactionview.h>
 #include <amount.h>
 
+#include <miner.h>
+
 #include <QSortFilterProxyModel>
 
 Q_DECLARE_METATYPE(interfaces::WalletBalances)
@@ -33,7 +35,7 @@ StakePage::StakePage(const PlatformStyle *_platformStyle, QWidget *parent) :
     m_expectedAnnualROI(0)
 {
     ui->setupUi(this);
-    ui->checkStake->setEnabled(gArgs.GetBoolArg("-staking", true));
+    ui->checkStake->setEnabled(CanStake());
     transactionView = new TransactionView(platformStyle, this, true);
     ui->frameStakeRecords->layout()->addWidget(transactionView);
 }
@@ -55,7 +57,7 @@ void StakePage::setClientModel(ClientModel *_clientModel)
         ui->labelHeight->setText(QString::number(height));
         m_subsidy = _clientModel->node().getBlockSubsidy(height, true, true);
         m_networkWeight = _clientModel->node().getNetworkStakeWeight();
-        m_expectedAnnualROI = _clientModel->node().getEstimatedAnnualROI();
+        m_expectedAnnualROI = _clientModel->node().getEstimatedAnnualROINode();
         updateNetworkWeight();
         updateAnnualROI();
     }
@@ -138,7 +140,7 @@ void StakePage::numBlocksChanged(int count, const QDateTime &, double, bool head
         ui->labelHeight->setText(BitcoinUnits::formatInt(count));
         m_subsidy = clientModel->node().getBlockSubsidy(count, true, true);
         m_networkWeight = clientModel->node().getNetworkStakeWeight();
-        m_expectedAnnualROI = clientModel->node().getEstimatedAnnualROI();
+        m_expectedAnnualROI = clientModel->node().getEstimatedAnnualROINode();
         updateSubsidy();
         updateNetworkWeight();
         updateAnnualROI();
@@ -183,8 +185,11 @@ void StakePage::updateEncryptionStatus()
         }
         break;
     case WalletModel::Locked:
-        bool checked = ui->checkStake->isChecked();
-        if(checked) ui->checkStake->onStatusChanged();
+        if(!walletModel->getWalletUnlockStakingOnly())
+        {
+            bool checked = ui->checkStake->isChecked();
+            if(checked) ui->checkStake->onStatusChanged();
+        }
         break;
     }
 }

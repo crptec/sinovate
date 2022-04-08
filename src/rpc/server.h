@@ -172,7 +172,7 @@ extern CRPCTable tableRPC;
 
 //proof-of-stake
 extern double GetPoSKernelPS();
-extern double GetEstimatedAnnualROI();
+extern double GetEstimatedAnnualROI(const CBlockIndex* tip);
 
 void StartRPC();
 void InterruptRPC();

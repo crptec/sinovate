@@ -33,11 +33,11 @@ static void SetupWalletToolArgs(ArgsManager& argsman)
     argsman.AddArg("-format=<format>", "The format of the wallet file to create. Either \"bdb\" or \"sqlite\". Only used with 'createfromdump'", ArgsManager::ALLOW_ANY, OptionsCategory::OPTIONS);
     argsman.AddArg("-printtoconsole", "Send trace/debug info to console (default: 1 when no -debug is true, 0 otherwise).", ArgsManager::ALLOW_ANY, OptionsCategory::DEBUG_TEST);
 
-    argsman.AddCommand("info", "Get wallet info", OptionsCategory::COMMANDS);
-    argsman.AddCommand("create", "Create new wallet file", OptionsCategory::COMMANDS);
-    argsman.AddCommand("salvage", "Attempt to recover private keys from a corrupt wallet. Warning: 'salvage' is experimental.", OptionsCategory::COMMANDS);
-    argsman.AddCommand("dump", "Print out all of the wallet key-value records", OptionsCategory::COMMANDS);
-    argsman.AddCommand("createfromdump", "Create new wallet file from dumped records", OptionsCategory::COMMANDS);
+    argsman.AddCommand("info", "Get wallet info");
+    argsman.AddCommand("create", "Create new wallet file");
+    argsman.AddCommand("salvage", "Attempt to recover private keys from a corrupt wallet. Warning: 'salvage' is experimental.");
+    argsman.AddCommand("dump", "Print out all of the wallet key-value records");
+    argsman.AddCommand("createfromdump", "Create new wallet file from dumped records");
 }
 
 static bool WalletAppInit(ArgsManager& args, int argc, char* argv[])
@@ -49,14 +49,14 @@ static bool WalletAppInit(ArgsManager& args, int argc, char* argv[])
         return false;
     }
     if (argc < 2 || HelpRequested(args) || args.IsArgSet("-version")) {
-        std::string strUsage = strprintf("%s bitcoin-wallet version", PACKAGE_NAME) + " " + FormatFullVersion() + "\n";
+        std::string strUsage = strprintf("%s sin-wallet version", PACKAGE_NAME) + " " + FormatFullVersion() + "\n";
         if (!args.IsArgSet("-version")) {
             strUsage += "\n"
-                        "bitcoin-wallet is an offline tool for creating and interacting with " PACKAGE_NAME " wallet files.\n"
-                        "By default bitcoin-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n"
+                        "sin-wallet is an offline tool for creating and interacting with " PACKAGE_NAME " wallet files.\n"
+                        "By default sin-wallet will act on wallets in the default mainnet wallet directory in the datadir.\n"
                         "To change the target wallet, use the -datadir, -wallet and -testnet/-regtest arguments.\n\n"
                         "Usage:\n"
-                        "  bitcoin-wallet [options] <command>\n";
+                        "  sin-wallet [options] <command>\n";
             strUsage += "\n" + args.GetHelpMessage();
         }
         tfm::format(std::cout, "%s", strUsage);
@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
 
     const auto command = args.GetCommand();
     if (!command) {
-        tfm::format(std::cerr, "No method provided. Run `bitcoin-wallet -help` for valid methods.\n");
+        tfm::format(std::cerr, "No method provided. Run `sin-wallet -help` for valid methods.\n");
         return EXIT_FAILURE;
     }
     if (command->args.size() != 0) {

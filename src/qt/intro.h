@@ -12,6 +12,7 @@
 static const bool DEFAULT_CHOOSE_DATADIR = false;
 
 class FreespaceChecker;
+class OptionsModel;
 
 namespace interfaces {
     class Node;
@@ -36,6 +37,8 @@ public:
 
     QString getDataDirectory();
     void setDataDirectory(const QString &dataDir);
+    void setModel(OptionsModel *model);
+    int64_t getPruneMiB() const;
 
     /**
      * Determine data directory. Let the user choose if the current one doesn't exist.
@@ -44,10 +47,10 @@ public:
      * @returns true if a data directory was selected, false if the user cancelled the selection
      * dialog.
      *
-     * @note do NOT call global GetDataDir() before calling this function, this
+     * @note do NOT call global gArgs.GetDataDirNet() before calling this function, this
      * will cause the wrong path to be cached.
      */
-    static bool showIfNeeded(bool& did_show_intro, bool& prune);
+    static bool showIfNeeded(bool& did_show_intro, int64_t& prune_MiB);
 
 Q_SIGNALS:
     void requestCheck();
@@ -60,6 +63,10 @@ private Q_SLOTS:
     void on_ellipsisButton_clicked();
     void on_dataDirDefault_clicked();
     void on_dataDirCustom_clicked();
+    void on_theme1_clicked();
+    void on_theme2_clicked();
+    void on_theme3_clicked();
+    void updateLanguageSetting();
 
 private:
     Ui::Intro *ui;
@@ -67,19 +74,21 @@ private:
     QMutex mutex;
     bool signalled;
     QString pathToCheck;
+    QString language;
+    OptionsModel *model;
     const int64_t m_blockchain_size_gb;
     const int64_t m_chain_state_size_gb;
     //! Total required space (in GB) depending on user choice (prune or not prune).
     int64_t m_required_space_gb{0};
     uint64_t m_bytes_available{0};
-    const int64_t m_prune_target_gb;
+    int64_t m_prune_target_gb;
 
     void startThread();
     void checkPath(const QString &dataDir);
     QString getPathToCheck();
     void UpdatePruneLabels(bool prune_checked);
     void UpdateFreeSpaceLabel();
-
+    
     friend class FreespaceChecker;
 };
 

@@ -92,7 +92,6 @@ PlatformStyle::PlatformStyle(const QString &_name, bool _imagesOnButtons, bool _
     // Get version
     version = GetIntStyleValue("platformstyle/version", version);
 
-    // Determine icon highlighting color
     if (colorizeIcons) {
         singleColor = GetStringStyleValue("platformstyle/single-color", "#008ac8");
     }

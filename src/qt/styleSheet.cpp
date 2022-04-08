@@ -178,13 +178,27 @@ QStringList StyleSheet::getSupportedThemes()
 
 QStringList StyleSheet::getSupportedThemesNames()
 {
-    return QStringList() << "Light blue theme" << "Dark blue theme" << "Dark theme";
+    return QStringList() << QObject::tr("Light blue theme") << QObject::tr("Dark blue theme") << QObject::tr("Dark theme");
 }
 
 
 QString StyleSheet::getDefaultTheme()
 {
-    return "theme1";
+    
+    //++ Allows the user to select a theme on the intro screen. //
+    //++ If the user does not select a theme, "theme1" is selected as the default theme. //
+    QSettings settings;
+    if (settings.value("Theme") > "") 
+    {
+     QString themeValue;
+     themeValue = settings.value("Theme").toString();
+             
+        return themeValue;
+    }
+    else{
+        settings.setValue("Theme", "theme1");
+        return "theme1";
+    }
 }
 
 bool StyleSheet::setTheme(const QString &theme)

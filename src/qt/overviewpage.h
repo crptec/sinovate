@@ -52,6 +52,9 @@ Q_SIGNALS:
     void receiveCoinsClicked();
     void toolButtonFaqClicked();
 
+protected:
+    void changeEvent(QEvent* e) override;
+
 private:
     Ui::OverviewPage *ui;
     ClientModel *clientModel;
@@ -61,6 +64,8 @@ private:
     qint64 totalBalance;
     bool m_privacy{false};
 
+    const PlatformStyle* m_platform_style;
+
     TxViewDelegate *txdelegate;
     std::unique_ptr<TransactionFilterProxy> filter;
 
@@ -68,7 +73,6 @@ private Q_SLOTS:
     void updateDisplayUnit();
     void updateAlerts(const QString &warnings);
     void updateWatchOnlyLabels(bool showWatchOnly);
-    void handleOutOfSyncWarningClicks();
 
     void on_showMoreButton_clicked();
     void on_buttonSend_clicked();

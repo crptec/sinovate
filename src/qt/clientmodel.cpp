@@ -18,6 +18,7 @@
 #include <util/system.h>
 #include <util/threadnames.h>
 #include <validation.h>
+#include <wallet/wallet.h>
 //SIN
 #include <sinovate/infinitynodeman.h>
 //
@@ -237,7 +238,7 @@ QString ClientModel::formatClientStartupTime() const
 
 QString ClientModel::dataDir() const
 {
-    return GUIUtil::boostPathToQString(GetDataDir());
+    return GUIUtil::boostPathToQString(gArgs.GetDataDirNet());
 }
 
 QString ClientModel::blocksDir() const
@@ -290,7 +291,7 @@ static void BannedListChanged(ClientModel *clientmodel)
 }
 
 static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_state, interfaces::BlockTip tip, double verificationProgress, bool fHeader)
-{
+{   
     if (fHeader) {
         // cache best headers time and height to reduce future cs_main locks
         clientmodel->cachedBestHeaderHeight = tip.block_height;
@@ -308,7 +309,7 @@ static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_
         return;
     }
 
-    if(sync_state == SynchronizationState::POST_INIT && !infnodeman.isReachedLastBlock() && GetTimeMillis() < nLastUpdateNotification + MODEL_UPDATE_DELAY){
+    if(sync_state == SynchronizationState::POST_INIT && GetTimeMillis() < nLastUpdateNotification + MODEL_UPDATE_DELAY){
         return;
     }
 
@@ -319,6 +320,7 @@ static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_
         Q_ARG(bool, fHeader),
         Q_ARG(SynchronizationState, sync_state));
     assert(invoked);
+    
     nLastUpdateNotification = now;
 }
 
@@ -381,8 +383,12 @@ void ClientModel::onResult(QNetworkReply* reply)
 
         // Set NETWORK strings
         m_sinStats.blockcount = dataObject.value("blockcount").toVariant().toString();
-        m_sinStats.known_hashrate = dataObject.value("known_hashrate").toDouble();
+        m_sinStats.hashrate = dataObject.value("hashrate").toVariant().toString();
         m_sinStats.difficulty = dataObject.value("difficulty").toVariant().toString();
+        m_sinStats.blockReward = dataObject.value("BlockReward").toVariant().toString();
+        m_sinStats.bigApy = dataObject.value("BigAPY").toVariant().toString();
+        m_sinStats.midApy = dataObject.value("MidAPY").toVariant().toString();
+        m_sinStats.miniApy = dataObject.value("MiniAPY").toVariant().toString();
         m_sinStats.lastPrice = dataObject.value("lastPrice").toDouble();
         m_sinStats.usdPrice = dataObject.value("usdPrice").toDouble();
         m_sinStats.eurPrice = dataObject.value("eurPrice").toDouble();

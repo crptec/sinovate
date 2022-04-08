@@ -11,13 +11,27 @@
 
 namespace Consensus {
 
-enum DeploymentPos
-{
+/**
+ * A buried deployment is one where the height of the activation has been hardcoded into
+ * the client implementation long after the consensus change has activated. See BIP 90.
+ */
+enum BuriedDeployment : int16_t {
+    // buried deployments get negative values to avoid overlap with DeploymentPos
+    DEPLOYMENT_HEIGHTINCB = std::numeric_limits<int16_t>::min(),
+    DEPLOYMENT_CLTV,
+    DEPLOYMENT_DERSIG,
+    DEPLOYMENT_CSV,
+    DEPLOYMENT_SEGWIT,
+};
+constexpr bool ValidDeployment(BuriedDeployment dep) { return dep <= DEPLOYMENT_SEGWIT; }
+
+enum DeploymentPos : uint16_t {
     DEPLOYMENT_TESTDUMMY,
     DEPLOYMENT_TAPROOT, // Deployment of Schnorr/Taproot (BIPs 340-342)
-    // NOTE: Also add new deployments to VersionBitsDeploymentInfo in versionbits.cpp
+    // NOTE: Also add new deployments to VersionBitsDeploymentInfo in deploymentinfo.cpp
     MAX_VERSION_BITS_DEPLOYMENTS
 };
+constexpr bool ValidDeployment(DeploymentPos dep) { return dep < MAX_VERSION_BITS_DEPLOYMENTS; }
 
 /**
  * Struct for each individual consensus rule change using BIP9.
@@ -74,13 +88,16 @@ struct Params {
     int nInfinityNodeLockRewardTop; //in number
     int nInfinityNodeLockRewardSigners; //in number
     int nInfinityNodeLockRewardSINType; //in number
-    int nInfinityNodeExpireTime; //in number
+    int nInfinityNodeExpireBlocks; //in number
+    int nInfinityNodePOSExpireBlocks; //in number - new node timelife after POS
     int nSchnorrActivationHeight; // block height (int)
     int nINActivationHeight; // block height (int)
     int nINEnforcementHeight; // block height (int)
     int nDINActivationHeight; // block height (int) - DIN switch height
-    int nINMetaUpdateChangeHeight; // block height (int) - new method of updatemetadata
-    int nINMetaUpdateCachedNextBlock; // block height (int) - fork to use cached metadata of next block
+    int nINMetaUpdateChangeHeight; // block height (int) - new method of updatemetadata  -active the same time as POS
+    int nINMetaUpdateCachedNextBlock; // block height (int) - fork to use cached metadata of next block -active the same time as POS
+    int nINPOSExpireBlocksForkHeight; // block height (int) - fork to change node timelife  -active the same time as POS
+    int nTxFeeHeight; // block height (int) - check burn tx fee in consensus -active the same time as POS
 
     // different constant addresses we use 
     const char *devAddressPubKey;
@@ -181,7 +198,25 @@ struct Params {
      */
     bool signet_blocks{false};
     std::vector<uint8_t> signet_challenge;
+
+    int DeploymentHeight(BuriedDeployment dep) const
+    {
+        switch (dep) {
+        case DEPLOYMENT_HEIGHTINCB:
+            return BIP34Height;
+        case DEPLOYMENT_CLTV:
+            return BIP65Height;
+        case DEPLOYMENT_DERSIG:
+            return BIP66Height;
+        case DEPLOYMENT_CSV:
+            return CSVHeight;
+        case DEPLOYMENT_SEGWIT:
+            return SegwitHeight;
+        } // no default case, so the compiler can warn about missing cases
+        return std::numeric_limits<int>::max();
+    }
 };
+
 } // namespace Consensus
 
 #endif // BITCOIN_CONSENSUS_PARAMS_H

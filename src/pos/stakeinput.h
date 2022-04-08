@@ -45,8 +45,6 @@ public:
     CSinStake(const CTxOut& _from, const COutPoint& _outPointFrom, const CBlockIndex* _pindexFrom) :
             CStakeInput(_pindexFrom), outputFrom(_from), outpointFrom(_outPointFrom) {}
 
-    static CSinStake* NewSinStake(const CTxIn& txin);
-
     bool InitFromTxIn(const CTxIn& txin) override { return pindexFrom; }
     const CBlockIndex* GetIndexFrom() const override;
     bool GetTxOutFrom(CTxOut& out) const override;

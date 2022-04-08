@@ -9,7 +9,7 @@
 #include <sinovate/infinitynodelockreward.h>
 #include <sinovate/infwalletaccess.h>
 
-InfValidationInterface::InfValidationInterface(CConnman& connmanIn): connman(connmanIn)
+InfValidationInterface::InfValidationInterface(CConnman& connmanIn, ChainstateManager& chainmanIn): connman(connmanIn), chainman(chainmanIn)
 {
     fRegister = true;
 }
@@ -31,7 +31,7 @@ void InfValidationInterface::UpdatedBlockTip(const CBlockIndex *pindexNew, const
     infTip.UpdatedBlockTip(pindexNew, fInitialDownload, connman);
     /*notification update block*/
     infinitynodePeer.UpdatedBlockTip(pindexNew);
-    inflockreward.UpdatedBlockTip(pindexNew, connman);
+    inflockreward.UpdatedBlockTip(pindexNew, connman, chainman);
     infWalletAccess.UpdatedBlockTip(pindexNew);
     /*nCachedBlockHeight of infnodeman is updated in updateFinalList which is called on validation*/
     //infnodeman.UpdatedBlockTip(pindexNew);
