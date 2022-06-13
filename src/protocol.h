@@ -269,6 +269,10 @@ extern const char *INFCOMMITMENT;
 extern const char *INFLRMUSIG;
 extern const char *INFLRGROUP;
 extern const char *BFTPINIT;
+extern const char *BFTPACKN;
+extern const char *BFTPDFEE;
+extern const char *BFTPCALL;
+extern const char *BFTPDATA;
 //<SIN
 }; // namespace NetMsgType
 

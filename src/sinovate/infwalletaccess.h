@@ -28,6 +28,8 @@ public:
     bool IsBalancePositive(const CWallet* pwallet);
     bool RegisterLROnchain();
 
+    bool getBftpFeeTx(const std::string sAcountName, const CAmount nStorageFee, const std::string sMetaInfo, CTransactionRef& tx);
+
     //call in infvalidationinterface.cpp when node connect a new block
     void UpdatedBlockTip(const CBlockIndex *pindex);
 };

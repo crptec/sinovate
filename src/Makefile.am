@@ -232,6 +232,7 @@ BITCOIN_CORE_H = \
   shutdown.h \
   signet.h \
   sinovate/flat-database.h \
+  sinovate/infbftpfileutil.h \
   sinovate/infinitynode.h \
   sinovate/infinitynodelockinfo.h \
   sinovate/infinitynodelockreward.h \

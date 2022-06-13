@@ -747,7 +747,7 @@ private:
     CKey myPrivKey;
     CPubKey myPubKey;
     CPubKey communicationPubKey;
-	CKey encryptionKey;
+    CKey encryptionKey;
 //<SIN
 };
 
