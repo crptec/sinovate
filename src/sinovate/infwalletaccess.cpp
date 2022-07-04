@@ -183,6 +183,117 @@ bool CInfWalletAccess::RegisterLROnchain()
     return true;
 }
 
+/**
+ * create a tx for storage fee
+ */
+bool CInfWalletAccess::getBftpFeeTx(const std::string sAcountName, const CAmount nStorageFee, const std::string sMetaInfo, CTransactionRef& tx)
+{
+
+    std::shared_ptr<CWallet> const wallet = infWalletAccess.GetWalletAcces();
+    if(!wallet){
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::getBftpFeeTx -- No wallet is loaded. Please complete json file\n");
+        return false;
+    }
+
+    CWallet* const pwallet = wallet.get();
+    LOCK(pwallet->cs_wallet);
+
+    if(pwallet->IsLocked()){
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::getBftpFeeTx -- Wallet is locked\n");
+        return false;
+    }
+
+    const auto bal = pwallet->GetBalance();
+    if(bal.m_mine_trusted == 0){
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::getBftpFeeTx -- Balance is 0\n");
+        return false;
+    }
+
+    //get CTxDestination from sAcountName - label
+    std::set<CTxDestination> address_set;
+    address_set = pwallet->GetLabelAddresses(sAcountName);
+
+
+    //get all avaiable coins
+    int nMinDepth = 21;
+    int nMaxDepth = 9999999;
+    CAmount nMinimumAmount = 0;
+    CAmount nMaximumAmount = MAX_MONEY;
+    CAmount nMinimumSumAmount = MAX_MONEY;
+    uint64_t nMaximumCount = 0;
+    bool include_unsafe = false;
+
+    std::vector<COutput> vecOutputs;
+    {
+        CCoinControl cctl;
+        cctl.m_avoid_address_reuse = false;
+        cctl.m_min_depth = nMinDepth;
+        cctl.m_max_depth = nMaxDepth;
+        cctl.m_include_unsafe_inputs = include_unsafe;
+        LOCK(pwallet->cs_wallet);
+        pwallet->AvailableCoins(vecOutputs, &cctl, nMinimumAmount, nMaximumAmount, nMinimumSumAmount, nMaximumCount);
+    }
+
+    //select inputs for Fee, by sAcountName
+    CAmount selected = 0;
+    int nInput = 0;
+    CTransactionRef tx_New;
+    CCoinControl coin_control;
+
+    for (COutput& out : vecOutputs) {
+        if(selected >= nStorageFee) break;
+        if(out.nDepth >= 6 && selected < nStorageFee){
+            CTxDestination address;
+            if (ExtractDestination(out.tx->tx->vout[out.i].scriptPubKey, address) && pwallet->IsMine(address) && address_set.count(address)) {
+                coin_control.Select(COutPoint(out.tx->GetHash(), out.i));
+                selected += out.tx->tx->vout[out.i].nValue;
+                nInput++;
+            }
+        }
+    }
+
+    if(selected < nStorageFee){
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::getBftpFeeTx -- Balance of Infinitynode is not enough.\n");
+        return false;
+    }
+
+    //first element in set
+    coin_control.destChange = *(address_set.begin());
+
+    //CRecipient
+    std::string strFail = "";
+    std::vector<CRecipient> vecSend;
+    CAmount nFeeRet = 0;
+    bool fSubtractFeeFromAmount = false;
+    int nChangePosRet = -1;
+    CAmount nFeeRequired;
+    bilingual_str strError;
+    mapValue_t mapValue;
+
+    CTxDestination dest = DecodeDestination(Params().GetConsensus().cNotifyAddress);
+    CScript scriptPubKeyBurnAddress = GetScriptForDestination(dest);
+    std::vector<std::vector<unsigned char> > vSolutions;
+    TxoutType whichType = Solver(scriptPubKeyBurnAddress, vSolutions);
+    PKHash keyid = PKHash(uint160(vSolutions[0]));
+    CScript script;
+    script = GetScriptForBurn(keyid, sMetaInfo);
+
+    CRecipient recipient = {script, nStorageFee, fSubtractFeeFromAmount};
+    vecSend.push_back(recipient);
+    FeeCalculation fee_calc_out;
+
+    mapValue["to"] = Params().GetConsensus().cNotifyAddress;
+
+    if (!pwallet->CreateTransaction(vecSend, tx, nFeeRequired, nChangePosRet, strError, coin_control, fee_calc_out, true)) {
+        LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::getBftpFeeTx -- Can not create tx: %s (nb input: %s Amount: %lld)\n",strError.original, nInput, selected);
+        return false;
+    }
+
+    LogPrint(BCLog::INFINITYWA,"CInfinityNodeWalletAccess::getBftpFeeTx -- Selected %d inputs with amount: %lld.\n", nInput, selected);
+
+    return true;
+}
+
 void CInfWalletAccess::UpdatedBlockTip(const CBlockIndex *pindex)
 {
     if(!pindex) return;

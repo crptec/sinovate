@@ -168,6 +168,7 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::IPC, "ipc"},
     {BCLog::ALL, "1"},
     {BCLog::ALL, "all"},
+    {BCLog::BFTP, "bftp"},
 };
 
 bool GetLogCategory(BCLog::LogFlags& flag, const std::string& str)

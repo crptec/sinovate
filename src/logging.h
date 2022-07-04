@@ -65,6 +65,7 @@ namespace BCLog {
         INFINITYMAN     = (1 << 23),
         INFINITYLOCK    = (1 << 24),
         INFINITYPEER    = (1 << 25),
+        BFTP            = (1 << 25),
         INFINITYMETA    = (1 << 26),
         INFINITYRSV     = (1 << 27),
         INFINITYWA      = (1 << 27),

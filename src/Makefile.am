@@ -232,6 +232,9 @@ BITCOIN_CORE_H = \
   shutdown.h \
   signet.h \
   sinovate/flat-database.h \
+  sinovate/infbftpclient.h \
+  sinovate/infbftpfileutil.h \
+  sinovate/infbftpserver.h \
   sinovate/infinitynode.h \
   sinovate/infinitynodelockinfo.h \
   sinovate/infinitynodelockreward.h \
@@ -392,6 +395,8 @@ libbitcoin_server_a_SOURCES = \
   script/sigcache.cpp \
   shutdown.cpp \
   signet.cpp \
+  sinovate/infbftpclient.cpp \
+  sinovate/infbftpserver.cpp \
   sinovate/infinitynode.cpp \
   sinovate/infinitynodelockinfo.cpp \
   sinovate/infinitynodelockreward.cpp \

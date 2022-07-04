@@ -44,6 +44,10 @@
 
 //>SIN
 #include <sinovate/infinitynodelockreward.h>
+#include <sinovate/infwalletaccess.h>
+#include <sinovate/infbftpclient.h>
+#include <sinovate/infbftpfileutil.h>
+#include <sinovate/infbftpserver.h>
 //<SIN
 /** How long to cache transactions in mapRelay for normal relay */
 static constexpr auto RELAY_TX_CACHE_TIME = 15min;
@@ -1151,7 +1155,7 @@ void PeerManagerImpl::InitializeBFTPNode(CNode *pnode)
         assert(m_txrequest.Count(nodeid) == 0);
     }
     {
-        PeerRef peer = std::make_shared<Peer>(nodeid);
+        PeerRef peer = std::make_shared<Peer>(nodeid, /* addr_relay = */ !pnode->IsBlockOnlyConn());
         LOCK(m_peer_mutex);
         m_peer_map.emplace_hint(m_peer_map.end(), nodeid, std::move(peer));
     }
@@ -2645,9 +2649,132 @@ void PeerManagerImpl::ProcessBFTPMessage(CNode& pfrom, const std::string& msg_ty
         /*TODO: if can not set communication key, nDos = 30*/
         pfrom.SetCommunicationKey(cPubKey);
 
-        LogPrint(BCLog::NET, "bFTP server peer=%d init message: nonce: %d, client PubKey: %s, common Key: %s\n", pfrom.GetId(),
+        LogPrint(BCLog::NET, "bFTP Server peer=%d init message: nonce: %d, client PubKey: %s, common Key: %s.\n", pfrom.GetId(),
             nNonce, EncodeBase64(pfrom.GetCommunicationKey()), EncodeSecret(pfrom.GetEncryptionKey()));
+
+        //send a message to client, accept next step
+        CPubKey pubkey = pfrom.GetMyPubKey();
+        m_connman.PushMessage(&pfrom, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::BFTPACKN, PROTOCOL_VERSION, nNonce, pubkey));
+
+        //create a chanel to upload data
+        /*
+        std::string filepath = "";
+        LogPrint(BCLog::NET, "bFTP Server start chanel\n");
+        CBftpServer bftpServer(addrMe.ToStringIP(), 20000, pfrom.GetEncryptionKey(), 20623754, filepath);
+        bftpServer.Start();
+        LogPrint(BCLog::NET, "bFTP Server started chanel\n");
         return;
+        */
+    }
+
+    if (msg_type == NetMsgType::BFTPACKN) {
+        uint64_t nNonce = 1;
+        CPubKey cPubKey;
+        int nVersion;
+
+        vRecv >> nVersion >> nNonce >> cPubKey;
+        if (pfrom.GetLocalNonce() != nNonce){
+            LogPrint(BCLog::NET, "bFTP Client peer=%d acknowlege message with bad nonce: %d.\n", pfrom.GetId(), nNonce);
+            return;
+        }
+
+        //calcul communication Key from Server
+        pfrom.SetCommunicationKey(cPubKey);
+        LogPrint(BCLog::NET, "bFTP Client peer=%d acknowlege message: nonce: %d, client PubKey: %s, common Key: %s\n", pfrom.GetId(),
+            nNonce, EncodeBase64(cPubKey), EncodeSecret(pfrom.GetEncryptionKey()));
+
+        //send meta info, mode directpay
+        std::string sAccountName="bftpAccount";
+        CAmount nStorageFee = 10000000;
+        std::string sMetaInfo = "nType;nHeight;Hash;Size;sTimeSecond;Bandwidth";
+        CTransactionRef txStorageFee;
+        bool bftpPayement = infWalletAccess.getBftpFeeTx(sAccountName, nStorageFee, sMetaInfo, txStorageFee);
+        if (bftpPayement) {
+            m_connman.PushMessage(&pfrom, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::BFTPDFEE, PROTOCOL_VERSION, *txStorageFee));
+
+            LogPrint(BCLog::NET, "bFTP Client peer=%d send storage fee tx: %s\n", pfrom.GetId(), txStorageFee->GetHash().ToString());
+        }
+    }
+
+    if (msg_type == NetMsgType::BFTPDFEE) {
+        int nVersion;
+        CTransactionRef ptx;
+        vRecv >> nVersion >> ptx;
+        const CTransaction& tx = *ptx;
+        LogPrint(BCLog::NET, "bFTP Server: receive direct payment fee tx: %s\n", ptx->GetHash().ToString());
+
+        const uint256& txid = ptx->GetHash();
+        const uint256& wtxid = ptx->GetWitnessHash();
+
+        LOCK(cs_main);
+
+        const MempoolAcceptResult result = AcceptToMemoryPool(m_chainman.ActiveChainstate(), m_mempool, ptx, false /* bypass_limits */);
+        const TxValidationState& state = result.m_state;
+
+        if (result.m_result_type == MempoolAcceptResult::ResultType::VALID) {
+            m_mempool.check(m_chainman.ActiveChainstate());
+            // As this version of the transaction was acceptable, we can forget about any
+            // requests for it.
+            m_txrequest.ForgetTxHash(tx.GetHash());
+            m_txrequest.ForgetTxHash(tx.GetWitnessHash());
+            _RelayTransaction(tx.GetHash(), tx.GetWitnessHash());
+
+            pfrom.nLastTXTime = GetTime();
+
+            LogPrint(BCLog::MEMPOOL, "bFTP Server: Accept direct payment storage fee from peer=%d: accepted %s (poolsz %u txn, %u kB)\n",
+                pfrom.GetId(),
+                tx.GetHash().ToString(),
+                m_mempool.size(), m_mempool.DynamicMemoryUsage() / 1000);
+
+            m_connman.PushMessage(&pfrom, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::BFTPCALL, PROTOCOL_VERSION));
+        }
+        else
+        {
+            LogPrint(BCLog::NET, "bFTP Server: tx %s from peer=%d was not accepted: %s\n", tx.GetHash().ToString(),
+                pfrom.GetId(),
+                state.ToString());
+            //MaybePunishNodeForTx(pfrom.GetId(), state);
+            //test situation, need to removed
+            //push data < 4Mb
+            m_connman.PushMessage(&pfrom, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::BFTPCALL, PROTOCOL_VERSION));
+        }
+        return;
+    }
+
+    if (msg_type == NetMsgType::BFTPCALL) {
+        int nVersion;
+        vRecv >> nVersion;
+        LogPrint(BCLog::NET, "bFTP client: upload to server. Server's version: %d\n", nVersion);
+
+        boost::filesystem::path filepath = "";
+        CBftpFileUtil bFile(filepath);
+        CDataStream filedata(SER_DISK, CLIENT_VERSION);
+        bFile.LoadToNetMsg(filedata);
+        m_connman.PushMessage(&pfrom, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::BFTPDATA, filedata));
+        LogPrint(BCLog::NET, "bFTP client: uploaded %u bytes to server\n", vRecv.size());
+
+        //send big data size
+        //create a chanel to upload data 20623754 bytes
+        /*
+        const std::string bigfilepath = "";
+        const std::string host= "localhost";
+        CBftpClient bftpClient;
+        std::thread t(&CBftpClient::Send, &bftpClient, host, 20000, pfrom.GetEncryptionKey(), bigfilepath);
+        t.detach();
+        */
+    }
+
+    if (msg_type == NetMsgType::BFTPDATA) {
+        LogPrint(BCLog::NET, "bFTP server: received %u bytes from client\n", vRecv.size());
+
+        fs::path base_path = gArgs.GetDataDirNet() / "dCloud";
+        fs::create_directories(base_path);
+
+        fs::path path = base_path / "msgs_recv.dat";
+        CAutoFile f(fsbridge::fopen(path, "ab"), SER_DISK, CLIENT_VERSION);
+
+        f.write((const char*)vRecv.data(), vRecv.size());
+        f.fclose();
     }
 
     if (pfrom.nVersion == 0) {
