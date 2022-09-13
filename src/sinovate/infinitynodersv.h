@@ -85,7 +85,7 @@ public:
     std::map<std::string, std::vector<CVote>> GetFullProposalVotesMap() { return mapProposalVotes; }
 
     int getResult(std::string proposal, bool opinion, int mode = 0);
-    bool rsvScan(int nHeight);
+    bool rsvScan(int nHeight, ChainstateManager& chainman);
 
     std::string ToString() const;
     /// This is dummy overload to be used for dumping/loading mncache.dat

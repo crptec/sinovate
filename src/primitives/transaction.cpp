@@ -61,20 +61,6 @@ CTxOut::CTxOut(const CAmount& nValueIn, CScript scriptPubKeyIn)
     scriptPubKey = scriptPubKeyIn;
 }
 
-bool CTxOut::GetKeyIDFromUTXO(CKeyID& keyIDRet) const
-{
-    std::vector<std::vector<unsigned char>> vSolutions2D;
-    if (scriptPubKey.empty()) {
-        return false;
-    }
-    TxoutType whichType = Solver(scriptPubKey, vSolutions2D);
-    if (whichType == TxoutType::PUBKEYHASH) {
-        keyIDRet = CKeyID(uint160(vSolutions2D[0]));
-        return true;
-    }
-    return false;
-}
-
 std::string CTxOut::ToString() const
 {
     return strprintf("CTxOut(nValue=%d.%08d, scriptPubKey=%s)", nValue / COIN, nValue % COIN, HexStr(scriptPubKey).substr(0, 30));
@@ -101,8 +87,6 @@ uint256 CTransaction::ComputeWitnessHash() const
     return SerializeHash(*this, SER_GETHASH, 0);
 }
 
-/* For backward compatibility, the hash is initialized to 0. TODO: remove the need for this default constructor entirely. */
-CTransaction::CTransaction() : vin(), vout(), nVersion(CTransaction::CURRENT_VERSION), nLockTime(0), hash{}, m_witness_hash{} {}
 CTransaction::CTransaction(const CMutableTransaction& tx) : vin(tx.vin), vout(tx.vout), nVersion(tx.nVersion), nLockTime(tx.nLockTime), hash{ComputeHash()}, m_witness_hash{ComputeWitnessHash()} {}
 CTransaction::CTransaction(CMutableTransaction&& tx) : vin(std::move(tx.vin)), vout(std::move(tx.vout)), nVersion(tx.nVersion), nLockTime(tx.nLockTime), hash{ComputeHash()}, m_witness_hash{ComputeWitnessHash()} {}
 

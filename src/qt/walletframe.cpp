@@ -4,12 +4,10 @@
 
 #include <qt/walletframe.h>
 
-#include <qt/bitcoingui.h>
-#include <qt/createwalletdialog.h>
 #include <qt/overviewpage.h>
-#include <qt/walletcontroller.h>
 #include <qt/walletmodel.h>
 #include <qt/walletview.h>
+#include <wallet/wallet.h>
 
 #include <cassert>
 
@@ -19,9 +17,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-WalletFrame::WalletFrame(const PlatformStyle* _platformStyle, BitcoinGUI* _gui)
-    : QFrame(_gui),
-      gui(_gui),
+WalletFrame::WalletFrame(const PlatformStyle* _platformStyle, QWidget* parent)
+    : QFrame(parent),
       platformStyle(_platformStyle),
       m_size_hint(OverviewPage{platformStyle, nullptr}.sizeHint())
 {
@@ -36,17 +33,13 @@ WalletFrame::WalletFrame(const PlatformStyle* _platformStyle, BitcoinGUI* _gui)
     QGroupBox* no_wallet_group = new QGroupBox(walletStack);
     QVBoxLayout* no_wallet_layout = new QVBoxLayout(no_wallet_group);
 
-    QLabel *noWallet = new QLabel(tr("No wallet has been loaded.\nGo to File > Open Wallet to load a wallet.\n- OR -"));
+    QLabel *noWallet = new QLabel(QObject::tr("No wallet has been loaded.\nGo to File > Open Wallet to load a wallet.\n- OR -"));
     noWallet->setAlignment(Qt::AlignCenter);
     no_wallet_layout->addWidget(noWallet, 0, Qt::AlignHCenter | Qt::AlignBottom);
 
     // A button for create wallet dialog
-    QPushButton* create_wallet_button = new QPushButton(tr("Create a new wallet"), walletStack);
-    connect(create_wallet_button, &QPushButton::clicked, [this] {
-        auto activity = new CreateWalletActivity(gui->getWalletController(), this);
-        connect(activity, &CreateWalletActivity::finished, activity, &QObject::deleteLater);
-        activity->create();
-    });
+    QPushButton* create_wallet_button = new QPushButton(QObject::tr("Create a new wallet"), walletStack);
+    connect(create_wallet_button, &QPushButton::clicked, this, &WalletFrame::createWalletButtonClicked);
     no_wallet_layout->addWidget(create_wallet_button, 0, Qt::AlignHCenter | Qt::AlignTop);
     no_wallet_group->setLayout(no_wallet_layout);
 
@@ -66,39 +59,29 @@ void WalletFrame::setClientModel(ClientModel *_clientModel)
     }
 }
 
-bool WalletFrame::addWallet(WalletModel *walletModel)
+bool WalletFrame::addWallet(WalletModel* walletModel, WalletView* walletView)
 {
-    if (!gui || !clientModel || !walletModel) return false;
+    if (!clientModel || !walletModel) return false;
 
     if (mapWalletViews.count(walletModel) > 0) return false;
 
-    WalletView *walletView = new WalletView(platformStyle, this);
     walletView->setClientModel(clientModel);
     walletView->setWalletModel(walletModel);
     walletView->showOutOfSyncWarning(bOutOfSync);
-    walletView->setPrivacy(gui->isPrivacyModeActivated());
 
     WalletView* current_wallet_view = currentWalletView();
     if (current_wallet_view) {
         walletView->setCurrentIndex(current_wallet_view->currentIndex());
     } else {
-        walletView->gotoOverviewPage();
+        walletView->gotoHomePage();
     }
 
     walletStack->addWidget(walletView);
     mapWalletViews[walletModel] = walletView;
 
-    connect(walletView, &WalletView::outOfSyncWarningClicked, this, &WalletFrame::outOfSyncWarningClicked);
-    connect(walletView, &WalletView::transactionClicked, gui, &BitcoinGUI::gotoHistoryPage);
-    connect(walletView, &WalletView::coinsSent, gui, &BitcoinGUI::gotoHistoryPage);
-    connect(walletView, &WalletView::message, [this](const QString& title, const QString& message, unsigned int style) {
-        gui->message(title, message, style);
-    });
-    connect(walletView, &WalletView::encryptionStatusChanged, gui, &BitcoinGUI::updateWalletStatus);
-    connect(walletView, &WalletView::incomingTransaction, gui, &BitcoinGUI::incomingTransaction);
-    connect(walletView, &WalletView::hdEnabledStatusChanged, gui, &BitcoinGUI::updateWalletStatus);
-    connect(gui, &BitcoinGUI::setPrivacy, walletView, &WalletView::setPrivacy);
-
+    connect(walletView, &WalletView::showMore, this, &WalletFrame::gotoHistoryPage);
+    connect(walletView, &WalletView::sendCoins, this, &WalletFrame::gotoSendCoinsPage);
+    connect(walletView, &WalletView::receiveCoins, this, &WalletFrame::gotoReceiveCoinsPage);
     return true;
 }
 
@@ -106,10 +89,33 @@ void WalletFrame::setCurrentWallet(WalletModel* wallet_model)
 {
     if (mapWalletViews.count(wallet_model) == 0) return;
 
+    // Stop the effect of hidden widgets on the size hint of the shown one in QStackedWidget.
+    WalletView* view_about_to_hide = currentWalletView();
+    if (view_about_to_hide) {
+        QSizePolicy sp = view_about_to_hide->sizePolicy();
+        sp.setHorizontalPolicy(QSizePolicy::Ignored);
+        view_about_to_hide->setSizePolicy(sp);
+    }
+
     WalletView *walletView = mapWalletViews.value(wallet_model);
-    walletStack->setCurrentWidget(walletView);
     assert(walletView);
+
+    // Set or restore the default QSizePolicy which could be set to QSizePolicy::Ignored previously.
+    QSizePolicy sp = walletView->sizePolicy();
+    sp.setHorizontalPolicy(QSizePolicy::Preferred);
+    walletView->setSizePolicy(sp);
+    walletView->updateGeometry();
+
+    walletStack->setCurrentWidget(walletView);
     walletView->updateEncryptionStatus();
+}
+
+void WalletFrame::hideTransactionWidget()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)  {
+        i.value()->hideTransactionWidget();
+    }
 }
 
 void WalletFrame::removeWallet(WalletModel* wallet_model)
@@ -153,11 +159,25 @@ void WalletFrame::gotoOverviewPage()
         i.value()->gotoOverviewPage();
 }
 
+void WalletFrame::gotoHomePage()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoHomePage();
+}
+
 void WalletFrame::gotoHistoryPage()
 {
     QMap<WalletModel*, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoHistoryPage();
+}
+
+void WalletFrame::gotoInfinitynodePage()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoInfinitynodePage();
 }
 
 void WalletFrame::gotoReceiveCoinsPage()
@@ -166,6 +186,24 @@ void WalletFrame::gotoReceiveCoinsPage()
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoReceiveCoinsPage();
 }
+
+// StatsPage
+void WalletFrame::gotoStatsPage()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoStatsPage();
+}
+//
+
+// StakePage
+void WalletFrame::gotoStakePage()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoStakePage();
+}
+//
 
 void WalletFrame::gotoSendCoinsPage(QString addr)
 {
@@ -186,6 +224,14 @@ void WalletFrame::gotoVerifyMessageTab(QString addr)
     WalletView *walletView = currentWalletView();
     if (walletView)
         walletView->gotoVerifyMessageTab(addr);
+}
+
+void WalletFrame::gotoSetupTab()
+{
+    QMap<WalletModel*, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoSetupTab();
+
 }
 
 void WalletFrame::gotoLoadPSBT(bool from_clipboard)
@@ -219,9 +265,22 @@ void WalletFrame::changePassphrase()
 
 void WalletFrame::unlockWallet()
 {
+    QObject* object = sender();
+    QString objectName = object ? object->objectName() : "";
+    bool fromMenu = objectName == "unlockWalletAction";
     WalletView *walletView = currentWalletView();
     if (walletView)
-        walletView->unlockWallet();
+        walletView->unlockWallet(fromMenu);
+}
+
+void WalletFrame::lockWallet()
+{
+    WalletView *walletView = currentWalletView();
+    if (walletView)
+    {
+        walletView->lockWallet();
+        walletView->getWalletModel()->setWalletUnlockStakingOnly(false);
+    }
 }
 
 void WalletFrame::usedSendingAddresses()
@@ -247,9 +306,4 @@ WalletModel* WalletFrame::currentWalletModel() const
 {
     WalletView* wallet_view = currentWalletView();
     return wallet_view ? wallet_view->getWalletModel() : nullptr;
-}
-
-void WalletFrame::outOfSyncWarningClicked()
-{
-    Q_EMIT requestedSyncWarningInfo();
 }

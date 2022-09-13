@@ -5,6 +5,7 @@
 #include <sinovate/infinitynodersv.h>
 #include <sinovate/infinitynodeman.h>
 #include <sinovate/flat-database.h>
+#include <node/blockstorage.h>
 
 CInfinitynodersv infnodersv;
 
@@ -104,13 +105,12 @@ int CInfinitynodersv::getResult(std::string proposal, bool opinion, int mode)
     }
 }
 
-bool CInfinitynodersv::rsvScan(int nBlockHeight)
+bool CInfinitynodersv::rsvScan(int nBlockHeight, ChainstateManager& chainman)
 {
     Clear();
     LogPrint(BCLog::INFINITYRSV,"CInfinitynodersv::rsvScan -- Cleared map. Size is %d\n", (int)mapProposalVotes.size());
     if (nBlockHeight <= Params().GetConsensus().nInfinityNodeGenesisStatement) return false;
-
-    CBlockIndex* pindex  = ::ChainActive()[nBlockHeight];
+    CBlockIndex* pindex  = chainman.ActiveChain()[nBlockHeight];
     CBlockIndex* prevBlockIndex = pindex;
 
     while (prevBlockIndex->nHeight >= Params().GetConsensus().nInfinityNodeGenesisStatement)

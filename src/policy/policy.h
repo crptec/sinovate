@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2019 The Bitcoin Core developers
+// Copyright (c) 2009-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -19,7 +19,7 @@ class CTxOut;
 /** Default for -blockmaxweight, which controls the range of block weights the mining code will create **/
 static const unsigned int DEFAULT_BLOCK_MAX_WEIGHT = MAX_BLOCK_WEIGHT - 4000;
 /** Default for -blockmintxfee, which sets the minimum feerate for a transaction in blocks created by mining code **/
-static const unsigned int DEFAULT_BLOCK_MIN_TX_FEE = 1000;
+static const unsigned int DEFAULT_BLOCK_MIN_TX_FEE = 2000000;
 /** The maximum weight for transactions we're willing to relay/mine */
 static const unsigned int MAX_STANDARD_TX_WEIGHT = 400000;
 /** The minimum non-witness size for transactions we're willing to relay/mine (1 segwit input + 1 P2WPKH output = 82 bytes) */
@@ -38,11 +38,11 @@ static const unsigned int DEFAULT_BYTES_PER_SIGOP = 20;
 static const bool DEFAULT_PERMIT_BAREMULTISIG = true;
 /** The maximum number of witness stack items in a standard P2WSH script */
 static const unsigned int MAX_STANDARD_P2WSH_STACK_ITEMS = 100;
-/** The maximum size of each witness stack item in a standard P2WSH script */
+/** The maximum size in bytes of each witness stack item in a standard P2WSH script */
 static const unsigned int MAX_STANDARD_P2WSH_STACK_ITEM_SIZE = 80;
-/** The maximum size of each witness stack item in a standard BIP 342 script (Taproot, leaf version 0xc0) */
+/** The maximum size in bytes of each witness stack item in a standard BIP 342 script (Taproot, leaf version 0xc0) */
 static const unsigned int MAX_STANDARD_TAPSCRIPT_STACK_ITEM_SIZE = 80;
-/** The maximum size of a standard witnessScript */
+/** The maximum size in bytes of a standard witnessScript */
 static const unsigned int MAX_STANDARD_P2WSH_SCRIPT_SIZE = 3600;
 /** The maximum size of a standard ScriptSig */
 static const unsigned int MAX_STANDARD_SCRIPTSIG_SIZE = 1650;
@@ -51,7 +51,7 @@ static const unsigned int MAX_STANDARD_SCRIPTSIG_SIZE = 1650;
  * standard and should be done with care and ideally rarely. It makes sense to
  * only increase the dust limit after prior releases were already not creating
  * outputs below the new threshold */
-static const unsigned int DUST_RELAY_TX_FEE = 3000;
+static const unsigned int DUST_RELAY_TX_FEE = 6000000;
 /**
  * Standard script verification flags that standard transactions will comply
  * with. However scripts violating these flags may still be present in valid
@@ -90,23 +90,32 @@ CAmount GetDustThreshold(const CTxOut& txout, const CFeeRate& dustRelayFee);
 bool IsDust(const CTxOut& txout, const CFeeRate& dustRelayFee);
 
 bool IsStandard(const CScript& scriptPubKey, TxoutType& whichType);
-    /**
-     * Check for standard transaction types
-     * @return True if all outputs (scriptPubKeys) use only standard transaction forms
-     */
+
+
+// Changing the default transaction version requires a two step process: first
+// adapting relay policy by bumping TX_MAX_STANDARD_VERSION, and then later
+// allowing the new transaction version in the wallet/RPC.
+static constexpr decltype(CTransaction::nVersion) TX_MAX_STANDARD_VERSION{2};
+
+/**
+* Check for standard transaction types
+* @return True if all outputs (scriptPubKeys) use only standard transaction forms
+*/
 bool IsStandardTx(const CTransaction& tx, bool permit_bare_multisig, const CFeeRate& dust_relay_fee, std::string& reason);
-    /**
-     * Check for standard transaction types
-     * @param[in] mapInputs       Map of previous transactions that have outputs we're spending
-     * @param[in] taproot_active  Whether or taproot consensus rules are active (used to decide whether spends of them are permitted)
-     * @return True if all inputs (scriptSigs) use only standard transaction forms
-     */
+/**
+* Check for standard transaction types
+* @param[in] mapInputs       Map of previous transactions that have outputs we're spending
+* @param[in] taproot_active  Whether or taproot consensus rules are active (used to decide whether spends of them are permitted)
+* @return True if all inputs (scriptSigs) use only standard transaction forms
+*/
 bool AreInputsStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs, bool taproot_active);
-    /**
-     * Check if the transaction is over standard P2WSH resources limit:
-     * 3600bytes witnessScript size, 80bytes per witness stack element, 100 witness stack elements
-     * These limits are adequate for multi-signature up to n-of-100 using OP_CHECKSIG, OP_ADD, and OP_EQUAL,
-     */
+/**
+* Check if the transaction is over standard P2WSH resources limit:
+* 3600bytes witnessScript size, 80bytes per witness stack element, 100 witness stack elements
+* These limits are adequate for multisignatures up to n-of-100 using OP_CHECKSIG, OP_ADD, and OP_EQUAL.
+*
+* Also enforce a maximum stack item size limit and no annexes for tapscript spends.
+*/
 bool IsWitnessStandard(const CTransaction& tx, const CCoinsViewCache& mapInputs);
 
 /** Compute the virtual transaction size (weight reinterpreted as bytes). */

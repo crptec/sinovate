@@ -1,23 +1,9 @@
-*After branching off for a major version release of Bitcoin Core, use this
-template to create the initial release notes draft.*
+22.0 Release Notes
+==================
 
-*The release notes draft is a temporary file that can be added to by anyone. See
-[/doc/developer-notes.md#release-notes](/doc/developer-notes.md#release-notes)
-for the process.*
+Bitcoin Core version 22.0 is now available from:
 
-*Create the draft, named* "*version* Release Notes Draft"
-*(e.g. "0.20.0 Release Notes Draft"), as a collaborative wiki in:*
-
-https://github.com/bitcoin-core/bitcoin-devwiki/wiki/
-
-*Before the final release, move the notes back to this git repository.*
-
-*version* Release Notes Draft
-===============================
-
-Bitcoin Core version *version* is now available from:
-
-  <https://bitcoincore.org/bin/bitcoin-core-*version*/>
+  <https://bitcoincore.org/bin/bitcoin-core-22.0/>
 
 This release includes new features, various bug fixes and performance
 improvements, as well as updated translations.
@@ -51,9 +37,7 @@ Core should also work on most other Unix-like systems but is not as
 frequently tested on them.  It is not recommended to use Bitcoin Core on
 unsupported systems.
 
-From Bitcoin Core 0.22.0 onwards, macOS versions earlier than 10.14 are no
-longer supported. Additionally, Bitcoin Core does not yet change appearance
-when macOS "dark mode" is activated.
+From Bitcoin Core 22.0 onwards, macOS versions earlier than 10.14 are no longer supported.
 
 Notable changes
 ===============
@@ -61,24 +45,20 @@ Notable changes
 P2P and network changes
 -----------------------
 
-Updated RPCs
-------------
-
-Changes to Wallet or GUI related RPCs can be found in the GUI or Wallet section below.
-
-New RPCs
---------
+New and Updated RPCs
+--------------------
 
 Build System
 ------------
+
+Files
+-----
 
 New settings
 ------------
 
 Updated settings
 ----------------
-
-Changes to Wallet or GUI related settings can be found in the GUI or Wallet section below.
 
 Tools and Utilities
 -------------------
@@ -98,11 +78,39 @@ RPC
 Tests
 -----
 
+22.0 change log
+===============
+
+A detailed list of changes in this version follows. To keep the list to a manageable length, small refactors and typo fixes are not included, and similar changes are sometimes condensed into one line.
+
+### Consensus
+
+### Policy
+
+### Mining
+
+### Block and transaction handling
+
+### P2P protocol and network code
+
+### Wallet
+
+### RPC and other APIs
+
+### GUI
+
+### Build system
+
+### Tests and QA
+
+### Miscellaneous
+
+### Documentation
+
 Credits
 =======
 
 Thanks to everyone who directly contributed to this release:
-
 
 As well as to everyone that helped with translations on
 [Transifex](https://www.transifex.com/bitcoin/bitcoin/).

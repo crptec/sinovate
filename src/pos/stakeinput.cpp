@@ -14,40 +14,8 @@
 #include <validation.h>
 #include <chainparams.h>
 
-CSinStake* CSinStake::NewSinStake(const CTxIn& txin)
-{
-
-    // Find the previous transaction in database
-    uint256 hash_block;
-    if (!g_txindex) {
-        error("%s : FATAL: No txindex enabled, PoS validation failed", __func__);
-        return nullptr;
-    }
-
-    const CTransactionRef txPrev = GetTransaction(nullptr, nullptr, txin.prevout.hash, Params().GetConsensus(), hash_block);
-    if (txPrev == nullptr) {
-        error("%s : INFO: read txPrev failed, tx id prev: %s", __func__, txin.prevout.hash.GetHex());
-        return nullptr;
-    }
-
-    const CBlockIndex* pindexFrom = nullptr;
-    // Find the index of the block of the previous transaction
-    CBlockIndex* pindex = LookupBlockIndex(hash_block);
-    if (pindex) {
-        if (::ChainActive().Contains(pindex)) {
-            pindexFrom = pindex;
-        }
-    }
-    // Check that the input is in the active chain
-    if (!pindexFrom) {
-        error("%s : Failed to find the block index for stake origin", __func__);
-        return nullptr;
-    }
-
-    return new CSinStake(txPrev->vout[txin.prevout.n],
-                         txin.prevout,
-                         pindexFrom);
-}
+#include <chrono>
+#include <thread>
 
 bool CSinStake::GetTxOutFrom(CTxOut& out) const
 {

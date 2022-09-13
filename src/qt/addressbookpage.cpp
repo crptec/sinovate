@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -14,6 +14,7 @@
 #include <qt/editaddressdialog.h>
 #include <qt/guiutil.h>
 #include <qt/platformstyle.h>
+#include <qt/styleSheet.h>
 
 #include <QIcon>
 #include <QMenu>
@@ -56,7 +57,7 @@ protected:
 };
 
 AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode, Tabs _tab, QWidget *parent) :
-    QDialog(parent),
+    QDialog(parent, GUIUtil::dialog_flags),
     ui(new Ui::AddressBookPage),
     model(nullptr),
     mode(_mode),
@@ -64,17 +65,26 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
 {
     ui->setupUi(this);
 
+    SetObjectStyleSheet(ui->tableView, StyleSheetNames::TableViewLight);
+    setStyleSheet("");
+
     if (!platformStyle->getImagesOnButtons()) {
         ui->newAddress->setIcon(QIcon());
         ui->copyAddress->setIcon(QIcon());
         ui->deleteAddress->setIcon(QIcon());
         ui->exportButton->setIcon(QIcon());
     } else {
-        ui->newAddress->setIcon(platformStyle->SingleColorIcon(":/icons/add"));
-        ui->copyAddress->setIcon(platformStyle->SingleColorIcon(":/icons/editcopy"));
-        ui->deleteAddress->setIcon(platformStyle->SingleColorIcon(":/icons/remove"));
-        ui->exportButton->setIcon(platformStyle->SingleColorIcon(":/icons/export"));
+        ui->newAddress->setIcon(platformStyle->MultiStatesIcon(":/icons/add", PlatformStyle::PushButtonLight));
+        ui->copyAddress->setIcon(platformStyle->MultiStatesIcon(":/icons/editcopy", PlatformStyle::PushButtonLight));
+        ui->deleteAddress->setIcon(platformStyle->MultiStatesIcon(":/icons/remove", PlatformStyle::PushButtonLight));
+        ui->exportButton->setIcon(platformStyle->MultiStatesIcon(":/icons/export", PlatformStyle::PushButton));
     }
+
+    SetObjectStyleSheet(ui->newAddress, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->copyAddress, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->deleteAddress, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->exportButton, StyleSheetNames::ButtonGray);
+    SetObjectStyleSheet(ui->closeButton, StyleSheetNames::ButtonGray);
 
     switch(mode)
     {
@@ -101,40 +111,28 @@ AddressBookPage::AddressBookPage(const PlatformStyle *platformStyle, Mode _mode,
     switch(tab)
     {
     case SendingTab:
-        ui->labelExplanation->setText(tr("These are your Bitcoin addresses for sending payments. Always check the amount and the receiving address before sending coins."));
+        ui->labelExplanation->setText(tr("These are your SIN addresses for sending payments. Always check the amount and the receiving address before sending coins."));
         ui->deleteAddress->setVisible(true);
         ui->newAddress->setVisible(true);
         break;
     case ReceivingTab:
-        ui->labelExplanation->setText(tr("These are your Bitcoin addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.\nSigning is only possible with addresses of the type 'legacy'."));
+        ui->labelExplanation->setText(tr("These are your SIN addresses for receiving payments. Use the 'Receive' button in the My Wallet tab to create new addresses.\nSigning is only possible with addresses of the type 'legacy'."));
         ui->deleteAddress->setVisible(false);
         ui->newAddress->setVisible(false);
         break;
     }
 
-    // Context menu actions
-    QAction *copyAddressAction = new QAction(tr("&Copy Address"), this);
-    QAction *copyLabelAction = new QAction(tr("Copy &Label"), this);
-    QAction *editAction = new QAction(tr("&Edit"), this);
-    deleteAction = new QAction(ui->deleteAddress->text(), this);
-
     // Build context menu
     contextMenu = new QMenu(this);
-    contextMenu->addAction(copyAddressAction);
-    contextMenu->addAction(copyLabelAction);
-    contextMenu->addAction(editAction);
-    if(tab == SendingTab)
-        contextMenu->addAction(deleteAction);
-    contextMenu->addSeparator();
+    contextMenu->addAction(tr("&Copy Address"), this, &AddressBookPage::on_copyAddress_clicked);
+    contextMenu->addAction(tr("Copy &Label"), this, &AddressBookPage::onCopyLabelAction);
+    contextMenu->addAction(tr("&Edit"), this, &AddressBookPage::onEditAction);
 
-    // Connect signals for context menu actions
-    connect(copyAddressAction, &QAction::triggered, this, &AddressBookPage::on_copyAddress_clicked);
-    connect(copyLabelAction, &QAction::triggered, this, &AddressBookPage::onCopyLabelAction);
-    connect(editAction, &QAction::triggered, this, &AddressBookPage::onEditAction);
-    connect(deleteAction, &QAction::triggered, this, &AddressBookPage::on_deleteAddress_clicked);
+    if (tab == SendingTab) {
+        contextMenu->addAction(tr("&Delete"), this, &AddressBookPage::on_deleteAddress_clicked);
+    }
 
     connect(ui->tableView, &QWidget::customContextMenuRequested, this, &AddressBookPage::contextualMenu);
-
     connect(ui->closeButton, &QPushButton::clicked, this, &QDialog::accept);
 
     GUIUtil::handleCloseWindowShortcut(this);
@@ -249,13 +247,11 @@ void AddressBookPage::selectionChanged()
             // In sending tab, allow deletion of selection
             ui->deleteAddress->setEnabled(true);
             ui->deleteAddress->setVisible(true);
-            deleteAction->setEnabled(true);
             break;
         case ReceivingTab:
             // Deleting receiving addresses, however, is not allowed
             ui->deleteAddress->setEnabled(false);
             ui->deleteAddress->setVisible(false);
-            deleteAction->setEnabled(false);
             break;
         }
         ui->copyAddress->setEnabled(true);
@@ -295,7 +291,9 @@ void AddressBookPage::on_exportButton_clicked()
     // CSV is currently the only supported format
     QString filename = GUIUtil::getSaveFileName(this,
         tr("Export Address List"), QString(),
-        tr("Comma separated file (*.csv)"), nullptr);
+        /*: Expanded name of the CSV file format.
+            See https://en.wikipedia.org/wiki/Comma-separated_values */
+        tr("Comma separated file") + QLatin1String(" (*.csv)"), nullptr);
 
     if (filename.isNull())
         return;
@@ -309,6 +307,8 @@ void AddressBookPage::on_exportButton_clicked()
 
     if(!writer.write()) {
         QMessageBox::critical(this, tr("Exporting Failed"),
+            /*: An error message. %1 is a stand-in argument for the name
+                of the file we attempted to save to. */
             tr("There was an error trying to save the address list to %1. Please try again.").arg(filename));
     }
 }

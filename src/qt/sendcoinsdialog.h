@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -65,24 +65,19 @@ private:
     std::unique_ptr<CCoinControl> m_coin_control;
     std::unique_ptr<WalletModelTransaction> m_current_transaction;
     bool fNewRecipientAllowed;
-    bool fFeeMinimized;
     const PlatformStyle *platformStyle;
 
     // Process WalletModel::SendCoinsReturn and generate a pair consisting
     // of a message and message flags for use in Q_EMIT message().
     // Additional parameter msgArg can be used via .arg(msgArg).
     void processSendCoinsReturn(const WalletModel::SendCoinsReturn &sendCoinsReturn, const QString &msgArg = QString());
-    void minimizeFeeSection(bool fMinimize);
     // Format confirmation message
     bool PrepareSendText(QString& question_string, QString& informative_text, QString& detailed_text);
-    void updateFeeMinimizedLabel();
     // Update the passed in CCoinControl with state from the GUI
-    void updateCoinControlState(CCoinControl& ctrl);
+    void updateCoinControlState();
 
 private Q_SLOTS:
-    void on_sendButton_clicked();
-    void on_buttonChooseFee_clicked();
-    void on_buttonMinimizeFee_clicked();
+    void sendButtonClicked(bool checked);
     void removeEntry(SendCoinsEntry* entry);
     void useAvailableBalance(SendCoinsEntry* entry);
     void updateDisplayUnit();
@@ -115,7 +110,7 @@ class SendConfirmationDialog : public QMessageBox
     Q_OBJECT
 
 public:
-    SendConfirmationDialog(const QString& title, const QString& text, const QString& informative_text = "", const QString& detailed_text = "", int secDelay = SEND_CONFIRM_DELAY, const QString& confirmText = "Send", QWidget* parent = nullptr);
+    SendConfirmationDialog(const QString& title, const QString& text, const QString& informative_text = "", const QString& detailed_text = "", int secDelay = SEND_CONFIRM_DELAY, const QString& confirmText = "", QWidget* parent = nullptr);
     int exec() override;
 
 private Q_SLOTS:

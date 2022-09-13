@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -77,7 +77,9 @@ public:
         Other,
         Generated,
         Minted,
+        DINReward,
         SendToAddress,
+        Burn,
         SendToOther,
         RecvWithAddress,
         RecvFromOther,
@@ -119,6 +121,9 @@ public:
     std::string address;
     CAmount debit;
     CAmount credit;
+    // SIN
+    std::string message;
+    //
     /**@}*/
 
     /** Subtransaction index, for sort key */

@@ -12,6 +12,7 @@
 #include <threadinterrupt.h>
 #include <node/context.h>
 #include <util/time.h>
+#include <validation.h>
 
 #include <stdint.h>
 
@@ -36,6 +37,7 @@ private:
     int64_t nTime{0};
     int nTries{0};
     int nCoins{0};
+    std::string strStakeWallet;
 
 public:
     // Get
@@ -45,11 +47,13 @@ public:
     int GetLastCoins() const { return nCoins; }
     int GetLastTries() const { return nTries; }
     int64_t GetLastTime() const { return nTime; }
+    std::string GetStakeWallet() const { return strStakeWallet; }
     // Set
     void SetLastCoins(const int coins) { nCoins = coins; }
     void SetLastTries(const int tries) { nTries = tries; }
     void SetLastTip(const CBlockIndex* lastTip) { tipBlock = lastTip; }
     void SetLastTime(const uint64_t lastTime) { nTime = lastTime; }
+    void SetStakeWallet(const std::string strNewStakeWallet) { strStakeWallet = strNewStakeWallet ; }
     void SetNull()
     {
         SetLastCoins(0);
@@ -95,7 +99,10 @@ bool CreateCoinStake(CWallet* pwallet, const CBlockIndex* pindexPrev,
                     CMutableTransaction& txNew,
                     int64_t& nTxNewTime,
                     std::vector<CStakeableOutput>* availableCoins,
-                    CStakerStatus* pStakerStatus);
+                    CStakerStatus* pStakerStatus,
+                    CAmount nFees, 
+                    CScript burnAddressScript,
+                    CChainState& chainstate);
 
 void InitStakerStatus();
 

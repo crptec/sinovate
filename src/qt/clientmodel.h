@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,6 +7,9 @@
 
 #include <QObject>
 #include <QDateTime>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
 #include <atomic>
 #include <memory>
@@ -17,6 +20,7 @@ class BanTableModel;
 class CBlockIndex;
 class OptionsModel;
 class PeerTableModel;
+class PeerTableSortProxy;
 enum class SynchronizationState;
 
 namespace interfaces {
@@ -42,6 +46,30 @@ enum NumConnections {
     CONNECTIONS_ALL  = (CONNECTIONS_IN | CONNECTIONS_OUT),
 };
 
+struct SINStatsStruct {
+    QString blockcount = "";
+    QString hashrate = "";
+    QString difficulty = "";
+    QString blockReward = "";
+    QString bigApy = "";
+    QString midApy = "";
+    QString miniApy = "";
+    double lastPrice = 0.0;
+    double usdPrice = 0.0;
+    double eurPrice = 0.0;
+    int explorerTop10 = 0;
+    int explorerTop50 = 0;
+    QString explorerAddresses = "";
+    QString explorerActiveAddresses = "";
+    double supply = 0.0;
+    double burnFee = 0.0;
+    unsigned int burnNode = 0;
+    int burnNodeInt = 0;
+    double inf_online_big = 0.0;
+    double inf_online_mid = 0.0;
+    double inf_online_lil = 0.0;
+};
+
 /** Model for Bitcoin network client. */
 class ClientModel : public QObject
 {
@@ -54,6 +82,7 @@ public:
     interfaces::Node& node() const { return m_node; }
     OptionsModel *getOptionsModel();
     PeerTableModel *getPeerTableModel();
+    PeerTableSortProxy* peerTableSortProxy();
     BanTableModel *getBanTableModel();
 
     //! Return number of connections, default is in- and outbound (total)
@@ -74,6 +103,8 @@ public:
     QString formatClientStartupTime() const;
     QString dataDir() const;
     QString blocksDir() const;
+
+    SINStatsStruct getStats() const { return m_sinStats; }
 
     bool getProxyInfo(std::string& ip_port) const;
 
@@ -96,6 +127,7 @@ private:
     std::unique_ptr<interfaces::Handler> m_handler_notify_header_tip;
     OptionsModel *optionsModel;
     PeerTableModel *peerTableModel;
+    PeerTableSortProxy* m_peer_table_sort_proxy{nullptr};
     BanTableModel *banTableModel;
 
     //! A thread to interact with m_node asynchronously
@@ -103,6 +135,11 @@ private:
 
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();
+
+    // SIN
+    QTimer* m_timer;    // for stats data
+    QNetworkAccessManager* m_networkManager;
+    SINStatsStruct m_sinStats;
 
 Q_SIGNALS:
     void numConnectionsChanged(int count);
@@ -123,6 +160,9 @@ public Q_SLOTS:
     void updateNetworkActive(bool networkActive);
     void updateAlert();
     void updateBanlist();
+    void onResult(QNetworkReply* replystats);
+    void getStatistics();
+
 };
 
 #endif // BITCOIN_QT_CLIENTMODEL_H

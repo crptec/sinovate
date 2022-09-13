@@ -8,6 +8,7 @@
 #include <qt/guiconstants.h>
 #include <qt/guiutil.h>
 #include <qt/peertablemodel.h>
+#include <qt/peertablesortproxy.h>
 
 #include <clientversion.h>
 #include <interfaces/handler.h>
@@ -17,12 +18,21 @@
 #include <util/system.h>
 #include <util/threadnames.h>
 #include <validation.h>
+#include <wallet/wallet.h>
+//SIN
+#include <sinovate/infinitynodeman.h>
+//
 
 #include <stdint.h>
+#include <functional>
 
 #include <QDebug>
 #include <QThread>
 #include <QTimer>
+#include <QUrl>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 static int64_t nLastHeaderTipUpdateNotification = 0;
 static int64_t nLastBlockTipUpdateNotification = 0;
@@ -33,11 +43,16 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     optionsModel(_optionsModel),
     peerTableModel(nullptr),
     banTableModel(nullptr),
-    m_thread(new QThread(this))
+    m_thread(new QThread(this)),
+    m_networkManager(new QNetworkAccessManager(this))
 {
     cachedBestHeaderHeight = -1;
     cachedBestHeaderTime = -1;
+
     peerTableModel = new PeerTableModel(m_node, this);
+    m_peer_table_sort_proxy = new PeerTableSortProxy(this);
+    m_peer_table_sort_proxy->setSourceModel(peerTableModel);
+
     banTableModel = new BanTableModel(m_node, this);
 
     QTimer* timer = new QTimer;
@@ -58,6 +73,14 @@ ClientModel::ClientModel(interfaces::Node& node, OptionsModel *_optionsModel, QO
     });
 
     subscribeToCoreSignals();
+
+    // refresh Stats
+    m_timer = new QTimer(this);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(getStatistics()));
+    m_timer->start(300000); // 5 mins
+    connect(m_networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onResult(QNetworkReply*)));
+    getStatistics();
+    // --
 }
 
 ClientModel::~ClientModel()
@@ -70,14 +93,14 @@ ClientModel::~ClientModel()
 
 int ClientModel::getNumConnections(unsigned int flags) const
 {
-    CConnman::NumConnections connections = CConnman::CONNECTIONS_NONE;
+    ConnectionDirection connections = ConnectionDirection::None;
 
     if(flags == CONNECTIONS_IN)
-        connections = CConnman::CONNECTIONS_IN;
+        connections = ConnectionDirection::In;
     else if (flags == CONNECTIONS_OUT)
-        connections = CConnman::CONNECTIONS_OUT;
+        connections = ConnectionDirection::Out;
     else if (flags == CONNECTIONS_ALL)
-        connections = CConnman::CONNECTIONS_ALL;
+        connections = ConnectionDirection::Both;
 
     return m_node.getNodeCount(connections);
 }
@@ -183,6 +206,11 @@ PeerTableModel *ClientModel::getPeerTableModel()
     return peerTableModel;
 }
 
+PeerTableSortProxy* ClientModel::peerTableSortProxy()
+{
+    return m_peer_table_sort_proxy;
+}
+
 BanTableModel *ClientModel::getBanTableModel()
 {
     return banTableModel;
@@ -210,12 +238,12 @@ QString ClientModel::formatClientStartupTime() const
 
 QString ClientModel::dataDir() const
 {
-    return GUIUtil::boostPathToQString(GetDataDir());
+    return GUIUtil::boostPathToQString(gArgs.GetDataDirNet());
 }
 
 QString ClientModel::blocksDir() const
 {
-    return GUIUtil::boostPathToQString(GetBlocksDir());
+    return GUIUtil::boostPathToQString(gArgs.GetBlocksDirPath());
 }
 
 void ClientModel::updateBanlist()
@@ -263,7 +291,7 @@ static void BannedListChanged(ClientModel *clientmodel)
 }
 
 static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_state, interfaces::BlockTip tip, double verificationProgress, bool fHeader)
-{
+{   
     if (fHeader) {
         // cache best headers time and height to reduce future cs_main locks
         clientmodel->cachedBestHeaderHeight = tip.block_height;
@@ -281,6 +309,10 @@ static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_
         return;
     }
 
+    if(sync_state == SynchronizationState::POST_INIT && GetTimeMillis() < nLastUpdateNotification + MODEL_UPDATE_DELAY){
+        return;
+    }
+
     bool invoked = QMetaObject::invokeMethod(clientmodel, "numBlocksChanged", Qt::QueuedConnection,
         Q_ARG(int, tip.block_height),
         Q_ARG(QDateTime, QDateTime::fromTime_t(tip.block_time)),
@@ -288,6 +320,7 @@ static void BlockTipChanged(ClientModel* clientmodel, SynchronizationState sync_
         Q_ARG(bool, fHeader),
         Q_ARG(SynchronizationState, sync_state));
     assert(invoked);
+    
     nLastUpdateNotification = now;
 }
 
@@ -323,4 +356,53 @@ bool ClientModel::getProxyInfo(std::string& ip_port) const
       return true;
     }
     return false;
+}
+
+// get SIN Stats
+void ClientModel::getStatistics()
+{
+    QUrl summaryUrl("https://stats.sinovate.io/summary.php");
+    QNetworkRequest request;
+    request.setUrl(summaryUrl);
+    m_networkManager->get(request);
+}
+// --
+
+void ClientModel::onResult(QNetworkReply* reply)
+{
+    QVariant statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+    if( statusCode == 200)
+    {
+        QString replyString = (QString) reply->readAll();
+
+        QJsonDocument jsonResponse = QJsonDocument::fromJson(replyString.toUtf8());
+        QJsonObject jsonObject = jsonResponse.object();
+
+        QJsonObject dataObject = jsonObject.value("data").toArray()[0].toObject();
+
+        // Set NETWORK strings
+        m_sinStats.blockcount = dataObject.value("blockcount").toVariant().toString();
+        m_sinStats.hashrate = dataObject.value("hashrate").toVariant().toString();
+        m_sinStats.difficulty = dataObject.value("difficulty").toVariant().toString();
+        m_sinStats.blockReward = dataObject.value("BlockReward").toVariant().toString();
+        m_sinStats.bigApy = dataObject.value("BigAPY").toVariant().toString();
+        m_sinStats.midApy = dataObject.value("MidAPY").toVariant().toString();
+        m_sinStats.miniApy = dataObject.value("MiniAPY").toVariant().toString();
+        m_sinStats.lastPrice = dataObject.value("lastPrice").toDouble();
+        m_sinStats.usdPrice = dataObject.value("usdPrice").toDouble();
+        m_sinStats.eurPrice = dataObject.value("eurPrice").toDouble();
+        m_sinStats.explorerTop10 = (int)dataObject.value("explorerTop10").toDouble();
+        m_sinStats.explorerTop50 = (int)dataObject.value("explorerTop50").toDouble();
+        m_sinStats.explorerAddresses = dataObject.value("explorerAddresses").toVariant().toString();
+        m_sinStats.explorerActiveAddresses = dataObject.value("explorerActiveAddresses").toVariant().toString();
+        m_sinStats.supply = dataObject.value("supply").toDouble();
+        m_sinStats.burnFee = dataObject.value("burnFee").toDouble();
+        m_sinStats.burnNode = dataObject.value("burnNode").toDouble();
+        m_sinStats.burnNodeInt = (int)m_sinStats.burnNode;
+        m_sinStats.inf_online_big = dataObject.value("inf_online_big").toDouble();
+        m_sinStats.inf_online_mid = dataObject.value("inf_online_mid").toDouble();
+        m_sinStats.inf_online_lil = dataObject.value("inf_online_lil").toDouble();
+    }
+    reply->deleteLater();
 }

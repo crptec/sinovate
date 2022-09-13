@@ -21,6 +21,7 @@
 #include <tuple>
 #include <utility>
 #include <vector>
+#include <atomic>
 
 class CCoinControl;
 class CFeeRate;
@@ -112,14 +113,14 @@ public:
     //! Get wallet address list.
     virtual std::vector<WalletAddress> getAddresses() = 0;
 
-    //! Add dest data.
-    virtual bool addDestData(const CTxDestination& dest, const std::string& key, const std::string& value) = 0;
+    //! Get receive requests.
+    virtual std::vector<std::string> getAddressReceiveRequests() = 0;
 
-    //! Erase dest data.
-    virtual bool eraseDestData(const CTxDestination& dest, const std::string& key) = 0;
+    //! Save or remove receive request.
+    virtual bool setAddressReceiveRequest(const CTxDestination& dest, const std::string& id, const std::string& value) = 0;
 
-    //! Get dest values with prefix.
-    virtual std::vector<std::string> getDestValues(const std::string& prefix) = 0;
+    //! Display address on external signer
+    virtual bool displayAddress(const CTxDestination& dest) = 0;
 
     //! Lock coin.
     virtual void lockCoin(const COutPoint& output) = 0;
@@ -198,9 +199,9 @@ public:
     virtual TransactionError fillPSBT(int sighash_type,
         bool sign,
         bool bip32derivs,
+        size_t* n_signed,
         PartiallySignedTransaction& psbtx,
-        bool& complete,
-        size_t* n_signed) = 0;
+        bool& complete) = 0;
 
     //! Get balances.
     virtual WalletBalances getBalances() = 0;
@@ -255,11 +256,44 @@ public:
     // Return whether private keys enabled.
     virtual bool privateKeysDisabled() = 0;
 
+    // Return whether wallet uses an external signer.
+    virtual bool hasExternalSigner() = 0;
+
+    // * Get onchain data (used by InfinitynodeList).
+    virtual std::map<COutPoint, std::string> GetOnchainDataInfo() = 0;
+
     // Get default address type.
     virtual OutputType getDefaultAddressType() = 0;
 
     //! Get max tx fee.
     virtual CAmount getDefaultMaxTxFee() = 0;
+
+    //! Set wallet enabled for staking
+    virtual void setEnabledStaking(bool enabled) = 0;
+
+    //! Get wallet enabled for staking
+    virtual bool getEnabledStaking() = 0;
+
+    //! Set the stake weight
+    virtual bool trySetStakeWeight(uint64_t& nWeight) = 0;
+
+    //! Get the stake weight
+    virtual uint64_t getStakeWeight() = 0;
+
+    //! Get last coin stake search interval
+    virtual int64_t getLastStakeTime() = 0;
+
+    //! Get wallet unlock for staking only
+    virtual bool getWalletUnlockStakingOnly() = 0;
+
+    //! Set wallet unlock for staking only
+    virtual void setWalletUnlockStakingOnly(bool unlock) = 0;
+
+    //! Get name of current stake wallet
+    virtual std::string getStakeWallet() = 0;
+
+    //! Set name of new stake wallet
+    virtual void setStakeWallet(std::string strNewStakeWallet) = 0;
 
     // Remove wallet.
     virtual void remove() = 0;
@@ -351,15 +385,17 @@ struct WalletBalances
     CAmount balance = 0;
     CAmount unconfirmed_balance = 0;
     CAmount immature_balance = 0;
+    CAmount stake = 0;
     bool have_watch_only = false;
     CAmount watch_only_balance = 0;
     CAmount unconfirmed_watch_only_balance = 0;
     CAmount immature_watch_only_balance = 0;
+    std::map<COutPoint, std::string> onchaindata_info;
 
     bool balanceChanged(const WalletBalances& prev) const
     {
         return balance != prev.balance || unconfirmed_balance != prev.unconfirmed_balance ||
-               immature_balance != prev.immature_balance || watch_only_balance != prev.watch_only_balance ||
+               immature_balance != prev.immature_balance || stake != prev.stake || watch_only_balance != prev.watch_only_balance ||
                unconfirmed_watch_only_balance != prev.unconfirmed_watch_only_balance ||
                immature_watch_only_balance != prev.immature_watch_only_balance;
     }

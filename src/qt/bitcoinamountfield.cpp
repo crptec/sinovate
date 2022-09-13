@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,6 +8,7 @@
 #include <qt/guiconstants.h>
 #include <qt/guiutil.h>
 #include <qt/qvaluecombobox.h>
+#include <qt/styleSheet.h>
 
 #include <QApplication>
 #include <QAbstractSpinBox>
@@ -239,7 +240,7 @@ BitcoinAmountField::BitcoinAmountField(QWidget *parent) :
 
     // If one if the widgets changes, the combined content changes as well
     connect(amount, &AmountSpinBox::valueChanged, this, &BitcoinAmountField::valueChanged);
-    connect(unit, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &BitcoinAmountField::unitChanged);
+    connect(unit, qOverload<int>(&QComboBox::currentIndexChanged), this, &BitcoinAmountField::unitChanged);
 
     // Set default based on configuration
     unitChanged(unit->currentIndex());
@@ -270,7 +271,7 @@ void BitcoinAmountField::setValid(bool valid)
     if (valid)
         amount->setStyleSheet("");
     else
-        amount->setStyleSheet(STYLE_INVALID);
+        SetObjectStyleSheet(amount, StyleSheetNames::Invalid);
 }
 
 bool BitcoinAmountField::eventFilter(QObject *object, QEvent *event)

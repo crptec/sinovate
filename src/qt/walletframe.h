@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -8,12 +8,13 @@
 #include <QFrame>
 #include <QMap>
 
-class BitcoinGUI;
 class ClientModel;
 class PlatformStyle;
 class SendCoinsRecipient;
 class WalletModel;
 class WalletView;
+class StatsPage;
+class StakePage;
 
 QT_BEGIN_NAMESPACE
 class QStackedWidget;
@@ -31,12 +32,12 @@ class WalletFrame : public QFrame
     Q_OBJECT
 
 public:
-    explicit WalletFrame(const PlatformStyle *platformStyle, BitcoinGUI *_gui = nullptr);
+    explicit WalletFrame(const PlatformStyle* platformStyle, QWidget* parent);
     ~WalletFrame();
 
     void setClientModel(ClientModel *clientModel);
 
-    bool addWallet(WalletModel *walletModel);
+    bool addWallet(WalletModel* walletModel, WalletView* walletView);
     void setCurrentWallet(WalletModel* wallet_model);
     void removeWallet(WalletModel* wallet_model);
     void removeAllWallets();
@@ -48,12 +49,10 @@ public:
     QSize sizeHint() const override { return m_size_hint; }
 
 Q_SIGNALS:
-    /** Notify that the user has requested more information about the out-of-sync warning */
-    void requestedSyncWarningInfo();
+    void createWalletButtonClicked();
 
 private:
     QStackedWidget *walletStack;
-    BitcoinGUI *gui;
     ClientModel *clientModel;
     QMap<WalletModel*, WalletView*> mapWalletViews;
 
@@ -70,13 +69,23 @@ public:
 public Q_SLOTS:
     /** Switch to overview (home) page */
     void gotoOverviewPage();
+    void gotoHomePage();
+    /** Switch to stats page */
+    void gotoStatsPage();
+    /** Switch to stake page */
+    void gotoStakePage();
+    /** Switch to infinitynode page */
+    void gotoInfinitynodePage();      //SIN
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
-
+    // setUP
+    /** Switch to setUP Tab */
+    void gotoSetupTab();
+    //
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */
@@ -93,13 +102,15 @@ public Q_SLOTS:
     void changePassphrase();
     /** Ask for passphrase to unlock wallet temporarily */
     void unlockWallet();
+    /** Lock the wallet */
+    void lockWallet();
 
     /** Show used sending addresses */
     void usedSendingAddresses();
     /** Show used receiving addresses */
     void usedReceivingAddresses();
-    /** Pass on signal over requested out-of-sync-warning information */
-    void outOfSyncWarningClicked();
+    /** Hide transfer summary when in home */
+    void hideTransactionWidget();
 };
 
 #endif // BITCOIN_QT_WALLETFRAME_H

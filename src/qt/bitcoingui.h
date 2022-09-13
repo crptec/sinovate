@@ -9,6 +9,7 @@
 #include <config/bitcoin-config.h>
 #endif
 
+#include <qt/guiutil.h>
 #include <qt/optionsdialog.h>
 
 #include <amount.h>
@@ -16,6 +17,7 @@
 #include <QLabel>
 #include <QMainWindow>
 #include <QMap>
+#include <QMenu>
 #include <QPoint>
 #include <QSystemTrayIcon>
 
@@ -38,6 +40,8 @@ class WalletFrame;
 class WalletModel;
 class HelpMessageDialog;
 class ModalOverlay;
+class StatsPage;
+class StakePage;
 enum class SynchronizationState;
 
 namespace interfaces {
@@ -50,9 +54,9 @@ QT_BEGIN_NAMESPACE
 class QAction;
 class QComboBox;
 class QDateTime;
-class QMenu;
 class QProgressBar;
 class QProgressDialog;
+class QTimer;
 QT_END_NAMESPACE
 
 namespace GUIUtil {
@@ -102,8 +106,6 @@ public:
     /** Disconnect core signals from GUI client */
     void unsubscribeFromCoreSignals();
 
-    bool isPrivacyModeActivated() const;
-
 protected:
     void changeEvent(QEvent *e) override;
     void closeEvent(QCloseEvent *event) override;
@@ -121,18 +123,26 @@ private:
     WalletFrame* walletFrame = nullptr;
 
     UnitDisplayStatusBarControl* unitDisplayControl = nullptr;
-    QLabel* labelWalletEncryptionIcon = nullptr;
-    QLabel* labelWalletHDStatusIcon = nullptr;
+    GUIUtil::ThemedLabel* labelWalletEncryptionIcon = nullptr;
+    GUIUtil::ThemedLabel* labelWalletHDStatusIcon = nullptr;
     GUIUtil::ClickableLabel* labelProxyIcon = nullptr;
     GUIUtil::ClickableLabel* connectionsControl = nullptr;
+    QLabel* connectionsCount = nullptr;
     GUIUtil::ClickableLabel* labelBlocksIcon = nullptr;
     QLabel* progressBarLabel = nullptr;
     GUIUtil::ClickableProgressBar* progressBar = nullptr;
     QProgressDialog* progressDialog = nullptr;
+    QLabel* labelStakingIcon = nullptr;
+    QTimer* timerStakingIcon = nullptr;
+
 
     QMenuBar* appMenuBar = nullptr;
     QToolBar* appToolBar = nullptr;
-    QAction* overviewAction = nullptr;
+    QAction* homeAction = nullptr;
+    QAction* overviewAction = nullptr;    
+    QAction* infinitynodeAction = nullptr;    // SIN
+    QAction* statsPageAction = nullptr;
+    QAction* stakePageAction = nullptr;
     QAction* historyAction = nullptr;
     QAction* quitAction = nullptr;
     QAction* sendCoinsAction = nullptr;
@@ -151,6 +161,8 @@ private:
     QAction* encryptWalletAction = nullptr;
     QAction* backupWalletAction = nullptr;
     QAction* changePassphraseAction = nullptr;
+    QAction *unlockWalletAction = nullptr;
+    QAction *lockWalletAction = nullptr;
     QAction* aboutQtAction = nullptr;
     QAction* openRPCConsoleAction = nullptr;
     QAction* openAction = nullptr;
@@ -164,6 +176,9 @@ private:
     QAction* m_wallet_selector_action = nullptr;
     QAction* m_mask_values_action{nullptr};
 
+    QLabel *mainIcon;
+    QLabel *mainBrand;
+
     QLabel *m_wallet_selector_label = nullptr;
     QComboBox* m_wallet_selector = nullptr;
 
@@ -171,8 +186,12 @@ private:
     const std::unique_ptr<QMenu> trayIconMenu;
     Notificator* notificator = nullptr;
     RPCConsole* rpcConsole = nullptr;
+    StatsPage  *statsWindow;
+    StakePage  *stakeWindow;
     HelpMessageDialog* helpMessageDialog = nullptr;
     ModalOverlay* modalOverlay = nullptr;
+
+    QMenu* m_network_context_menu = new QMenu(this);
 
 #ifdef Q_OS_MAC
     CAppNapInhibitor* m_app_nap_inhibitor = nullptr;
@@ -215,13 +234,13 @@ Q_SIGNALS:
     void receivedURI(const QString &uri);
     /** Signal raised when RPC console shown */
     void consoleShown(RPCConsole* console);
-    void setPrivacy(bool privacy);
+    //void setPrivacy(bool privacy);
 
 public Q_SLOTS:
     /** Set number of connections shown in the UI */
     void setNumConnections(int count);
     /** Set network state shown in the UI */
-    void setNetworkActive(bool networkActive);
+    void setNetworkActive(bool network_active);
     /** Set number of blocks and last block date shown in the UI */
     void setNumBlocks(int count, const QDateTime& blockDate, double nVerificationProgress, bool headers, SynchronizationState sync_state);
 
@@ -247,7 +266,8 @@ private:
        @param[in] status            current encryption status
        @see WalletModel::EncryptionStatus
     */
-    void setEncryptionStatus(int status);
+    //void setEncryptionStatus(int status);
+    void setEncryptionStatus(WalletModel *walletModel);
 
     /** Set the hd-enabled status as shown in the UI.
      @param[in] hdEnabled         current hd enabled status
@@ -271,12 +291,24 @@ public Q_SLOTS:
 #ifdef ENABLE_WALLET
     /** Switch to overview (home) page */
     void gotoOverviewPage();
+    void gotoHomePage();
+    /** Switch to stats page */
+    void gotoStatsPage(); 
+    /** Switch to stake page */
+    void gotoStakePage(); 
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
+
+    // SIN
+    /** Switch to infinitynide page */
+    void gotoInfinitynodePage();
+    //** Switch to setUP tab */
+    void gotoSetupTab();
+    //
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
@@ -312,14 +344,16 @@ public Q_SLOTS:
     /** Simply calls showNormalIfMinimized(true) for use in SLOT() macro */
     void toggleHidden();
 
+#ifdef ENABLE_WALLET
+    /** Update staking icon **/
+    void updateStakingIcon();
+#endif // ENABLE_WALLET
+
     /** called by a timer to check if ShutdownRequested() has been set **/
     void detectShutdown();
 
     /** Show progress dialog e.g. for verifychain */
     void showProgress(const QString &title, int nProgress);
-
-    /** When hideTrayIcon setting is changed in OptionsModel hide or show the icon accordingly. */
-    void setTrayIconVisible(bool);
 
     void showModalOverlay();
 };
@@ -336,10 +370,12 @@ public:
 protected:
     /** So that it responds to left-button clicks */
     void mousePressEvent(QMouseEvent *event) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     OptionsModel *optionsModel;
     QMenu* menu;
+    const PlatformStyle* m_platform_style;
 
     /** Shows context menu with Display Unit options by the mouse coordinates */
     void onDisplayUnitsClicked(const QPoint& point);

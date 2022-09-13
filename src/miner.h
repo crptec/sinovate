@@ -8,7 +8,6 @@
 #ifndef BITCOIN_MINER_H
 #define BITCOIN_MINER_H
 
-#include <optional.h>
 #include <primitives/block.h>
 #include <pos/posminer.h>
 #include <txmempool.h>
@@ -16,6 +15,7 @@
 #include <wallet/wallet.h>
 
 #include <memory>
+#include <optional>
 #include <stdint.h>
 
 #include <boost/multi_index_container.hpp>
@@ -28,6 +28,7 @@ class CScript;
 namespace Consensus { struct Params; };
 
 static const bool DEFAULT_PRINTPRIORITY = false;
+static const bool DEFAULT_STAKE = true;
 
 struct CBlockTemplate
 {
@@ -150,6 +151,7 @@ private:
     int64_t nLockTimeCutoff;
     const CChainParams& chainparams;
     const CTxMemPool& m_mempool;
+    CChainState& m_chainstate;
 
 public:
     struct Options {
@@ -158,8 +160,8 @@ public:
         CFeeRate blockMinFeeRate;
     };
 
-    explicit BlockAssembler(const CTxMemPool& mempool, const CChainParams& params);
-    explicit BlockAssembler(const CTxMemPool& mempool, const CChainParams& params, const Options& options);
+    explicit BlockAssembler(CChainState& chainstate, const CTxMemPool& mempool, const CChainParams& params);
+    explicit BlockAssembler(CChainState& chainstate, const CTxMemPool& mempool, const CChainParams& params, const Options& options);
 
     /** Construct a new proof of stake block template with empty coinstake and coinstake reward to scriptPubKeyIn */
     std::unique_ptr<CBlockTemplate> CreateNewPoSBlock(CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins, CStakerStatus* pStakerStatus);
@@ -167,8 +169,8 @@ public:
     /** Construct a new proof of work block template with coinbase to scriptPubKeyIn */
     std::unique_ptr<CBlockTemplate> CreateNewBlock(const CScript& scriptPubKeyIn);
 
-    static Optional<int64_t> m_last_block_num_txs;
-    static Optional<int64_t> m_last_block_weight;
+    inline static std::optional<int64_t> m_last_block_num_txs;
+    inline static std::optional<int64_t> m_last_block_weight;
 
 private:
     // utility functions
@@ -192,7 +194,7 @@ private:
       * locktime, premature-witness, serialized size (if necessary)
       * These checks should always succeed, and they're here
       * only as an extra check in case of suboptimal node configuration */
-    bool TestPackageTransactions(const CTxMemPool::setEntries& package);
+    bool TestPackageTransactions(const CTxMemPool::setEntries& package) const;
     /** Return true if given transaction from mapTx has already been evaluated,
       * or if the transaction's cached data in mapTx is incorrect. */
     bool SkipMapTxEntry(CTxMemPool::txiter it, indexed_modified_transaction_set& mapModifiedTx, CTxMemPool::setEntries& failedTx) EXCLUSIVE_LOCKS_REQUIRED(m_mempool.cs);
@@ -209,6 +211,10 @@ void IncrementExtraNonce(CBlock* pblock, const CBlockIndex* pindexPrev, unsigned
 int64_t UpdateTime(CBlockHeader* pblock, const Consensus::Params& consensusParams, const CBlockIndex* pindexPrev, bool fProofOfStake = false);
 
 /** Update an old GenerateCoinbaseCommitment from CreateNewBlock after the block txs have changed */
-void RegenerateCommitments(CBlock& block);
+void RegenerateCommitments(CBlock& block, ChainstateManager& chainman);
+
+/** Check if staking is enabled */
+bool CanStake();
+
 
 #endif // BITCOIN_MINER_H

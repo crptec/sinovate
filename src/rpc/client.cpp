@@ -66,6 +66,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "listtransactions", 2, "skip" },
     { "listtransactions", 3, "include_watchonly" },
     { "walletpassphrase", 1, "timeout" },
+    { "walletpassphrase", 2, "stakingonly" },
     { "getblocktemplate", 0, "template_request" },
     { "listsinceblock", 1, "target_confirmations" },
     { "listsinceblock", 2, "include_watchonly" },
@@ -128,6 +129,8 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "gettxout", 1, "n" },
     { "gettxout", 2, "include_mempool" },
     { "gettxoutproof", 0, "txids" },
+    { "gettxoutsetinfo", 1, "hash_or_height" },
+    { "gettxoutsetinfo", 2, "use_index"},
     { "lockunspent", 0, "unlock" },
     { "lockunspent", 1, "transactions" },
     { "send", 0, "outputs" },
@@ -166,6 +169,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "logging", 1, "exclude" },
     { "disconnectnode", 1, "nodeid" },
     { "upgradewallet", 0, "version" },
+    { "setstakingstatus", 0, "status" },
     // Echo with conversion (For testing only)
     { "echojson", 0, "arg0" },
     { "echojson", 1, "arg1" },
@@ -184,6 +188,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "createwallet", 4, "avoid_reuse"},
     { "createwallet", 5, "descriptors"},
     { "createwallet", 6, "load_on_startup"},
+    { "createwallet", 7, "external_signer"},
     { "loadwallet", 1, "load_on_startup"},
     { "unloadwallet", 1, "load_on_startup"},
     { "getnodeaddresses", 0, "count"},
@@ -211,14 +216,9 @@ public:
 
 CRPCConvertTable::CRPCConvertTable()
 {
-    const unsigned int n_elem =
-        (sizeof(vRPCConvertParams) / sizeof(vRPCConvertParams[0]));
-
-    for (unsigned int i = 0; i < n_elem; i++) {
-        members.insert(std::make_pair(vRPCConvertParams[i].methodName,
-                                      vRPCConvertParams[i].paramIdx));
-        membersByName.insert(std::make_pair(vRPCConvertParams[i].methodName,
-                                            vRPCConvertParams[i].paramName));
+    for (const auto& cp : vRPCConvertParams) {
+        members.emplace(cp.methodName, cp.paramIdx);
+        membersByName.emplace(cp.methodName, cp.paramName);
     }
 }
 

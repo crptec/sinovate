@@ -13,7 +13,6 @@
 
 #include <chainparams.h>
 #include <miner.h>
-#include <node/context.h>
 #include <pos/pos.h>
 #include <pos/stakeinput.h>
 #include <pos/threadutils.h>
@@ -26,6 +25,7 @@
 #include <sinovate/infinitynodelockreward.h>
 #include <validation.h>
 #include <util/moneystr.h>
+#include <util/thread.h>
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
@@ -51,7 +51,10 @@ bool CreateCoinStake(CWallet* pwallet,
         CMutableTransaction& txNew,
         int64_t& nTxNewTime,
         std::vector<CStakeableOutput>* availableCoins,
-        CStakerStatus* pStakerStatus) 
+        CStakerStatus* pStakerStatus,
+        CAmount nFees, 
+        CScript burnAddressScript,
+        CChainState& chainstate) 
 {
 
     int nHeight = pindexPrev->nHeight + 1;
@@ -72,6 +75,11 @@ bool CreateCoinStake(CWallet* pwallet,
     int nAttempts = 0;
     CTxOut outProvider;
     for (auto it = availableCoins->begin(); it != availableCoins->end();) {
+        if (!it->pindex) {
+            LogPrintf("CreateCoinStake : missing pindex\n");
+            it++;
+            continue;
+        }
         COutPoint outPoint = COutPoint(it->tx->GetHash(), it->i);
         CSinStake stakeInput(it->tx->tx->vout[it->i],
                              outPoint,
@@ -146,13 +154,15 @@ bool CreateCoinStake(CWallet* pwallet,
 
         // Dev fee
         if (nHeight <= Params().GetConsensus().nDINActivationHeight) {
-            txNew.vout.push_back(CTxOut(GetDevCoin(nHeight, GetBlockSubsidy(nHeight, Params().GetConsensus(), true)), devScript));
+            txNew.vout.push_back(CTxOut(GetDevCoin(nHeight, GetBlockSubsidy(nHeight, Params().GetConsensus(), true) + nFees), devScript));
         } else {
-            txNew.vout.push_back(CTxOut(GetDevCoin(nHeight, GetBlockSubsidy(nHeight, Params().GetConsensus(), true)), devScript2));
+            txNew.vout.push_back(CTxOut(GetDevCoin(nHeight, GetBlockSubsidy(nHeight, Params().GetConsensus(), true) + nFees), devScript2));
         }
 
         // InfinityNode payment
-        FillBlock(txNew, nHeight, true);
+        FillBlock(txNew, nHeight, chainstate, true);
+
+        txNew.vout.push_back(CTxOut(nFees, burnAddressScript));
 
         const uint256& hashTxOut = txNew.GetHash();
         CTxIn in;
@@ -214,10 +224,9 @@ bool ProcessBlockFound(ChainstateManager& chainman, const std::shared_ptr<const 
     return true;
 }
 
-bool fStakeableCoins = false;
-
 void StakerCtx::CheckForCoins(CWallet* pwallet, std::vector<CStakeableOutput>* availableCoins)
 {
+    uint64_t nWeight;
 
     if (!pwallet || !pStakerStatus) {
         return;
@@ -230,7 +239,7 @@ void StakerCtx::CheckForCoins(CWallet* pwallet, std::vector<CStakeableOutput>* a
             return;
         }
     }
-    fStakeableCoins = pwallet->StakeableCoins(availableCoins);
+    pwallet->StakeableCoins(availableCoins, nWeight);
 }
 
 void InitStakerStatus()
@@ -239,7 +248,7 @@ void InitStakerStatus()
     if (pStakerStatus) {
         pStakerStatus->SetNull();
     } else {
-        pStakerStatus = MakeUnique<CStakerStatus>();
+        pStakerStatus = std::make_unique<CStakerStatus>();
     }
 }
 
@@ -253,29 +262,56 @@ void StakerCtx::StakerPipe()
     // Available outputs
     std::vector<CStakeableOutput> availableCoins;
 
-    // Available wallet(s), always use no 0.
+    // Available wallet(s), always start by using number 0
     std::vector<std::shared_ptr<CWallet>> wallets = GetWallets();
-    CWallet * const pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
+    CWallet * pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
 
     if (!pStakerStatus) {
         InitStakerStatus();
     }
 
     while (!g_posminer_interrupt) {
-        CBlockIndex* pindexPrev = ::ChainActive().Tip();
 
-        // Check for node sync
-        if (::ChainstateActive().IsInitialBlockDownload()) {
-            LogPrintf("%s : node not synced yet, checking again in %d seconds...\n", __func__, nAverageSpacing);
-            if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
-                return;
+        // Get tip froim index
+        CBlockIndex* pindexPrev = m_chainman.ActiveChainstate().m_chain.Tip();
+
+        // Check our wallet actually exists
+        if (!pwallet) {
+            wallets = GetWallets();
+            pwallet = (wallets.size() > 0) ? wallets[0].get() : nullptr;
+            if (!pwallet) {
+                LogPrintf("%s : no wallet found, checking again in %d seconds...\n", __func__, nAverageSpacing);
+                if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
+                    return;
+                }
             }
             continue;
         }
 
-        // Check for a wallet
-        if (!pwallet) {
-            LogPrintf("%s : no wallet found, checking again in %d seconds...\n", __func__, nAverageSpacing);
+        // Start wallet management
+        if (pStakerStatus && !pStakerStatus->GetStakeWallet().empty()) {
+
+            // User has chosen a staking wallet, lets check if we already loaded it
+            if (pStakerStatus->GetStakeWallet() != pwallet->GetName()) {
+
+                // Change wallet
+                pwallet = GetWallet(pStakerStatus->GetStakeWallet()).get();
+
+                // Check we actually loaded it
+                if (!pwallet) {
+                    LogPrintf("%s : user specified wallet %s not found, checking again in %d seconds...\n", __func__, pStakerStatus->GetStakeWallet(), nAverageSpacing);
+                    if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
+                        return;
+                    }
+                    continue;
+                }
+            }
+        }
+
+
+        // Check for node sync
+        if (m_chainman.ActiveChainstate().IsInitialBlockDownload()) {
+            LogPrintf("%s : node not synced yet, checking again in %d seconds...\n", __func__, nAverageSpacing);
             if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
                 return;
             }
@@ -303,17 +339,30 @@ void StakerCtx::StakerPipe()
         // Check if we have any coins
         CheckForCoins(pwallet, &availableCoins);
 
-        while ((Params().NetworkIDString() != CBaseChainParams::REGTEST && (m_connman.GetNodeCount(CConnman::CONNECTIONS_ALL) == 0))
-                || pwallet->IsLocked() || !fStakeableCoins) {
-            LogPrintf("%s : wallet needs atleast one connection and some stakeable coins to stake, checking again in %d seconds...\n", __func__, nAverageSpacing);
+        while ((Params().NetworkIDString() != CBaseChainParams::REGTEST && (m_connman.GetNodeCount(ConnectionDirection::Both) == 0)) || pwallet->IsLocked() || !pwallet->m_enabled_staking || availableCoins.size() == 0) {
+            
+            // Change wallets if the user specified a different wallet
+            if (pStakerStatus && !pStakerStatus->GetStakeWallet().empty()) {
+                if (pStakerStatus->GetStakeWallet() != pwallet->GetName()) {
+                    break;
+                }
+            }
+
+            LogPrintf("%s : wallet %s needs atleast one connection and some stakeable coins to stake, checking again in %d seconds...\n", __func__, pwallet->GetName(), nAverageSpacing);
             if (!g_posminer_interrupt.sleep_for(std::chrono::seconds(nAverageSpacing))) {
                 return;
             }
+            
             // Do another check here to ensure fStakeableCoins is updated
-            if (!fStakeableCoins) CheckForCoins(pwallet, &availableCoins);
+            if (availableCoins.size() == 0) CheckForCoins(pwallet, &availableCoins);
+        }
+
+        // Make sure availableCoins is populated
+        if (availableCoins.size() == 0) {
+            continue;
         }
         
-        //search our map of hashed blocks, see if bestblock has been hashed yet
+        // Search our map of hashed blocks, see if bestblock has been hashed yet
         if (pStakerStatus &&
                 pStakerStatus->GetLastHash() == pindexPrev->GetBlockHash() &&
                 pStakerStatus->GetLastTime() >= GetCurrentTimeSlot()) {
@@ -326,7 +375,7 @@ void StakerCtx::StakerPipe()
         //
         // Create new block
         //
-        std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(m_mempool, Params()).CreateNewPoSBlock(pwallet, &availableCoins, pStakerStatus.get()));
+        std::unique_ptr<CBlockTemplate> pblocktemplate(BlockAssembler(m_chainman.ActiveChainstate(), m_mempool, Params()).CreateNewPoSBlock(pwallet, &availableCoins, pStakerStatus.get()));
         if (!pblocktemplate.get()) {
             continue;
         }
@@ -349,7 +398,7 @@ void StakerCtx::StartStaker()
 {
     if (!g_posminer_thread.joinable()) {
         assert(!g_posminer_interrupt);
-        g_posminer_thread = std::thread(&TraceThread<std::function<void()> >, "staker", std::function<void()>(std::bind(&StakerCtx::StakerPipe, this)));
+        g_posminer_thread = std::thread(&util::TraceThread, "staker", std::function<void()>(std::bind(&StakerCtx::StakerPipe, this)));
     }
 }
 

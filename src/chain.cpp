@@ -193,7 +193,7 @@ void CBlockIndex::SetStakeModifier(const uint256& nStakeModifier)
 }
 
 // Generates and sets new stake modifier
-void CBlockIndex::SetNewStakeModifier(const uint256& prevoutId)
+void CBlockIndex::SetNewStakeModifier(const uint256& prevoutId, int& nPrevHeight, std::string& sPrevStakeModifier, std::string& sStakeModifier)
 {
     // Shouldn't be called  before setting pprev
     if (!pprev) throw std::runtime_error(strprintf("%s : ERROR: null pprev", __func__));
@@ -210,6 +210,9 @@ void CBlockIndex::SetNewStakeModifier(const uint256& prevoutId)
     ss << prevoutId;
     ss << pindexWalk->GetStakeModifier();
     SetStakeModifier(ss.GetHash());
+    nPrevHeight = pindexWalk->nHeight;
+    sPrevStakeModifier = HexStr(pindexWalk->GetStakeModifier());
+    sStakeModifier = ss.GetHash().ToString();
 }
 
 // Returns V2 stake modifier (uint256)

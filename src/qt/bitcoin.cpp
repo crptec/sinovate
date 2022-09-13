@@ -20,6 +20,7 @@
 #include <qt/splashscreen.h>
 #include <qt/utilitydialog.h>
 #include <qt/winshutdownmonitor.h>
+#include <qt/styleSheet.h>
 
 #ifdef ENABLE_WALLET
 #include <qt/paymentserver.h>
@@ -44,6 +45,8 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QFontDatabase>
+#include <QLatin1String>
 #include <QLibraryInfo>
 #include <QLocale>
 #include <QMessageBox>
@@ -51,6 +54,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QTranslator>
+#include <QProcess>
 
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
@@ -58,9 +62,12 @@
 Q_IMPORT_PLUGIN(QXcbIntegrationPlugin);
 #elif defined(QT_QPA_PLATFORM_WINDOWS)
 Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin);
+Q_IMPORT_PLUGIN(QWindowsVistaStylePlugin);
 #elif defined(QT_QPA_PLATFORM_COCOA)
 Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin);
+Q_IMPORT_PLUGIN(QMacStylePlugin);
 #endif
+Q_IMPORT_PLUGIN(QGifPlugin);
 #endif
 
 // Declare meta types used for QMetaObject::invokeMethod
@@ -77,7 +84,7 @@ static void RegisterMetaTypes()
   #ifdef ENABLE_WALLET
     qRegisterMetaType<WalletModel*>();
   #endif
-    // Register typedefs (see http://qt-project.org/doc/qt-5/qmetatype.html#qRegisterMetaType)
+    // Register typedefs (see https://doc.qt.io/qt-5/qmetatype.html#qRegisterMetaType)
     // IMPORTANT: if CAmount is no longer a typedef use the normal variant above (see https://doc.qt.io/qt-5/qmetatype.html#qRegisterMetaType-1)
     qRegisterMetaType<CAmount>("CAmount");
     qRegisterMetaType<size_t>("size_t");
@@ -194,7 +201,7 @@ void BitcoinCore::shutdown()
 }
 
 static int qt_argc = 1;
-static const char* qt_argv = "bitcoin-qt";
+static const char* qt_argv = "sin-qt";
 
 BitcoinApplication::BitcoinApplication():
     QApplication(qt_argc, const_cast<char **>(&qt_argv)),
@@ -204,7 +211,8 @@ BitcoinApplication::BitcoinApplication():
     window(nullptr),
     pollShutdownTimer(nullptr),
     returnValue(0),
-    platformStyle(nullptr)
+    platformStyle(nullptr),
+    restartApp(false)
 {
     // Qt runs setlocale(LC_ALL, "") on initialization.
     RegisterMetaTypes();
@@ -315,11 +323,9 @@ void BitcoinApplication::parameterSetup()
     InitParameterInteraction(gArgs);
 }
 
-void BitcoinApplication::InitializePruneSetting(bool prune)
+void BitcoinApplication::InitPruneSetting(int64_t prune_MiB)
 {
-    // If prune is set, intentionally override existing prune size with
-    // the default size since this is called when choosing a new datadir.
-    optionsModel->SetPruneTargetGB(prune ? DEFAULT_PRUNE_TARGET_GB : 0, true);
+    optionsModel->SetPruneTargetGB(PruneMiBtoGB(prune_MiB), true);
 }
 
 void BitcoinApplication::requestInitialize()
@@ -342,6 +348,8 @@ void BitcoinApplication::requestShutdown()
     // Must disconnect node signals otherwise current thread can deadlock since
     // no event loop is running.
     window->unsubscribeFromCoreSignals();
+    // Get restart wallet
+    if(optionsModel) restartApp = optionsModel->getRestartApp();
     // Request node shutdown, which can interrupt long operations, like
     // rescanning a wallet.
     node().startShutdown();
@@ -387,7 +395,6 @@ void BitcoinApplication::initializeResult(bool success, interfaces::BlockAndHead
             window->showMinimized();
         }
         Q_EMIT splashFinished();
-        Q_EMIT windowShown(window);
 
 #ifdef ENABLE_WALLET
         // Now that initialization/startup is done, process any command-line
@@ -402,6 +409,11 @@ void BitcoinApplication::initializeResult(bool success, interfaces::BlockAndHead
         }
 #endif
         pollShutdownTimer->start(200);
+        processEvents();
+    }
+
+    if(success) {
+        Q_EMIT windowShown(window);
     } else {
         Q_EMIT splashFinished(); // Make sure splash screen doesn't stick around during shutdown
         quit(); // Exit first main loop invocation
@@ -415,8 +427,21 @@ void BitcoinApplication::shutdownResult()
 
 void BitcoinApplication::handleRunawayException(const QString &message)
 {
-    QMessageBox::critical(nullptr, "Runaway exception", BitcoinGUI::tr("A fatal error occurred. %1 can no longer continue safely and will quit.").arg(PACKAGE_NAME) + QString("<br><br>") + message);
+    QMessageBox::critical(
+        nullptr, tr("Runaway exception"),
+        tr("A fatal error occurred. %1 can no longer continue safely and will quit.").arg(PACKAGE_NAME) +
+        QLatin1String("<br><br>") + GUIUtil::MakeHtmlLink(message, PACKAGE_BUGREPORT));
     ::exit(EXIT_FAILURE);
+}
+
+void BitcoinApplication::handleNonFatalException(const QString& message)
+{
+    assert(QThread::currentThread() == thread());
+    QMessageBox::warning(
+        nullptr, tr("Internal error"),
+        tr("An internal error occurred. %1 will attempt to continue safely. This is "
+           "an unexpected bug which can be reported as described below.").arg(PACKAGE_NAME) +
+        QLatin1String("<br><br>") + GUIUtil::MakeHtmlLink(message, PACKAGE_BUGREPORT));
 }
 
 WId BitcoinApplication::getMainWinId() const
@@ -426,6 +451,26 @@ WId BitcoinApplication::getMainWinId() const
 
     return window->winId();
 }
+
+void BitcoinApplication::restart(const QString& commandLine)
+{
+    QThread::currentThread()->sleep(2);
+
+    // Create new process and start the wallet
+    QProcess::startDetached(commandLine);
+}
+
+
+void BitcoinApplication::restartWallet()
+{
+    if(restartApp)
+    {
+        // Restart wallet for option
+        QString commandLine = arguments().join(' ');
+        restart(commandLine);
+    }
+}
+
 
 static void SetupUIArgs(ArgsManager& argsman)
 {
@@ -462,15 +507,21 @@ int GuiMain(int argc, char* argv[])
 
     // Generate high-dpi pixmaps
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-#if QT_VERSION >= 0x050600
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+#if defined(QT_QPA_PLATFORM_ANDROID)
+    QApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
+    QApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+    QApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
 #endif
 
     BitcoinApplication app;
+    QFontDatabase::addApplicationFont(":/fonts/made-tommy-regular");
 
     /// 2. Parse command-line options. We do this after qt in order to show an error if there are problems parsing these
     // Command-line options take precedence:
-    SetupServerArgs(node_context);
+    node_context.args = &gArgs;
+    SetupServerArgs(gArgs);
     SetupUIArgs(gArgs);
     std::string error;
     if (!gArgs.ParseParameters(argc, argv, error)) {
@@ -481,10 +532,7 @@ int GuiMain(int argc, char* argv[])
             QString::fromStdString("Error parsing command line arguments: %1.").arg(QString::fromStdString(error)));
         return EXIT_FAILURE;
     }
-
-    // Now that the QApplication is setup and we have parsed our parameters, we can set the platform style
-    app.setupPlatformStyle();
-
+    
     /// 3. Application identification
     // must be set before OptionsModel is initialized or translations are loaded,
     // as it is used to locate QSettings
@@ -511,12 +559,12 @@ int GuiMain(int argc, char* argv[])
     /// 5. Now that settings and translations are available, ask user for data directory
     // User language is set up: pick a data directory
     bool did_show_intro = false;
-    bool prune = false; // Intro dialog prune check box
+    int64_t prune_MiB = 0;  // Intro dialog prune configuration
     // Gracefully exit if the user cancels
-    if (!Intro::showIfNeeded(did_show_intro, prune)) return EXIT_SUCCESS;
+    if (!Intro::showIfNeeded(did_show_intro, prune_MiB)) return EXIT_SUCCESS;
 
     /// 6. Determine availability of data directory and parse bitcoin.conf
-    /// - Do not call GetDataDir(true) before this step finishes
+    /// - Do not call gArgs.GetDataDirNet() before this step finishes
     if (!CheckDataDirOption()) {
         InitError(strprintf(Untranslated("Specified data directory \"%s\" does not exist.\n"), gArgs.GetArg("-datadir", "")));
         QMessageBox::critical(nullptr, PACKAGE_NAME,
@@ -558,6 +606,8 @@ int GuiMain(int argc, char* argv[])
     assert(!networkStyle.isNull());
     // Allow for separate UI settings for testnets
     QApplication::setApplicationName(networkStyle->getAppName());
+    // Now that the QApplication is setup and we have parsed our parameters, we can set the platform style
+    app.setupPlatformStyle();
     // Re-initialize translations after changing application name (language in network-specific settings can be different)
     initTranslations(qtTranslatorBase, qtTranslator, translatorBase, translator);
 
@@ -595,7 +645,7 @@ int GuiMain(int argc, char* argv[])
 
     if (did_show_intro) {
         // Store intro dialog settings other than datadir (network specific)
-        app.InitializePruneSetting(prune);
+        app.InitPruneSetting(prune_MiB);
     }
 
     if (gArgs.GetBoolArg("-splash", DEFAULT_SPLASHSCREEN) && !gArgs.GetBoolArg("-min", false))
@@ -606,6 +656,7 @@ int GuiMain(int argc, char* argv[])
     int rv = EXIT_SUCCESS;
     try
     {
+        SetObjectStyleSheet(&app, StyleSheetNames::App);
         app.createWindow(networkStyle.data());
         // Perform base initialization before spinning up initialization/shutdown thread
         // This is acceptable because this function only contains steps that are quick to execute,
@@ -630,5 +681,6 @@ int GuiMain(int argc, char* argv[])
         PrintExceptionContinue(nullptr, "Runaway exception");
         app.handleRunawayException(QString::fromStdString(app.node().getWarnings().translated));
     }
+    app.restartWallet();
     return rv;
 }

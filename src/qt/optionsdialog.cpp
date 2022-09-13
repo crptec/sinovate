@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2019 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -18,22 +18,29 @@
 #include <validation.h> // for DEFAULT_SCRIPTCHECK_THREADS and MAX_SCRIPTCHECK_THREADS
 #include <netbase.h>
 #include <txdb.h> // for -dbcache defaults
+#include <qt/styleSheet.h>
 
 #include <QDataWidgetMapper>
 #include <QDir>
 #include <QIntValidator>
 #include <QLocale>
 #include <QMessageBox>
+#include <QSettings>
 #include <QSystemTrayIcon>
 #include <QTimer>
 
 OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
-    QDialog(parent),
+    QDialog(parent, GUIUtil::dialog_flags),
     ui(new Ui::OptionsDialog),
     model(nullptr),
     mapper(nullptr)
 {
     ui->setupUi(this);
+
+    SetObjectStyleSheet(ui->resetButton, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->openSINConfButton, StyleSheetNames::ButtonLight);
+    SetObjectStyleSheet(ui->okButton, StyleSheetNames::ButtonGray);
+    SetObjectStyleSheet(ui->cancelButton, StyleSheetNames::ButtonGray);
 
     /* Main elements init */
     ui->databaseCache->setMinimum(nMinDbCache);
@@ -50,6 +57,13 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
 #ifndef USE_UPNP
     ui->mapPortUpnp->setEnabled(false);
 #endif
+#ifndef USE_NATPMP
+    ui->mapPortNatpmp->setEnabled(false);
+#endif
+    connect(this, &QDialog::accepted, [this](){
+        QSettings settings;
+        model->node().mapPort(settings.value("fUseUPnP").toBool(), settings.value("fUseNatpmp").toBool());
+    });
 
     ui->proxyIp->setEnabled(false);
     ui->proxyPort->setEnabled(false);
@@ -72,9 +86,8 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     /* remove Window tab on Mac */
     ui->tabWidget->removeTab(ui->tabWidget->indexOf(ui->tabWindow));
     /* hide launch at startup option on macOS */
-    ui->bitcoinAtStartup->setVisible(false);
-    ui->verticalLayout_Main->removeWidget(ui->bitcoinAtStartup);
-    ui->verticalLayout_Main->removeItem(ui->horizontalSpacer_0_Main);
+    ui->sinAtStartup->setVisible(false);
+    ui->verticalLayout_Main->removeWidget(ui->sinAtStartup);
 #endif
 
     /* remove Wallet tab and 3rd party-URL textbox in case of -disablewallet */
@@ -84,13 +97,18 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
         ui->thirdPartyTxUrls->setVisible(false);
     }
 
+#ifndef ENABLE_EXTERNAL_SIGNER
+    //: "External signing" means using devices such as hardware wallets.
+    ui->externalSignerPath->setToolTip(tr("Compiled without external signing support (required for external signing)"));
+    ui->externalSignerPath->setEnabled(false);
+#endif
     /* Display elements init */
     QDir translations(":translations");
 
-    ui->bitcoinAtStartup->setToolTip(ui->bitcoinAtStartup->toolTip().arg(PACKAGE_NAME));
-    ui->bitcoinAtStartup->setText(ui->bitcoinAtStartup->text().arg(PACKAGE_NAME));
+    ui->sinAtStartup->setToolTip(ui->sinAtStartup->toolTip().arg(PACKAGE_NAME));
+    ui->sinAtStartup->setText(ui->sinAtStartup->text().arg(PACKAGE_NAME));
 
-    ui->openBitcoinConfButton->setToolTip(ui->openBitcoinConfButton->toolTip().arg(PACKAGE_NAME));
+    ui->openSINConfButton->setToolTip(ui->openSINConfButton->toolTip().arg(PACKAGE_NAME));
 
     ui->lang->setToolTip(ui->lang->toolTip().arg(PACKAGE_NAME));
     ui->lang->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
@@ -112,6 +130,21 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     }
     ui->unit->setModel(new BitcoinUnits(this));
 
+    ui->theme->setToolTip(ui->theme->toolTip().arg(tr(PACKAGE_NAME)));
+    ui->theme->addItem(QString("(") + tr("default") + QString(")"), QVariant(""));
+    QStringList themes = StyleSheet::getSupportedThemes();
+    QStringList themesNames = StyleSheet::getSupportedThemesNames();
+    for(int i = 0; i < themes.size(); i++)
+    {
+        QString themeStr = themes[i];
+        QString themeName = themeStr;
+        if(themesNames.size() > i)
+        {
+            themeName = themesNames[i];
+        }
+        ui->theme->addItem(tr(themeName.toStdString().c_str()), QVariant(themeStr));
+    }
+
     /* Widget-to-option mapper */
     mapper = new QDataWidgetMapper(this);
     mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -130,12 +163,13 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     connect(ui->proxyPortTor, &QLineEdit::textChanged, this, &OptionsDialog::updateProxyValidationState);
 
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-        ui->hideTrayIcon->setChecked(true);
-        ui->hideTrayIcon->setEnabled(false);
+        ui->showTrayIcon->setChecked(false);
+        ui->showTrayIcon->setEnabled(false);
         ui->minimizeToTray->setChecked(false);
         ui->minimizeToTray->setEnabled(false);
     }
 
+    
     GUIUtil::handleCloseWindowShortcut(this);
 }
 
@@ -175,9 +209,10 @@ void OptionsDialog::setModel(OptionsModel *_model)
     /* Main */
     connect(ui->prune, &QCheckBox::clicked, this, &OptionsDialog::showRestartWarning);
     connect(ui->prune, &QCheckBox::clicked, this, &OptionsDialog::togglePruneWarning);
-    connect(ui->pruneSize, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsDialog::showRestartWarning);
-    connect(ui->databaseCache, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsDialog::showRestartWarning);
-    connect(ui->threadsScriptVerif, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &OptionsDialog::showRestartWarning);
+    connect(ui->pruneSize, qOverload<int>(&QSpinBox::valueChanged), this, &OptionsDialog::showRestartWarning);
+    connect(ui->databaseCache, qOverload<int>(&QSpinBox::valueChanged), this, &OptionsDialog::showRestartWarning);
+    connect(ui->externalSignerPath, &QLineEdit::textChanged, [this]{ showRestartWarning(); });
+    connect(ui->threadsScriptVerif, qOverload<int>(&QSpinBox::valueChanged), this, &OptionsDialog::showRestartWarning);
     /* Wallet */
     connect(ui->spendZeroConfChange, &QCheckBox::clicked, this, &OptionsDialog::showRestartWarning);
     /* Network */
@@ -185,8 +220,10 @@ void OptionsDialog::setModel(OptionsModel *_model)
     connect(ui->connectSocks, &QCheckBox::clicked, this, &OptionsDialog::showRestartWarning);
     connect(ui->connectSocksTor, &QCheckBox::clicked, this, &OptionsDialog::showRestartWarning);
     /* Display */
-    connect(ui->lang, static_cast<void (QValueComboBox::*)()>(&QValueComboBox::valueChanged), [this]{ showRestartWarning(); });
+    connect(ui->lang, qOverload<>(&QValueComboBox::valueChanged), [this]{ showRestartWarning(); });
+    connect(ui->theme, static_cast<void (QValueComboBox::*)()>(&QValueComboBox::valueChanged), [this]{ showRestartWarning(); });
     connect(ui->thirdPartyTxUrls, &QLineEdit::textChanged, [this]{ showRestartWarning(); });
+    
 }
 
 void OptionsDialog::setCurrentTab(OptionsDialog::Tab tab)
@@ -202,7 +239,7 @@ void OptionsDialog::setCurrentTab(OptionsDialog::Tab tab)
 void OptionsDialog::setMapper()
 {
     /* Main */
-    mapper->addMapping(ui->bitcoinAtStartup, OptionsModel::StartAtStartup);
+    mapper->addMapping(ui->sinAtStartup, OptionsModel::StartAtStartup);
     mapper->addMapping(ui->threadsScriptVerif, OptionsModel::ThreadsScriptVerif);
     mapper->addMapping(ui->databaseCache, OptionsModel::DatabaseCache);
     mapper->addMapping(ui->prune, OptionsModel::Prune);
@@ -211,9 +248,11 @@ void OptionsDialog::setMapper()
     /* Wallet */
     mapper->addMapping(ui->spendZeroConfChange, OptionsModel::SpendZeroConfChange);
     mapper->addMapping(ui->coinControlFeatures, OptionsModel::CoinControlFeatures);
+    mapper->addMapping(ui->externalSignerPath, OptionsModel::ExternalSignerPath);
 
     /* Network */
     mapper->addMapping(ui->mapPortUpnp, OptionsModel::MapPortUPnP);
+    mapper->addMapping(ui->mapPortNatpmp, OptionsModel::MapPortNatpmp);
     mapper->addMapping(ui->allowIncoming, OptionsModel::Listen);
 
     mapper->addMapping(ui->connectSocks, OptionsModel::ProxyUse);
@@ -227,7 +266,7 @@ void OptionsDialog::setMapper()
     /* Window */
 #ifndef Q_OS_MAC
     if (QSystemTrayIcon::isSystemTrayAvailable()) {
-        mapper->addMapping(ui->hideTrayIcon, OptionsModel::HideTrayIcon);
+        mapper->addMapping(ui->showTrayIcon, OptionsModel::ShowTrayIcon);
         mapper->addMapping(ui->minimizeToTray, OptionsModel::MinimizeToTray);
     }
     mapper->addMapping(ui->minimizeOnClose, OptionsModel::MinimizeOnClose);
@@ -237,6 +276,7 @@ void OptionsDialog::setMapper()
     mapper->addMapping(ui->lang, OptionsModel::Language);
     mapper->addMapping(ui->unit, OptionsModel::DisplayUnit);
     mapper->addMapping(ui->thirdPartyTxUrls, OptionsModel::ThirdPartyTxUrls);
+    mapper->addMapping(ui->theme, OptionsModel::Theme);
 }
 
 void OptionsDialog::setOkButtonState(bool fState)
@@ -262,7 +302,7 @@ void OptionsDialog::on_resetButton_clicked()
     }
 }
 
-void OptionsDialog::on_openBitcoinConfButton_clicked()
+void OptionsDialog::on_openSINConfButton_clicked()
 {
     /* explain the purpose of the config file */
     QMessageBox::information(this, tr("Configuration options"),
@@ -279,6 +319,22 @@ void OptionsDialog::on_okButton_clicked()
     mapper->submit();
     accept();
     updateDefaultProxyNets();
+
+     if (model && model->isRestartRequired()) {
+        QMessageBox::StandardButton retval = QMessageBox::question(this, tr("Confirm wallet restart"),
+                 QString("%1<br><br>%2").arg(tr("Client restart required to activate changes."), tr("Are you sure you wish to restart your wallet?")),
+                 QMessageBox::Yes|QMessageBox::Cancel,
+                 QMessageBox::Cancel);
+        if(retval == QMessageBox::Yes)
+        {
+
+            qApp->processEvents();
+            model->setRestartApp(true);
+            QApplication::quit();
+        }
+    }
+
+    accept();
 }
 
 void OptionsDialog::on_cancelButton_clicked()
@@ -286,16 +342,13 @@ void OptionsDialog::on_cancelButton_clicked()
     reject();
 }
 
-void OptionsDialog::on_hideTrayIcon_stateChanged(int fState)
+void OptionsDialog::on_showTrayIcon_stateChanged(int state)
 {
-    if(fState)
-    {
+    if (state == Qt::Checked) {
+        ui->minimizeToTray->setEnabled(true);
+    } else {
         ui->minimizeToTray->setChecked(false);
         ui->minimizeToTray->setEnabled(false);
-    }
-    else
-    {
-        ui->minimizeToTray->setEnabled(true);
     }
 }
 

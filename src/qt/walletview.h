@@ -7,17 +7,24 @@
 
 #include <amount.h>
 
+// SIN
+#include <qt/infinitynodelist.h>
+
 #include <QStackedWidget>
 
 class ClientModel;
 class OverviewPage;
 class PlatformStyle;
-class ReceiveCoinsDialog;
+class ReceiveRequestDialog;
 class SendCoinsDialog;
 class SendCoinsRecipient;
 class TransactionView;
 class WalletModel;
 class AddressBookPage;
+class StatsPage;
+class FaqPage;
+class StakePage;
+class WalletFrame;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -59,25 +66,56 @@ private:
 
     OverviewPage *overviewPage;
     QWidget *transactionsPage;
-    ReceiveCoinsDialog *receiveCoinsPage;
+    ReceiveRequestDialog *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
     AddressBookPage *usedSendingAddressesPage;
     AddressBookPage *usedReceivingAddressesPage;
+
+    // SIN
+    InfinitynodeList *infinitynodeListPage;
+
+    // StatsPage
+    StatsPage *statsWindow;
+    //
+
+     // FaqPage
+    FaqPage *faqWindow;
+    //
+
+    // StakePage
+    StakePage *stakePage;
+    //
+
 
     TransactionView *transactionView;
 
     QProgressDialog* progressDialog{nullptr};
     const PlatformStyle *platformStyle;
+    WalletFrame *walletFrame;
 
 public Q_SLOTS:
     /** Switch to overview (home) page */
     void gotoOverviewPage();
+    void gotoHomePage();
+    void hideTransactionWidget();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
+    /** Switch to infinitynode page */
+    void gotoInfinitynodePage();  // SIN
+    /** Switch to stats page */
+    void gotoStatsPage();
+    /** Switch to faq page */
+    void gotoFaqPage();
+    /** Switch to stake page */
+    void gotoStakePage();
     /** Switch to send coins page */
     void gotoSendCoinsPage(QString addr = "");
+     // setUP
+    /** Switch to setUP Tab */
+    void gotoSetupTab();
+    //
 
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
@@ -98,7 +136,10 @@ public Q_SLOTS:
     /** Change encrypted wallet passphrase */
     void changePassphrase();
     /** Ask for passphrase to unlock wallet temporarily */
-    void unlockWallet();
+    void unlockWallet(bool fromMenu = false);
+    /** Lock the wallet */
+    void lockWallet();
+
 
     /** Show used sending addresses */
     void usedSendingAddresses();
@@ -111,11 +152,7 @@ public Q_SLOTS:
     /** Show progress dialog e.g. for rescan */
     void showProgress(const QString &title, int nProgress);
 
-    /** User has requested more information about the out of sync state */
-    void requestedSyncWarningInfo();
-
 Q_SIGNALS:
-    void setPrivacy(bool privacy);
     void transactionClicked();
     void coinsSent();
     /**  Fired when a message should be reported to the user */
@@ -128,6 +165,9 @@ Q_SIGNALS:
     void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label, const QString& walletName);
     /** Notify that the out of sync warning icon has been pressed */
     void outOfSyncWarningClicked();
+    void showMore();
+    void sendCoins(QString addr = "");
+    void receiveCoins();
 };
 
 #endif // BITCOIN_QT_WALLETVIEW_H

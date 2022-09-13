@@ -1,80 +1,89 @@
-Bitcoin Core integration/staging tree
-=====================================
+# ![SINOVATE Logo](https://github.com/SINOVATEblockchain/docs/blob/main/assets/img/sin_background.png)
 
-https://bitcoincore.org
 
-What is Bitcoin?
-----------------
 
-Bitcoin is an experimental digital currency that enables instant payments to
-anyone, anywhere in the world. Bitcoin uses peer-to-peer technology to operate
-with no central authority: managing transactions and issuing money are carried
-out collectively by the network. Bitcoin Core is the name of open source
-software which enables the use of this currency.
+**SINOVATE (SIN)** is an open-source state-of-the-art digital cryptocurrency. 
+We build innovative blockchain cloud services for individuals, developers, and enterprises. 
+Decentralized cloud (dCloud), **SINCORD** messenger, proof-of-integrity, proof-of-inheritance, and blockchain-based file transfer protocol **bFTP** are some solutions for the crypto space.
 
-For more information, as well as an immediately usable, binary version of
-the Bitcoin Core software, see https://bitcoincore.org/en/download/, or read the
-[original whitepaper](https://bitcoincore.org/bitcoin.pdf).
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/SINOVATEblockchain/SIN-core?label=release&style=flat-square)[![HitCount](http://hits.dwyl.com/SINOVATEblockchain/SIN-core.svg)](http://hits.dwyl.com/SINOVATEblockchain/SIN-core)<a href="https://discord.gg/WnRExsx"><img src="https://discordapp.com/api/guilds/494460434691391509/embed.png" alt="Discord server" /></a> <a href="https://twitter.com/intent/follow?screen_name=SinovateChain"><img src="https://img.shields.io/twitter/follow/SinovateChain.svg?style=social&logo=twitter" alt="follow on Twitter"></a>
 
-License
--------
 
-Bitcoin Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
-information or see https://opensource.org/licenses/MIT.
 
-Development Process
--------------------
 
-The `master` branch is regularly built (see `doc/build-*.md` for instructions) and tested, but it is not guaranteed to be
-completely stable. [Tags](https://github.com/bitcoin/bitcoin/tags) are created
-regularly from release branches to indicate new official, stable release versions of Bitcoin Core.
+# Features and Innovations
 
-The https://github.com/bitcoin-core/gui repository is used exclusively for the
-development of the GUI. Its master branch is identical in all monotree
-repositories. Release branches and tags do not exist, so please do not fork
-that repository unless it is for development reasons.
+ - **X25X** GPU Algorithm. Leading-edge, in-house built, custom GPU mining algorithm. More complex, less power-hungry.
+ - **Deterministic InfinityNodes** InfinityNodes are custom "burn to run" service nodes for unparalleled network security, speed, scalability and stability.
+ - **NEPHELE: Incorruptible Data Storage** Blockchain-mail, Proof-of-Integrity. SINCORD messenger, proof-of-inheritance, blockchain-based file transfer protocol are stored on InfinityNodes for unlimited public or private networking of distributed data storage.
 
-The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md)
-and useful hints for developers can be found in [doc/developer-notes.md](doc/developer-notes.md).
+SINOVATE (SIN) combines its brand new **X25X Proof of Work (PoW)** algorithm with LWMA difficulty retargeting algorithm, Reorg fork reject solution merged with proof-of-burn, PoS4 and LockReward for an unbreakable 51% attack protection.
 
-Testing
--------
 
-Testing and code review is the bottleneck for development; we get more pull
-requests than we can review and test on short notice. Please be patient and help out by testing
-other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
 
-### Automated Testing
 
-Developers are strongly encouraged to write [unit tests](src/test/README.md) for new code, and to
-submit new unit tests for old code. Unit tests can be compiled and run
-(assuming they weren't disabled in configure) with: `make check`. Further details on running
-and extending unit tests can be found in [/src/test/README.md](/src/test/README.md).
+## Coin Specifications
 
-There are also [regression and integration tests](/test), written
-in Python, that are run automatically on the build server.
-These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
 
-The Travis CI system makes sure that every pull request is built for Windows, Linux, and macOS, and that unit/sanity tests are run automatically.
+|Specification| Value |
+|--|--|
+|Block Rewards  | **1575 + 50 for PoS and 1575 + 12.5 for PoW** |
+|Block Time  | **60 seconds PoS & 60 seconds PoW hybrid-consensus** |
+|Block Fee  | **10%** |
+|Difficulty Retargeting Algo | **LWMA** | 
+|Max Transactions Per Second  | **Up to 4000+ tx/s with full SegWit address transactions** |
+|Total Supply  | **Proof-of-burn based self-regulated supply** |
+|Max Block Size  | **64 MB** |
+|SINOVATE legacy address start with  | **S** |
+|InfinityNode Port  | **20970** |
+|<small>BIG</small>  Node Requirement  | **1.000.000 SIN** |
+|<small>MID</small>   Node Requirement  | **500.000 SIN** |
+|<small>MINI</small>   Node Requirement  | **100.000 SIN** |
 
-### Manual Quality Assurance (QA) Testing
 
-Changes should be tested by somebody other than the developer who wrote the
-code. This is especially important for large or high-risk changes. It is useful
-to add a test plan to the pull request description if testing the changes is
-not straightforward.
 
-Translations
-------------
+## Codebase History
 
-Changes to translations as well as new translations can be submitted to
-[Bitcoin Core's Transifex page](https://www.transifex.com/bitcoin/bitcoin/).
+--   SUQA was created September 26, 2018
+-   Forked HODLcoin
+-   Invented custom X22i algorithm
+-   Added Time-Lock
 
-Translations are periodically pulled from Transifex and merged into the git repository. See the
-[translation process](doc/translation_process.md) for details on how this works.
+--   SINOVATE was created June 1, 2019
+-   Forked Bitcoin v17.1
+-   Replaced X22i with custom X25X algorithm
+-   Added InfinityNodes proof-of-burn algorithm
 
-**Important**: We do not accept translation changes as GitHub pull requests because the next
-pull from Transifex would automatically overwrite them again.
+--   AURORA Mainnet was created November 21, 2020
+-   Added Deterministic InfinityNodes 1.0
+-   Added in-wallet 1-click InfinityNode node setUP
 
-Translators should also subscribe to the [mailing list](https://groups.google.com/forum/#!forum/bitcoin-translators).
+
+
+--   BETELGEUSE Mainnet release on March 31, 2022
+-   Forked Bitcoin v22.0
+-   Added 4th generation actual decentralized proof-of-stake algorithm, PoS4
+-   Added 4000 tx/s with complete SegWit address transactions
+-   Added triple security hybrid consensus with PoW, PoS and LockReward
+-   Added blockchain trilemma solution for decentralization, scalability and security
+
+
+
+
+
+# Roadmap
+https://sinovate.io/roadmap/
+
+# Documents
+https://docs.sinovate.io/
+
+# Community Contributions
+
+A big part of what makes Sinovate great is each and every one of you in the community. Your contributions enrich the Sinovate experience and make it better every day. We want contributing to Sinovate to be fun, enjoyable, and educational for anyone and everyone. All contributions are welcome, including issues, new docs, tweaks, and more.   
+  
+We welcome all contributions from you in the community, and would be thrilled to amplify your voice. Contributions are not limited to code, and can take all shapes and forms.
+
+
+
+
+

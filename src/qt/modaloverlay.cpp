@@ -7,6 +7,8 @@
 
 #include <chainparams.h>
 #include <qt/guiutil.h>
+#include <qt/platformstyle.h>
+#include <qt/styleSheet.h>
 
 #include <QEasingCurve>
 #include <QPropertyAnimation>
@@ -21,6 +23,11 @@ layerIsVisible(false),
 userClosed(false)
 {
     ui->setupUi(this);
+    // Set stylesheet
+    SetObjectStyleSheet(ui->warningIcon, StyleSheetNames::ButtonTransparent);
+    QColor warningIconColor = GetStringStyleValue("modaloverlay/warning-icon-color", "#000000");
+    ui->warningIcon->setIcon(PlatformStyle::SingleColorIcon(":/icons/warning", "#009ee5"));
+    
     connect(ui->closeButton, &QPushButton::clicked, this, &ModalOverlay::closeClicked);
     if (parent) {
         parent->installEventFilter(this);
@@ -134,7 +141,6 @@ void ModalOverlay::tipUpdate(int count, const QDateTime& blockDate, double nVeri
 
     // show the percentage done according to nVerificationProgress
     ui->percentageProgress->setText(QString::number(nVerificationProgress*100, 'f', 2)+"%");
-    ui->progressBar->setValue(nVerificationProgress*100);
 
     if (!bestHeaderDate.isValid())
         // not syncing

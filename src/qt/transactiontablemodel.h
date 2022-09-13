@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2018 The Bitcoin Core developers
+// Copyright (c) 2011-2020 The Bitcoin Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -9,6 +9,7 @@
 
 #include <QAbstractTableModel>
 #include <QStringList>
+#include <QColor>
 
 #include <memory>
 
@@ -91,6 +92,13 @@ private:
     TransactionTablePriv *priv;
     bool fProcessingQueuedTransactions;
     const PlatformStyle *platformStyle;
+
+    QColor color_unconfirmed;
+    QColor color_negative;
+    QColor color_bareaddress;
+    QColor color_tx_status_openuntildate;
+    QColor color_tx_status_danger;
+    QColor color_black;
 
     void subscribeToCoreSignals();
     void unsubscribeFromCoreSignals();

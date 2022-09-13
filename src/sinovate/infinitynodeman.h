@@ -31,6 +31,8 @@ public:
     // map to hold all INFs
     std::map<COutPoint, CInfinitynode> mapInfinitynodes;
     std::map<COutPoint, CInfinitynode> mapInfinitynodesNonMatured;
+    // map to hold tempo metadata of next block
+    std::vector<CMetadata> vMetaNextBlock;
     // map to hold all reward statement
     std::map<int, int> mapStatementBIG;
     std::map<int, int> mapStatementMID;
@@ -128,52 +130,49 @@ public:
     }
     int getCacheHeightInf(){LOCK(cs); return nCachedBlockHeight;};
 
+    //call in infinitynodetip
     void setSyncStatus(bool flag){LOCK(cs); fReachedLastBlock=flag;}
     bool isReachedLastBlock(){LOCK(cs); return fReachedLastBlock;}
 
     std::map<CScript, int> GetFullLastPaidMap() { return mapLastPaid; }
     int64_t getLastScan(){return nLastScanHeight;}
     int64_t getLastScanWithLimit(){return nLastScanHeight/* + INF_MATURED_LIMIT*/;} // We'll need to move this to functions who actually use it and match it with our max reorg depth
-    //build DIN map by scan from nBlockHeight to nLowHeight
-    bool updateLastPaidList(int nBlockHeight, int nLowHeight = 0); /* init this to zero for better compat with regtest/testnet/devnets */
-
-    //build DIN map immediate when connect block
+    //build DIN map immediate when connect block, before validation of block. updateFinalList OR removeNonMaturedList will be called if block is valid
     bool buildNonMaturedListFromBlock(const CBlock& block, CBlockIndex* pindex,
                   CCoinsViewCache& view, const CChainParams& chainparams); //call in validation.cpp
-    bool updateFinalList(CBlockIndex* pindex); // call when block is valid
-    bool removeNonMaturedList(CBlockIndex* pindex); //call when block is invalid or disconnect
-
-    void updateLastPaid();
-    bool updateInfinitynodeList(int fromHeight);//call in init.cppp
-    bool initialInfinitynodeList(int fromHeight);//call in init.cpp
+    bool updateFinalList(CBlockIndex* pindex, CCoinsViewCache& view); // call when block is valid
+    bool removeNonMaturedList(CBlockIndex* pindex); //call when block is invalid or disconnecttip
 
     //LR read back
-    bool ExtractLockReward(int nBlockHeight, int depth, std::vector<CLockRewardExtractInfo>& vecLRRet);
-    bool getLRForHeight(int height, std::vector<CLockRewardExtractInfo>& vecLockRewardRet);
+    bool ExtractLockReward(int nBlockHeight, int depth, std::vector<CLockRewardExtractInfo>& vecLRRet, CChainState& chainstate);
+    bool getLRForHeight(int height, std::vector<CLockRewardExtractInfo>& vecLockRewardRet, CChainState& chainstate);
 
     //this function build the map of STM from genesis
     bool calculStatementOnValidation(int nHeight);
     bool deterministicRewardAtHeightOnValidation(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet);
 
-    bool deterministicRewardAtHeight(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet);
+    //find candidate at Height. use for LR with nInfinityNodeCallLockRewardDeepth block in future
+    bool deterministicRewardAtHeight_V2(int nBlockHeight, int nSinType, CInfinitynode& infinitynodeRet);
+
     std::map<int, CInfinitynode> calculInfinityNodeRank(int nBlockHeight, int nSinType, bool updateList=false, bool flagExtCall = false);
     std::pair<int, int> getLastStatementBySinType(int nSinType);
     std::string getLastStatementString() const;
+    std::string getLastStatement();
     int getRoi(int nSinType, int totalNode);
 
     int isPossibleForLockReward(COutPoint burntx);
     bool getScoreVector(const uint256& nBlockHash, int nSinType, int nBlockHeight, CInfinitynodeMan::score_pair_vec_t& vecScoresRet);
-    bool getNodeScoreAtHeight(const COutPoint& outpoint, int nSinType, int nBlockHeight, int& nRankRet);
-    bool getTopNodeScoreAtHeight(int nSinType, int nBlockHeight, int nTop, std::vector<CInfinitynode>& vecInfRet);
-    bool isValidTopNode(const std::vector<COutPoint>  &vOutpoint, int nSinType, int nBlockHeight, int nTop);
+    bool getNodeScoreAtHeight(const COutPoint& outpoint, int nSinType, int nBlockHeight, int& nRankRet, ChainstateManager& chainman);
+    bool getTopNodeScoreAtHeight(int nSinType, int nBlockHeight, int nTop, std::vector<CInfinitynode>& vecInfRet, ChainstateManager& chainman);
+    bool isValidTopNode(const std::vector<COutPoint>  &vOutpoint, int nSinType, int nBlockHeight, int nTop, CChainState& chainstate);
 
     std::string getVectorNodeRankAtHeight(const std::vector<COutPoint>& vOutpoint, int nSinType, int nBlockHeight);
 
-    //this function update lastStm and size from UpdatedBlockTip and map
-    void CheckAndRemove(CConnman& connman);
-    /// This is dummy overload to be used for dumping/loading mncache.dat
-    void CheckAndRemove() {}
+    void CheckAndRemove();
     void UpdatedBlockTip(const CBlockIndex *pindex);
     void UpdateChainActiveHeight(int number);
+
+    // save the state of infinitynode and metadata to disk
+    void FlushStateToDisk();
 };
 #endif // SIN_INFINITYNODEMAN_H
